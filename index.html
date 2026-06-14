@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>とれはんっ！｜同人イベント攻略アプリ ダウンロード</title>
+<meta name="description" content="コミケ・コミティアなど同人イベントの会場攻略アプリ「とれはんっ！」。サークル管理・お品書きAI読み取り・会場マップ・軍資金/おつり計算。基本無料・広告なし。">
+
+<!-- ========================================================= -->
+<!-- ▼▼▼ ここから下を編集すれば内容を差し替えられます ▼▼▼ -->
+<!-- ・App Storeリンク / Xリンク は <a href="..."> の中を変更    -->
+<!-- ・Google Play 公開時は下の「Google Play」ボタンの          -->
+<!--   コメントを外し href を貼ってください                     -->
+<!-- ========================================================= -->
+
+<style>
+  :root{
+    --navy:#0c1a38;
+    --navy2:#142c54;
+    --orange:#f5821f;
+    --red:#e23b33;
+    --text:#1b2438;
+    --sub:#5a6478;
+    --card:#ffffff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",YuGothic,"Meiryo",sans-serif;
+    background:linear-gradient(160deg,var(--navy) 0%,var(--navy2) 100%);
+    color:#fff; min-height:100vh; line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:48px 24px 64px}
+
+  /* ヘッダー */
+  .hero{text-align:center;margin-bottom:40px}
+  .icon{
+    width:120px;height:120px;border-radius:27px;
+    box-shadow:0 8px 28px rgba(0,0,0,.35);
+    border:1px solid rgba(255,255,255,.15);
+    margin-bottom:20px;background:#fff;object-fit:cover;
+  }
+  .appname{font-size:34px;font-weight:800;letter-spacing:.02em}
+  .tagline{font-size:16px;color:#aebfe0;margin-top:8px}
+
+  /* キャッチ */
+  .catch{
+    text-align:center;font-size:20px;font-weight:700;
+    margin:32px 0 8px;line-height:1.6;
+  }
+  .catch .o{color:var(--orange)}
+
+  /* DLボタン群 */
+  .dl{display:flex;flex-direction:column;gap:14px;margin:32px 0 8px}
+  .btn{
+    display:flex;align-items:center;justify-content:center;gap:12px;
+    text-decoration:none;font-weight:700;font-size:18px;
+    padding:18px 22px;border-radius:16px;transition:transform .12s ease,opacity .12s ease;
+  }
+  .btn:active{transform:scale(.98)}
+  .btn-store{background:#fff;color:var(--navy)}
+  .btn-x{background:rgba(255,255,255,.10);color:#fff;border:1px solid rgba(255,255,255,.25)}
+  .btn .ic{font-size:22px;line-height:1}
+  .btn small{display:block;font-size:12px;font-weight:500;color:var(--sub)}
+  .btn-store small{color:#6b7488}
+
+  .note{
+    text-align:center;font-size:13px;color:#9fb0d4;margin-top:6px;
+  }
+  .paid{color:#ffd0c4;font-weight:700}
+
+  /* 機能 */
+  .features{
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);
+    border-radius:20px;padding:26px 24px;margin:40px 0;
+  }
+  .features h2{font-size:18px;margin-bottom:18px;font-weight:800}
+  .features ul{list-style:none;display:grid;gap:12px}
+  .features li{display:flex;align-items:flex-start;gap:11px;font-size:15px;color:#e4ebf7}
+  .features .dot{
+    flex:0 0 auto;width:22px;height:22px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;color:#fff;margin-top:1px;
+  }
+
+  /* イベント */
+  .events{text-align:center;font-size:14px;color:#aebfe0;margin:8px 0 0}
+  .events b{color:var(--orange)}
+
+  footer{
+    text-align:center;font-size:12px;color:#7f8eb0;margin-top:48px;
+    border-top:1px solid rgba(255,255,255,.1);padding-top:24px;
+  }
+  footer a{color:#9fb0d4}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <!-- アイコン画像。icon.png をこのフォルダに置けば表示されます -->
+    <img class="icon" src="icon.png" alt="とれはんっ！ アイコン"
+         onerror="this.style.display='none'">
+    <div class="appname">とれはんっ！</div>
+    <div class="tagline">同人イベント攻略アプリ</div>
+  </div>
+
+  <div class="catch">
+    コミケも、コミティアも。<br>
+    会場攻略は、<span class="o">これ1つ。</span>
+  </div>
+
+  <!-- ダウンロードボタン -->
+  <div class="dl">
+    <a class="btn btn-store" href="https://apps.apple.com/jp/app/id6776913607">
+      <span class="ic">📱</span>
+      <span>App Store でダウンロード<small>iPhone / iPad</small></span>
+    </a>
+
+    <!-- ▼ Google Play 公開時はコメントを外して href を貼ってください
+    <a class="btn btn-store" href="GOOGLE_PLAY_URL_HERE">
+      <span class="ic">🤖</span>
+      <span>Google Play でダウンロード<small>Android</small></span>
+    </a>
+    -->
+
+    <a class="btn btn-x" href="https://x.com/rurifukuro">
+      <span class="ic">𝕏</span>
+      <span>公式X（@rurifukuro）をフォロー<small>最新情報・対応イベント追加情報</small></span>
+    </a>
+  </div>
+
+  <div class="note">
+    基本無料・広告なし／<span class="paid">アプリ内課金あり</span>（有料開放でさらに便利に）
+  </div>
+
+  <!-- 機能 -->
+  <div class="features">
+    <h2>できること、もりだくさん。</h2>
+    <ul>
+      <li><span class="dot" style="background:#3b82f6">✓</span>サークルをまとめて登録・管理</li>
+      <li><span class="dot" style="background:#8b5cf6">✓</span>お品書きを撮ってAIが自動入力</li>
+      <li><span class="dot" style="background:#22c55e">✓</span>軍資金・おつりをかんたん計算</li>
+      <li><span class="dot" style="background:#f59e0b">✓</span>会場マップで配置をひと目で確認</li>
+      <li><span class="dot" style="background:#ef4444">✓</span>戦利品をチェックして管理</li>
+      <li><span class="dot" style="background:#14b8a6">✓</span>サークル名・XのURLからすぐ検索</li>
+    </ul>
+  </div>
+
+  <div class="events">
+    対応イベント：<b>コミケ / コミティア / 学園スターフェス / アイドルスターフェス</b><br>
+    ほか順次追加予定
+  </div>
+
+  <footer>
+    © とれはんっ！ ｜ お問い合わせ：<a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>
+  </footer>
+
+</div>
+</body>
+</html>
