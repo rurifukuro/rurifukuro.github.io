@@ -1,0 +1,44 @@
+name: Supabase Keep-Alive (torehan)
+
+# とれはんっ！ Supabase プロジェクト（FREE プラン）の自動一時停止を防ぐワークフロー。
+#
+# 背景: FREE プランは「7日間アクティビティが無い」とプロジェクトが一時停止し、
+#       復帰するまで課金ユーザーのクラウド OCR（Edge Function ocr-proxy）が失敗しうる。
+# 対策: 数日おきに publishable(anon) キーで registered_circles を 1 行だけ select し、
+#       DB に触れて無アクティビティ・タイマーをリセットする（読み取りのみ＝無害）。
+#
+# ここに書く URL / KEY は「公開して安全」な publishable 系の値（RLS 前提・アプリにも埋め込み済）。
+#   ⚠ service_role(sb_secret_...) や DB パスワードは絶対に書かない（公開リポジトリ・R13）。
+#
+# 注意: GitHub はリポジトリに 60 日間コミットが無いと schedule を自動無効化する。
+#       通常開発で push があれば維持される。無効化メールが来たら Actions タブから再有効化、
+#       または手動実行（workflow_dispatch）で再開できる。
+
+on:
+  schedule:
+    # 3日おき 02:17 UTC（最大間隔 ~3日 << 7日。GitHub の遅延/スキップにも余裕を持たせる）
+    - cron: '17 2 */3 * *'
+  workflow_dispatch: {}        # 手動実行も可（Actions タブ → Run workflow）
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Ping Supabase REST (select 1 row)
+        env:
+          SUPABASE_URL: https://vuazrgebojcnyjcnhpuq.supabase.co
+          SUPABASE_PUBLISHABLE_KEY: sb_publishable_pin4V9zyMx6el2Z_fswzUA_dXlom2jf
+        run: |
+          url="${SUPABASE_URL}/rest/v1/registered_circles?select=id&limit=1"
+          code=$(curl -sS -m 30 -o /tmp/body.txt -w '%{http_code}' \
+            -H "apikey: ${SUPABASE_PUBLISHABLE_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_PUBLISHABLE_KEY}" \
+            "$url" || true)
+          echo "HTTP ${code}"
+          echo "Body: $(cat /tmp/body.txt 2>/dev/null || true)"
+          # RLS で 0 行でも 200。200/206 以外は失敗にして GitHub から通知させる。
+          case "$code" in
+            200|206) echo "Keep-alive OK" ;;
+            *) echo "Keep-alive FAILED (HTTP ${code})"; exit 1 ;;
+          esac
