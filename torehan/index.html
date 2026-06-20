@@ -87,6 +87,22 @@
     font-size:13px;color:#fff;margin-top:1px;
   }
 
+  /* 画像つき機能説明 */
+  .showcase{margin:46px 0 10px}
+  .showcase-h{font-size:21px;font-weight:800;text-align:center;letter-spacing:.01em}
+  .showcase-sub{text-align:center;color:#aebfe0;font-size:13.5px;margin:8px 0 6px}
+  .feat{margin:34px 0}
+  .feat h3{font-size:17px;font-weight:800;margin-bottom:8px}
+  .feat p{font-size:14.5px;color:#cdd8ef;margin-bottom:16px}
+  .shots{display:flex;gap:14px;justify-content:center;align-items:flex-start;flex-wrap:wrap}
+  .shots img{
+    border-radius:16px;border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 12px 30px rgba(0,0,0,.42);height:auto;
+  }
+  .shots.two img{width:min(47%,290px)}
+  .shots.one img{width:min(74%,290px)}
+  .shots.wide img{width:min(94%,430px)}
+
   /* テスター募集 */
   .tester{
     background:rgba(245,130,31,.10);
@@ -153,6 +169,53 @@
     基本無料・広告なし／<span class="paid">アプリ内課金あり</span>（有料開放でさらに便利に）
   </div>
 
+  <!-- 画像つき機能説明 -->
+  <div class="showcase">
+    <h2 class="showcase-h">画面で見る、とれはんっ！</h2>
+    <p class="showcase-sub">実際の画面で、できることを紹介します。</p>
+
+    <div class="feat">
+      <h3>🤖 お品書きは、撮るだけ。AIが自動入力</h3>
+      <p>気になるサークルのお品書きを撮影するだけで、頒布物の名前と価格をAIが自動で読み取り。手入力の手間なく、サークルと軍資金リストにそのまま登録できます。</p>
+      <div class="shots one">
+        <img src="img/feat-add.jpg" alt="お品書きをAIが自動で読み取るサークル追加画面" loading="lazy">
+      </div>
+    </div>
+
+    <div class="feat">
+      <h3>🗺️ 会場マップで、配置がひと目で</h3>
+      <p>ホール別の会場マップで、行きたいサークルの配置をすぐ確認。指でつまんで拡大（ピンチズーム）でき、気になるサークルはマップから直接チェックできます。</p>
+      <div class="shots two">
+        <img src="img/feat-map1.jpg" alt="会場全体マップの画面" loading="lazy">
+        <img src="img/feat-map2.jpg" alt="拡大した詳細マップの画面" loading="lazy">
+      </div>
+    </div>
+
+    <div class="feat">
+      <h3>📋 サークルも軍資金も、まとめて管理</h3>
+      <p>行きたいサークルを一覧で管理。軍資金と必要予算を自動計算し、買えた／まだのチェックで戦利品もしっかり管理できます。日程ごとの予算もひと目で分かります。</p>
+      <div class="shots one">
+        <img src="img/feat-list.jpg" alt="サークルリストと軍資金・予算管理の画面" loading="lazy">
+      </div>
+    </div>
+
+    <div class="feat">
+      <h3>🧮 会計も、おつりもサッと計算</h3>
+      <p>欲しいものの合計と支払う金額から、おつりを瞬時に計算。会場での会計に迷いません。</p>
+      <div class="shots wide">
+        <img src="img/feat-change.jpg" alt="おつり計算の画面" loading="lazy">
+      </div>
+    </div>
+
+    <div class="feat">
+      <h3>📚 はじめてでも安心の攻略ガイド</h3>
+      <p>「はじめに」「アプリの使い方」「イベント参加に慣れていない方へ」など、初参加でも安心のガイドを収録。持ち物チェックリストやコミケ攻略情報も読めます。</p>
+      <div class="shots one">
+        <img src="img/feat-info.jpg" alt="情報・攻略ガイドの画面" loading="lazy">
+      </div>
+    </div>
+  </div>
+
   <!-- 機能 -->
   <div class="features">
     <h2>できること、もりだくさん。</h2>
@@ -166,6 +229,14 @@
       <li><span class="dot" style="background:#6366f1">✓</span>コミケ攻略情報・持ち物チェックリスト</li>
       <li><span class="dot" style="background:#ec4899">✓</span>8色のカラーテーマ・5言語表示（日英中韓仏）</li>
     </ul>
+  </div>
+
+  <!-- ダウンロード（2回目・機能説明のあと） -->
+  <div class="dl">
+    <a class="btn btn-store" href="https://apps.apple.com/jp/app/id6776913607">
+      <span class="ic">📱</span>
+      <span>App Store でダウンロード<small>iPhone・基本無料</small></span>
+    </a>
   </div>
 
   <!-- Android版 テスター募集 -->
