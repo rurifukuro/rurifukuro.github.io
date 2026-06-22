@@ -4,7 +4,49 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>とれはんっ！｜同人イベント攻略アプリ ダウンロード</title>
-<meta name="description" content="コミケ・コミティアなど同人イベントの会場攻略アプリ「とれはんっ！」。サークル管理・お品書きAI読み取り・ホール別会場マップ・軍資金/おつり計算・戦利品チェック。5言語対応・基本無料・広告なし。">
+<meta name="description" content="コミケ・コミティアなど同人イベントの会場攻略アプリ「とれはんっ！」。サークル管理・お品書きAI読み取り・ホール別会場マップ・軍資金/おつり計算・サークル分担・サーバー共有・戦利品チェック。5言語対応・基本無料・広告なし。">
+
+<!-- ========================================================= -->
+<!-- ▼ Google広告 コンバージョン計測タグ（出稿準備の雛形）         -->
+<!--   ★Google広告アカウント作成後、下の2つの値だけ書き換えれば有効化されます: -->
+<!--     1) GADS_TAG_ID           … Google広告のタグID（例 AW-1234567890）      -->
+<!--     2) GADS_CONVERSION_LABEL … コンバージョンアクションのラベル              -->
+<!--        （Google広告 → 目標 → コンバージョン → 「ウェブサイト」のクリックで発行） -->
+<!--   ※「XXXX」を含むプレースホルダのままなら計測は無効・ページは正常に動きます。 -->
+<!--   ※ App Storeボタンのクリックをコンバージョンとして送信します。              -->
+<!-- ========================================================= -->
+<script>
+  /* ▼▼ ここの2つを、Google広告で発行された値に置き換えてください ▼▼ */
+  window.GADS_TAG_ID           = "AW-XXXXXXXXXX";   /* 例: AW-1234567890 */
+  window.GADS_CONVERSION_LABEL = "XXXXXXXXXX";      /* 例: AbC-D_efG12hIjkl */
+  /* ▲▲ ここまで。これ以降は編集不要です ▲▲ */
+
+  (function () {
+    var ok = window.GADS_TAG_ID && window.GADS_TAG_ID.indexOf("XXXX") === -1;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { dataLayer.push(arguments); };
+    if (ok) {
+      var s = document.createElement("script");
+      s.async = true;
+      s.src = "https://www.googletagmanager.com/gtag/js?id=" + window.GADS_TAG_ID;
+      document.head.appendChild(s);
+      gtag("js", new Date());
+      gtag("config", window.GADS_TAG_ID);
+    }
+  })();
+
+  /* App Storeボタンのクリックをコンバージョンとして計測（リンクはそのまま遷移） */
+  function torehanTrackStoreClick() {
+    var ok = window.GADS_TAG_ID && window.GADS_TAG_ID.indexOf("XXXX") === -1
+          && window.GADS_CONVERSION_LABEL && window.GADS_CONVERSION_LABEL.indexOf("XXXX") === -1;
+    if (ok && typeof window.gtag === "function") {
+      window.gtag("event", "conversion", {
+        "send_to": window.GADS_TAG_ID + "/" + window.GADS_CONVERSION_LABEL
+      });
+    }
+    return true; /* 既定の遷移はそのまま行う */
+  }
+</script>
 
 <!-- ========================================================= -->
 <!-- ▼▼▼ ここから下を編集すれば内容を差し替えられます ▼▼▼ -->
@@ -147,7 +189,7 @@
 
   <!-- ダウンロードボタン -->
   <div class="dl">
-    <a class="btn btn-store" href="https://apps.apple.com/jp/app/id6776913607">
+    <a class="btn btn-store" href="https://apps.apple.com/jp/app/id6776913607" onclick="torehanTrackStoreClick()">
       <span class="ic">📱</span>
       <span>App Store でダウンロード<small>iPhone</small></span>
     </a>
@@ -208,6 +250,31 @@
     </div>
 
     <div class="feat">
+      <h3>🤝 仲間とサークルを分担して、効率よく回る</h3>
+      <p>招待コードで仲間とグループを作り、サークルを担当ごとに分担。誰がどこを回るかをまとめて管理でき、代理購入の立替も自動で精算します。当日の買い出しがぐっとスムーズになります。</p>
+      <div class="shots two">
+        <img src="img/feat-group1.jpg" alt="グループでサークルを共有し予算・精算を管理する画面" loading="lazy">
+        <img src="img/feat-group2.jpg" alt="サークルを担当者ごとに分担する画面" loading="lazy">
+      </div>
+    </div>
+
+    <div class="feat">
+      <h3>🔍 みんなのお品書きをサーバーで検索・共有</h3>
+      <p>登録されたサークルのお品書きやサークル情報を、サーバーから検索。気になるサークルはそのままグループやリストに追加できます。登録者数の多い順に並べ替えれば、当日の人気サークル＝ライバルの動きも把握できます。</p>
+      <div class="shots one">
+        <img src="img/feat-search.jpg" alt="サーバーからお品書き・サークル情報を検索する画面" loading="lazy">
+      </div>
+    </div>
+
+    <div class="feat">
+      <h3>🗄️ サークル情報をサーバーDBから取り込み</h3>
+      <p>サークル名やサークル主のX（Twitter）IDなどをまとめて管理するサークル情報DB。サーバーから情報を取り込んでおけば、検索やサークル追加のときに自動入力で活用でき、毎回の手入力を減らせます。</p>
+      <div class="shots one">
+        <img src="img/feat-db.jpg" alt="サークル情報をサーバーから取り込むDB画面" loading="lazy">
+      </div>
+    </div>
+
+    <div class="feat">
       <h3>📚 はじめてでも安心の攻略ガイド</h3>
       <p>「はじめに」「アプリの使い方」「イベント参加に慣れていない方へ」など、初参加でも安心のガイドを収録。持ち物チェックリストやコミケ攻略情報も読めます。</p>
       <div class="shots one">
@@ -218,7 +285,7 @@
 
   <!-- 機能 -->
   <div class="features">
-    <h2>できること、もりだくさん。</h2>
+    <h2>できること、もっと増えました。</h2>
     <ul>
       <li><span class="dot" style="background:#3b82f6">✓</span>サークルをまとめて登録・管理</li>
       <li><span class="dot" style="background:#8b5cf6">✓</span>お品書きを撮ってAIが自動入力</li>
@@ -228,12 +295,16 @@
       <li><span class="dot" style="background:#14b8a6">✓</span>サークル名やXからお品書きをすぐ検索</li>
       <li><span class="dot" style="background:#6366f1">✓</span>コミケ攻略情報・持ち物チェックリスト</li>
       <li><span class="dot" style="background:#ec4899">✓</span>8色のカラーテーマ・5言語表示（日英中韓仏）</li>
+      <li><span class="dot" style="background:#f97316">✓</span>仲間とサークルを分担して購入</li>
+      <li><span class="dot" style="background:#0ea5e9">✓</span>お品書き・サークル情報をサーバーで共有</li>
+      <li><span class="dot" style="background:#10b981">✓</span>サーバーからサークル情報を取り込み</li>
+      <li><span class="dot" style="background:#eab308">✓</span>当日の登録者数でライバルを把握</li>
     </ul>
   </div>
 
   <!-- ダウンロード（2回目・機能説明のあと） -->
   <div class="dl">
-    <a class="btn btn-store" href="https://apps.apple.com/jp/app/id6776913607">
+    <a class="btn btn-store" href="https://apps.apple.com/jp/app/id6776913607" onclick="torehanTrackStoreClick()">
       <span class="ic">📱</span>
       <span>App Store でダウンロード<small>iPhone・基本無料</small></span>
     </a>
