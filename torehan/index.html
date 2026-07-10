@@ -35,7 +35,6 @@
     }
   })();
 
-  /* App Storeボタンのクリックをコンバージョンとして計測（リンクはそのまま遷移） */
   function torehanTrackStoreClick() {
     var ok = window.GADS_TAG_ID && window.GADS_TAG_ID.indexOf("XXXX") === -1
           && window.GADS_CONVERSION_LABEL && window.GADS_CONVERSION_LABEL.indexOf("XXXX") === -1;
@@ -44,17 +43,9 @@
         "send_to": window.GADS_TAG_ID + "/" + window.GADS_CONVERSION_LABEL
       });
     }
-    return true; /* 既定の遷移はそのまま行う */
+    return true;
   }
 </script>
-
-<!-- ========================================================= -->
-<!-- ▼▼▼ ここから下を編集すれば内容を差し替えられます ▼▼▼ -->
-<!-- ・App Storeリンク / Xリンク は <a href="..."> の中を変更    -->
-<!-- ・Google Play 公開時は下の「Google Play」ボタンの          -->
-<!--   コメントを外し href を貼ってください                     -->
-<!-- ・アイコンはルート共有（/icon.png）                          -->
-<!-- ========================================================= -->
 
 <style>
   :root{
@@ -78,7 +69,6 @@
   .backlink{display:inline-block;font-size:13px;color:#9fb0d4;text-decoration:none;margin-bottom:20px}
   .backlink:hover{color:#cdd9f0}
 
-  /* ヘッダー */
   .hero{text-align:center;margin-bottom:40px}
   .icon{
     width:120px;height:120px;border-radius:27px;
@@ -89,14 +79,15 @@
   .appname{font-size:34px;font-weight:800;letter-spacing:.02em}
   .tagline{font-size:16px;color:#aebfe0;margin-top:8px}
 
-  /* キャッチ */
   .catch{
-    text-align:center;font-size:20px;font-weight:700;
-    margin:32px 0 8px;line-height:1.6;
+    text-align:center;font-size:22px;font-weight:800;
+    margin:32px 0 6px;line-height:1.6;
   }
   .catch .o{color:var(--orange)}
+  .catch-sub{
+    text-align:center;font-size:14.5px;color:#aebfe0;margin:8px 0 0;line-height:1.7;
+  }
 
-  /* DLボタン群 */
   .dl{display:flex;flex-direction:column;gap:14px;margin:32px 0 8px}
   .btn{
     display:flex;align-items:center;justify-content:center;gap:12px;
@@ -110,12 +101,19 @@
   .btn small{display:block;font-size:12px;font-weight:500;color:var(--sub)}
   .btn-store small{color:#6b7488}
 
-  .note{
-    text-align:center;font-size:13px;color:#9fb0d4;margin-top:6px;
-  }
+  .note{text-align:center;font-size:13px;color:#9fb0d4;margin-top:6px}
   .paid{color:#ffd0c4;font-weight:700}
 
-  /* 機能 */
+  .empathy{
+    background:rgba(227,59,51,.06);border:1px solid rgba(227,59,51,.25);
+    border-radius:20px;padding:24px;margin:36px 0;
+  }
+  .empathy h2{font-size:17px;font-weight:800;margin-bottom:14px;color:#ffd0c4}
+  .empathy ul{list-style:none;margin-bottom:16px}
+  .empathy li{font-size:14.5px;color:#cdd8ef;padding:7px 0;padding-left:24px;position:relative}
+  .empathy li::before{content:"✕";position:absolute;left:0;color:var(--red);font-size:13px;font-weight:700;top:8px}
+  .empathy .answer{text-align:center;font-size:15px;font-weight:700;color:#fff;margin-top:4px}
+
   .features{
     background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);
     border-radius:20px;padding:26px 24px;margin:40px 0;
@@ -129,7 +127,6 @@
     font-size:13px;color:#fff;margin-top:1px;
   }
 
-  /* 画像つき機能説明 */
   .showcase{margin:46px 0 10px}
   .showcase-h{font-size:21px;font-weight:800;text-align:center;letter-spacing:.01em}
   .showcase-sub{text-align:center;color:#aebfe0;font-size:13.5px;margin:8px 0 6px}
@@ -145,7 +142,6 @@
   .shots.one img{width:min(74%,290px)}
   .shots.wide img{width:min(94%,430px)}
 
-  /* テスター募集 */
   .tester{
     background:rgba(245,130,31,.10);
     border:1px solid rgba(245,130,31,.35);
@@ -158,7 +154,6 @@
   .btn-tester{background:var(--orange);color:#fff;margin-top:16px}
   .btn-tester small{color:rgba(255,255,255,.88)}
 
-  /* イベント */
   .events{text-align:center;font-size:14px;color:#aebfe0;margin:8px 0 0}
   .events b{color:var(--orange)}
 
@@ -175,7 +170,6 @@
   <a class="backlink" href="/">← 瑠璃フクロウの開発アプリ一覧</a>
 
   <div class="hero">
-    <!-- アイコン画像（ルート共有 /icon.png） -->
     <img class="icon" src="/icon.png" alt="とれはんっ！ アイコン"
          onerror="this.style.display='none'">
     <div class="appname">とれはんっ！</div>
@@ -183,15 +177,14 @@
   </div>
 
   <div class="catch">
-    コミケも、コミティアも。<br>
-    会場攻略は、<span class="o">これ1つ。</span>
+    もう1冊も、<span class="o">逃さない。</span>
   </div>
+  <p class="catch-sub">AI読取・会場マップ・軍資金管理・仲間分担——<br>コミケも、コミティアも、スマホ1つで完全攻略。</p>
 
-  <!-- ダウンロードボタン -->
   <div class="dl">
     <a class="btn btn-store" href="https://apps.apple.com/jp/app/id6776913607" onclick="torehanTrackStoreClick()">
       <span class="ic">📱</span>
-      <span>App Store でダウンロード<small>iPhone</small></span>
+      <span>App Store で今すぐダウンロード<small>iPhone・基本無料</small></span>
     </a>
 
     <!-- ▼ Google Play 公開時はコメントを外して href を貼ってください
@@ -203,7 +196,7 @@
 
     <a class="btn btn-x" href="https://x.com/rurifukuro">
       <span class="ic">𝕏</span>
-      <span>公式X（@rurifukuro）をフォロー<small>最新情報・対応イベント追加情報</small></span>
+      <span>公式X（@rurifukuro）をフォロー<small>最新情報・対応イベント追加をお知らせ</small></span>
     </a>
   </div>
 
@@ -211,22 +204,32 @@
     基本無料・広告なし／<span class="paid">アプリ内課金あり</span>（有料開放でさらに便利に）
   </div>
 
-  <!-- 画像つき機能説明 -->
+  <div class="empathy">
+    <h2>こんな経験、ありませんか？</h2>
+    <ul>
+      <li>「あのサークル、どこだっけ？」——会場で迷って貴重な時間をロス</li>
+      <li>お品書きを手入力していたら、開場に間に合わなかった</li>
+      <li>軍資金が足りず、欲しかった新刊を泣く泣く諦めた</li>
+      <li>グループで行ったのに分担がバラバラで、買い忘れが続出</li>
+    </ul>
+    <p class="answer">とれはんっ！は、こうした"イベントあるある"を<br>スマホ1つで解決します。</p>
+  </div>
+
   <div class="showcase">
     <h2 class="showcase-h">画面で見る、とれはんっ！</h2>
-    <p class="showcase-sub">実際の画面で、できることを紹介します。</p>
+    <p class="showcase-sub">あなたのイベント体験が、こう変わります。</p>
 
     <div class="feat">
-      <h3>🤖 お品書きは、撮るだけ。AIが自動入力</h3>
-      <p>気になるサークルのお品書きを撮影するだけで、頒布物の名前と価格をAIが自動で読み取り。手入力の手間なく、サークルと軍資金リストにそのまま登録できます。</p>
+      <h3>🤖 手入力ゼロ。お品書きを撮るだけで、準備完了</h3>
+      <p>気になるサークルのお品書きを撮るだけ。名前も価格もAIが自動で読み取り、サークルリストと軍資金にそのまま反映。あなたは「撮る」だけで、あとはぜんぶおまかせです。</p>
       <div class="shots one">
         <img src="img/feat-add.jpg" alt="お品書きをAIが自動で読み取るサークル追加画面" loading="lazy">
       </div>
     </div>
 
     <div class="feat">
-      <h3>🗺️ 会場マップで、配置がひと目で</h3>
-      <p>ホール別の会場マップで、行きたいサークルの配置をすぐ確認。指でつまんで拡大（ピンチズーム）でき、気になるサークルはマップから直接チェックできます。</p>
+      <h3>🗺️ 「あのサークル、どこだっけ？」が、もうない</h3>
+      <p>ホール別の会場マップで、行きたいサークルの配置を一発確認。ピンチズームで拡大し、気になるサークルはマップから直接チェック。当日の"迷子時間"をゼロにします。</p>
       <div class="shots two">
         <img src="img/feat-map1.jpg" alt="会場全体マップの画面" loading="lazy">
         <img src="img/feat-map2.jpg" alt="拡大した詳細マップの画面" loading="lazy">
@@ -234,24 +237,24 @@
     </div>
 
     <div class="feat">
-      <h3>📋 サークルも軍資金も、まとめて管理</h3>
-      <p>行きたいサークルを一覧で管理。軍資金と必要予算を自動計算し、買えた／まだのチェックで戦利品もしっかり管理できます。日程ごとの予算もひと目で分かります。</p>
+      <h3>📋 軍資金も買い物リストも、ぜんぶ自動計算</h3>
+      <p>行きたいサークルを一覧にまとめ、軍資金と必要予算を自動で計算。買えた／まだのチェックで"買い忘れ"を防ぎ、日程ごとの予算もひと目で把握できます。</p>
       <div class="shots one">
         <img src="img/feat-list.jpg" alt="サークルリストと軍資金・予算管理の画面" loading="lazy">
       </div>
     </div>
 
     <div class="feat">
-      <h3>🧮 会計も、おつりもサッと計算</h3>
-      <p>欲しいものの合計と支払う金額から、おつりを瞬時に計算。会場での会計に迷いません。</p>
+      <h3>🧮 おつり計算、もう迷わない</h3>
+      <p>合計金額と支払額を入れるだけ。おつりを瞬時に計算し、会場での会計をスムーズに。もう暗算で焦ることはありません。</p>
       <div class="shots wide">
         <img src="img/feat-change.jpg" alt="おつり計算の画面" loading="lazy">
       </div>
     </div>
 
     <div class="feat">
-      <h3>🤝 仲間とサークルを分担して、効率よく回る</h3>
-      <p>招待コードで仲間とグループを作り、サークルを担当ごとに分担。誰がどこを回るかをまとめて管理でき、代理購入の立替も自動で精算します。当日の買い出しがぐっとスムーズになります。</p>
+      <h3>🤝 仲間と分担すれば、"買い逃し"ゼロ</h3>
+      <p>招待コードでグループを作り、サークルを担当ごとに分担。誰がどこを回るかひと目で把握でき、代理購入の立替も自動で精算。チームの買い出しが、ぐっとスムーズになります。</p>
       <div class="shots two">
         <img src="img/feat-group1.jpg" alt="グループでサークルを共有し予算・精算を管理する画面" loading="lazy">
         <img src="img/feat-group2.jpg" alt="サークルを担当者ごとに分担する画面" loading="lazy">
@@ -259,32 +262,32 @@
     </div>
 
     <div class="feat">
-      <h3>🔍 みんなのお品書きをサーバーで検索・共有</h3>
-      <p>登録されたサークルのお品書きやサークル情報を、サーバーから検索。気になるサークルはそのままグループやリストに追加できます。登録者数の多い順に並べ替えれば、当日の人気サークル＝ライバルの動きも把握できます。</p>
+      <h3>🔍 みんなの頒布物を横断検索。気になるサークルを即追加</h3>
+      <p>登録されたお品書き・サークル情報をサーバーから横断検索。気になるサークルはその場でリストに追加。登録者数順に並べ替えれば、人気サークル＝ライバルの動きも丸わかりです。</p>
       <div class="shots one">
         <img src="img/feat-search.jpg" alt="サーバーからお品書き・サークル情報を検索する画面" loading="lazy">
       </div>
     </div>
 
     <div class="feat">
-      <h3>🗄️ サークル情報をサーバーDBから取り込み</h3>
-      <p>サークル名やサークル主のX（Twitter）IDなどをまとめて管理するサークル情報DB。サーバーから情報を取り込んでおけば、検索やサークル追加のときに自動入力で活用でき、毎回の手入力を減らせます。</p>
+      <h3>🗄️ サークル情報をまとめて取り込み。手入力の手間、ゼロ</h3>
+      <p>サークル名やX（Twitter）IDなどの情報をサーバーDBからまとめて取り込み。検索やサークル追加のときに自動入力で活用でき、毎回の面倒な手入力から解放されます。</p>
       <div class="shots one">
         <img src="img/feat-db.jpg" alt="サークル情報をサーバーから取り込むDB画面" loading="lazy">
       </div>
     </div>
 
     <div class="feat">
-      <h3>📚 はじめてでも安心の攻略ガイド</h3>
-      <p>「はじめに」「アプリの使い方」「イベント参加に慣れていない方へ」など、初参加でも安心のガイドを収録。持ち物チェックリストやコミケ攻略情報も読めます。</p>
+      <h3>📚 初参加でも安心。攻略ガイドを余すところなく収録</h3>
+      <p>「はじめに」「アプリの使い方」「イベント参加に慣れていない方へ」など、はじめてでも迷わないガイドを収録。持ち物チェックリストやコミケ攻略情報も、ぜんぶこのアプリの中に。</p>
       <div class="shots one">
         <img src="img/feat-info.jpg" alt="情報・攻略ガイドの画面" loading="lazy">
       </div>
     </div>
 
     <div class="feat">
-      <h3>📖 コミケ攻略情報・持ち物チェックリストつき</h3>
-      <p>10年以上の参加経験をもとにした「コミケ攻略情報」（傘・キャリーケースの注意点や、おすすめ降車駅まで）と、忘れ物を防ぐ「持ち物チェックリスト」を収録。初参加でも、当日に困りません。</p>
+      <h3>📖 10年超の参加経験から生まれた、実戦ノウハウ</h3>
+      <p>傘やキャリーケースの注意点、おすすめ降車駅まで網羅した「コミケ攻略情報」と、忘れ物を防ぐ「持ち物チェックリスト」。初参加でも、当日はもう困りません。</p>
       <div class="shots two">
         <img src="img/feat-guide.jpg" alt="コミケ攻略情報の画面" loading="lazy">
         <img src="img/feat-checklist.jpg" alt="持ち物チェックリストの画面" loading="lazy">
@@ -292,34 +295,31 @@
     </div>
   </div>
 
-  <!-- 機能 -->
   <div class="features">
-    <h2>できること、もっと増えました。</h2>
+    <h2>あなたのイベント体験を変える、12の機能</h2>
     <ul>
       <li><span class="dot" style="background:#3b82f6">✓</span>サークルをまとめて登録・管理</li>
-      <li><span class="dot" style="background:#8b5cf6">✓</span>お品書きを撮ってAIが自動入力</li>
-      <li><span class="dot" style="background:#22c55e">✓</span>軍資金・おつりをかんたん計算</li>
+      <li><span class="dot" style="background:#8b5cf6">✓</span>お品書きを撮るだけ。AIが即座に自動入力</li>
+      <li><span class="dot" style="background:#22c55e">✓</span>軍資金・おつりを瞬時に自動計算</li>
       <li><span class="dot" style="background:#f59e0b">✓</span>会場マップ（ホール別・ピンチズーム対応）で配置を確認</li>
-      <li><span class="dot" style="background:#ef4444">✓</span>戦利品をチェックして購入を管理</li>
+      <li><span class="dot" style="background:#ef4444">✓</span>戦利品チェックで"買い逃し"を防止</li>
       <li><span class="dot" style="background:#14b8a6">✓</span>サークル名やXからお品書きをすぐ検索</li>
       <li><span class="dot" style="background:#6366f1">✓</span>コミケ攻略情報・持ち物チェックリスト</li>
       <li><span class="dot" style="background:#ec4899">✓</span>8色のカラーテーマ・5言語表示（日英中韓仏）</li>
-      <li><span class="dot" style="background:#f97316">✓</span>仲間とサークルを分担して購入</li>
+      <li><span class="dot" style="background:#f97316">✓</span>仲間とサークルを分担して、効率よく制覇</li>
       <li><span class="dot" style="background:#0ea5e9">✓</span>お品書き・サークル情報をサーバーで共有</li>
-      <li><span class="dot" style="background:#10b981">✓</span>サーバーからサークル情報を取り込み</li>
-      <li><span class="dot" style="background:#eab308">✓</span>当日の登録者数でライバルを把握</li>
+      <li><span class="dot" style="background:#10b981">✓</span>サーバーからサークル情報をまとめて取り込み</li>
+      <li><span class="dot" style="background:#eab308">✓</span>登録者数で人気サークル＝ライバルを把握</li>
     </ul>
   </div>
 
-  <!-- ダウンロード（2回目・機能説明のあと） -->
   <div class="dl">
     <a class="btn btn-store" href="https://apps.apple.com/jp/app/id6776913607" onclick="torehanTrackStoreClick()">
       <span class="ic">📱</span>
-      <span>App Store でダウンロード<small>iPhone・基本無料</small></span>
+      <span>App Store で今すぐダウンロード<small>iPhone・基本無料</small></span>
     </a>
   </div>
 
-  <!-- Android版 テスター募集 -->
   <div class="tester">
     <h2>🤖 Android版 テスターさん募集中</h2>
     <p>
@@ -343,8 +343,7 @@
   </div>
 
   <div class="events">
-    対応イベント：<b>コミケ / コミティア / 学園スターフェス / アイドルスターフェス</b><br>
-    ほか順次追加予定
+    対応イベント 4種＋拡大中：<b>コミケ / コミティア / 学園スターフェス / アイドルスターフェス</b>
   </div>
 
   <footer>

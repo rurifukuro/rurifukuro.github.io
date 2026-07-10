@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>レジさぽっ！｜即売会サークルのためのレジ・会計アプリ</title>
+<meta name="description" content="コミケ・コミティアなど即売会のサークル（売り手）向けレジアプリ「レジさぽっ！」。±ボタンで秒会計・おつり自動計算、お品書きAI読み取りで頒布物登録、取り置き予約の受付・管理、売上/利益/経費の集計で確定申告もラク。姉妹アプリ「とれはんっ！」と連携。基本無料。">
+
+<!-- ========================================================= -->
+<!-- ▼ Google広告 コンバージョン計測タグ（出稿準備の雛形）         -->
+<!--   ★Google広告アカウント作成後、下の2つの値だけ書き換えれば有効化されます: -->
+<!--     1) GADS_TAG_ID           … Google広告のタグID（例 AW-1234567890）      -->
+<!--     2) GADS_CONVERSION_LABEL … コンバージョンアクションのラベル              -->
+<!--   ※「XXXX」を含むプレースホルダのままなら計測は無効・ページは正常に動きます。 -->
+<!--   ※ ストアボタン（公開後）のクリックをコンバージョンとして送信します。        -->
+<!-- ========================================================= -->
+<script>
+  /* ▼▼ ここの2つを、Google広告で発行された値に置き換えてください ▼▼ */
+  window.GADS_TAG_ID           = "AW-XXXXXXXXXX";   /* 例: AW-1234567890 */
+  window.GADS_CONVERSION_LABEL = "XXXXXXXXXX";      /* 例: AbC-D_efG12hIjkl */
+  /* ▲▲ ここまで。これ以降は編集不要です ▲▲ */
+
+  (function () {
+    var ok = window.GADS_TAG_ID && window.GADS_TAG_ID.indexOf("XXXX") === -1;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { dataLayer.push(arguments); };
+    if (ok) {
+      var s = document.createElement("script");
+      s.async = true;
+      s.src = "https://www.googletagmanager.com/gtag/js?id=" + window.GADS_TAG_ID;
+      document.head.appendChild(s);
+      gtag("js", new Date());
+      gtag("config", window.GADS_TAG_ID);
+    }
+  })();
+
+  function urehanTrackStoreClick() {
+    var ok = window.GADS_TAG_ID && window.GADS_TAG_ID.indexOf("XXXX") === -1
+          && window.GADS_CONVERSION_LABEL && window.GADS_CONVERSION_LABEL.indexOf("XXXX") === -1;
+    if (ok && typeof window.gtag === "function") {
+      window.gtag("event", "conversion", {
+        "send_to": window.GADS_TAG_ID + "/" + window.GADS_CONVERSION_LABEL
+      });
+    }
+    return true;
+  }
+</script>
+
+<style>
+  :root{
+    --bg1:#241a13;
+    --bg2:#3a2a1e;
+    --coral:#e67a38;
+    --coral-d:#c15c26;
+    --money:#2fb36a;
+    --text:#fff;
+    --sub:#cbb9a7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",YuGothic,"Meiryo",sans-serif;
+    background:linear-gradient(160deg,var(--bg1) 0%,var(--bg2) 100%);
+    color:#fff; min-height:100vh; line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:28px 24px 64px}
+
+  .backlink{display:inline-block;font-size:13px;color:#d9c3ac;text-decoration:none;margin-bottom:20px}
+  .backlink:hover{color:#f2e2cf}
+
+  .hero{text-align:center;margin-bottom:36px}
+  .icon{
+    width:120px;height:120px;border-radius:27px;
+    box-shadow:0 8px 28px rgba(0,0,0,.4);
+    border:1px solid rgba(255,255,255,.15);
+    margin-bottom:20px;background:#fff;object-fit:cover;
+  }
+  .appname{font-size:34px;font-weight:800;letter-spacing:.02em}
+  .tagline{font-size:15.5px;color:#d9c3ac;margin-top:8px}
+
+  .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px}
+  .chip{font-size:12.5px;font-weight:700;color:#ffe4cf;background:rgba(230,122,56,.18);
+        border:1px solid rgba(230,122,56,.4);padding:5px 12px;border-radius:20px}
+
+  .catch{
+    text-align:center;font-size:22px;font-weight:800;
+    margin:34px 0 6px;line-height:1.55;
+  }
+  .catch .o{color:var(--coral)}
+  .catch-sub{
+    text-align:center;font-size:14.5px;color:#d9c3ac;margin:8px 0 0;line-height:1.7;
+  }
+
+  .dl{display:flex;flex-direction:column;gap:14px;margin:30px 0 8px}
+  .btn{
+    display:flex;align-items:center;justify-content:center;gap:12px;
+    text-decoration:none;font-weight:700;font-size:18px;
+    padding:18px 22px;border-radius:16px;transition:transform .12s ease,opacity .12s ease;
+  }
+  .btn:active{transform:scale(.98)}
+  .btn-x{background:rgba(255,255,255,.10);color:#fff;border:1px solid rgba(255,255,255,.25)}
+  .btn-store{background:#fff;color:var(--bg1)}
+  .btn .ic{font-size:22px;line-height:1}
+  .btn small{display:block;font-size:12px;font-weight:500;color:rgba(255,255,255,.8)}
+  .btn-store small{color:#6b5a48}
+
+  .soon{
+    text-align:center;background:rgba(47,179,106,.12);
+    border:1px solid rgba(47,179,106,.4);border-radius:16px;
+    padding:16px 18px;margin:26px 0 6px;
+  }
+  .soon b{color:#8ff0be;font-size:16px}
+  .soon span{display:block;font-size:13px;color:#cbb9a7;margin-top:4px}
+
+  .note{text-align:center;font-size:13px;color:#cbb9a7;margin-top:10px}
+  .note .free{color:#8ff0be;font-weight:700}
+
+  .empathy{
+    background:rgba(230,122,56,.08);border:1px solid rgba(230,122,56,.3);
+    border-radius:20px;padding:24px;margin:36px 0;
+  }
+  .empathy h2{font-size:17px;font-weight:800;margin-bottom:14px;color:#ffe4cf}
+  .empathy ul{list-style:none;margin-bottom:16px}
+  .empathy li{font-size:14.5px;color:#e6d6c5;padding:7px 0;padding-left:24px;position:relative}
+  .empathy li::before{content:"✕";position:absolute;left:0;color:var(--coral);font-size:13px;font-weight:700;top:8px}
+  .empathy .answer{text-align:center;font-size:15px;font-weight:700;color:#fff;margin-top:4px}
+
+  .showcase{margin:46px 0 10px}
+  .showcase-h{font-size:21px;font-weight:800;text-align:center;letter-spacing:.01em}
+  .showcase-sub{text-align:center;color:#d9c3ac;font-size:13.5px;margin:8px 0 6px}
+  .feat{margin:34px 0}
+  .feat h3{font-size:17px;font-weight:800;margin-bottom:8px}
+  .feat p{font-size:14.5px;color:#e6d6c5;margin-bottom:16px}
+  .shots{display:flex;gap:14px;justify-content:center;align-items:flex-start;flex-wrap:wrap}
+  .shots img{
+    border-radius:16px;border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 12px 30px rgba(0,0,0,.45);height:auto;
+  }
+  .shots.two img{width:min(47%,290px)}
+  .shots.one img{width:min(70%,270px)}
+
+  .features{
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);
+    border-radius:20px;padding:26px 24px;margin:40px 0;
+  }
+  .features h2{font-size:18px;margin-bottom:18px;font-weight:800}
+  .features ul{list-style:none;display:grid;gap:12px}
+  .features li{display:flex;align-items:flex-start;gap:11px;font-size:15px;color:#f0e5d9}
+  .features .dot{
+    flex:0 0 auto;width:22px;height:22px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;color:#fff;margin-top:1px;
+  }
+
+  .sister{
+    background:rgba(230,122,56,.12);border:1px solid rgba(230,122,56,.4);
+    border-radius:20px;padding:24px;margin:40px 0;text-align:center;
+  }
+  .sister h2{font-size:18px;font-weight:800;margin-bottom:10px;color:#ffd9bf}
+  .sister p{font-size:14.5px;color:#f0e5d9;margin-bottom:14px}
+  .sister a.link{
+    display:inline-flex;align-items:center;gap:8px;text-decoration:none;
+    font-weight:700;font-size:15px;color:#fff;background:rgba(255,255,255,.1);
+    border:1px solid rgba(255,255,255,.25);padding:12px 18px;border-radius:14px;
+  }
+
+  .events{text-align:center;font-size:14px;color:#d9c3ac;margin:8px 0 0}
+  .events b{color:var(--coral)}
+
+  footer{
+    text-align:center;font-size:12px;color:#a1907e;margin-top:48px;
+    border-top:1px solid rgba(255,255,255,.1);padding-top:24px;
+  }
+  footer a{color:#d9c3ac}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <a class="backlink" href="/">← 瑠璃フクロウの開発アプリ一覧</a>
+
+  <div class="hero">
+    <img class="icon" src="icon.png" alt="レジさぽっ！ アイコン" onerror="this.style.display='none'">
+    <div class="appname">レジさぽっ！</div>
+    <div class="tagline">即売会サークルのための レジ・会計アプリ</div>
+    <div class="chips">
+      <span class="chip">レジ</span>
+      <span class="chip">会計</span>
+      <span class="chip">取り置き</span>
+      <span class="chip">売上集計</span>
+      <span class="chip">確定申告</span>
+    </div>
+  </div>
+
+  <div class="catch">
+    レジも、取り置きも、確定申告も。<br>
+    <span class="o">ぜんぶ、スマホ1台で。</span>
+  </div>
+  <p class="catch-sub">同人サークル主のあなたへ——即売会の"売る"を、もっとラクに。</p>
+
+  <!-- ▼ 近日公開ブロック（ストア公開後はこのブロックを削除してください） -->
+  <div class="soon">
+    <b>📲 近日公開に向けて準備中</b>
+    <span>App Store / Google Play で公開予定。公開情報は公式Xでお知らせします。</span>
+  </div>
+
+  <!-- ▼ ストア公開時：下のコメントを外して href を貼ってください（近日公開ブロックは削除）
+  <div class="dl">
+    <a class="btn btn-store" href="APP_STORE_URL_HERE" onclick="urehanTrackStoreClick()">
+      <span class="ic">📱</span>
+      <span>App Store で今すぐダウンロード<small>iPhone・基本無料</small></span>
+    </a>
+    <a class="btn btn-store" href="GOOGLE_PLAY_URL_HERE" onclick="urehanTrackStoreClick()">
+      <span class="ic">🤖</span>
+      <span>Google Play でダウンロード<small>Android・基本無料</small></span>
+    </a>
+  </div>
+  -->
+
+  <div class="dl">
+    <a class="btn btn-x" href="https://x.com/rurifukuro">
+      <span class="ic">𝕏</span>
+      <span>公式X（@rurifukuro）をフォロー<small>公開・アップデート情報をお知らせ</small></span>
+    </a>
+  </div>
+
+  <div class="note">
+    <span class="free">基本¥0で今すぐスタート</span>／広告なし・一部機能はアプリ内課金
+  </div>
+
+  <div class="empathy">
+    <h2>こんな悩み、ありませんか？</h2>
+    <ul>
+      <li>行列のさなか、合計金額の暗算でミス</li>
+      <li>おつりの計算で手が止まり、お客さんを待たせてしまった</li>
+      <li>取り置きの受け渡しを忘れて、取りに来た方に申し訳ない思い</li>
+      <li>売上の記録があいまいで、確定申告のたびに困る</li>
+    </ul>
+    <p class="answer">レジさぽっ！は、即売会の"あるある"を<br>スマホ1台で解決します。</p>
+  </div>
+
+  <!-- 画像つき機能説明 -->
+  <div class="showcase">
+    <h2 class="showcase-h">あなたの頒布が、こう変わる</h2>
+    <p class="showcase-sub">実際の画面で、できることを紹介します。</p>
+
+    <div class="feat">
+      <h3>🧮 もう暗算しない。ワンタップで、"秒"会計</h3>
+      <p>頒布物を選んで数量を押すだけ。合計もおつりも自動で、もう暗算に迷いません。行列ができる頒布時間でもサッとお会計。現金・キャッシュレスどちらも記録できます。</p>
+      <div class="shots two">
+        <img src="img/shot1.jpg" alt="レジ画面" loading="lazy">
+        <img src="img/shot2.jpg" alt="会計・おつり計算の画面" loading="lazy">
+      </div>
+    </div>
+
+    <div class="feat">
+      <h3>🤖 お品書きを撮るだけ。手入力ゼロで、すぐ頒布開始</h3>
+      <p>お品書きを撮影するだけで、名前も価格もAIが自動で読み取り。手入力の手間なく、ワンタップで商品リストが完成します。セット組み合わせも自由に作成できます。</p>
+      <div class="shots two">
+        <img src="img/shot3.jpg" alt="商品の追加・AI自動入力の画面" loading="lazy">
+        <img src="img/shot4.jpg" alt="商品（頒布物）一覧の画面" loading="lazy">
+      </div>
+    </div>
+
+    <div class="feat">
+      <h3>📅 取り置き予約の"受け渡しモレ"、ゼロに</h3>
+      <p>取り置き予約の公開設定から受け渡し管理まで、アプリひとつで完結。「誰に・何を・いつ」が一覧で一目瞭然。受取番号で管理するので、モレもダブりも防ぎます。</p>
+      <div class="shots two">
+        <img src="img/shot5.jpg" alt="取り置き予約の公開設定画面" loading="lazy">
+        <img src="img/shot6.jpg" alt="取り置き予約の管理・一覧画面" loading="lazy">
+      </div>
+    </div>
+
+    <div class="feat">
+      <h3>🌐 買い手はブラウザから予約。アプリ不要、URLだけ</h3>
+      <p>生成されたURLを共有するだけで、買い手はスマホのブラウザから取り置き予約ができます。アプリのインストールは不要。お品書きと個数を選ぶだけで受取番号が即発行されます。</p>
+      <div class="shots two">
+        <img src="img/shot7.jpg" alt="Web取り置き予約ページ（買い手向け）" loading="lazy">
+        <img src="img/shot8.jpg" alt="取り置き完了・受取番号の画面" loading="lazy">
+      </div>
+    </div>
+
+    <div class="feat">
+      <h3>🔗 「とれはんっ！」連携で、買い手に見つけてもらう</h3>
+      <p>レジさぽっ！で登録したお品書きは、買い手向けアプリ「とれはんっ！」に自動掲載。来場者の横断検索であなたのサークルが発見されやすくなります。「登録者数」で事前の注目度も把握できます。</p>
+      <div class="shots one">
+        <img src="img/shot9.jpg" alt="商品画面の登録者数・とれはんっ！連携" loading="lazy">
+      </div>
+    </div>
+
+    <div class="feat">
+      <h3>📊 確定申告、もう怖くない。売上も経費もその場で集計</h3>
+      <p>売上と利益をその場で自動集計し、グラフでひと目で把握。参加費や材料費などの経費も記録でき、確定申告の準備がぐっとラクになります。売り子共有で複数端末の売上を同期することも。</p>
+      <div class="shots two">
+        <img src="img/shot10.jpg" alt="売上集計の画面" loading="lazy">
+        <img src="img/shot11.jpg" alt="確定申告・経費記録の画面" loading="lazy">
+      </div>
+    </div>
+
+    <div class="feat">
+      <h3>⚙️ 電波なしでもサクサク。オフラインで安心動作</h3>
+      <p>レジの挙動を好みに合わせてカスタマイズ。オフラインでもサクサク動くので、電波が弱い会場でも安心です。</p>
+      <div class="shots one">
+        <img src="img/shot12.jpg" alt="設定画面" loading="lazy">
+      </div>
+    </div>
+  </div>
+
+  <!-- できること -->
+  <div class="features">
+    <h2>あなたの即売会を変える、11の機能</h2>
+    <ul>
+      <li><span class="dot" style="background:#e67a38">✓</span>ワンタップで"秒"会計。おつりも自動計算</li>
+      <li><span class="dot" style="background:#8b5cf6">✓</span>お品書きを撮るだけ。AIが頒布物を自動登録</li>
+      <li><span class="dot" style="background:#3b82f6">✓</span>セット割・まとめ買い会計もワンタップ</li>
+      <li><span class="dot" style="background:#f59e0b">✓</span>取り置き予約の受付・管理をアプリで一元化</li>
+      <li><span class="dot" style="background:#ec4899">✓</span>Web予約ページで、どこからでも取り置き受付</li>
+      <li><span class="dot" style="background:#22c55e">✓</span>売上・利益をその場で自動集計＆グラフ表示</li>
+      <li><span class="dot" style="background:#14b8a6">✓</span>経費記録で確定申告がぐっとラクに</li>
+      <li><span class="dot" style="background:#ef4444">✓</span>現金もキャッシュレスも支払い記録</li>
+      <li><span class="dot" style="background:#a855f7">✓</span>売り子共有で複数端末の売上を同期</li>
+      <li><span class="dot" style="background:#6366f1">✓</span>電波なしでもサクサク。オフライン完全対応</li>
+      <li><span class="dot" style="background:#f97316">✓</span>「とれはんっ！」連携で買い手に発見される</li>
+    </ul>
+  </div>
+
+  <!-- 姉妹アプリ連携 -->
+  <div class="sister">
+    <h2>🤝 売り手のあなたと、買い手をつなぐ</h2>
+    <p>レジさぽっ！で登録した頒布物は、買い手向けアプリ「とれはんっ！」に自動で掲載。来場者の横断検索であなたのサークルが見つかりやすくなり、新しいお客さんとの出会いが生まれます。「登録者数」であなたのサークルへの注目度も事前に確認できます。</p>
+    <a class="link" href="/torehan/">
+      とれはんっ！を見る →
+    </a>
+  </div>
+
+  <!-- ダウンロード（2回目・機能説明のあと） -->
+  <!-- ▼ 近日公開ブロック（ストア公開後はこのブロックを削除してください） -->
+  <div class="soon" style="margin-top:40px">
+    <b>📲 近日公開に向けて準備中</b>
+    <span>App Store / Google Play で公開予定。公開情報は公式Xでお知らせします。</span>
+  </div>
+
+  <!-- ▼ ストア公開時：下のコメントを外して href を貼ってください（近日公開ブロックは削除）
+  <div class="dl">
+    <a class="btn btn-store" href="APP_STORE_URL_HERE" onclick="urehanTrackStoreClick()">
+      <span class="ic">📱</span>
+      <span>App Store で今すぐダウンロード<small>iPhone・基本無料</small></span>
+    </a>
+    <a class="btn btn-store" href="GOOGLE_PLAY_URL_HERE" onclick="urehanTrackStoreClick()">
+      <span class="ic">🤖</span>
+      <span>Google Play でダウンロード<small>Android・基本無料</small></span>
+    </a>
+  </div>
+  -->
+
+  <div class="dl" style="margin-top:14px">
+    <a class="btn btn-x" href="https://x.com/rurifukuro">
+      <span class="ic">𝕏</span>
+      <span>公式X（@rurifukuro）をフォロー<small>公開・アップデート情報をお知らせ</small></span>
+    </a>
+  </div>
+
+  <div class="events">
+    <b>コミケ・コミティア</b> をはじめ、あらゆる即売会の「売る」をスマホ1台でサポート
+  </div>
+
+  <footer>
+    © レジさぽっ！ ｜ お問い合わせ：<a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>
+  </footer>
+
+</div>
+</body>
+</html>
