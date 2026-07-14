@@ -104,14 +104,6 @@
   .btn small{display:block;font-size:12px;font-weight:500;color:rgba(255,255,255,.8)}
   .btn-store small{color:#6b5a48}
 
-  .soon{
-    text-align:center;background:rgba(47,179,106,.12);
-    border:1px solid rgba(47,179,106,.4);border-radius:16px;
-    padding:16px 18px;margin:26px 0 6px;
-  }
-  .soon b{color:#8ff0be;font-size:16px}
-  .soon span{display:block;font-size:13px;color:#cbb9a7;margin-top:4px}
-
   .note{text-align:center;font-size:13px;color:#cbb9a7;margin-top:10px}
   .note .free{color:#8ff0be;font-weight:700}
 
@@ -139,6 +131,20 @@
   .shots.two img{width:min(47%,290px)}
   .shots.one img{width:min(70%,270px)}
 
+  .hero-feat{
+    background:linear-gradient(135deg,rgba(230,122,56,.15) 0%,rgba(236,72,153,.10) 100%);
+    border:2px solid rgba(230,122,56,.5);border-radius:24px;
+    padding:28px 22px 24px;margin:40px 0 10px;position:relative;
+  }
+  .hero-feat::before{
+    content:"";display:none;
+  }
+  .hero-feat .feat{margin:20px 0 0}
+  .hero-feat .feat h3{font-size:18.5px}
+  .hero-feat .divider{
+    border:none;border-top:1px solid rgba(230,122,56,.3);margin:28px 0 8px;
+  }
+
   .features{
     background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);
     border-radius:20px;padding:26px 24px;margin:40px 0;
@@ -163,6 +169,18 @@
     font-weight:700;font-size:15px;color:#fff;background:rgba(255,255,255,.1);
     border:1px solid rgba(255,255,255,.25);padding:12px 18px;border-radius:14px;
   }
+
+  .tester{
+    background:rgba(230,122,56,.10);
+    border:1px solid rgba(230,122,56,.35);
+    border-radius:20px;padding:24px;margin:40px 0;
+  }
+  .tester h2{font-size:18px;font-weight:800;margin-bottom:12px}
+  .tester p{font-size:14px;color:#e6d6c5;margin-bottom:12px}
+  .tester p:last-of-type{margin-bottom:0}
+  .tester .tester-note{font-size:13px;color:#ffd0c4}
+  .btn-tester{background:var(--coral);color:#fff;margin-top:16px}
+  .btn-tester small{color:rgba(255,255,255,.88)}
 
   .events{text-align:center;font-size:14px;color:#d9c3ac;margin:8px 0 0}
   .events b{color:var(--coral)}
@@ -198,26 +216,14 @@
   </div>
   <p class="catch-sub">同人サークル主のあなたへ——即売会の"売る"を、もっとラクに。</p>
 
-  <!-- ▼ 近日公開ブロック（ストア公開後はこのブロックを削除してください） -->
-  <div class="soon">
-    <b>📲 近日公開に向けて準備中</b>
-    <span>App Store / Google Play で公開予定。公開情報は公式Xでお知らせします。</span>
-  </div>
-
-  <!-- ▼ ストア公開時：下のコメントを外して href を貼ってください（近日公開ブロックは削除）
   <div class="dl">
-    <a class="btn btn-store" href="APP_STORE_URL_HERE" onclick="urehanTrackStoreClick()">
+    <a class="btn btn-store" href="https://apps.apple.com/app/id6786309116" onclick="urehanTrackStoreClick()">
       <span class="ic">📱</span>
       <span>App Store で今すぐダウンロード<small>iPhone・基本無料</small></span>
     </a>
-    <a class="btn btn-store" href="GOOGLE_PLAY_URL_HERE" onclick="urehanTrackStoreClick()">
-      <span class="ic">🤖</span>
-      <span>Google Play でダウンロード<small>Android・基本無料</small></span>
-    </a>
   </div>
-  -->
 
-  <div class="dl">
+  <div class="dl" style="margin-top:0">
     <a class="btn btn-x" href="https://x.com/rurifukuro">
       <span class="ic">𝕏</span>
       <span>公式X（@rurifukuro）をフォロー<small>公開・アップデート情報をお知らせ</small></span>
@@ -237,6 +243,27 @@
       <li>売上の記録があいまいで、確定申告のたびに困る</li>
     </ul>
     <p class="answer">レジさぽっ！は、即売会の"あるある"を<br>スマホ1台で解決します。</p>
+  </div>
+
+  <!-- 目玉機能: 取り置き -->
+  <div class="hero-feat">
+    <div class="feat">
+      <h3>📅 取り置き予約の"受け渡しモレ"、ゼロに</h3>
+      <p>取り置き予約の公開設定から受け渡し管理まで、アプリひとつで完結。「誰に・何を・いつ」が一覧で一目瞭然。受取番号で管理するので、モレもダブりも防ぎます。</p>
+      <div class="shots two">
+        <img src="img/shot5.jpg" alt="取り置き予約の公開設定画面" loading="lazy">
+        <img src="img/shot6.jpg" alt="取り置き予約の管理・一覧画面" loading="lazy">
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="feat">
+      <h3>🌐 買い手はブラウザから予約。アプリ不要、URLだけ</h3>
+      <p>生成されたURLを共有するだけで、買い手はスマホのブラウザから取り置き予約ができます。アプリのインストールは不要。お品書きと個数を選ぶだけで受取番号が即発行されます。</p>
+      <div class="shots two">
+        <img src="img/shot7.jpg" alt="Web取り置き予約ページ（買い手向け）" loading="lazy">
+        <img src="img/shot8.jpg" alt="取り置き完了・受取番号の画面" loading="lazy">
+      </div>
+    </div>
   </div>
 
   <!-- 画像つき機能説明 -->
@@ -259,24 +286,6 @@
       <div class="shots two">
         <img src="img/shot3.jpg" alt="商品の追加・AI自動入力の画面" loading="lazy">
         <img src="img/shot4.jpg" alt="商品（頒布物）一覧の画面" loading="lazy">
-      </div>
-    </div>
-
-    <div class="feat">
-      <h3>📅 取り置き予約の"受け渡しモレ"、ゼロに</h3>
-      <p>取り置き予約の公開設定から受け渡し管理まで、アプリひとつで完結。「誰に・何を・いつ」が一覧で一目瞭然。受取番号で管理するので、モレもダブりも防ぎます。</p>
-      <div class="shots two">
-        <img src="img/shot5.jpg" alt="取り置き予約の公開設定画面" loading="lazy">
-        <img src="img/shot6.jpg" alt="取り置き予約の管理・一覧画面" loading="lazy">
-      </div>
-    </div>
-
-    <div class="feat">
-      <h3>🌐 買い手はブラウザから予約。アプリ不要、URLだけ</h3>
-      <p>生成されたURLを共有するだけで、買い手はスマホのブラウザから取り置き予約ができます。アプリのインストールは不要。お品書きと個数を選ぶだけで受取番号が即発行されます。</p>
-      <div class="shots two">
-        <img src="img/shot7.jpg" alt="Web取り置き予約ページ（買い手向け）" loading="lazy">
-        <img src="img/shot8.jpg" alt="取り置き完了・受取番号の画面" loading="lazy">
       </div>
     </div>
 
@@ -334,29 +343,39 @@
   </div>
 
   <!-- ダウンロード（2回目・機能説明のあと） -->
-  <!-- ▼ 近日公開ブロック（ストア公開後はこのブロックを削除してください） -->
-  <div class="soon" style="margin-top:40px">
-    <b>📲 近日公開に向けて準備中</b>
-    <span>App Store / Google Play で公開予定。公開情報は公式Xでお知らせします。</span>
-  </div>
-
-  <!-- ▼ ストア公開時：下のコメントを外して href を貼ってください（近日公開ブロックは削除）
-  <div class="dl">
-    <a class="btn btn-store" href="APP_STORE_URL_HERE" onclick="urehanTrackStoreClick()">
+  <div class="dl" style="margin-top:40px">
+    <a class="btn btn-store" href="https://apps.apple.com/app/id6786309116" onclick="urehanTrackStoreClick()">
       <span class="ic">📱</span>
       <span>App Store で今すぐダウンロード<small>iPhone・基本無料</small></span>
     </a>
-    <a class="btn btn-store" href="GOOGLE_PLAY_URL_HERE" onclick="urehanTrackStoreClick()">
-      <span class="ic">🤖</span>
-      <span>Google Play でダウンロード<small>Android・基本無料</small></span>
-    </a>
   </div>
-  -->
 
-  <div class="dl" style="margin-top:14px">
+  <div class="dl" style="margin-top:0">
     <a class="btn btn-x" href="https://x.com/rurifukuro">
       <span class="ic">𝕏</span>
       <span>公式X（@rurifukuro）をフォロー<small>公開・アップデート情報をお知らせ</small></span>
+    </a>
+  </div>
+
+  <div class="tester">
+    <h2>🤖 Android版 テスターさん募集中</h2>
+    <p>
+      現在、Android版を Google Play で公開する準備を進めています。
+      Google Play でアプリを正式公開するには、配信前に
+      <b>一定人数（12名以上）のテスターに14日間アプリを使ってもらう</b>という
+      Google の公開ルールがあります。実機で試していただくことで不具合の発見や
+      使い心地の改善につながり、正式リリースへ近づきます。
+      Android版を一緒に育ててくださるテスターさんを募集しています。
+    </p>
+    <p class="tester-note">
+      ※ テスターは必要人数が集まり次第、こちらから順次ご連絡します。
+      ご応募いただいても、すぐにテストが始まらない場合があります。
+      あらかじめご了承ください。ご登録の Google アカウント（Gmail）は、
+      Google Play のテスター登録にのみ使用します。
+    </p>
+    <a class="btn btn-tester" href="https://docs.google.com/forms/d/e/1FAIpQLSf91ZGXHELQUQq-ExbGftU3YXOxZf55lwHbkpw4TNPc25GF_Q/viewform" target="_blank" rel="noopener">
+      <span class="ic">📝</span>
+      <span>テスターに応募する<small>Googleフォーム（入力1分ほど）</small></span>
     </a>
   </div>
 
