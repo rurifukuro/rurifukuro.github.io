@@ -19,9 +19,9 @@ const { tag, linked = true } = Astro.props;
     font-size: 12px;
     font-weight: 600;
     color: var(--text-muted);
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 4px 12px;
+    background: var(--bg, #f5f6fa);
+    border: 1px solid var(--border, #e5e7eb);
+    padding: 4px 14px;
     border-radius: 20px;
     text-decoration: none;
     transition: all 0.2s ease;
@@ -29,9 +29,9 @@ const { tag, linked = true } = Astro.props;
   }
 
   a.tag:hover {
-    color: var(--orange);
-    border-color: rgba(245, 130, 31, 0.3);
-    background: rgba(245, 130, 31, 0.08);
+    color: var(--accent, #f5821f);
+    border-color: var(--accent-border, rgba(245, 130, 31, 0.25));
+    background: var(--accent-soft, rgba(245, 130, 31, 0.06));
     text-decoration: none;
   }
 </style>

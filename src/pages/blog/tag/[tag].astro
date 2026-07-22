@@ -22,14 +22,16 @@ const { tag, posts } = Astro.props;
 
 <BaseLayout title={`「${tag}」の記事一覧｜瑠璃フクロウ`}>
   <div class="page">
-    <div class="top-bar">
-      <div class="top-inner">
-        <a class="back" href="/blog/">
-          <span class="back-arrow">←</span>
-          記事一覧
-        </a>
+    <nav class="nav">
+      <div class="nav-inner">
+        <a class="nav-logo" href="/">瑠璃フクロウ</a>
+        <div class="breadcrumb">
+          <a class="breadcrumb-link" href="/blog/">ブログ</a>
+          <span class="breadcrumb-sep">&rsaquo;</span>
+          <span class="breadcrumb-current">タグ</span>
+        </div>
       </div>
-    </div>
+    </nav>
 
     <div class="content">
       <header class="header">
@@ -53,8 +55,15 @@ const { tag, posts } = Astro.props;
     </div>
 
     <footer class="footer">
-      © 瑠璃フクロウ ｜ <a href="https://x.com/rurifukuro">@rurifukuro</a> ｜
-      <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>
+      <div class="footer-inner">
+        <div class="footer-brand">瑠璃フクロウ</div>
+        <div class="footer-links">
+          <a href="https://x.com/rurifukuro">@rurifukuro</a>
+          <span class="footer-dot">&middot;</span>
+          <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>
+        </div>
+        <p class="footer-copy">&copy; 瑠璃フクロウ</p>
+      </div>
     </footer>
   </div>
 </BaseLayout>
@@ -62,75 +71,103 @@ const { tag, posts } = Astro.props;
 <style>
   .page {
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
 
-  .top-bar {
+  .nav {
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(10, 22, 40, .85);
+    background: rgba(255, 255, 255, .92);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255,255,255,.05);
+    border-bottom: 1px solid var(--border);
   }
 
-  .top-inner {
+  .nav-inner {
     max-width: 760px;
     margin: 0 auto;
-    padding: 12px 24px;
-  }
-
-  .back {
-    display: inline-flex;
+    padding: 14px 24px;
+    display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-muted);
-    transition: color .15s;
+    gap: 20px;
   }
 
-  .back:hover {
+  .nav-logo {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -.01em;
+    flex-shrink: 0;
+  }
+
+  .nav-logo:hover {
+    text-decoration: none;
+    color: var(--accent);
+  }
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .breadcrumb-link {
+    color: var(--text-muted);
+  }
+
+  .breadcrumb-link:hover {
     color: var(--text);
     text-decoration: none;
   }
 
-  .back-arrow {
-    font-size: 12px;
+  .breadcrumb-sep {
+    color: var(--text-dim);
+  }
+
+  .breadcrumb-current {
+    color: var(--text-secondary);
+    font-weight: 600;
   }
 
   .content {
     max-width: 760px;
     margin: 0 auto;
-    padding: 40px 24px 0;
+    padding: 48px 24px 56px;
+    flex: 1;
+    width: 100%;
   }
 
   .header {
     text-align: center;
     margin-bottom: 36px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
   }
 
   .label {
     font-size: 12px;
-    color: var(--text-dim);
+    font-weight: 700;
+    color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: .1em;
   }
 
   .title {
     font-size: 28px;
-    font-weight: 800;
-    margin-top: 4px;
-    background: linear-gradient(135deg, var(--orange), #ffa94d);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-weight: 900;
+    margin-top: 6px;
+    color: var(--accent);
+    letter-spacing: -.01em;
   }
 
   .count {
     font-size: 13px;
     color: var(--text-muted);
-    margin-top: 6px;
+    margin-top: 8px;
   }
 
   .posts {
@@ -139,13 +176,47 @@ const { tag, posts } = Astro.props;
   }
 
   .footer {
-    text-align: center;
-    font-size: 12px;
-    color: var(--text-dim);
-    padding: 48px 24px 32px;
+    background: #1a1a2e;
+    color: #b5b5c8;
+    padding: 40px 24px;
+    margin-top: auto;
   }
 
-  .footer a {
-    color: var(--text-muted);
+  .footer-inner {
+    max-width: 760px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .footer-brand {
+    font-size: 16px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+
+  .footer-links {
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+
+  .footer-links a {
+    color: #8c8ca1;
+    transition: color .15s;
+  }
+
+  .footer-links a:hover {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .footer-dot {
+    margin: 0 8px;
+    opacity: .4;
+  }
+
+  .footer-copy {
+    font-size: 12px;
+    color: #666;
   }
 </style>

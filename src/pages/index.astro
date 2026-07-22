@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>瑠璃フクロウ｜開発アプリはこちら！</title>
-<meta name="description" content="瑠璃フクロウが開発したアプリの一覧。ダウンロードはこちらから。">
+<title>瑠璃フクロウ｜アプリ＆攻略情報</title>
+<meta name="description" content="瑠璃フクロウのアプリ・イベント攻略ブログ。同人イベントをもっと便利に。">
+<link rel="icon" href="/icon.png" type="image/png">
 
 <style>
   :root{
@@ -27,7 +28,12 @@
   .title .o{color:var(--orange)}
   .lead{font-size:15px;color:#9fb0d4;margin-top:12px}
 
-  .apps{display:grid;gap:18px}
+  .section-label{
+    font-size:12px;font-weight:700;color:#7f8eb0;letter-spacing:.1em;
+    margin-bottom:14px;padding-left:2px;
+  }
+
+  .apps{display:grid;gap:18px;margin-bottom:40px}
   .card{
     display:flex;align-items:center;gap:18px;text-decoration:none;
     background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
@@ -46,8 +52,16 @@
   .card .meta{font-size:12px;color:#7f8eb0;margin-top:6px}
   .card .arrow{flex:0 0 auto;color:var(--orange);font-size:22px;font-weight:800}
 
+  .blog-badge{
+    width:74px;height:74px;border-radius:17px;flex:0 0 auto;
+    background:linear-gradient(135deg, var(--orange), #e06a00);
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;font-weight:800;color:#fff;letter-spacing:.06em;
+    box-shadow:0 6px 18px rgba(245,130,31,.3);
+  }
+
   footer{
-    text-align:center;font-size:12px;color:#7f8eb0;margin-top:52px;
+    text-align:center;font-size:12px;color:#7f8eb0;
     border-top:1px solid rgba(255,255,255,.1);padding-top:24px;
   }
   footer a{color:#9fb0d4}
@@ -58,10 +72,11 @@
 
   <div class="head">
     <div class="brand">瑠璃フクロウ</div>
-    <div class="title">開発アプリは<span class="o">こちら！</span></div>
-    <div class="lead">気になるアプリをタップしてダウンロード</div>
+    <div class="title">同人イベントを、<span class="o">もっと便利に。</span></div>
+    <div class="lead">アプリ・攻略情報をまとめてお届け</div>
   </div>
 
+  <div class="section-label">APPS</div>
   <div class="apps">
 
     <a class="card" href="/torehan/">
@@ -71,7 +86,7 @@
         <div class="desc">同人イベント攻略アプリ｜お品書きAI読み取り・サークル分担・会場マップ・軍資金/おつり計算</div>
         <div class="meta">App Store 公開中・基本無料</div>
       </div>
-      <div class="arrow">›</div>
+      <div class="arrow">&rsaquo;</div>
     </a>
 
     <a class="card" href="/urehan/">
@@ -81,7 +96,7 @@
         <div class="desc">即売会サークルのためのレジ・会計アプリ｜秒会計・おつり自動計算・取り置き予約管理・売上/確定申告の集計</div>
         <div class="meta">近日公開・iPhone / Android</div>
       </div>
-      <div class="arrow">›</div>
+      <div class="arrow">&rsaquo;</div>
     </a>
 
     <!--
@@ -92,14 +107,27 @@
         <div class="desc">コンカフェ特化の予約・店舗管理SaaS｜予約台帳・レジ・シフト・給与・経費・分析をひとつに</div>
         <div class="meta">開発中・Web / iPhone / Android</div>
       </div>
-      <div class="arrow">›</div>
+      <div class="arrow">&rsaquo;</div>
     </a>
     -->
 
   </div>
 
+  <div class="section-label">BLOG</div>
+  <div class="apps">
+    <a class="card" href="/blog/">
+      <div class="blog-badge">BLOG</div>
+      <div class="body">
+        <div class="name">イベント攻略ブログ</div>
+        <div class="desc">コミケ・同人イベントの攻略情報・初参加ガイド・サークル参加Tips</div>
+        <div class="meta">記事を読む</div>
+      </div>
+      <div class="arrow">&rsaquo;</div>
+    </a>
+  </div>
+
   <footer>
-    © 瑠璃フクロウ ｜ X：<a href="https://x.com/rurifukuro">@rurifukuro</a> ｜
+    &copy; 瑠璃フクロウ ｜ X：<a href="https://x.com/rurifukuro">@rurifukuro</a> ｜
     お問い合わせ：<a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>
   </footer>
 

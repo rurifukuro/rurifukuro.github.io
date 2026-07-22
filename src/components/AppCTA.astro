@@ -23,10 +23,15 @@ const apps = app === 'both' ? [torehan, urehan] : app === 'torehan' ? [torehan] 
 ---
 
 <aside class="cta-section">
+  <div class="cta-divider">
+    <span class="cta-divider-line"></span>
+    <span class="cta-divider-text">関連アプリ</span>
+    <span class="cta-divider-line"></span>
+  </div>
   {apps.map((a) => (
     <div class="cta-box">
       <div class="cta-top">
-        <span class="cta-label">無料アプリ</span>
+        <span class="cta-label">無料</span>
         <a class="cta-detail" href={a.page}>詳しく見る →</a>
       </div>
       <h3 class="cta-name">{a.name}</h3>
@@ -40,44 +45,59 @@ const apps = app === 'both' ? [torehan, urehan] : app === 'torehan' ? [torehan] 
 
 <style>
   .cta-section {
-    margin-top: 48px;
-    display: grid;
+    margin-top: 56px;
+    padding-top: 8px;
+  }
+
+  .cta-divider {
+    display: flex;
+    align-items: center;
     gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .cta-divider-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .cta-divider-text {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: .08em;
+    white-space: nowrap;
   }
 
   .cta-box {
-    position: relative;
-    background: linear-gradient(135deg, rgba(245,130,31,.06) 0%, rgba(78,143,255,.04) 100%);
-    border: 1px solid rgba(245, 130, 31, 0.15);
-    border-radius: 16px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
     padding: 24px;
-    overflow: hidden;
+    margin-bottom: 12px;
+    transition: box-shadow 0.2s;
   }
 
-  .cta-box::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, rgba(245,130,31,.06) 0%, transparent 70%);
-    pointer-events: none;
+  .cta-box:hover {
+    box-shadow: var(--shadow-sm);
   }
 
   .cta-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
 
   .cta-label {
     font-size: 11px;
     font-weight: 700;
-    color: var(--orange);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
+    color: #fff;
+    background: var(--accent);
+    padding: 2px 10px;
+    border-radius: 4px;
+    letter-spacing: .04em;
   }
 
   .cta-detail {
@@ -87,7 +107,7 @@ const apps = app === 'both' ? [torehan, urehan] : app === 'torehan' ? [torehan] 
   }
 
   .cta-detail:hover {
-    color: var(--text);
+    color: var(--accent);
     text-decoration: none;
   }
 
@@ -100,9 +120,9 @@ const apps = app === 'both' ? [torehan, urehan] : app === 'torehan' ? [torehan] 
 
   .cta-desc {
     font-size: 14px;
-    color: var(--text-sub);
-    margin-bottom: 18px;
-    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    line-height: 1.7;
   }
 
   .cta-btn {
@@ -112,17 +132,17 @@ const apps = app === 'both' ? [torehan, urehan] : app === 'torehan' ? [torehan] 
     font-weight: 700;
     font-size: 15px;
     padding: 14px 18px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, var(--orange) 0%, #e06a00 100%);
+    border-radius: var(--radius-sm);
+    background: var(--text);
     color: #fff;
     transition: all 0.2s ease;
-    box-shadow: 0 4px 16px rgba(245,130,31,.2);
   }
 
   .cta-btn:hover {
     text-decoration: none;
+    opacity: 0.85;
     transform: translateY(-1px);
-    box-shadow: 0 6px 24px rgba(245,130,31,.3);
+    box-shadow: var(--shadow-md);
   }
 
   .cta-btn:active {

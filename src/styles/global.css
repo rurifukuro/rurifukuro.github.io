@@ -1,18 +1,24 @@
 :root {
-  --navy: #0a1628;
-  --navy2: #111d3a;
-  --navy3: #182a4e;
-  --orange: #f5821f;
-  --orange-glow: rgba(245, 130, 31, 0.25);
-  --accent: #4e8fff;
-  --text: #f0f4ff;
-  --text-sub: #b8c8e8;
-  --text-muted: #8a9cc0;
-  --text-dim: #606f8e;
-  --card-bg: rgba(255, 255, 255, 0.04);
-  --card-border: rgba(255, 255, 255, 0.08);
-  --card-hover: rgba(255, 255, 255, 0.08);
-  --glass: rgba(255, 255, 255, 0.03);
+  --bg: #f5f6fa;
+  --bg-card: #ffffff;
+  --text: #1a1a2e;
+  --text-secondary: #555566;
+  --text-muted: #8c8ca1;
+  --text-dim: #b5b5c8;
+  --accent: #f5821f;
+  --accent-soft: rgba(245, 130, 31, 0.06);
+  --accent-border: rgba(245, 130, 31, 0.25);
+  --accent-hover: #e06a00;
+  --border: #e5e7eb;
+  --border-light: #f0f1f5;
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, .04);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, .05);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, .08);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, .1);
+  --shadow-hover: 0 12px 40px rgba(0, 0, 0, .12);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 16px;
   --font: "Hiragino Kaku Gothic ProN", "Yu Gothic", YuGothic, "Meiryo", sans-serif;
 }
 
@@ -26,7 +32,7 @@
 
 body {
   font-family: var(--font);
-  background: var(--navy);
+  background: var(--bg);
   color: var(--text);
   min-height: 100vh;
   line-height: 1.7;
@@ -34,7 +40,7 @@ body {
 }
 
 a {
-  color: var(--orange);
+  color: var(--accent);
   text-decoration: none;
 }
 

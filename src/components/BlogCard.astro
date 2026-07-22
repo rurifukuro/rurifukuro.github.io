@@ -13,7 +13,7 @@ interface Props {
 
 const { title, description, date, tags, category, slug } = Astro.props;
 
-const displayTags = tags.filter(isDisplayTag).slice(0, 5);
+const displayTags = tags.filter(isDisplayTag).slice(0, 4);
 
 const dateStr = date.toLocaleDateString('ja-JP', {
   year: 'numeric',
@@ -23,123 +23,101 @@ const dateStr = date.toLocaleDateString('ja-JP', {
 ---
 
 <a class="card" href={`/blog/${slug}/`}>
-  <div class="card-inner">
-    <div class="card-meta">
-      <time datetime={date.toISOString().slice(0, 10)}>{dateStr}</time>
-      <span class="card-category">{category}</span>
-    </div>
-    <h2 class="card-title">{title}</h2>
-    <p class="card-desc">{description}</p>
+  <div class="card-category-bar">
+    <span class="card-category">{category}</span>
+  </div>
+  <h2 class="card-title">{title}</h2>
+  <p class="card-desc">{description}</p>
+  <div class="card-bottom">
     <div class="card-tags">
       {displayTags.map((tag) => <TagBadge tag={tag} linked={false} />)}
     </div>
+    <time class="card-date" datetime={date.toISOString().slice(0, 10)}>{dateStr}</time>
   </div>
-  <div class="card-arrow">→</div>
 </a>
 
 <style>
   .card {
-    position: relative;
     display: block;
     text-decoration: none;
     color: var(--text);
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 16px;
-    padding: 1px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px;
     transition: all 0.25s ease;
-  }
-
-  .card::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: 17px;
-    background: linear-gradient(135deg, transparent 0%, rgba(245,130,31,.2) 50%, transparent 100%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-    z-index: 0;
+    box-shadow: var(--shadow-xs);
   }
 
   .card:hover {
-    transform: translateY(-3px);
-    background: var(--card-hover);
-    box-shadow: 0 8px 32px rgba(0,0,0,.3), 0 0 0 1px rgba(245,130,31,.1);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--accent-border);
     text-decoration: none;
   }
 
-  .card:hover::before {
-    opacity: 1;
-  }
-
-  .card-inner {
-    position: relative;
-    z-index: 1;
-    padding: 24px 48px 24px 24px;
-  }
-
-  .card-arrow {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 16px;
-    color: var(--text-dim);
-    transition: all 0.25s ease;
-    z-index: 1;
-  }
-
-  .card:hover .card-arrow {
-    color: var(--orange);
-    transform: translateY(-50%) translateX(3px);
-  }
-
-  .card-meta {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 12px;
-    color: var(--text-dim);
-    margin-bottom: 10px;
+  .card-category-bar {
+    margin-bottom: 12px;
   }
 
   .card-category {
-    background: rgba(245, 130, 31, 0.12);
-    color: var(--orange);
-    padding: 2px 10px;
-    border-radius: 10px;
+    display: inline-block;
     font-size: 11px;
     font-weight: 700;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 3px 12px;
+    border-radius: 4px;
+    letter-spacing: .04em;
   }
 
   .card-title {
     font-size: 18px;
     font-weight: 800;
     line-height: 1.5;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     letter-spacing: -.01em;
+    color: var(--text);
   }
 
   .card-desc {
-    font-size: 13.5px;
-    color: var(--text-sub);
-    line-height: 1.65;
-    margin-bottom: 14px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  .card-bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
   }
 
   .card-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
+    flex: 1;
+  }
+
+  .card-date {
+    font-size: 12px;
+    color: var(--text-dim);
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   @media (max-width: 480px) {
+    .card {
+      padding: 22px;
+    }
     .card-title {
       font-size: 16px;
     }
-    .card-inner {
-      padding: 20px 40px 20px 20px;
+    .card-bottom {
+      flex-direction: column;
+      align-items: flex-start;
     }
   }
 </style>
