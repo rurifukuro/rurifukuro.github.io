@@ -33,6 +33,73 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 </head>
 <body>
   <slot />
+  <script>
+    (function () {
+      var SB = 'https://vuazrgebojcnyjcnhpuq.supabase.co';
+      var KEY = 'sb_publishable_pin4V9zyMx6el2Z_fswzUA_dXlom2jf';
+      var path = window.location.pathname;
+      if (path.indexOf('/blog') !== 0) return;
+
+      var sid = sessionStorage.getItem('ba_sid');
+      if (!sid) {
+        sid = Math.random().toString(36).slice(2) + Date.now().toString(36);
+        sessionStorage.setItem('ba_sid', sid);
+      }
+
+      var hdrs = { 'Content-Type': 'application/json', apikey: KEY, Authorization: 'Bearer ' + KEY };
+
+      function rpc(name, params, keepalive) {
+        return fetch(SB + '/rest/v1/rpc/' + name, {
+          method: 'POST', headers: hdrs, body: JSON.stringify(params),
+          keepalive: !!keepalive
+        }).catch(function () {});
+      }
+
+      var device = window.innerWidth < 768 ? 'mobile' : 'desktop';
+      rpc('increment_blog_view', {
+        p_path: path, p_session: sid,
+        p_referrer: document.referrer || null, p_device: device
+      });
+
+      var t0 = Date.now();
+      var timeSent = false;
+      function sendTime() {
+        if (timeSent) return;
+        timeSent = true;
+        var sec = Math.round((Date.now() - t0) / 1000);
+        if (sec > 0 && sec < 3600) {
+          rpc('record_blog_time', { p_path: path, p_session: sid, p_seconds: sec }, true);
+        }
+      }
+      document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'hidden') sendTime();
+      });
+      window.addEventListener('pagehide', sendTime);
+
+      var maxScroll = 0;
+      var scrollTimer;
+      window.addEventListener('scroll', function () {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(function () {
+          var h = document.documentElement.scrollHeight - window.innerHeight;
+          if (h > 0) {
+            var pct = Math.round((window.scrollY / h) * 100);
+            if (pct > maxScroll) maxScroll = pct;
+          }
+        }, 200);
+      });
+      window.addEventListener('pagehide', function () {
+        if (maxScroll > 0) {
+          rpc('record_blog_scroll', { p_path: path, p_session: sid, p_depth: maxScroll }, true);
+        }
+      });
+
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest('.cta-btn');
+        if (a) rpc('record_blog_cta', { p_path: path, p_session: sid, p_target: a.href });
+      });
+    })();
+  </script>
 </body>
 </html>
 

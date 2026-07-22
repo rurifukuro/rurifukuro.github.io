@@ -1,10 +1,12 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import BlogCard from '../../../components/BlogCard.astro';
+import PopularSidebar from '../../../components/PopularSidebar.astro';
+import RecommendedSidebar from '../../../components/RecommendedSidebar.astro';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
+  const posts = (await getCollection('blog')).filter((p) => !p.data.draft);
   const tags = [...new Set(posts.flatMap((p) => p.data.tags))];
   return tags.map((tag) => ({
     params: { tag },
@@ -33,25 +35,35 @@ const { tag, posts } = Astro.props;
       </div>
     </nav>
 
-    <div class="content">
-      <header class="header">
-        <p class="label">タグ</p>
-        <h1 class="title">{tag}</h1>
-        <p class="count">{posts.length}件の記事</p>
-      </header>
+    <div class="tag-header">
+      <p class="label">タグ</p>
+      <h1 class="tag-title">{tag}</h1>
+      <p class="count">{posts.length}件の記事</p>
+    </div>
 
-      <div class="posts">
-        {posts.map((post) => (
-          <BlogCard
-            title={post.data.title}
-            description={post.data.description}
-            date={post.data.date}
-            tags={post.data.tags}
-            category={post.data.category}
-            slug={post.slug}
-          />
-        ))}
-      </div>
+    <div class="blog-layout">
+      <aside class="sidebar sidebar-left">
+        <PopularSidebar />
+      </aside>
+
+      <main class="main-content">
+        <div class="posts">
+          {posts.map((post) => (
+            <BlogCard
+              title={post.data.title}
+              description={post.data.description}
+              date={post.data.date}
+              tags={post.data.tags}
+              category={post.data.category}
+              slug={post.slug}
+            />
+          ))}
+        </div>
+      </main>
+
+      <aside class="sidebar sidebar-right">
+        <RecommendedSidebar />
+      </aside>
     </div>
 
     <footer class="footer">
@@ -86,7 +98,7 @@ const { tag, posts } = Astro.props;
   }
 
   .nav-inner {
-    max-width: 760px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 14px 24px;
     display: flex;
@@ -133,18 +145,10 @@ const { tag, posts } = Astro.props;
     font-weight: 600;
   }
 
-  .content {
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 48px 24px 56px;
-    flex: 1;
-    width: 100%;
-  }
-
-  .header {
+  .tag-header {
     text-align: center;
-    margin-bottom: 36px;
-    padding-bottom: 32px;
+    padding: 40px 24px 32px;
+    background: var(--bg-card);
     border-bottom: 1px solid var(--border);
   }
 
@@ -156,7 +160,7 @@ const { tag, posts } = Astro.props;
     letter-spacing: .1em;
   }
 
-  .title {
+  .tag-title {
     font-size: 28px;
     font-weight: 900;
     margin-top: 6px;
@@ -183,7 +187,7 @@ const { tag, posts } = Astro.props;
   }
 
   .footer-inner {
-    max-width: 760px;
+    max-width: 1200px;
     margin: 0 auto;
     text-align: center;
   }

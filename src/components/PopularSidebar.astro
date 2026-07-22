@@ -1,0 +1,134 @@
+---
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).filter((p) => !p.data.draft).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const articleMap = Object.fromEntries(
+  posts.map((p) => [`/blog/${p.slug}/`, p.data.title])
+);
+---
+
+<div class="sidebar-widget">
+  <h3 class="widget-title">よく読まれている記事</h3>
+  <ol class="popular-list" id="popular-list" data-articles={JSON.stringify(articleMap)}>
+    {posts.map((post, i) => (
+      <li>
+        <a href={`/blog/${post.slug}/`}>
+          <span class="popular-rank">{i + 1}</span>
+          <span class="popular-text">{post.data.title}</span>
+        </a>
+      </li>
+    ))}
+  </ol>
+</div>
+
+<script>
+  (async function () {
+    const list = document.getElementById('popular-list');
+    if (!list) return;
+    const articles = JSON.parse(list.dataset.articles || '{}');
+    const SB_URL = 'https://vuazrgebojcnyjcnhpuq.supabase.co';
+    const SB_KEY = 'sb_publishable_pin4V9zyMx6el2Z_fswzUA_dXlom2jf';
+    try {
+      const res = await fetch(
+        `${SB_URL}/rest/v1/blog_page_views?select=page_path,view_count&order=view_count.desc`,
+        { headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}` } }
+      );
+      if (!res.ok) return;
+      const data = await res.json();
+      if (!Array.isArray(data) || data.length === 0) return;
+
+      const ranked = data.filter((d) => articles[d.page_path]);
+      const remaining = Object.keys(articles).filter(
+        (p) => !ranked.find((r) => r.page_path === p)
+      );
+      remaining.forEach((p) => ranked.push({ page_path: p, view_count: 0 }));
+
+      list.innerHTML = ranked
+        .map(
+          (d, i) => `<li><a href="${d.page_path}"><span class="popular-rank">${i + 1}</span><span class="popular-text">${articles[d.page_path]}</span>${d.view_count > 0 ? `<span class="popular-views">${d.view_count} views</span>` : ''}</a></li>`
+        )
+        .join('');
+    } catch (_) {}
+  })();
+</script>
+
+<style>
+  .sidebar-widget {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow-xs);
+  }
+
+  .widget-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--text);
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--accent);
+    margin-bottom: 4px;
+    letter-spacing: -.01em;
+  }
+
+  .popular-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .popular-list li {
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .popular-list li:last-child {
+    border-bottom: none;
+  }
+
+  .popular-list a {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 0;
+    color: var(--text);
+    text-decoration: none;
+    transition: color .15s;
+    flex-wrap: wrap;
+  }
+
+  .popular-list a:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .popular-rank {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--accent);
+    min-width: 22px;
+    line-height: 1.2;
+    flex-shrink: 0;
+  }
+
+  .popular-list li:nth-child(n + 4) .popular-rank {
+    color: var(--text-dim);
+  }
+
+  .popular-text {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.5;
+    flex: 1;
+    min-width: 0;
+  }
+
+  :global(.popular-views) {
+    font-size: 11px;
+    color: var(--text-dim);
+    width: 100%;
+    padding-left: 32px;
+    margin-top: -2px;
+  }
+</style>

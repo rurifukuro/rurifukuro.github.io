@@ -2,6 +2,8 @@
 import BaseLayout from './BaseLayout.astro';
 import AppCTA from '../components/AppCTA.astro';
 import TagBadge from '../components/TagBadge.astro';
+import PopularSidebar from '../components/PopularSidebar.astro';
+import RecommendedSidebar from '../components/RecommendedSidebar.astro';
 import { isDisplayTag } from '../utils/tags';
 
 interface Props {
@@ -11,9 +13,10 @@ interface Props {
   tags: string[];
   category: string;
   targetApp: 'torehan' | 'urehan' | 'both';
+  slug: string;
 }
 
-const { title, description, date, tags, category, targetApp } = Astro.props;
+const { title, description, date, tags, category, targetApp, slug } = Astro.props;
 
 const displayTags = tags.filter(isDisplayTag);
 
@@ -37,27 +40,37 @@ const dateStr = date.toLocaleDateString('ja-JP', {
       </div>
     </nav>
 
-    <article class="article-wrap">
-      <div class="article-container">
-        <header class="article-header">
-          <span class="article-category">{category}</span>
-          <h1 class="article-title">{title}</h1>
-          <div class="article-meta">
-            <time datetime={date.toISOString().slice(0, 10)}>{dateStr}</time>
+    <div class="blog-layout">
+      <aside class="sidebar sidebar-left">
+        <PopularSidebar />
+      </aside>
+
+      <main class="main-content">
+        <article class="article-wrap">
+          <header class="article-header">
+            <span class="article-category">{category}</span>
+            <h1 class="article-title">{title}</h1>
+            <div class="article-meta">
+              <time datetime={date.toISOString().slice(0, 10)}>{dateStr}</time>
+            </div>
+          </header>
+
+          <div class="article-body">
+            <slot />
           </div>
-        </header>
 
-        <div class="article-body">
-          <slot />
-        </div>
+          <div class="article-tags">
+            {displayTags.map((tag) => <TagBadge tag={tag} />)}
+          </div>
 
-        <div class="article-tags">
-          {displayTags.map((tag) => <TagBadge tag={tag} />)}
-        </div>
+          <AppCTA app={targetApp} />
+        </article>
+      </main>
 
-        <AppCTA app={targetApp} />
-      </div>
-    </article>
+      <aside class="sidebar sidebar-right">
+        <RecommendedSidebar currentSlug={slug} currentTags={tags} />
+      </aside>
+    </div>
 
     <footer class="footer">
       <div class="footer-inner">
@@ -91,7 +104,7 @@ const dateStr = date.toLocaleDateString('ja-JP', {
   }
 
   .nav-inner {
-    max-width: 740px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 14px 24px;
     display: flex;
@@ -145,20 +158,16 @@ const dateStr = date.toLocaleDateString('ja-JP', {
   }
 
   .article-wrap {
-    flex: 1;
     background: var(--bg-card);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .article-container {
-    max-width: 740px;
-    margin: 0 auto;
-    padding: 48px 24px 56px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 40px 36px 48px;
+    box-shadow: var(--shadow-xs);
   }
 
   .article-header {
-    margin-bottom: 40px;
-    padding-bottom: 32px;
+    margin-bottom: 36px;
+    padding-bottom: 28px;
     border-bottom: 1px solid var(--border-light);
   }
 
@@ -175,11 +184,11 @@ const dateStr = date.toLocaleDateString('ja-JP', {
   }
 
   .article-title {
-    font-size: 30px;
+    font-size: 28px;
     font-weight: 900;
     line-height: 1.45;
     letter-spacing: -.02em;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
     color: var(--text);
   }
 
@@ -195,31 +204,31 @@ const dateStr = date.toLocaleDateString('ja-JP', {
   }
 
   .article-body :global(h2) {
-    font-size: 22px;
+    font-size: 21px;
     font-weight: 800;
     color: var(--text);
-    margin: 56px 0 20px;
-    padding-bottom: 12px;
+    margin: 48px 0 18px;
+    padding-bottom: 10px;
     border-bottom: 2px solid var(--accent);
     letter-spacing: -.01em;
   }
 
   .article-body :global(h3) {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 700;
     color: var(--text);
-    margin: 40px 0 14px;
+    margin: 36px 0 12px;
     padding-left: 14px;
     border-left: 3px solid var(--border);
   }
 
   .article-body :global(p) {
-    margin-bottom: 24px;
+    margin-bottom: 22px;
   }
 
   .article-body :global(ul),
   .article-body :global(ol) {
-    margin: 0 0 24px 24px;
+    margin: 0 0 22px 20px;
   }
 
   .article-body :global(li) {
@@ -240,13 +249,13 @@ const dateStr = date.toLocaleDateString('ja-JP', {
     border: none;
     height: 1px;
     background: var(--border);
-    margin: 48px 0;
+    margin: 40px 0;
   }
 
   .article-body :global(blockquote) {
     border-left: 4px solid var(--accent);
-    padding: 20px 24px;
-    margin: 28px 0;
+    padding: 18px 22px;
+    margin: 24px 0;
     background: var(--accent-soft);
     border-radius: 0 8px 8px 0;
     color: var(--text);
@@ -269,8 +278,8 @@ const dateStr = date.toLocaleDateString('ja-JP', {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    padding-top: 32px;
-    margin-top: 48px;
+    padding-top: 28px;
+    margin-top: 40px;
     border-top: 1px solid var(--border-light);
   }
 
@@ -278,10 +287,11 @@ const dateStr = date.toLocaleDateString('ja-JP', {
     background: #1a1a2e;
     color: #b5b5c8;
     padding: 40px 24px;
+    margin-top: auto;
   }
 
   .footer-inner {
-    max-width: 740px;
+    max-width: 1200px;
     margin: 0 auto;
     text-align: center;
   }
@@ -318,15 +328,22 @@ const dateStr = date.toLocaleDateString('ja-JP', {
     color: #666;
   }
 
+  @media (max-width: 1080px) {
+    .article-wrap {
+      padding: 32px 28px 40px;
+    }
+  }
+
   @media (max-width: 480px) {
     .article-title {
-      font-size: 24px;
+      font-size: 22px;
     }
     .article-body :global(h2) {
-      font-size: 20px;
+      font-size: 19px;
     }
-    .article-container {
-      padding: 36px 20px 48px;
+    .article-wrap {
+      padding: 28px 20px 36px;
+      border-radius: var(--radius);
     }
   }
 </style>

@@ -1,0 +1,116 @@
+---
+import { getCollection } from 'astro:content';
+import { isDisplayTag } from '../utils/tags';
+
+interface Props {
+  currentSlug?: string;
+  currentTags?: string[];
+}
+
+const { currentSlug, currentTags = [] } = Astro.props;
+
+const allPosts = (await getCollection('blog')).filter((p) => !p.data.draft).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+let recommended: typeof allPosts;
+
+if (currentSlug && currentTags.length > 0) {
+  const displayTags = currentTags.filter(isDisplayTag);
+  const scored = allPosts
+    .filter((p) => p.slug !== currentSlug)
+    .map((post) => {
+      const postDisplayTags = post.data.tags.filter(isDisplayTag);
+      const overlap = displayTags.filter((t) => postDisplayTags.includes(t)).length;
+      return { post, overlap };
+    })
+    .sort((a, b) => b.overlap - a.overlap);
+  recommended = scored.map((s) => s.post).slice(0, 3);
+} else {
+  const categories = [...new Set(allPosts.map((p) => p.data.category))];
+  recommended = [];
+  for (const cat of categories) {
+    const fromCat = allPosts.filter((p) => p.data.category === cat);
+    recommended.push(...fromCat.slice(0, 2));
+  }
+  recommended = recommended.slice(0, 4);
+}
+---
+
+<div class="sidebar-widget">
+  <h3 class="widget-title">おすすめ記事</h3>
+  <div class="rec-list">
+    {recommended.map((post) => (
+      <a class="rec-item" href={`/blog/${post.slug}/`}>
+        <span class="rec-category">{post.data.category}</span>
+        <span class="rec-title">{post.data.title}</span>
+      </a>
+    ))}
+  </div>
+</div>
+
+<style>
+  .sidebar-widget {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow-xs);
+  }
+
+  .widget-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--text);
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--accent);
+    margin-bottom: 4px;
+    letter-spacing: -.01em;
+  }
+
+  .rec-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rec-item {
+    display: block;
+    padding: 14px 0;
+    text-decoration: none;
+    border-bottom: 1px solid var(--border-light);
+    transition: background .15s;
+  }
+
+  .rec-item:last-child {
+    border-bottom: none;
+  }
+
+  .rec-item:hover {
+    text-decoration: none;
+  }
+
+  .rec-item:hover .rec-title {
+    color: var(--accent);
+  }
+
+  .rec-category {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 2px 8px;
+    border-radius: 3px;
+    letter-spacing: .04em;
+    margin-bottom: 6px;
+  }
+
+  .rec-title {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.5;
+    transition: color .15s;
+  }
+</style>

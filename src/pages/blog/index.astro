@@ -2,12 +2,14 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BlogCard from '../../components/BlogCard.astro';
 import TagBadge from '../../components/TagBadge.astro';
+import PopularSidebar from '../../components/PopularSidebar.astro';
+import RecommendedSidebar from '../../components/RecommendedSidebar.astro';
 import { getCollection } from 'astro:content';
 import { isDisplayTag } from '../../utils/tags';
 
-const posts = (await getCollection('blog')).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
-);
+const posts = (await getCollection('blog'))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].filter(isDisplayTag).sort();
 const featuredPost = posts[0];
@@ -31,40 +33,52 @@ const gridPosts = posts.slice(1);
       </div>
     </header>
 
-    <div class="content">
-      <div class="tags-bar">
+    <div class="tags-section">
+      <div class="tags-inner">
         {allTags.map((tag) => <TagBadge tag={tag} />)}
       </div>
+    </div>
 
-      {featuredPost && (
-        <a class="featured" href={`/blog/${featuredPost.slug}/`}>
-          <div class="featured-accent"></div>
-          <div class="featured-body">
-            <div class="featured-meta">
-              <span class="featured-category">{featuredPost.data.category}</span>
-              <time datetime={featuredPost.data.date.toISOString().slice(0, 10)}>
-                {featuredPost.data.date.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}
-              </time>
+    <div class="blog-layout">
+      <aside class="sidebar sidebar-left">
+        <PopularSidebar />
+      </aside>
+
+      <main class="main-content">
+        {featuredPost && (
+          <a class="featured" href={`/blog/${featuredPost.slug}/`}>
+            <div class="featured-accent"></div>
+            <div class="featured-body">
+              <div class="featured-meta">
+                <span class="featured-category">{featuredPost.data.category}</span>
+                <time datetime={featuredPost.data.date.toISOString().slice(0, 10)}>
+                  {featuredPost.data.date.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}
+                </time>
+              </div>
+              <h2 class="featured-title">{featuredPost.data.title}</h2>
+              <p class="featured-desc">{featuredPost.data.description}</p>
+              <span class="featured-link">続きを読む &rarr;</span>
             </div>
-            <h2 class="featured-title">{featuredPost.data.title}</h2>
-            <p class="featured-desc">{featuredPost.data.description}</p>
-            <span class="featured-link">続きを読む &rarr;</span>
-          </div>
-        </a>
-      )}
+          </a>
+        )}
 
-      <div class="grid">
-        {gridPosts.map((post) => (
-          <BlogCard
-            title={post.data.title}
-            description={post.data.description}
-            date={post.data.date}
-            tags={post.data.tags}
-            category={post.data.category}
-            slug={post.slug}
-          />
-        ))}
-      </div>
+        <div class="grid">
+          {gridPosts.map((post) => (
+            <BlogCard
+              title={post.data.title}
+              description={post.data.description}
+              date={post.data.date}
+              tags={post.data.tags}
+              category={post.data.category}
+              slug={post.slug}
+            />
+          ))}
+        </div>
+      </main>
+
+      <aside class="sidebar sidebar-right">
+        <RecommendedSidebar />
+      </aside>
     </div>
 
     <footer class="footer">
@@ -100,7 +114,7 @@ const gridPosts = posts.slice(1);
   }
 
   .nav-inner {
-    max-width: 960px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 14px 24px;
     display: flex;
@@ -148,7 +162,7 @@ const gridPosts = posts.slice(1);
   .hero {
     background: var(--bg-card);
     border-bottom: 1px solid var(--border);
-    padding: 52px 24px 48px;
+    padding: 48px 24px 44px;
     text-align: center;
   }
 
@@ -180,20 +194,20 @@ const gridPosts = posts.slice(1);
     line-height: 1.7;
   }
 
-  /* ── Content ── */
-  .content {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 32px 24px 56px;
-    flex: 1;
+  /* ── Tags ── */
+  .tags-section {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px 20px;
   }
 
-  .tags-bar {
+  .tags-inner {
+    max-width: 800px;
+    margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
     justify-content: center;
-    margin-bottom: 32px;
   }
 
   /* ── Featured Card ── */
@@ -205,7 +219,7 @@ const gridPosts = posts.slice(1);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     overflow: hidden;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     transition: all 0.25s ease;
     box-shadow: var(--shadow-sm);
   }
@@ -224,7 +238,7 @@ const gridPosts = posts.slice(1);
   }
 
   .featured-body {
-    padding: 32px;
+    padding: 28px;
     flex: 1;
   }
 
@@ -234,7 +248,7 @@ const gridPosts = posts.slice(1);
     gap: 12px;
     font-size: 13px;
     color: var(--text-muted);
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
 
   .featured-category {
@@ -248,18 +262,18 @@ const gridPosts = posts.slice(1);
   }
 
   .featured-title {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 800;
     line-height: 1.45;
     letter-spacing: -.01em;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
 
   .featured-desc {
-    font-size: 15px;
+    font-size: 14px;
     color: var(--text-secondary);
     line-height: 1.7;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
 
   .featured-link {
@@ -272,7 +286,7 @@ const gridPosts = posts.slice(1);
   .grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    gap: 16px;
   }
 
   /* ── Footer ── */
@@ -284,7 +298,7 @@ const gridPosts = posts.slice(1);
   }
 
   .footer-inner {
-    max-width: 960px;
+    max-width: 1200px;
     margin: 0 auto;
     text-align: center;
   }
@@ -325,6 +339,12 @@ const gridPosts = posts.slice(1);
     display: none;
   }
 
+  @media (max-width: 1080px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
   @media (max-width: 640px) {
     .hero-title {
       font-size: 26px;
@@ -336,10 +356,10 @@ const gridPosts = posts.slice(1);
       grid-template-columns: 1fr;
     }
     .featured-title {
-      font-size: 20px;
+      font-size: 18px;
     }
     .featured-body {
-      padding: 24px;
+      padding: 22px;
     }
   }
 </style>
