@@ -1,0 +1,120 @@
+---
+interface Props {
+  app: 'torehan' | 'urehan' | 'both';
+}
+
+const { app } = Astro.props;
+
+const torehan = {
+  name: 'とれはんっ！',
+  desc: '同人イベント攻略アプリ。会場マップ・AI読取・予算管理・サークル分担をスマホ1つで。',
+  url: 'https://apps.apple.com/jp/app/id6776913607',
+  page: '/torehan/',
+};
+
+const urehan = {
+  name: 'レジさぽっ！',
+  desc: '即売会サークルのためのレジ・会計アプリ。秒会計・取り置き予約・売上集計・確定申告サポート。',
+  url: 'https://apps.apple.com/app/id6786309116',
+  page: '/urehan/',
+};
+
+const apps = app === 'both' ? [torehan, urehan] : app === 'torehan' ? [torehan] : [urehan];
+---
+
+<aside class="cta-section">
+  {apps.map((a) => (
+    <div class="cta-box">
+      <div class="cta-label">無料アプリ</div>
+      <h3 class="cta-name">{a.name}</h3>
+      <p class="cta-desc">{a.desc}</p>
+      <div class="cta-buttons">
+        <a class="cta-btn cta-btn-store" href={a.url}>
+          <span>📱</span>
+          <span>App Store で無料ダウンロード</span>
+        </a>
+        <a class="cta-btn cta-btn-detail" href={a.page}>
+          詳しく見る →
+        </a>
+      </div>
+    </div>
+  ))}
+</aside>
+
+<style>
+  .cta-section {
+    margin-top: 48px;
+    display: grid;
+    gap: 16px;
+  }
+
+  .cta-box {
+    background: rgba(245, 130, 31, 0.08);
+    border: 1px solid rgba(245, 130, 31, 0.3);
+    border-radius: 20px;
+    padding: 24px;
+  }
+
+  .cta-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #f5821f;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .cta-name {
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .cta-desc {
+    font-size: 14px;
+    color: #cdd8ef;
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+
+  .cta-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .cta-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 14px 18px;
+    border-radius: 14px;
+    transition: transform 0.12s ease, opacity 0.12s ease;
+  }
+
+  .cta-btn:hover {
+    text-decoration: none;
+    transform: translateY(-1px);
+  }
+
+  .cta-btn:active {
+    transform: scale(0.98);
+  }
+
+  .cta-btn-store {
+    background: #fff;
+    color: #0c1a38;
+  }
+
+  .cta-btn-detail {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 14px;
+  }
+</style>

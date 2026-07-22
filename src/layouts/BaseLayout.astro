@@ -1,0 +1,41 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  ogType?: string;
+}
+
+const {
+  title,
+  description = '瑠璃フクロウのイベント攻略ブログ。コミケ・コミティアなど同人イベントの攻略情報を発信。',
+  ogType = 'website',
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  <link rel="canonical" href={canonicalURL}>
+  <link rel="icon" href="/icon.png" type="image/png">
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:type" content={ogType}>
+  <meta property="og:url" content={canonicalURL}>
+  <meta property="og:site_name" content="瑠璃フクロウ">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@rurifukuro">
+</head>
+<body>
+  <slot />
+</body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+</style>

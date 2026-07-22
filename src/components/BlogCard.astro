@@ -1,0 +1,95 @@
+---
+import TagBadge from './TagBadge.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  tags: string[];
+  category: string;
+  slug: string;
+}
+
+const { title, description, date, tags, category, slug } = Astro.props;
+
+const dateStr = date.toLocaleDateString('ja-JP', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<a class="blog-card" href={`/blog/${slug}/`}>
+  <div class="card-meta">
+    <time datetime={date.toISOString().slice(0, 10)}>{dateStr}</time>
+    <span class="card-category">{category}</span>
+  </div>
+  <h2 class="card-title">{title}</h2>
+  <p class="card-desc">{description}</p>
+  <div class="card-tags">
+    {tags.map((tag) => <TagBadge tag={tag} linked={false} />)}
+  </div>
+</a>
+
+<style>
+  .blog-card {
+    display: block;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    padding: 22px 24px;
+    color: #fff;
+    transition: transform 0.12s ease, background 0.12s ease;
+  }
+
+  .blog-card:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.10);
+    text-decoration: none;
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12.5px;
+    color: #7f8eb0;
+    margin-bottom: 8px;
+  }
+
+  .card-category {
+    background: rgba(245, 130, 31, 0.15);
+    color: #f5821f;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .card-title {
+    font-size: 19px;
+    font-weight: 800;
+    line-height: 1.45;
+    margin-bottom: 8px;
+  }
+
+  .card-desc {
+    font-size: 14px;
+    color: #aebfe0;
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  @media (max-width: 480px) {
+    .card-title {
+      font-size: 17px;
+    }
+  }
+</style>

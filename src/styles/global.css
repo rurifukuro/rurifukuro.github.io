@@ -1,0 +1,44 @@
+:root {
+  --navy: #0c1a38;
+  --navy2: #142c54;
+  --orange: #f5821f;
+  --text: #fff;
+  --text-sub: #aebfe0;
+  --text-muted: #9fb0d4;
+  --text-dim: #7f8eb0;
+  --card-bg: rgba(255, 255, 255, 0.06);
+  --card-border: rgba(255, 255, 255, 0.12);
+  --card-hover: rgba(255, 255, 255, 0.10);
+  --font: "Hiragino Kaku Gothic ProN", "Yu Gothic", YuGothic, "Meiryo", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font);
+  background: linear-gradient(160deg, var(--navy) 0%, var(--navy2) 100%);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--orange);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}

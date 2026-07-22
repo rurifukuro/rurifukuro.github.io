@@ -6,13 +6,6 @@
 <title>瑠璃フクロウ｜開発アプリはこちら！</title>
 <meta name="description" content="瑠璃フクロウが開発したアプリの一覧。ダウンロードはこちらから。">
 
-<!-- ================================================================= -->
-<!-- ▼▼▼ 新しいアプリを追加するには：下の <!-- APP CARD -- > ブロックを -->
-<!--     1つコピーして、リンク先・アイコン・名前・説明を書き換えるだけ   -->
-<!--   ・各アプリの個別ページは /アプリ名/ に置く（例: /torehan/）       -->
-<!--   ・アイコンは /アプリ名.png をルートに置いて src を合わせる        -->
-<!-- ================================================================= -->
-
 <style>
   :root{
     --navy:#0c1a38;
@@ -34,7 +27,6 @@
   .title .o{color:var(--orange)}
   .lead{font-size:15px;color:#9fb0d4;margin-top:12px}
 
-  /* アプリ一覧 */
   .apps{display:grid;gap:18px}
   .card{
     display:flex;align-items:center;gap:18px;text-decoration:none;
@@ -72,7 +64,6 @@
 
   <div class="apps">
 
-    <!-- APP CARD : とれはんっ！ -->
     <a class="card" href="/torehan/">
       <img class="icon" src="/icon.png" alt="とれはんっ！" onerror="this.style.visibility='hidden'">
       <div class="body">
@@ -82,9 +73,7 @@
       </div>
       <div class="arrow">›</div>
     </a>
-    <!-- /APP CARD -->
 
-    <!-- APP CARD : レジさぽっ！ -->
     <a class="card" href="/urehan/">
       <img class="icon" src="/urehan/icon.png" alt="レジさぽっ！" onerror="this.style.visibility='hidden'">
       <div class="body">
@@ -94,9 +83,8 @@
       </div>
       <div class="arrow">›</div>
     </a>
-    <!-- /APP CARD -->
 
-    <!-- APP CARD : きゃすりん（公開前のため非表示中。公開時はこのコメントを解除して再表示）
+    <!--
     <a class="card" href="/kyasuho/">
       <img class="icon" src="/kyasuho-support/icon.png" alt="きゃすりん" onerror="this.style.visibility='hidden'">
       <div class="body">
@@ -106,10 +94,17 @@
       </div>
       <div class="arrow">›</div>
     </a>
-    /APP CARD -->
+    -->
 
-
-    <!-- 新しいアプリはここに上記 APP CARD ブロックをコピーして追加 -->
+    <a class="card" href="/blog/" style="border-color:rgba(245,130,31,.35)">
+      <div class="icon" style="display:flex;align-items:center;justify-content:center;font-size:36px;background:linear-gradient(135deg,#1a2d50,#243a63)">📝</div>
+      <div class="body">
+        <div class="name">イベント攻略ブログ</div>
+        <div class="desc">コミケ・コミティアなど同人イベントの攻略記事。初参加ガイド・巡回術・サークル参加Tipsなど</div>
+        <div class="meta">記事を読む</div>
+      </div>
+      <div class="arrow">›</div>
+    </a>
 
   </div>
 

@@ -1,0 +1,129 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import TagBadge from '../../components/TagBadge.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
+---
+
+<BaseLayout title="イベント攻略ブログ｜瑠璃フクロウ">
+  <div class="wrap">
+    <nav class="nav">
+      <a class="backlink" href="/">← 瑠璃フクロウの開発アプリ一覧</a>
+    </nav>
+
+    <header class="header">
+      <div class="brand">瑠璃フクロウ</div>
+      <h1 class="title">イベント<span class="o">攻略</span>ブログ</h1>
+      <p class="lead">コミケ・コミティア・デザフェスなど同人イベントの攻略情報を発信</p>
+    </header>
+
+    <div class="tags-bar">
+      {allTags.map((tag) => <TagBadge tag={tag} />)}
+    </div>
+
+    <div class="posts">
+      {posts.map((post) => (
+        <BlogCard
+          title={post.data.title}
+          description={post.data.description}
+          date={post.data.date}
+          tags={post.data.tags}
+          category={post.data.category}
+          slug={post.slug}
+        />
+      ))}
+    </div>
+
+    <footer class="footer">
+      © 瑠璃フクロウ ｜ X：<a href="https://x.com/rurifukuro">@rurifukuro</a> ｜
+      お問い合わせ：<a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>
+    </footer>
+  </div>
+</BaseLayout>
+
+<style>
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 28px 24px 64px;
+  }
+
+  .nav {
+    margin-bottom: 28px;
+  }
+
+  .backlink {
+    font-size: 13px;
+    color: #9fb0d4;
+  }
+
+  .backlink:hover {
+    color: #cdd9f0;
+    text-decoration: none;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .brand {
+    font-size: 14px;
+    color: #aebfe0;
+    letter-spacing: 0.08em;
+  }
+
+  .title {
+    font-size: 30px;
+    font-weight: 800;
+    margin-top: 6px;
+  }
+
+  .o {
+    color: #f5821f;
+  }
+
+  .lead {
+    font-size: 14px;
+    color: #9fb0d4;
+    margin-top: 10px;
+  }
+
+  .tags-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 28px;
+  }
+
+  .posts {
+    display: grid;
+    gap: 16px;
+  }
+
+  .footer {
+    text-align: center;
+    font-size: 12px;
+    color: #7f8eb0;
+    margin-top: 52px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 24px;
+  }
+
+  .footer a {
+    color: #9fb0d4;
+  }
+
+  @media (max-width: 480px) {
+    .title {
+      font-size: 24px;
+    }
+  }
+</style>
