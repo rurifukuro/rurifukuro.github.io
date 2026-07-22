@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import BlogCard from '../../../components/BlogCard.astro';
-import TagBadge from '../../../components/TagBadge.astro';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -22,78 +21,115 @@ const { tag, posts } = Astro.props;
 ---
 
 <BaseLayout title={`「${tag}」の記事一覧｜瑠璃フクロウ`}>
-  <div class="wrap">
-    <nav class="nav">
-      <a class="backlink" href="/blog/">← 記事一覧に戻る</a>
-    </nav>
+  <div class="page">
+    <div class="top-bar">
+      <div class="top-inner">
+        <a class="back" href="/blog/">
+          <span class="back-arrow">←</span>
+          記事一覧
+        </a>
+      </div>
+    </div>
 
-    <header class="header">
-      <p class="label">タグ</p>
-      <h1 class="title">{tag}</h1>
-      <p class="count">{posts.length}件の記事</p>
-    </header>
+    <div class="content">
+      <header class="header">
+        <p class="label">タグ</p>
+        <h1 class="title">{tag}</h1>
+        <p class="count">{posts.length}件の記事</p>
+      </header>
 
-    <div class="posts">
-      {posts.map((post) => (
-        <BlogCard
-          title={post.data.title}
-          description={post.data.description}
-          date={post.data.date}
-          tags={post.data.tags}
-          category={post.data.category}
-          slug={post.slug}
-        />
-      ))}
+      <div class="posts">
+        {posts.map((post) => (
+          <BlogCard
+            title={post.data.title}
+            description={post.data.description}
+            date={post.data.date}
+            tags={post.data.tags}
+            category={post.data.category}
+            slug={post.slug}
+          />
+        ))}
+      </div>
     </div>
 
     <footer class="footer">
-      © 瑠璃フクロウ ｜ X：<a href="https://x.com/rurifukuro">@rurifukuro</a> ｜
-      お問い合わせ：<a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>
+      © 瑠璃フクロウ ｜ <a href="https://x.com/rurifukuro">@rurifukuro</a> ｜
+      <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>
     </footer>
   </div>
 </BaseLayout>
 
 <style>
-  .wrap {
-    max-width: 720px;
+  .page {
+    min-height: 100vh;
+  }
+
+  .top-bar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(10, 22, 40, .85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,.05);
+  }
+
+  .top-inner {
+    max-width: 760px;
     margin: 0 auto;
-    padding: 28px 24px 64px;
+    padding: 12px 24px;
   }
 
-  .nav {
-    margin-bottom: 28px;
-  }
-
-  .backlink {
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     font-size: 13px;
-    color: #9fb0d4;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: color .15s;
   }
 
-  .backlink:hover {
-    color: #cdd9f0;
+  .back:hover {
+    color: var(--text);
     text-decoration: none;
+  }
+
+  .back-arrow {
+    font-size: 12px;
+  }
+
+  .content {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 24px 0;
   }
 
   .header {
     text-align: center;
-    margin-bottom: 32px;
+    margin-bottom: 36px;
   }
 
   .label {
-    font-size: 13px;
-    color: #7f8eb0;
+    font-size: 12px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: .1em;
   }
 
   .title {
     font-size: 28px;
     font-weight: 800;
     margin-top: 4px;
-    color: #f5821f;
+    background: linear-gradient(135deg, var(--orange), #ffa94d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   .count {
-    font-size: 14px;
-    color: #9fb0d4;
+    font-size: 13px;
+    color: var(--text-muted);
     margin-top: 6px;
   }
 
@@ -105,13 +141,11 @@ const { tag, posts } = Astro.props;
   .footer {
     text-align: center;
     font-size: 12px;
-    color: #7f8eb0;
-    margin-top: 52px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 24px;
+    color: var(--text-dim);
+    padding: 48px 24px 32px;
   }
 
   .footer a {
-    color: #9fb0d4;
+    color: var(--text-muted);
   }
 </style>

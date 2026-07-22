@@ -1,14 +1,18 @@
 :root {
-  --navy: #0c1a38;
-  --navy2: #142c54;
+  --navy: #0a1628;
+  --navy2: #111d3a;
+  --navy3: #182a4e;
   --orange: #f5821f;
-  --text: #fff;
-  --text-sub: #aebfe0;
-  --text-muted: #9fb0d4;
-  --text-dim: #7f8eb0;
-  --card-bg: rgba(255, 255, 255, 0.06);
-  --card-border: rgba(255, 255, 255, 0.12);
-  --card-hover: rgba(255, 255, 255, 0.10);
+  --orange-glow: rgba(245, 130, 31, 0.25);
+  --accent: #4e8fff;
+  --text: #f0f4ff;
+  --text-sub: #b8c8e8;
+  --text-muted: #8a9cc0;
+  --text-dim: #606f8e;
+  --card-bg: rgba(255, 255, 255, 0.04);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --card-hover: rgba(255, 255, 255, 0.08);
+  --glass: rgba(255, 255, 255, 0.03);
   --font: "Hiragino Kaku Gothic ProN", "Yu Gothic", YuGothic, "Meiryo", sans-serif;
 }
 
@@ -22,7 +26,7 @@
 
 body {
   font-family: var(--font);
-  background: linear-gradient(160deg, var(--navy) 0%, var(--navy2) 100%);
+  background: var(--navy);
   color: var(--text);
   min-height: 100vh;
   line-height: 1.7;
