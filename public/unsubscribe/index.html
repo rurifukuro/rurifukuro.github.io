@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>お知らせメールの配信停止｜瑠璃フクロウ</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",YuGothic,"Meiryo",sans-serif;
+    background:linear-gradient(160deg,#0c1a38 0%,#142c54 100%);
+    color:#fff;min-height:100vh;line-height:1.7;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:560px;margin:0 auto;padding:56px 24px 64px}
+  h1{font-size:22px;font-weight:800;margin-bottom:18px}
+  p{font-size:15px;color:#cdd8ef;margin-bottom:14px}
+  .card{
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+    border-radius:20px;padding:26px 24px;margin-top:8px;
+  }
+  button{
+    display:block;width:100%;margin-top:18px;
+    background:#e23b33;color:#fff;border:0;border-radius:14px;
+    padding:16px 20px;font-size:16px;font-weight:700;
+    font-family:inherit;cursor:pointer;
+  }
+  button:disabled{opacity:.55;cursor:default}
+  .msg{font-size:14px;margin-top:16px;min-height:1px}
+  .msg.is-ok{color:#7ee2a8}
+  .msg.is-err{color:#ffb4a8}
+  footer{
+    text-align:center;font-size:12px;color:#7f8eb0;margin-top:40px;
+    border-top:1px solid rgba(255,255,255,.1);padding-top:22px;
+  }
+  footer a{color:#9fb0d4}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>お知らせメールの配信停止</h1>
+
+  <div class="card">
+    <p id="lead">
+      下のボタンを押すと、Android版公開のお知らせメールの配信を停止します。
+      以後、このアドレスへお知らせをお送りすることはありません。
+    </p>
+    <button id="btn" type="button">配信を停止する</button>
+    <p id="msg" class="msg"></p>
+  </div>
+
+  <footer>
+    瑠璃フクロウ ｜ お問い合わせ：<a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a><br>
+    <a href="/">開発アプリ一覧へ</a>
+  </footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var SUPABASE_URL = "https://vuazrgebojcnyjcnhpuq.supabase.co";
+  var SUPABASE_KEY = "sb_publishable_pin4V9zyMx6el2Z_fswzUA_dXlom2jf";
+
+  var btn = document.getElementById("btn");
+  var msg = document.getElementById("msg");
+  var lead = document.getElementById("lead");
+
+  // メールクライアントのリンク先読みで勝手に解除されないよう、
+  // GET で開いただけでは何もせず、必ずボタンを押してもらう。
+  var token = new URLSearchParams(location.search).get("t") || "";
+  var UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+  function say(text, kind) {
+    msg.textContent = text;
+    msg.className = "msg is-" + kind;
+  }
+
+  if (!UUID_RE.test(token)) {
+    btn.disabled = true;
+    lead.textContent =
+      "配信停止用のリンクが正しく読み取れませんでした。お手数ですが、お送りしたメールのリンクをもう一度お開きください。";
+    say("うまくいかない場合は rurifukuro@gmail.com までご連絡ください。折り返し停止いたします。", "err");
+    return;
+  }
+
+  btn.addEventListener("click", function () {
+    btn.disabled = true;
+    btn.textContent = "停止しています…";
+    fetch(SUPABASE_URL + "/rest/v1/rpc/android_waitlist_unsubscribe", {
+      method: "POST",
+      headers: {
+        "apikey": SUPABASE_KEY,
+        "Authorization": "Bearer " + SUPABASE_KEY,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ p_token: token })
+    })
+      .then(function (res) {
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        btn.style.display = "none";
+        lead.textContent = "配信を停止しました。";
+        say("これまでご登録いただき、ありがとうございました。", "ok");
+      })
+      .catch(function () {
+        btn.disabled = false;
+        btn.textContent = "配信を停止する";
+        say(
+          "うまく停止できませんでした。時間をおいてお試しいただくか、rurifukuro@gmail.com までご連絡ください。折り返し停止いたします。",
+          "err"
+        );
+      });
+  });
+})();
+</script>
+</body>
+</html>

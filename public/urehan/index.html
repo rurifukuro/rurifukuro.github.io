@@ -189,6 +189,37 @@
   .btn-tester{background:var(--coral);color:#fff;margin-top:16px}
   .btn-tester small{color:rgba(255,255,255,.88)}
 
+  /* Android版リリース通知の事前登録（テスター募集とは別の導線＝色も分ける） */
+  .waitlist{
+    background:rgba(47,179,106,.10);
+    border:1px solid rgba(47,179,106,.35);
+    border-radius:20px;padding:24px;margin:40px 0;
+  }
+  .waitlist h2{font-size:18px;font-weight:800;margin-bottom:12px}
+  .waitlist p{font-size:14px;color:#e6d6c5;margin-bottom:12px}
+  .waitlist .waitlist-note{font-size:13px;color:#cbb9a7;margin-bottom:0}
+  .waitlist-form{display:flex;flex-direction:column;gap:12px;margin:18px 0 14px}
+  .waitlist-form input[type=email]{
+    width:100%;padding:16px 18px;border-radius:14px;
+    border:1px solid rgba(255,255,255,.25);
+    background:rgba(255,255,255,.08);color:#fff;
+    /* 16px 未満だと iOS Safari がフォーカス時にページを拡大する */
+    font-size:16px;font-family:inherit;
+  }
+  .waitlist-form input[type=email]::placeholder{color:#b3a292}
+  .waitlist-form input[type=email]:focus{outline:2px solid var(--money);outline-offset:1px}
+  .waitlist-form input[type=email]:disabled{opacity:.6}
+  .btn-waitlist{
+    background:var(--money);color:#fff;border:0;width:100%;
+    cursor:pointer;font-family:inherit;
+  }
+  .waitlist-consent{font-size:12.5px;color:#cbb9a7;margin:0 0 12px}
+  .waitlist-msg{font-size:13.5px;min-height:1px}
+  .waitlist-msg.is-ok{color:#8ce8b4}
+  .waitlist-msg.is-err{color:#ffb4a8}
+  /* ボット用の空欄（人の目にもスクリーンリーダーにも出さない） */
+  .waitlist-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
   .events{text-align:center;font-size:14px;color:#d9c3ac;margin:8px 0 0}
   .events b{color:var(--coral)}
 
@@ -392,6 +423,37 @@
     </a>
   </div>
 
+  <div class="waitlist">
+    <h2>📬 Android版が出たらお知らせします</h2>
+    <p>
+      「テストに参加するのは難しいけれど、Android版が出たら使ってみたい」という方は、
+      こちらにメールアドレスをご登録ください。Google Play で公開できましたら、
+      このアドレスへお知らせをお送りします。
+    </p>
+    <form id="waitlist-form" class="waitlist-form" novalidate>
+      <div class="waitlist-hp" aria-hidden="true">
+        <label>ウェブサイト<input type="text" id="waitlist-website" name="website" tabindex="-1" autocomplete="off"></label>
+      </div>
+      <input id="waitlist-email" type="email" name="email"
+             inputmode="email" autocomplete="email" spellcheck="false"
+             placeholder="メールアドレス（例 sample@example.com）"
+             aria-label="メールアドレス" required>
+      <button id="waitlist-submit" type="submit" class="btn btn-waitlist">
+        <span class="ic">🔔</span>
+        <span id="waitlist-btn-label">お知らせを受け取る</span>
+      </button>
+    </form>
+    <p class="waitlist-consent">
+      ※ 送信をもって、Android版公開のお知らせメールの受け取りにご同意いただいたものとします。
+    </p>
+    <p id="waitlist-msg" class="waitlist-msg" role="status" aria-live="polite"></p>
+    <p class="waitlist-note">
+      ご登録のアドレスは Android版公開のお知らせにのみ使用し、他の目的には使いません。
+      第三者へ提供することもありません。お知らせのメールには配信停止用のリンクを載せますので、
+      いつでも解除していただけます。
+    </p>
+  </div>
+
   <div class="events">
     <b>コミケ・コミティア</b> をはじめ、あらゆる即売会の「売る」をスマホ1台でサポート
   </div>
@@ -401,5 +463,7 @@
   </footer>
 
 </div>
+<script src="/waitlist.js"></script>
+<script>window.initWaitlist("urehan");</script>
 </body>
 </html>
