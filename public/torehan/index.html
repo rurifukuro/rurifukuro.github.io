@@ -45,6 +45,36 @@
     }
     return true;
   }
+
+  /* ========================================================= */
+  /* ▼ 流入元の引き継ぎ（App Store のキャンペーン計測）           */
+  /*   このページに ?src=xxx を付けて来た人は、App Store ボタンの  */
+  /*   リンクに ct=xxx が自動で載る。ASC の                      */
+  /*   アナリティクス → 獲得 → キャンペーン で流入元別に見える。   */
+  /*     例) /torehan/?src=cos_anonenoa                        */
+  /*       → …/id6776913607?pt=128997588&ct=cos_anonenoa&mt=8  */
+  /*   ?src= が無いときは ct=portal（ポータル経由としてまとめる）  */
+  /* ========================================================= */
+  (function () {
+    var PT = "128997588";  /* 瑠璃フクロウ チーム共通のプロバイダID（全アプリ共通・固定値） */
+    var raw = "";
+    try { raw = new URLSearchParams(location.search).get("src") || ""; } catch (e) {}
+    /* ct に使えるのは英数字・_・- のみ。長すぎる値は 40 文字で切る */
+    var ct = raw.replace(/[^A-Za-z0-9_-]/g, "").slice(0, 40) || "portal";
+
+    document.addEventListener("DOMContentLoaded", function () {
+      var links = document.querySelectorAll('a[href*="apps.apple.com"]');
+      for (var i = 0; i < links.length; i++) {
+        var u;
+        try { u = new URL(links[i].href); } catch (e) { continue; }
+        if (u.searchParams.has("ct")) continue;  /* 既に ct 指定済みのリンクは触らない */
+        u.searchParams.set("pt", PT);
+        u.searchParams.set("ct", ct);
+        u.searchParams.set("mt", "8");
+        links[i].href = u.toString();
+      }
+    });
+  })();
 </script>
 
 <style>
