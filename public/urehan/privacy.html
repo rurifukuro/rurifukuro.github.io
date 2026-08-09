@@ -55,12 +55,13 @@
 <div class="wrap">
   <a href="./" class="backlink">← レジさぽっ！ トップへ</a>
   <h1>プライバシーポリシー<br><span class="appname">レジさぽっ！</span></h1>
-  <p class="updated" id="lastUpdated">最終更新: 2026-07-07</p>
+  <p class="updated" id="lastUpdated">最終更新: 2026-08-02</p>
 
   <div class="lang-bar">
     <span class="lang-btn active" onclick="showLang('ja')">日本語</span>
     <span class="lang-btn" onclick="showLang('en')">English</span>
-    <span class="lang-btn" onclick="showLang('zh')">中文</span>
+    <span class="lang-btn" onclick="showLang('zh')">简体中文</span>
+    <span class="lang-btn" onclick="showLang('zh-Hant')">繁體中文</span>
     <span class="lang-btn" onclick="showLang('ko')">한국어</span>
     <span class="lang-btn" onclick="showLang('fr')">Français</span>
   </div>
@@ -69,93 +70,109 @@
   <div class="policy visible" id="policy-ja">
     <h2>1. 基本方針</h2>
     <p>本アプリ「レジさぽっ！」（以下「本アプリ」）は、利用者のプライバシーを尊重し、取得する情報を必要最小限にとどめます。</p>
-
     <h2>2. 端末内に保存される情報</h2>
     <p>利用者が本アプリ内で作成・入力したデータ（頒布物情報、セット情報、売上履歴、経費、お品書き画像、設定など）は、原則として利用者の端末内（ローカルデータベース／ローカルストレージ）に保存されます。
 
-ただし、利用者が任意で「売り子共有」「取り置き予約ページの公開」「サークル登録（とれはんっ！連携）」「登録者数表示」などのオンライン・共有機能を使う場合に限り、一部のデータが本アプリのクラウドサーバーへ送信・保存されます（詳細は第3条）。これらの機能を使わなければ、データが端末外へ送信されることはありません（お品書きのAI読み取りを除く。第5条参照）。
+ただし、利用者が「売り子共有」「取り置き予約ページの公開」「サークル登録（とれはんっ！連携）」「登録者数表示」などのオンライン・共有機能を使う場合に、一部のデータが本アプリのクラウドサーバーへ送信・保存されます（詳細は第3条）。
+
+このうち「サークル登録（とれはんっ！連携）」と「登録者数表示」は、共有してよいかを確認するダイアログで同意されたあと、頒布物タブを開くたびに自動で送信・更新されます。同意しなければ送信されません。現時点では、同意したあとにこの送信だけを個別に停止する設定はありません（機能ごとのオン／オフ設定は今後追加する予定です）。取り下げたい場合は、該当の頒布セットを削除してください。削除時にサーバー上の登録も解除されます（第8条③）。
 
 本アプリは、利用者の氏名・メールアドレス・電話番号・位置情報・連絡先を強制的に取得する仕組みを持ちません。ただし、売り子共有で利用者が自ら入力する「表示名」は自由入力の項目であり、利用者の判断で任意の名称（実名を含む）を入力できます。
 
-本アプリには、姉妹アプリ「サク品っ！」から出力されたJSONファイルを読み込んで頒布物を取り込む機能があります。この処理は端末内で完結し、外部サーバーへの送信は行いません。</p>
-
+本アプリには、姉妹アプリ「サク品っ！」から頒布物データを取り込む機能があり、経路が2つあります。①端末内のJSONファイルを選んで読み込む場合、この処理は端末内で完結し、外部サーバーへの送信は行いません。②サク品っ！からの受け渡しリンクで取り込む場合は、受け渡しID（一時的なランダムな識別子）を当方のサーバーへ送信し、預けられた頒布物データを1回だけ受け取ります（詳細は第3条⑤）。</p>
     <h2>3. 共有・オンライン機能で送信される情報</h2>
-    <p>本アプリには、他の利用者とデータを共有・連携する任意機能があり、これらを使うと以下の情報が本アプリのクラウドサーバー（Supabase。Supabase, Inc. が提供するデータベース／ストレージで、当方のデータ処理委託先として機能します）へ送信・保存されます。各機能はオフにでき、使わなければ送信されません。
+    <p>本アプリには、他の利用者とデータを共有・連携する機能があり、これらを使うと以下の情報が本アプリのクラウドサーバー（Supabase。Supabase, Inc. が提供するデータベース／ストレージで、当方のデータ処理委託先として機能します）へ送信・保存されます。
+
+実行のされ方は機能によって異なります。①②⑤は、利用者がその操作（共有セッションの作成／参加、取り置きページの公開、取り込みリンクを開く）を行ったときにだけ動作します。③④は、初回に表示される共有同意ダイアログで同意されたあと、頒布物タブを開くたびに自動で実行されます（同意しなければ送信されません。第2条も参照）。
 
 ① 売り子共有（複数端末で売上を共有）
-・送信内容: セッション名、参加メンバーの表示名・記号、共有した売上データ（品名・金額・数量・決済方法など）、共有した頒布物情報（頒布物名・価格・在庫・セット構成など）、お品書き画像。
+・送信内容: セッション名、参加メンバーの表示名・記号、共有した売上データ（品名・金額・数量・決済方法など）、共有した頒布物情報（頒布物名・価格・在庫・セット構成など）、お品書き画像、匿名の端末識別子（インストールID＝個人を特定しないランダムな識別子で、同じ端末が入り直したときに同じ売り子として扱うために使われます）。
+・ホストが取り置き予約ページを公開している場合は、そのページを開くための鍵（ページの識別子と管理用トークン）もセッション参加者に配布され、参加者の端末に保存されます（共有から抜けると削除されます）。
 ・公開範囲: 同じ参加コードを知るセッション参加者のみが閲覧できます。
 
 ② 取り置き予約ページの公開
 ・送信内容: サークル名、開催イベント・開催日、公開する頒布物情報（頒布物名・価格・画像・セット構成など）、パスワード（設定した場合のハッシュ値）、予約上限数。
 ・公開範囲: 公開ページのURLを知る一般参加者（買い手）が閲覧・予約できます。
-・予約者から送信された情報（予約者名・備考・連絡先など）もサーバーに保存されます。
+・予約者から送信された情報（予約時の表示名、予約した頒布物と個数、匿名の端末識別子）もサーバーに保存されます。予約ページでは、お名前や連絡先は取得しません。
 
 ③ サークル登録（とれはんっ！連携）
 ・送信内容: サークル名・作家名・配置・ジャンルタグ・頒布物情報・お品書き画像など。
 ・公開範囲: 姉妹アプリ「とれはんっ！」の利用者が検索・閲覧できます。
+・対象外: 対象イベントに「その他（アプリ未実装）」を選んだ頒布セットは、この登録の対象外です（サーバーへ送信されません）。
 
 ④ 登録者数の表示
 ・送信内容: 登録を集計するための匿名の端末識別子（インストールID＝個人を特定しないランダムな識別子で、同じ端末からの重複を除くために使われます）。
 ・用途: 端末ごとの重複を除いた登録者数の集計のみ。
 
+⑤ サク品っ！からの受け渡しリンクによる取り込み
+・送信内容: 受け渡しID（サク品っ！が発行する一時的なランダムな識別子）のみ。氏名・連絡先・端末識別子は送信しません。
+・受信内容: サク品っ！が預けた頒布物情報（頒布物名・価格など）。取得と同時にサーバーから削除され、受け取られなかったデータも24時間で自動的に失効します。
+・公開範囲: 受け渡しリンクを受け取った本人のみ。
+
 ※ お品書き画像について: 共有・登録したお品書き画像は、URLを知っていれば誰でも閲覧できる公開ストレージに保存されます。著作権者の許可がない画像はアップロードしないでください。
 ※ 表示名には実名を入力しないこともできます。共有する情報は必要な範囲にとどめることを推奨します。</p>
-
     <h2>4. 写真ライブラリ・カメラへのアクセス</h2>
     <p>本アプリは、お品書き画像を登録するため、利用者の許可を得たうえで写真ライブラリおよびカメラにアクセスします。これらは利用者が画像登録機能を使うときにのみ動作します。</p>
-
     <h2>5. お品書きのAI読み取り（外部送信について）</h2>
     <p>本アプリの「お品書きAI読み取り」機能には、以下の2つの処理経路があります。
 
 ① クラウドOCR（高精度・クレジット消費型）
 クラウドOCRクレジットが残っている場合、対象の画像データが、本アプリのOCR中継サーバー（Supabase上のサーバー機能）を経由して外部のAIサービス「Anthropic（Claude API）」へ送信され、頒布物名・価格などのテキスト情報が抽出されます。
+・クラウドOCRクレジットは、購入したときだけでなく、開催日ごとに一定枚数が無料で付与されます（このほかにアプリ全体で1回だけの無料お試しがあります）。したがって、有料機能を購入していない場合でも、AI読み取りを実行すると既定ではこの①の経路になり、画像が外部へ送信されます。
 ・送信されるのは利用者が選択したお品書き画像と、利用回数を管理するための匿名の端末識別子（インストールID）のみで、連絡先・位置情報などは送信しません。
 ・通信は暗号化（HTTPS）されています。
 ・送信先である Anthropic の取り扱いについては Anthropic のプライバシーポリシーに従います。
 
-② オンデバイスOCR（無料・外部送信なし）
-クラウドクレジットがない場合、画像処理は端末内（ML Kit）で完結し、外部サーバーへの送信は一切行いません。
+② オンデバイスOCR（外部送信なし）
+クラウドOCRクレジットの残数が読み取る枚数に足りない場合（残数0を含む）は、「無料（端末内）で読み取る」を選ぶことができます。この経路では画像処理が端末内（ML Kit）で完結し、外部サーバーへの送信は一切行いません。
+・残数が足りているときは、確認なく①のクラウド経路で読み取ります。画像を外部へ送信したくない場合は、AI読み取りを使わず手入力で登録してください。
 
 ※ AI読み取り機能をまったく使わなければ、いずれの経路でも画像が外部へ送信されることはありません。</p>
-
     <h2>6. 第三者提供・広告・解析</h2>
-    <p>本アプリは、上記の共有・オンライン機能（第3条）およびAI読み取り（第5条）で説明した処理を除き、利用者のデータを第三者へ提供しません。これらの機能で送信されるデータは、当方のクラウド基盤の提供事業者（Supabase, Inc.／AI読み取りは Anthropic）に対し、機能提供の目的に必要な範囲でのみ取り扱われます。
-本アプリは、広告配信・アクセス解析・行動トラッキングのための第三者サービス（SDK）は使用していません。</p>
+    <p>本アプリは、上記の共有・オンライン機能（第3条）およびAI読み取り（第5条）で説明した処理、および下記の利用状況の計測を除き、利用者のデータを第三者へ提供しません。これらの機能で送信されるデータは、当方のクラウド基盤の提供事業者（Supabase, Inc.／AI読み取りは Anthropic）に対し、機能提供の目的に必要な範囲でのみ取り扱われます。
 
+■ アプリの利用状況の計測（Google Firebase Analytics）
+本アプリは、アプリの改善および広告の効果測定（インストール数の把握）のため、Google LLC が提供する計測サービス「Firebase Analytics」を使用しています。
+・収集される情報: 匿名の端末識別子（Firebase が生成するランダムなID）、アプリの利用状況（初回起動、起動、画面表示）、端末の機種・OSバージョン・おおよその地域。
+・氏名・メールアドレス・電話番号・連絡先・正確な位置情報や、アプリ内で入力した文章（サークル名・頒布物名・表示名・備考など）が送信されることはありません。売上金額・在庫数などの経営に関わる数値も送信しません。
+・広告識別子（IDFA）は取得せず、他社のアプリやWebサイトを横断して利用者を追跡する「トラッキング」は行いません。
+・収集された情報は Google のサーバーへ送信され、Google のプライバシーポリシーに従って取り扱われます。また、広告の効果測定のため、当方の Google 広告アカウントと連携しています。
+・この計測は Firebase Analytics の自動収集によるもので、現時点ではアプリ内に個別の停止設定はありません。停止をご希望の場合は本アプリをアンインストールしてください（アンインストール以降の収集は行われません）。収集済みのデータの削除をご希望の場合は、第11条の連絡先までご相談ください。
+
+上記の計測を除き、本アプリは広告配信・行動トラッキングのための第三者サービス（SDK）は使用していません。アプリ内に広告バナーの配信もありません。
+
+ただし、情報タブの「お得情報」セクション（日本語表示時のみ）には、アフィリエイト（成果報酬型広告）のリンクを掲載しています。該当箇所には【広告・PR】である旨を明示しています。利用者がこのリンクから遷移し、リンク先で会員登録やサービス利用を行った場合、当方に紹介報酬が支払われることがあります。報酬の有無によって利用者の負担額が増えることはありません。
+本アプリがアフィリエイト事業者へ利用者の個人情報を送信することはありません。リンクを開いた後の情報の取り扱い（クッキー等による成果計測を含む）は、各事業者のプライバシーポリシーに従います。</p>
     <h2>7. 外部リンク</h2>
     <p>本アプリ内で外部リンクを開く操作を行うと、端末のブラウザまたは該当アプリが起動します。リンク先での取り扱いは各サービスのポリシーに従います。
 
-本アプリが開く外部リンクには、X（Twitter）等のSNSや公式情報へのリンクが含まれます。</p>
-
+本アプリが開く外部リンクには、X（Twitter）等のSNSや公式情報へのリンクのほか、第6条に記載したアフィリエイトリンク（ハピタス／A8.net）が含まれます。</p>
     <h2>8. データの削除</h2>
     <p>・端末内に保存されたデータは、アプリ内の削除機能、またはアプリのアンインストールにより利用者自身で完全に削除できます。
-・本アプリの共有・オンライン機能は「サーバーにデータを残さない」ことを基本方針としており、サーバー上のデータは下記のとおり削除されます。
+・サーバー上のデータの取り扱いは、機能ごとに下記のとおりです。
 
 ① 売り子共有
-・セッションから退出すると、サーバー上のあなたの参加情報が削除されます。
-・セッションを解散すると、そのセッションに紐づくサーバー上のデータがすべて削除されます。
-・解散しなかった場合でも、対象イベントの終了後に、セッションのサーバー上データは自動的に削除されます。
+・端末の参加状態を解除しても、サーバー上のセッション情報および共有された売上記録は残ります。
+・現時点では、対象イベントの終了による自動削除は行っていません。
 
 ② 取り置き予約ページ
-・アプリ内でページを非公開にするか削除すると、サーバー上のページ情報・予約データが削除されます。
-・対象イベントの終了後に自動的に削除されます。
+・アプリ内でページを「非公開」にすると、買い手からの閲覧・予約受付は停止しますが、ページ情報と予約データ（買い手が入力したニックネームを含む）はサーバー上に残ります。
+・現時点では、対象イベントの終了による自動削除は行っていません。
 
 ③ サークル登録（とれはんっ！連携）
-・アプリ内でサークルを削除すると、サーバー上の登録も解除されます。
-・対象イベントの終了後に自動的に削除されます。
+・アプリ内でサークル（頒布セット）を削除すると、サーバー上の登録も解除されます。同じサークルを登録している他の利用者がいない場合は、お品書き画像もあわせて削除されます。
+・登録は、対象イベントの最終開催日から7日を経過した時点で自動的に削除されます。なお「その他（アプリ未実装）」を選んだ頒布セットは、そもそもこの登録の対象外です（第3条③）。
 
-その他のサーバー上データの削除をご希望の場合は rurifukuro@gmail.com までご連絡ください。</p>
+④ 利用状況の統計（Google Firebase Analytics・第6条）
+・アプリをアンインストールすると、以降の収集は行われません。収集済みの統計は個人を特定しない形で保存され、Google の保持期間の経過後に自動的に削除されます。それ以前の削除をご希望の場合は <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> までご連絡ください。
 
+①②のデータの削除をご希望の場合は <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> までご連絡ください（取り置き予約ページはページURL、売り子共有は参加コードをお知らせいただくと対象を特定できます）。</p>
     <h2>9. 子どものプライバシー</h2>
     <p>本アプリは全年齢を対象としており、子どもから個人情報を収集することを意図していません。</p>
-
     <h2>10. 本ポリシーの変更</h2>
     <p>将来の機能追加・変更により取り扱いが変わる場合は、本ポリシーを改定し、本ページの「最終更新日」を更新します。</p>
-
     <h2>11. お問い合わせ</h2>
     <p>連絡先: <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a></p>
-
     <h2>12. ご意見・お問い合わせフォームについて</h2>
     <p>本アプリの設定画面からご意見・お問い合わせフォームを送信した場合、入力内容は Google フォーム（Google LLC）を経由して収集されます。
 ・フォームへのメールアドレスの入力は任意です。メールアドレスを記入しない場合、匿名のまま送信できます。
@@ -168,93 +185,109 @@
   <div class="policy" id="policy-en">
     <h2>1. Overview</h2>
     <p>"Reji Sapo!" ("the App") respects your privacy and keeps the information it uses to a minimum.</p>
-
     <h2>2. Data Stored on Your Device</h2>
     <p>Data you create in the App (product info, set/bundle info, sales history, expenses, menu images, settings) is, in principle, stored on your device (local database / local storage).
 
-However, only when you choose to use the optional online / sharing features — "Seller share", "Reservation page publishing", "Circle registration (Torehan integration)", and "Registrant count" — is some data sent to and stored on the App's cloud server (see Section 3). If you do not use these features, no data leaves your device (except AI menu recognition; see Section 5).
+However, when you use the online / sharing features — "Seller share", "Reservation page publishing", "Circle registration (Torehan integration)", and "Registrant count" — some data is sent to and stored on the App's cloud server (see Section 3).
+
+Of these, "Circle registration (Torehan integration)" and "Registrant count" run automatically every time you open the Products tab, once you have agreed in the sharing-consent dialog. Nothing is sent unless you agree. At present there is no setting that stops this transmission alone after you have agreed (per-feature on/off settings are planned). To withdraw a registration, delete the product set concerned; deleting it also removes the registration from the server (see Section 8, item (3)).
 
 The App has no mechanism that compulsorily collects your name, email address, phone number, location, or contacts. Note, however, that the "display name" you enter yourself in the sharing features is a free-text field into which you may, at your discretion, enter any name (including your real name).
 
-The App can import product data from JSON files exported by the companion app "Sakushina!". This processing is performed entirely on your device and no data is sent to any external server.</p>
-
+The App can import product data from the companion app "Sakushina!" in two ways. (1) When you pick a JSON file on your device, the processing is performed entirely on your device and no data is sent to any external server. (2) When you import via a hand-off link from Sakushina!, the App sends the hand-off ID (a temporary random identifier) to our server and receives the deposited product data once (see Article 3, item 5).</p>
     <h2>3. Information Sent via Online / Sharing Features</h2>
-    <p>The App offers optional features that share or sync data with other users. When you use them, the following information is sent to and stored on the App's cloud server (Supabase, a database / storage service provided by Supabase, Inc., acting as our data processor). Each feature is optional; if you do not use it, nothing is sent.
+    <p>The App offers features that share or sync data with other users. When you use them, the following information is sent to and stored on the App's cloud server (Supabase, a database / storage service provided by Supabase, Inc., acting as our data processor).
+
+How they are triggered differs by feature. Items ①, ② and ⑤ run only when you perform the corresponding action (creating or joining a share session, publishing a reservation page, opening an import link). Items ③ and ④ run automatically every time you open the Products tab, once you have agreed in the sharing-consent dialog shown the first time; nothing is sent unless you agree (see also Section 2).
 
 ① Seller share (sharing sales across multiple devices)
-・Sent: session name, participating members' display names and symbols, shared sales data (product name, amount, quantity, payment method, etc.), shared product info (product name, price, stock, set composition, etc.), menu images.
+・Sent: session name, participating members' display names and symbols, shared sales data (product name, amount, quantity, payment method, etc.), shared product info (product name, price, stock, set composition, etc.), menu images, and an anonymous device identifier (installation ID — a random identifier that does not identify you personally, used so that the same device rejoining is treated as the same seller).
+・If the host has published a reservation page, the keys for opening that page (the page identifier and its owner token) are also distributed to session participants and stored on their devices (they are deleted when you leave the share).
 ・Visible to: only session participants who know the same join code.
 
 ② Reservation page publishing
 ・Sent: circle name, event and day, published product info (product name, price, images, set composition, etc.), password (hashed value, if set), reservation limit.
 ・Visible to: general attendees (buyers) who know the page URL can view and reserve.
-・Information submitted by reservation makers (name, notes, contact info, etc.) is also stored on the server.
+・Information submitted by reservation makers (the display name they enter, the products and quantities they reserve, and an anonymous device identifier) is also stored on the server. The reservation page does not ask for real names or contact details.
 
 ③ Circle registration (Torehan integration)
 ・Sent: circle name, author name, placement, genre tags, product info, menu images, etc.
 ・Visible to: users of the companion app "Torehan!" can search and view.
+・Excluded: sales sets whose event is set to "Other (not supported in this app)" are out of scope for this registration (nothing is sent to the server).
 
 ④ Registrant count
 ・Sent: an anonymous device identifier (Installation ID — a random identifier that does not identify you personally, used to exclude duplicates from the same device).
 ・Purpose: only to count registrants, de-duplicated per device.
 
+⑤ Import via a hand-off link from Sakushina!
+・Sent: only the hand-off ID (a temporary random identifier issued by Sakushina!). No name, contact details or device identifier is sent.
+・Received: the product information deposited by Sakushina! (product names, prices, etc.). It is deleted from the server as soon as it is retrieved, and data that is never retrieved expires automatically after 24 hours.
+・Visibility: only the person who received the hand-off link.
+
 ※ About menu images: menu images you share or register are stored in public storage readable by anyone who has the URL. Do not upload images for which you do not have the copyright holder's permission.
 ※ You may choose not to enter your real name as a display name. We recommend sharing only the information that is necessary.</p>
-
     <h2>4. Photo Library &amp; Camera Access</h2>
     <p>With your permission, the App accesses your photo library and camera to let you attach menu images. These activate only when you use the image feature.</p>
-
     <h2>5. AI Menu Recognition (External Transmission)</h2>
     <p>The "AI menu recognition" feature has two processing paths.
 
 ① Cloud OCR (high precision, credit-based)
 When you have remaining cloud OCR credits, the selected image data is sent, via the App's OCR relay server (a server function on Supabase), to a third-party AI service, "Anthropic" (Claude API), to extract text such as product names and prices.
+・Cloud OCR credits are not only purchased: a fixed number is granted free of charge for each event day (in addition, there is a one-time free trial for the whole app). Therefore, even if you have not purchased anything, running AI recognition uses path ① by default and the image is sent externally.
 ・Only the menu image you select, together with an anonymous device identifier (Installation ID) used to manage usage counts, is sent; contacts, location, etc. are not.
 ・Transmission is encrypted (HTTPS).
 ・Anthropic's handling is governed by Anthropic's privacy policy.
 
-② On-device OCR (free, no external transmission)
-When cloud credits are exhausted, image processing is performed entirely on-device (ML Kit) — no data is sent to any external server.
+② On-device OCR (no external transmission)
+When your remaining cloud OCR credits are fewer than the number of images to be processed (including zero), you can choose "Recognize for free (on device)". On that path, image processing is performed entirely on-device (ML Kit) — no data is sent to any external server.
+・When you have enough credits, recognition uses path ① without asking. If you do not want images sent externally, register your products by hand instead of using AI recognition.
 
 ※ If you do not use the AI recognition feature at all, no image is sent externally through either path.</p>
-
     <h2>6. Third Parties, Ads, Analytics</h2>
-    <p>Except for the online / sharing features (Section 3) and AI recognition (Section 5) described above, the App does not share your data with third parties. Data sent through those features is handled by our cloud infrastructure providers (Supabase, Inc.; for AI recognition, Anthropic) only to the extent necessary to provide the feature.
-The App contains no advertising, analytics, or behavioral tracking SDKs.</p>
+    <p>Except for the online / sharing features (Section 3), AI recognition (Section 5) described above, and the usage measurement described below, the App does not share your data with third parties. Data sent through those features is handled by our cloud infrastructure providers (Supabase, Inc.; for AI recognition, Anthropic) only to the extent necessary to provide the feature.
 
+■ Usage measurement (Google Firebase Analytics)
+The App uses "Firebase Analytics", a measurement service provided by Google LLC, to improve the App and to measure advertising effectiveness (number of installs).
+・Collected: an anonymous device identifier (a random ID generated by Firebase), app usage (first launch, launches, screen views), and your device model, OS version and approximate region.
+・Your name, email address, phone number, contacts, precise location, and any text you enter in the App (circle name, item name, display name, notes, etc.) are never sent. Sales amounts, stock counts and other business figures are not sent either.
+・The advertising identifier (IDFA) is not collected, and we do not perform "tracking" that follows you across other companies' apps or websites.
+・Collected information is sent to Google's servers and handled under Google's privacy policy. It is also linked to our Google Ads account for advertising measurement.
+・This measurement is Firebase Analytics' automatic collection; there is currently no in-app setting to turn it off. If you wish to stop it, please uninstall the App (nothing is collected after uninstall). To request deletion of data already collected, please contact us at the address in Section 11.
+
+Apart from the measurement above, the App contains no advertising or behavioral tracking SDKs, and displays no ad banners.
+
+However, the "Money-saving Info" section of the Info tab (shown only when the display language is Japanese) contains affiliate (performance-based advertising) links, clearly labeled as advertising. If you follow such a link and register for or use a service at the destination, we may receive a referral fee. This never increases the amount you pay.
+The App does not send your personal information to affiliate providers. Once a link is opened, handling of information (including cookie-based conversion tracking) is governed by each provider's own privacy policy.</p>
     <h2>7. External Links</h2>
     <p>Opening external links in the App launches your device's browser or the relevant app; their handling follows each service's policy.
 
-External links the App may open include links to social media or official information (e.g., X / Twitter).</p>
-
+External links the App may open include links to social media or official information (e.g., X / Twitter), as well as the affiliate links described in Section 6 (Hapitas / A8.net).</p>
     <h2>8. Data Deletion</h2>
     <p>・You can fully delete on-device data via in-app delete features or by uninstalling the App.
-・The App's sharing and online features follow a basic policy of "leaving no data on the server." Server-side data is deleted as described below.
+・How server-side data is handled differs by feature, as described below.
 
 (1) Seller share
-・When you leave a session, your participation information on the server is deleted.
-・When a session is disbanded, all related server-side data is deleted.
-・Even if the session is not disbanded, its server-side data is automatically deleted after the relevant event ends.
+・Clearing this device's participation state does not remove the session information or the shared sales records from the server.
+・At present, this data is not deleted automatically when the relevant event ends.
 
 (2) Reservation page
-・When you unpublish or delete the page in the App, the page info and reservation data on the server are deleted.
-・Data is automatically deleted after the relevant event ends.
+・Unpublishing the page in the App stops buyers from viewing it or making reservations, but the page information and reservation data (including nicknames entered by buyers) remain on the server.
+・At present, this data is not deleted automatically when the relevant event ends.
 
 (3) Circle registration (Torehan integration)
-・When you delete the circle in the App, the server-side registration is also removed.
-・Data is automatically deleted after the relevant event ends.
+・When you delete a circle (sales set) in the App, the server-side registration is also removed. If no other user has registered the same circle, the price-list images are deleted as well.
+・Registrations are deleted automatically 7 days after the last day of the relevant event. Note that sales sets whose event is set to "Other (not supported in this app)" are out of scope for this registration in the first place (see Section 3 (3)).
 
-If you wish to delete any other server-side data, please contact <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>.</p>
+(4) Usage statistics (Google Firebase Analytics, Section 6)
+・Uninstalling the App stops any further collection. Statistics already collected are stored in a form that does not identify you and are deleted automatically once Google's retention period elapses. To request earlier deletion, please contact <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>.
 
+If you wish to have the data described in (1) or (2) deleted, please contact <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> (please include the page URL for a reservation page, or the join code for a seller share session, so that we can identify it).</p>
     <h2>9. Children's Privacy</h2>
     <p>The App is for all ages and does not intend to collect personal information from children.</p>
-
     <h2>10. Changes</h2>
     <p>If future features or changes affect how data is handled, we will update this policy and the "Last updated" date.</p>
-
     <h2>11. Contact</h2>
     <p><a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a></p>
-
     <h2>12. Feedback &amp; Contact Form</h2>
     <p>When you submit feedback via the in-app contact form, your input is collected through Google Forms (Google LLC).
 ・Providing your email address in the form is optional. You may submit anonymously without entering any contact information.
@@ -263,190 +296,335 @@ If you wish to delete any other server-side data, please contact <a href="mailto
 ・Google's handling of form data is governed by Google's Privacy Policy.</p>
   </div>
 
-  <!-- 中文 -->
+  <!-- 简体中文 -->
   <div class="policy" id="policy-zh">
     <h2>1. 基本方针</h2>
     <p>本应用「レジさぽっ！」（以下简称"本应用"）尊重用户的隐私，仅获取必要的最小范围的信息。</p>
-
     <h2>2. 存储在设备内的信息</h2>
     <p>用户在本应用内创建・输入的数据（商品信息、套装信息、销售记录、费用、菜单图片、设置等）原则上保存在用户的设备内（本地数据库／本地存储）。
 
-但仅当用户选择使用「卖手共享」「预约页面公开」「社团登记（与 Torehan 联动）」「登记人数显示」等可选的在线・共享功能时，部分数据才会被发送并保存到本应用的云服务器（详见第3条）。如果不使用这些功能，数据不会离开您的设备（菜单的AI识别除外，见第5条）。
+但仅当用户选择使用「卖手共享」「预约页面公开」「社团登记（与 Torehan 联动）」「登记人数显示」等可选的在线・共享功能时，部分数据才会被发送并保存到本应用的云服务器（详见第3条）。
+
+其中「社团登记（与 Torehan 联动）」和「登记人数显示」，在您于共享确认对话框中同意之后，每次打开贩售物标签页时都会自动发送・更新。未同意则不会发送。目前尚无仅停止该项发送的单独设置（按功能开关的设置将于今后添加）。如需撤回，请删除相应的贩售组，届时服务器上的登记也会一并解除（第8条③）。
 
 本应用没有强制收集您的姓名、电子邮件地址、电话号码、位置信息、联系方式的机制。但请注意，您在卖手共享中自行输入的"显示名称"是自由文本字段，您可自行决定输入任意名称（包括真实姓名）。
 
-本应用可以从姊妹应用「サク品っ！」导出的JSON文件中导入商品数据。此处理完全在设备内完成，不会向任何外部服务器发送数据。</p>
-
+本应用可以从姊妹应用「サク品っ！」导入商品数据，有两种途径。①选择设备内的JSON文件导入时，此处理完全在设备内完成，不会向任何外部服务器发送数据。②通过サク品っ！的交接链接导入时，本应用会将交接ID（临时随机标识符）发送至我方服务器，并一次性接收所寄存的商品数据（详见第3条⑤）。</p>
     <h2>3. 通过在线・共享功能发送的信息</h2>
-    <p>本应用提供与其他用户共享・联动数据的可选功能。使用这些功能时，以下信息会被发送并保存到本应用的云服务器（Supabase，由 Supabase, Inc. 提供的数据库／存储，作为我方的数据处理受托方）。各功能均为可选，不使用则不会发送。
+    <p>本应用提供与其他用户共享・联动数据的可选功能。使用这些功能时，以下信息会被发送并保存到本应用的云服务器（Supabase，由 Supabase, Inc. 提供的数据库／存储，作为我方的数据处理受托方）。
+
+执行的时机因功能而异。①②⑤仅在用户进行相应操作（创建／参加共享会话、公开预约页面、打开交接链接）时才会运行。③④则在首次显示的共享同意对话框中同意之后，每次打开贩售物标签页时自动执行（未同意则不会发送。另见第2条）。
 
 ① 卖手共享（在多台设备间共享销售数据）
-・发送内容：会话名称、参加成员的显示名称和符号、共享的销售数据（商品名・金额・数量・支付方式等）、共享的商品信息（商品名・价格・库存・套装构成等）、菜单图片。
+・发送内容：会话名称、参加成员的显示名称和符号、共享的销售数据（商品名・金额・数量・支付方式等）、共享的商品信息（商品名・价格・库存・套装构成等）、菜单图片、匿名的设备识别符（安装ID＝不识别个人的随机标识符，用于在同一设备重新加入时视为同一售货员）。
+・如果主办方已公开预约页面，用于打开该页面的密钥（页面识别符和管理用令牌）也会分发给会话参加者并保存在其设备中（退出共享时会被删除）。
 ・可见范围：仅限知道相同参加码的会话参加者。
 
 ② 预约页面公开
 ・发送内容：社团名称、活动和举办日、公开的商品信息（商品名・价格・图片・套装构成等）、密码（如设置则为哈希值）、预约上限数。
 ・可见范围：知道页面 URL 的一般参加者（买家）可以浏览和预约。
-・预约者提交的信息（预约者姓名・备注・联系方式等）也会保存在服务器上。
+・预约者提交的信息（预约时填写的显示名称、预约的商品与数量、匿名的设备识别码）也会保存在服务器上。预约页面不会收集真实姓名或联系方式。
 
 ③ 社团登记（与 Torehan 联动）
 ・发送内容：社团名・作者名・摊位位置・类型标签・商品信息・菜单图片等。
 ・可见范围：姐妹应用「とれはんっ！」的用户可通过搜索查看。
+・不适用范围：将活动设为「其他（本应用未支持）」的贩售组不属于本登记的对象（不会发送至服务器）。
 
 ④ 登记人数显示
 ・发送内容：用于统计登记的匿名设备标识符（安装ID＝不识别个人的随机标识符，用于排除同一设备的重复）。
 ・用途：仅用于按设备去重后统计登记人数。
 
+⑤ 通过サク品っ！的交接链接导入
+・发送内容：仅交接ID（サク品っ！签发的临时随机标识符）。不发送姓名、联系方式或设备标识符。
+・接收内容：サク品っ！寄存的商品信息（商品名称、价格等）。取得后即从服务器删除，未被取得的数据也将在24小时后自动失效。
+・公开范围：仅收到交接链接的本人。
+
 ※ 关于菜单图片：您共享或登记的菜单图片将保存在任何知道 URL 的人都可读取的公开存储中。请勿上传未获得著作权人许可的图片。
 ※ 您也可以不输入真实姓名作为显示名称。建议仅共享必要范围内的信息。</p>
-
     <h2>4. 访问相册・相机</h2>
     <p>为了添加菜单图片，本应用会在获得用户许可后访问相册和相机。它们仅在用户使用图片添加功能时运行。</p>
-
     <h2>5. 菜单的AI识别（关于外部传输）</h2>
     <p>本应用的"菜单AI识别"功能有以下两条处理路径。
 
 ① 云端OCR（高精度・消耗点数型）
 当用户拥有剩余的云端OCR点数时，所选的图片数据会经由本应用的OCR中继服务器（Supabase上的服务器功能）发送至第三方AI服务"Anthropic（Claude API）"，以提取商品名・价格等文本信息。
+・云端OCR点数不仅可以购买获得，每个举办日还会免费赠送一定张数（此外另有全应用仅一次的免费试用）。因此，即使您没有购买付费功能，执行AI识别时默认也会走本①的路径，图片会被发送至外部。
 ・仅发送您所选择的菜单图片，以及用于管理使用次数的匿名设备标识符（安装ID），不会发送联系方式、位置信息等。
 ・通信经过加密（HTTPS）。
 ・关于发送目标 Anthropic 的处理，遵循 Anthropic 的隐私政策。
 
-② 设备端OCR（免费・无外部传输）
-当没有云端点数时，图片处理将在设备内（ML Kit）完成，完全不会向外部服务器发送。
+② 设备端OCR（无外部传输）
+当云端OCR点数的剩余张数不足以处理所选图片时（包括剩余为0），您可以选择「免费（在设备内）识别」。该路径下图片处理完全在设备内（ML Kit）完成，绝不会向外部服务器发送。
+・当剩余张数足够时，将不经询问直接使用①的云端路径。如果您不希望图片被发送至外部，请不要使用AI识别，改为手动录入。
 
 ※ 如果完全不使用AI识别功能，则无论哪条路径都不会将图片发送至外部。</p>
-
     <h2>6. 第三方提供・广告・分析</h2>
-    <p>除上述在线・共享功能（第3条）及AI识别（第5条）所说明的处理外，本应用不会向第三方提供用户的数据。通过这些功能发送的数据，仅在提供功能所必需的范围内由我方的云基础设施提供商（Supabase, Inc.；AI识别为 Anthropic）处理。本应用不使用用于广告投放、访问分析、行为追踪的第三方服务（SDK）。</p>
+    <p>除上述在线・共享功能（第3条）、AI识别（第5条）所说明的处理，以及下述的使用情况计测外，本应用不会向第三方提供用户的数据。通过这些功能发送的数据，仅在提供功能所必需的范围内由我方的云基础设施提供商（Supabase, Inc.；AI识别为 Anthropic）处理。
 
+■ 应用使用情况的计测（Google Firebase Analytics）
+为改进应用以及衡量广告效果（掌握安装数量），本应用使用 Google LLC 提供的计测服务「Firebase Analytics」。
+・收集的信息: 匿名的设备识别码（Firebase 生成的随机ID）、应用的使用情况（首次启动、启动、画面显示）、设备机型・操作系统版本・大致地区。
+・不会发送姓名、电子邮件地址、电话号码、通讯录、精确位置信息，也不会发送用户在应用内输入的文字（社团名称、商品名称、显示名称、备注等）。销售金额、库存数量等经营数据同样不会发送。
+・不获取广告识别码（IDFA），也不进行跨其他公司应用或网站追踪用户的「追踪」行为。
+・收集到的信息将发送至 Google 的服务器，并依据 Google 的隐私政策处理。此外，为衡量广告效果，已与我方的 Google Ads 账户关联。
+・该计测由 Firebase Analytics 自动收集，目前应用内没有单独的停止设置。如希望停止，请卸载本应用（卸载之后不再收集）。如希望删除已收集的数据，请联系第11条所载的联系方式。
+
+除上述计测外，本应用不使用用于广告投放、行为追踪的第三方服务（SDK），也不展示广告横幅。
+
+但是，信息标签页的「优惠信息」栏目（仅在显示语言为日语时显示）中刊登了联盟营销（成果报酬型广告）链接，并在相应位置明确标示为广告。若用户通过该链接前往并在目标网站注册或使用服务，我方可能会获得推荐报酬。这不会增加用户的任何费用。
+本应用不会向联盟营销服务商发送用户的个人信息。打开链接之后的信息处理（包括通过Cookie等进行的成果计测）遵循各服务商的隐私政策。</p>
     <h2>7. 外部链接</h2>
     <p>在本应用内执行打开外部链接的操作时，会启动设备的浏览器或相应的应用。链接目标处的处理遵循各服务的政策。
 
-本应用打开的外部链接包括指向社交媒体或官方信息的链接（如 X / Twitter）。</p>
-
+本应用打开的外部链接包括指向社交媒体或官方信息的链接（如 X / Twitter），以及第6条所述的联盟营销链接（Hapitas / A8.net）。</p>
     <h2>8. 数据的删除</h2>
     <p>・保存在设备内的数据，可由用户自己通过应用内的删除功能或卸载应用来完全删除。
-・本应用的共享・在线功能以「不在服务器上留存数据」为基本方针，服务器端的数据将按如下方式删除。
+・服务器端数据的处理方式因功能而异，具体如下。
 
 ① 卖手共享
-・退出会话后，服务器上您的参与信息将被删除。
-・解散会话后，与该会话关联的服务器端数据将全部删除。
-・即使未解散，在相关活动结束后，会话的服务器端数据也会被自动删除。
+・即使解除本设备的参与状态，服务器上的会话信息以及已共享的销售记录仍会保留。
+・目前不会在相关活动结束后自动删除。
 
 ② 预约页面
-・在应用内将页面设为非公开或删除后，服务器上的页面信息和预约数据将被删除。
-・在相关活动结束后自动删除。
+・在应用内将页面设为「非公开」后，买家将无法浏览和预约，但页面信息与预约数据（包括买家填写的昵称）仍保留在服务器上。
+・目前不会在相关活动结束后自动删除。
 
 ③ 社团登记（与 Torehan 联动）
-・在应用内删除社团后，服务器上的登记也会解除。
-・在相关活动结束后自动删除。
+・在应用内删除社团（贩售组）后，服务器上的登记也会解除。若没有其他用户登记同一社团，品书图片也会一并删除。
+・登记将在相关活动最后一天起满7天后自动删除。另外，将活动设为「其他（本应用未支持）」的贩售组本身就不属于本登记的对象（第3条③）。
 
-如希望删除其他服务器端数据，请联系 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>。</p>
+④ 使用情况统计（Google Firebase Analytics・第6条）
+・卸载应用后将不再收集。已收集的统计以无法识别个人的形式保存，并在 Google 的保存期限届满后自动删除。如希望更早删除，请联系 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>。
 
+如希望删除①②的数据，请联系 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>（预约页面请告知页面URL，卖手共享请告知参与代码，以便我们确认对象）。</p>
     <h2>9. 儿童隐私</h2>
     <p>本应用面向所有年龄段，无意从儿童处收集个人信息。</p>
-
     <h2>10. 本政策的变更</h2>
     <p>如因今后的功能追加・变更导致处理方式变化，我们将修订本政策，并更新本页的"最后更新日期"。</p>
-
     <h2>11. 联系方式</h2>
     <p>联系方式：<a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a></p>
-
     <h2>12. 关于意见和咨询表单</h2>
     <p>通过应用内联系表单提交意见时，您的内容将通过 Google 表单（Google LLC）收集。填写电子邮件地址为可选项，不填写可匿名提交。我们已禁用"自动收集电子邮件地址"功能。提交内容仅用于改善应用，不向第三方提供。Google 表单的数据处理遵循 Google 隐私政策。</p>
+  </div>
+
+  <!-- 繁體中文 -->
+  <div class="policy" id="policy-zh-Hant">
+    <h2>1. 基本方針</h2>
+    <p>本應用「レジさぽっ！」（以下簡稱"本應用"）尊重使用者的隱私，僅獲取必要的最小範圍的資訊。</p>
+    <h2>2. 儲存在裝置內的資訊</h2>
+    <p>使用者在本應用內建立・輸入的資料（商品資訊、套裝資訊、銷售記錄、費用、選單圖片、設定等）原則上儲存在使用者的裝置內（本地資料庫／本地儲存）。
+
+但僅當使用者選擇使用「賣手共享」「預約頁面公開」「社團登記（與 Torehan 聯動）」「登記人數顯示」等可選的線上・共享功能時，部分資料才會被傳送並儲存到本應用的雲伺服器（詳見第3條）。
+
+其中「社團登記（與 Torehan 聯動）」和「登記人數顯示」，在您於共享確認對話方塊中同意之後，每次開啟販售物標籤頁時都會自動傳送・更新。未同意則不會傳送。目前尚無僅停止該項傳送的單獨設定（按功能開關的設定將於今後新增）。如需撤回，請刪除相應的販售組，屆時伺服器上的登記也會一併解除（第8條③）。
+
+本應用沒有強制收集您的姓名、電子郵件地址、電話號碼、位置資訊、聯絡方式的機制。但請注意，您在賣手共享中自行輸入的"顯示名稱"是自由文字欄位，您可自行決定輸入任意名稱（包括真實姓名）。
+
+本應用可以從姊妹應用「サク品っ！」匯入商品資料，有兩種途徑。①選擇裝置內的JSON檔案匯入時，此處理完全在裝置內完成，不會向任何外部伺服器傳送資料。②透過サク品っ！的交接連結匯入時，本應用會將交接ID（臨時隨機識別符號）傳送至我方伺服器，並一次性接收所寄存的商品資料（詳見第3條⑤）。</p>
+    <h2>3. 透過線上・共享功能傳送的資訊</h2>
+    <p>本應用提供與其他使用者共享・聯動資料的可選功能。使用這些功能時，以下資訊會被傳送並儲存到本應用的雲伺服器（Supabase，由 Supabase, Inc. 提供的資料庫／儲存，作為我方的資料處理受託方）。
+
+執行的時機因功能而異。①②⑤僅在使用者進行相應操作（建立／參加共享會話、公開預約頁面、開啟交接連結）時才會執行。③④則在首次顯示的共享同意對話方塊中同意之後，每次開啟販售物標籤頁時自動執行（未同意則不會傳送。另見第2條）。
+
+① 賣手共享（在多臺裝置間共享銷售資料）
+・傳送內容：會話名稱、參加成員的顯示名稱和符號、共享的銷售資料（商品名・金額・數量・支付方式等）、共享的商品資訊（商品名・價格・庫存・套裝構成等）、選單圖片、匿名的裝置識別符（安裝ID＝不識別個人的隨機識別符號，用於在同一裝置重新加入時視為同一售貨員）。
+・如果主辦方已公開預約頁面，用於開啟該頁面的金鑰（頁面識別符和管理用令牌）也會分發給會話參加者並儲存在其裝置中（退出共享時會被刪除）。
+・可見範圍：僅限知道相同參加碼的會話參加者。
+
+② 預約頁面公開
+・傳送內容：社團名稱、活動和舉辦日、公開的商品資訊（商品名・價格・圖片・套裝構成等）、密碼（如設定則為雜湊值）、預約上限數。
+・可見範圍：知道頁面 URL 的一般參加者（買家）可以瀏覽和預約。
+・預約者提交的資訊（預約時填寫的顯示名稱、預約的商品與數量、匿名的裝置識別碼）也會儲存在伺服器上。預約頁面不會收集真實姓名或聯絡方式。
+
+③ 社團登記（與 Torehan 聯動）
+・傳送內容：社團名・作者名・攤位位置・類型標籤・商品資訊・選單圖片等。
+・可見範圍：姐妹應用「とれはんっ！」的使用者可透過搜尋檢視。
+・不適用範圍：將活動設為「其他（本應用未支援）」的販售組不屬於本登記的對象（不會傳送至伺服器）。
+
+④ 登記人數顯示
+・傳送內容：用於統計登記的匿名裝置識別符號（安裝ID＝不識別個人的隨機識別符號，用於排除同一裝置的重複）。
+・用途：僅用於按裝置去重後統計登記人數。
+
+⑤ 透過サク品っ！的交接連結匯入
+・傳送內容：僅交接ID（サク品っ！簽發的臨時隨機識別符號）。不傳送姓名、聯絡方式或裝置識別符號。
+・接收內容：サク品っ！寄存的商品資訊（商品名稱、價格等）。取得後即從伺服器刪除，未被取得的資料也將在24小時後自動失效。
+・公開範圍：僅收到交接連結的本人。
+
+※ 關於選單圖片：您共享或登記的選單圖片將儲存在任何知道 URL 的人都可讀取的公開儲存中。請勿上傳未獲得著作權人許可的圖片。
+※ 您也可以不輸入真實姓名作為顯示名稱。建議僅共享必要範圍內的資訊。</p>
+    <h2>4. 訪問相簿・相機</h2>
+    <p>為了新增選單圖片，本應用會在獲得使用者許可後訪問相簿和相機。它們僅在使用者使用圖片新增功能時執行。</p>
+    <h2>5. 選單的AI識別（關於外部傳輸）</h2>
+    <p>本應用的"選單AI識別"功能有以下兩條處理路徑。
+
+① 雲端OCR（高精度・消耗點數型）
+當使用者擁有剩餘的雲端OCR點數時，所選的圖片資料會經由本應用的OCR中繼伺服器（Supabase上的伺服器功能）傳送至第三方AI服務"Anthropic（Claude API）"，以提取商品名・價格等文字資訊。
+・雲端OCR點數不僅可以購買獲得，每個舉辦日還會免費贈送一定張數（此外另有全應用僅一次的免費試用）。因此，即使您沒有購買付費功能，執行AI識別時預設也會走本①的路徑，圖片會被傳送至外部。
+・僅傳送您所選擇的選單圖片，以及用於管理使用次數的匿名裝置識別符號（安裝ID），不會傳送聯絡方式、位置資訊等。
+・通訊經過加密（HTTPS）。
+・關於傳送目標 Anthropic 的處理，遵循 Anthropic 的隱私政策。
+
+② 裝置端OCR（無外部傳輸）
+當雲端OCR點數的剩餘張數不足以處理所選圖片時（包括剩餘為0），您可以選擇「免費（在裝置內）識別」。該路徑下圖片處理完全在裝置內（ML Kit）完成，絕不會向外部伺服器傳送。
+・當剩餘張數足夠時，將不經詢問直接使用①的雲端路徑。如果您不希望圖片被傳送至外部，請不要使用AI識別，改為手動錄入。
+
+※ 如果完全不使用AI識別功能，則無論哪條路徑都不會將圖片傳送至外部。</p>
+    <h2>6. 第三方提供・廣告・分析</h2>
+    <p>除上述線上・共享功能（第3條）、AI識別（第5條）所說明的處理，以及下述的使用情況計測外，本應用不會向第三方提供使用者的資料。透過這些功能傳送的資料，僅在提供功能所必需的範圍內由我方的雲基礎設施提供商（Supabase, Inc.；AI識別為 Anthropic）處理。
+
+■ 應用使用情況的計測（Google Firebase Analytics）
+為改進應用以及衡量廣告效果（掌握安裝數量），本應用使用 Google LLC 提供的計測服務「Firebase Analytics」。
+・收集的資訊: 匿名的裝置識別碼（Firebase 生成的隨機ID）、應用的使用情況（首次啟動、啟動、畫面顯示）、裝置機型・作業系統版本・大致地區。
+・不會傳送姓名、電子郵件地址、電話號碼、通訊錄、精確位置資訊，也不會傳送使用者在應用內輸入的文字（社團名稱、商品名稱、顯示名稱、備註等）。銷售金額、庫存數量等經營資料同樣不會傳送。
+・不獲取廣告識別碼（IDFA），也不進行跨其他公司應用或網站追蹤使用者的「追蹤」行為。
+・收集到的資訊將傳送至 Google 的伺服器，並依據 Google 的隱私政策處理。此外，為衡量廣告效果，已與我方的 Google Ads 帳戶關聯。
+・該計測由 Firebase Analytics 自動收集，目前應用內沒有單獨的停止設定。如希望停止，請解除安裝本應用（解除安裝之後不再收集）。如希望刪除已收集的資料，請聯絡第11條所載的聯絡方式。
+
+除上述計測外，本應用不使用用於廣告投放、行為追蹤的第三方服務（SDK），也不展示廣告橫幅。
+
+但是，資訊標籤頁的「優惠資訊」欄目（僅在顯示語言為日語時顯示）中刊登了聯盟營銷（成果報酬型廣告）連結，並在相應位置明確標示為廣告。若使用者透過該連結前往並在目標網站註冊或使用服務，我方可能會獲得推薦報酬。這不會增加使用者的任何費用。
+本應用不會向聯盟營銷服務商傳送使用者的個人資訊。開啟連結之後的資訊處理（包括透過Cookie等進行的成果計測）遵循各服務商的隱私政策。</p>
+    <h2>7. 外部連結</h2>
+    <p>在本應用內執行開啟外部連結的操作時，會啟動裝置的瀏覽器或相應的應用。連結目標處的處理遵循各服務的政策。
+
+本應用開啟的外部連結包括指向社交媒體或官方資訊的連結（如 X / Twitter），以及第6條所述的聯盟營銷連結（Hapitas / A8.net）。</p>
+    <h2>8. 資料的刪除</h2>
+    <p>・儲存在裝置內的資料，可由使用者自己透過應用內的刪除功能或解除安裝應用來完全刪除。
+・伺服器端資料的處理方式因功能而異，具體如下。
+
+① 賣手共享
+・即使解除本裝置的參與狀態，伺服器上的會話資訊以及已共享的銷售記錄仍會保留。
+・目前不會在相關活動結束後自動刪除。
+
+② 預約頁面
+・在應用內將頁面設為「非公開」後，買家將無法瀏覽和預約，但頁面資訊與預約資料（包括買家填寫的暱稱）仍保留在伺服器上。
+・目前不會在相關活動結束後自動刪除。
+
+③ 社團登記（與 Torehan 聯動）
+・在應用內刪除社團（販售組）後，伺服器上的登記也會解除。若沒有其他使用者登記同一社團，品書圖片也會一併刪除。
+・登記將在相關活動最後一天起滿7天後自動刪除。另外，將活動設為「其他（本應用未支援）」的販售組本身就不屬於本登記的對象（第3條③）。
+
+④ 使用情況統計（Google Firebase Analytics・第6條）
+・解除安裝應用後將不再收集。已收集的統計以無法識別個人的形式儲存，並在 Google 的儲存期限屆滿後自動刪除。如希望更早刪除，請聯絡 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>。
+
+如希望刪除①②的資料，請聯絡 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>（預約頁面請告知頁面URL，賣手共享請告知參與代碼，以便我們確認對象）。</p>
+    <h2>9. 兒童隱私</h2>
+    <p>本應用面向所有年齡段，無意從兒童處收集個人資訊。</p>
+    <h2>10. 本政策的變更</h2>
+    <p>如因今後的功能追加・變更導致處理方式變化，我們將修訂本政策，並更新本頁的"最後更新日期"。</p>
+    <h2>11. 聯絡方式</h2>
+    <p>聯絡方式：<a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a></p>
+    <h2>12. 關於意見和諮詢表單</h2>
+    <p>透過應用內聯絡表單提交意見時，您的內容將透過 Google 表單（Google LLC）收集。填寫電子郵件地址為可選項，不填寫可匿名提交。我們已禁用"自動收集電子郵件地址"功能。提交內容僅用於改善應用，不向第三方提供。Google 表單的資料處理遵循 Google 隱私政策。</p>
   </div>
 
   <!-- 한국어 -->
   <div class="policy" id="policy-ko">
     <h2>1. 기본 방침</h2>
     <p>본 앱 「レジさぽっ！」（이하 "본 앱"）은 이용자의 프라이버시를 존중하며, 취득하는 정보를 필요 최소한으로 제한합니다.</p>
-
     <h2>2. 단말 내에 저장되는 정보</h2>
     <p>이용자가 본 앱 내에서 작성・입력한 데이터（상품 정보, 세트 정보, 매출 이력, 경비, 메뉴 이미지, 설정 등）는 원칙적으로 이용자의 단말 내（로컬 데이터베이스／로컬 스토리지）에 저장됩니다.
 
-다만, 이용자가 임의로 「매장 직원 공유」「예약 페이지 공개」「서클 등록（Torehan 연동）」「등록자 수 표시」 등의 온라인・공유 기능을 사용하는 경우에 한해, 일부 데이터가 본 앱의 클라우드 서버로 전송・저장됩니다（자세한 내용은 제3조）. 이러한 기능을 사용하지 않으면 데이터가 단말 외부로 전송되지 않습니다（메뉴의 AI 인식 제외. 제5조 참조）.
+다만, 이용자가 임의로 「매장 직원 공유」「예약 페이지 공개」「서클 등록（Torehan 연동）」「등록자 수 표시」 등의 온라인・공유 기능을 사용하는 경우에 한해, 일부 데이터가 본 앱의 클라우드 서버로 전송・저장됩니다（자세한 내용은 제3조）.
+
+이 가운데 「서클 등록（Torehan 연동）」과 「등록자 수 표시」는, 공유해도 되는지 확인하는 대화상자에서 동의한 뒤에는 반포물 탭을 열 때마다 자동으로 전송・갱신됩니다. 동의하지 않으면 전송되지 않습니다. 현재로서는 동의한 뒤에 이 전송만을 개별적으로 중지하는 설정은 없습니다（기능별 켜기／끄기 설정은 앞으로 추가할 예정입니다）. 철회하고 싶은 경우에는 해당 반포 세트를 삭제해 주십시오. 삭제 시 서버상의 등록도 해제됩니다（제8조 ③）.
 
 본 앱은 이용자의 이름・이메일 주소・전화번호・위치 정보・연락처를 강제로 수집하는 구조를 가지고 있지 않습니다. 다만 매장 직원 공유에서 이용자가 직접 입력하는 "표시 이름"은 자유 입력 항목으로, 이용자의 판단에 따라 임의의 이름（실명 포함）을 입력할 수 있습니다.
 
-본 앱은 자매 앱 「サク品っ！」에서 출력한 JSON 파일을 읽어 상품 데이터를 가져오는 기능이 있습니다. 이 처리는 단말 내에서 완결되며, 외부 서버로의 전송은 이루어지지 않습니다.</p>
-
+본 앱은 자매 앱 「サク品っ！」에서 상품 데이터를 가져오는 기능이 있으며, 경로가 두 가지입니다. ① 단말 내 JSON 파일을 선택해 읽어들이는 경우, 이 처리는 단말 내에서 완결되며 외부 서버로의 전송은 이루어지지 않습니다. ② サク品っ！의 전달 링크로 가져오는 경우에는 전달 ID（일시적인 무작위 식별자）를 당사 서버로 전송하고, 맡겨진 상품 데이터를 한 번만 수신합니다（자세한 내용은 제3조 ⑤）.</p>
     <h2>3. 온라인・공유 기능으로 전송되는 정보</h2>
-    <p>본 앱에는 다른 이용자와 데이터를 공유・연동하는 임의 기능이 있으며, 이를 사용하면 다음 정보가 본 앱의 클라우드 서버（Supabase. Supabase, Inc.가 제공하는 데이터베이스／스토리지로, 당사의 데이터 처리 수탁자로 기능합니다）로 전송・저장됩니다. 각 기능은 임의이며, 사용하지 않으면 전송되지 않습니다.
+    <p>본 앱에는 다른 이용자와 데이터를 공유・연동하는 임의 기능이 있으며, 이를 사용하면 다음 정보가 본 앱의 클라우드 서버（Supabase. Supabase, Inc.가 제공하는 데이터베이스／스토리지로, 당사의 데이터 처리 수탁자로 기능합니다）로 전송・저장됩니다.
+
+실행되는 방식은 기능에 따라 다릅니다. ①②⑤는 이용자가 해당 조작（공유 세션 작성／참가, 예약 페이지 공개, 전달 링크 열기）을 했을 때에만 동작합니다. ③④는 처음에 표시되는 공유 동의 대화상자에서 동의한 뒤에는 반포물 탭을 열 때마다 자동으로 실행됩니다（동의하지 않으면 전송되지 않습니다. 제2조도 참조）.
 
 ① 매장 직원 공유（여러 단말에서 매출 공유）
-・전송 내용: 세션 이름, 참가 멤버의 표시 이름과 기호, 공유한 매출 데이터（상품명・금액・수량・결제 방법 등）, 공유한 상품 정보（상품명・가격・재고・세트 구성 등）, 메뉴 이미지.
+・전송 내용: 세션 이름, 참가 멤버의 표시 이름과 기호, 공유한 매출 데이터（상품명・금액・수량・결제 방법 등）, 공유한 상품 정보（상품명・가격・재고・세트 구성 등）, 메뉴 이미지, 익명의 단말 식별자（설치 ID＝개인을 특정하지 않는 무작위 식별자로, 같은 단말이 다시 참가했을 때 동일한 판매 담당자로 취급하기 위해 사용됩니다）.
+・호스트가 예약 페이지를 공개하고 있는 경우, 그 페이지를 열기 위한 키（페이지 식별자와 관리용 토큰）도 세션 참가자에게 배포되어 참가자의 단말에 저장됩니다（공유에서 나가면 삭제됩니다）.
 ・공개 범위: 같은 참가 코드를 아는 세션 참가자만 열람할 수 있습니다.
 
 ② 예약 페이지 공개
 ・전송 내용: 서클 이름, 이벤트와 개최일, 공개하는 상품 정보（상품명・가격・이미지・세트 구성 등）, 비밀번호（설정한 경우 해시값）, 예약 상한 수.
 ・공개 범위: 페이지 URL을 아는 일반 참가자（구매자）가 열람 및 예약할 수 있습니다.
-・예약자가 제출한 정보（예약자 이름・비고・연락처 등）도 서버에 저장됩니다.
+・예약자가 전송한 정보（예약 시 입력한 표시 이름, 예약한 반포물과 수량, 익명 단말 식별자）도 서버에 저장됩니다. 예약 페이지에서는 실명이나 연락처를 수집하지 않습니다.
 
 ③ 서클 등록（Torehan 연동）
 ・전송 내용: 서클명・작가명・배치・장르 태그・상품 정보・메뉴 이미지 등.
 ・공개 범위: 자매 앱 「とれはんっ！」의 이용자가 검색・열람할 수 있습니다.
+・제외 대상: 이벤트를 「기타（본 앱 미지원）」로 설정한 판매 세트는 본 등록의 대상이 아닙니다（서버로 전송되지 않습니다）.
 
 ④ 등록자 수 표시
 ・전송 내용: 등록을 집계하기 위한 익명의 단말 식별자（설치 ID＝개인을 특정하지 않는 무작위 식별자로, 같은 단말로부터의 중복을 제외하기 위해 사용됩니다）.
 ・용도: 단말별 중복을 제외한 등록자 수 집계에만 사용.
 
+⑤ サク品っ！의 전달 링크를 통한 가져오기
+・전송 내용: 전달 ID（サク品っ！가 발행하는 일시적인 무작위 식별자）만. 이름・연락처・단말 식별자는 전송하지 않습니다.
+・수신 내용: サク品っ！가 맡긴 상품 정보（상품명・가격 등）. 취득과 동시에 서버에서 삭제되며, 수령되지 않은 데이터도 24시간 후 자동으로 만료됩니다.
+・공개 범위: 전달 링크를 받은 본인만.
+
 ※ 메뉴 이미지에 대하여: 공유・등록한 메뉴 이미지는 URL을 아는 누구나 열람할 수 있는 공개 스토리지에 저장됩니다. 저작권자의 허가가 없는 이미지는 업로드하지 마십시오.
 ※ 표시 이름에 실명을 입력하지 않을 수도 있습니다. 공유하는 정보는 필요한 범위로 한정할 것을 권장합니다.</p>
-
     <h2>4. 사진 라이브러리・카메라 접근</h2>
     <p>본 앱은 메뉴 이미지를 추가하기 위해 이용자의 허가를 받은 후 사진 라이브러리 및 카메라에 접근합니다. 이는 이용자가 이미지 추가 기능을 사용할 때에만 작동합니다.</p>
-
     <h2>5. 메뉴의 AI 인식（외부 전송에 대하여）</h2>
     <p>본 앱의 "메뉴 AI 인식" 기능에는 다음 두 가지 처리 경로가 있습니다.
 
 ① 클라우드 OCR（고정밀・크레딧 소비형）
 클라우드 OCR 크레딧이 남아 있는 경우, 대상 이미지 데이터가 본 앱의 OCR 중계 서버（Supabase상의 서버 기능）를 경유하여 외부 AI 서비스 "Anthropic（Claude API）"으로 전송되어 상품명・가격 등의 텍스트 정보가 추출됩니다.
+・클라우드 OCR 크레딧은 구입했을 때뿐만 아니라, 개최일마다 일정 매수가 무료로 부여됩니다（이 밖에 앱 전체에서 한 번만 제공되는 무료 체험이 있습니다）. 따라서 유료 기능을 구입하지 않은 경우에도, AI 인식을 실행하면 기본적으로 이 ①의 경로가 되어 이미지가 외부로 전송됩니다.
 ・전송되는 것은 이용자가 선택한 메뉴 이미지와, 이용 횟수를 관리하기 위한 익명의 단말 식별자（설치 ID）뿐이며, 연락처・위치 정보 등은 전송하지 않습니다.
 ・통신은 암호화（HTTPS）되어 있습니다.
 ・전송 대상인 Anthropic의 취급에 대해서는 Anthropic의 개인정보 처리방침을 따릅니다.
 
-② 온디바이스 OCR（무료・외부 전송 없음）
-클라우드 크레딧이 없는 경우, 이미지 처리는 단말 내（ML Kit）에서 완결되며, 외부 서버로의 전송은 일절 하지 않습니다.
+② 온디바이스 OCR（외부 전송 없음）
+클라우드 OCR 크레딧의 잔여 매수가 읽어들일 매수에 부족한 경우（잔여 0 포함）에는, 「무료（단말 내）로 읽기」를 선택할 수 있습니다. 이 경로에서는 이미지 처리가 단말 내（ML Kit）에서 완결되며, 외부 서버로의 전송은 일절 하지 않습니다.
+・잔여 매수가 충분한 경우에는 확인 없이 ①의 클라우드 경로로 읽어들입니다. 이미지를 외부로 전송하고 싶지 않은 경우에는 AI 인식을 사용하지 말고 직접 입력하여 등록해 주십시오.
 
 ※ AI 인식 기능을 전혀 사용하지 않으면, 어느 경로로도 이미지가 외부로 전송되지 않습니다.</p>
-
     <h2>6. 제3자 제공・광고・분석</h2>
-    <p>본 앱은 위의 온라인・공유 기능（제3조） 및 AI 인식（제5조）에서 설명한 처리를 제외하고 이용자의 데이터를 제3자에게 제공하지 않습니다. 이러한 기능으로 전송되는 데이터는 당사의 클라우드 인프라 제공 사업자（Supabase, Inc.; AI 인식은 Anthropic）가 기능 제공에 필요한 범위에서만 취급합니다. 본 앱은 광고 전송・접속 분석・행동 추적을 위한 제3자 서비스（SDK）는 사용하지 않습니다.</p>
+    <p>본 앱은 위의 온라인・공유 기능（제3조）, AI 인식（제5조）에서 설명한 처리, 그리고 아래의 이용 현황 측정을 제외하고 이용자의 데이터를 제3자에게 제공하지 않습니다. 이러한 기능으로 전송되는 데이터는 당사의 클라우드 인프라 제공 사업자（Supabase, Inc.; AI 인식은 Anthropic）가 기능 제공에 필요한 범위에서만 취급합니다.
 
+■ 앱 이용 현황의 측정（Google Firebase Analytics）
+본 앱은 앱 개선 및 광고 효과 측정（설치 수 파악）을 위해 Google LLC가 제공하는 측정 서비스 「Firebase Analytics」를 사용합니다.
+・수집되는 정보: 익명의 단말 식별자（Firebase가 생성하는 랜덤 ID）, 앱 이용 현황（최초 실행, 실행, 화면 표시）, 단말의 기종・OS 버전・대략적인 지역.
+・이름・이메일 주소・전화번호・연락처・정확한 위치 정보나, 앱 내에서 입력한 문장（서클명・판매물명・표시명・비고 등）이 전송되는 일은 없습니다. 매출 금액・재고 수 등 경영에 관한 수치도 전송하지 않습니다.
+・광고 식별자（IDFA）는 취득하지 않으며, 타사의 앱이나 웹사이트를 넘나들며 이용자를 추적하는 「트래킹」은 하지 않습니다.
+・수집된 정보는 Google의 서버로 전송되어 Google의 개인정보 처리방침에 따라 취급됩니다. 또한 광고 효과 측정을 위해 당사의 Google Ads 계정과 연동되어 있습니다.
+・이 측정은 Firebase Analytics의 자동 수집에 의한 것으로, 현재 앱 내에 개별적인 중지 설정은 없습니다. 중지를 원하시는 경우 본 앱을 삭제（언인스톨）해 주십시오（삭제 이후의 수집은 이루어지지 않습니다）. 이미 수집된 데이터의 삭제를 원하시는 경우 제11조의 연락처로 문의해 주십시오.
+
+위의 측정을 제외하고, 본 앱은 광고 전송・행동 추적을 위한 제3자 서비스（SDK）는 사용하지 않으며, 앱 내 광고 배너 노출도 없습니다.
+
+다만, 정보 탭의 「알뜰 정보」 섹션（표시 언어가 일본어일 때만 표시）에는 제휴 마케팅（성과 보수형 광고） 링크를 게재하고 있으며, 해당 위치에 광고임을 명시하고 있습니다. 이용자가 이 링크를 통해 이동하여 링크 대상에서 회원 가입이나 서비스 이용을 한 경우, 당사에 소개 보수가 지급될 수 있습니다. 이로 인해 이용자의 부담 금액이 늘어나는 일은 없습니다.
+본 앱이 제휴 마케팅 사업자에게 이용자의 개인정보를 전송하는 일은 없습니다. 링크를 연 이후의 정보 취급（쿠키 등에 의한 성과 측정 포함）은 각 사업자의 개인정보 처리방침을 따릅니다.</p>
     <h2>7. 외부 링크</h2>
     <p>본 앱 내에서 외부 링크를 여는 조작을 하면 단말의 브라우저 또는 해당 앱이 실행됩니다. 링크 대상에서의 취급은 각 서비스의 정책을 따릅니다.
 
-본 앱이 여는 외부 링크에는 X（Twitter）등 SNS나 공식 정보로의 링크가 포함됩니다.</p>
-
+본 앱이 여는 외부 링크에는 X（Twitter）등 SNS나 공식 정보로의 링크 외에, 제6조에 기재한 제휴 마케팅 링크（Hapitas / A8.net）가 포함됩니다.</p>
     <h2>8. 데이터 삭제</h2>
     <p>・단말 내에 저장된 데이터는 앱 내 삭제 기능 또는 앱 삭제（언인스톨）를 통해 이용자 본인이 완전히 삭제할 수 있습니다.
-・본 앱의 공유・온라인 기능은 「서버에 데이터를 남기지 않는다」를 기본 방침으로 하며, 서버상의 데이터는 아래와 같이 삭제됩니다.
+・서버상의 데이터 취급은 기능별로 아래와 같습니다.
 
 ① 매장 직원 공유
-・세션에서 퇴장하면 서버상의 본인 참가 정보가 삭제됩니다.
-・세션을 해산하면 해당 세션에 연결된 서버상의 데이터가 모두 삭제됩니다.
-・해산하지 않은 경우에도 해당 이벤트 종료 후에 세션의 서버상 데이터는 자동으로 삭제됩니다.
+・본 단말의 참가 상태를 해제해도 서버상의 세션 정보 및 공유된 매출 기록은 남습니다.
+・현재로서는 해당 이벤트 종료에 따른 자동 삭제는 이루어지지 않습니다.
 
 ② 예약 페이지
-・앱 내에서 페이지를 비공개로 전환하거나 삭제하면 서버상의 페이지 정보와 예약 데이터가 삭제됩니다.
-・해당 이벤트 종료 후에 자동으로 삭제됩니다.
+・앱 내에서 페이지를 「비공개」로 전환하면 구매자의 열람 및 예약 접수는 중지되지만, 페이지 정보와 예약 데이터（구매자가 입력한 닉네임 포함）는 서버상에 남습니다.
+・현재로서는 해당 이벤트 종료에 따른 자동 삭제는 이루어지지 않습니다.
 
 ③ 서클 등록（Torehan 연동）
-・앱 내에서 서클을 삭제하면 서버상의 등록도 해제됩니다.
-・해당 이벤트 종료 후에 자동으로 삭제됩니다.
+・앱 내에서 서클（판매 세트）을 삭제하면 서버상의 등록도 해제됩니다. 동일한 서클을 등록한 다른 이용자가 없는 경우에는 판매목록 이미지도 함께 삭제됩니다.
+・등록은 해당 이벤트 최종 개최일로부터 7일이 경과한 시점에 자동으로 삭제됩니다. 또한 이벤트를 「기타（본 앱 미지원）」로 설정한 판매 세트는 애초에 본 등록의 대상이 아닙니다（제3조③）.
 
-기타 서버상 데이터의 삭제를 원하시는 경우 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> 으로 연락해 주십시오.</p>
+④ 이용 현황 통계（Google Firebase Analytics・제6조）
+・앱을 삭제（언인스톨）하면 이후의 수집은 이루어지지 않습니다. 이미 수집된 통계는 개인을 특정할 수 없는 형태로 보관되며, Google의 보관 기간이 경과한 후 자동으로 삭제됩니다. 그 이전의 삭제를 원하시는 경우 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> 으로 연락해 주십시오.
 
+①②의 데이터 삭제를 원하시는 경우 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> 으로 연락해 주십시오（예약 페이지는 페이지 URL, 매장 직원 공유는 참가 코드를 알려주시면 대상을 특정할 수 있습니다）.</p>
     <h2>9. 어린이 개인정보</h2>
     <p>본 앱은 전 연령을 대상으로 하며, 어린이로부터 개인정보를 수집할 의도가 없습니다.</p>
-
     <h2>10. 본 방침의 변경</h2>
     <p>향후의 기능 추가・변경으로 인해 취급이 변경되는 경우, 본 방침을 개정하고 본 페이지의 "최종 업데이트" 날짜를 갱신합니다.</p>
-
     <h2>11. 문의</h2>
     <p>연락처: <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a></p>
-
     <h2>12. 의견・문의 양식에 대해</h2>
     <p>앱 내 문의 양식으로 의견을 제출하면 입력 내용은 Google 폼（Google LLC）을 통해 수집됩니다. 이메일 주소 입력은 선택 사항이며, 입력하지 않으면 익명으로 제출할 수 있습니다. "이메일 주소 자동 수집" 기능은 비활성화되어 있습니다. 제출된 내용은 앱 개선에만 사용되며 제3자에게 제공되지 않습니다. Google 폼의 데이터 처리는 Google 개인정보처리방침을 따릅니다.</p>
   </div>
@@ -455,92 +633,109 @@ If you wish to delete any other server-side data, please contact <a href="mailto
   <div class="policy" id="policy-fr">
     <h2>1. Principes de base</h2>
     <p>L'application « レジさぽっ！» (« l'Application ») respecte votre vie privée et limite au strict minimum les informations qu'elle utilise.</p>
-
     <h2>2. Données stockées sur votre appareil</h2>
     <p>Les données que vous créez dans l'Application (informations produit, informations de lot, historique des ventes, dépenses, images de menu, paramètres) sont, en principe, stockées sur votre appareil (base de données locale / stockage local).
 
-Toutefois, uniquement lorsque vous choisissez d'utiliser les fonctionnalités en ligne / de partage facultatives — « Partage vendeur », « Publication de page de réservation », « Inscription de cercle (intégration Torehan) » et « Nombre d'inscrits » —, certaines données sont envoyées et stockées sur le serveur cloud de l'Application (voir Section 3). Si vous n'utilisez pas ces fonctionnalités, aucune donnée ne quitte votre appareil (sauf la reconnaissance de menu par IA ; voir Section 5).
+Toutefois, uniquement lorsque vous choisissez d'utiliser les fonctionnalités en ligne / de partage facultatives — « Partage vendeur », « Publication de page de réservation », « Inscription de cercle (intégration Torehan) » et « Nombre d'inscrits » —, certaines données sont envoyées et stockées sur le serveur cloud de l'Application (voir Section 3).
+
+Parmi celles-ci, « Inscription de cercle (intégration Torehan) » et « Nombre d'inscrits » sont envoyées et mises à jour automatiquement à chaque ouverture de l'onglet des articles, une fois que vous avez accepté la boîte de dialogue de consentement au partage. Si vous n'acceptez pas, rien n'est envoyé. À ce jour, il n'existe pas de réglage permettant d'interrompre uniquement cet envoi après avoir accepté (des réglages d'activation / désactivation par fonctionnalité sont prévus). Pour revenir en arrière, supprimez le lot concerné : sa suppression annule également l'inscription sur le serveur (article 8, point 3).
 
 L'Application ne dispose d'aucun mécanisme collectant de force votre nom, votre adresse e-mail, votre numéro de téléphone, votre localisation ou vos contacts. Notez cependant que le « nom d'affichage » que vous saisissez vous-même dans le partage vendeur est un champ de texte libre dans lequel vous pouvez, à votre discrétion, saisir n'importe quel nom (y compris votre vrai nom).
 
-L'Application peut importer des données de produits à partir de fichiers JSON exportés par l'application compagnon « サク品っ！». Ce traitement est effectué entièrement sur votre appareil et aucune donnée n'est envoyée à un serveur externe.</p>
-
+L'Application peut importer des données de produits depuis l'application compagnon « サク品っ！» de deux façons. (1) Lorsque vous sélectionnez un fichier JSON présent sur votre appareil, le traitement est effectué entièrement sur votre appareil et aucune donnée n'est envoyée à un serveur externe. (2) Lorsque vous importez via un lien de transfert de サク品っ！, l'Application envoie l'identifiant de transfert (un identifiant aléatoire temporaire) à notre serveur et reçoit une seule fois les données de produits déposées (voir l'article 3, point 5).</p>
     <h2>3. Informations envoyées via les fonctionnalités en ligne / de partage</h2>
-    <p>L'Application propose des fonctionnalités facultatives qui partagent ou synchronisent des données avec d'autres utilisateurs. Lorsque vous les utilisez, les informations suivantes sont envoyées et stockées sur le serveur cloud de l'Application (Supabase, un service de base de données / stockage fourni par Supabase, Inc., agissant comme notre sous-traitant de traitement des données). Chaque fonctionnalité est facultative ; si vous ne l'utilisez pas, rien n'est envoyé.
+    <p>L'Application propose des fonctionnalités facultatives qui partagent ou synchronisent des données avec d'autres utilisateurs. Lorsque vous les utilisez, les informations suivantes sont envoyées et stockées sur le serveur cloud de l'Application (Supabase, un service de base de données / stockage fourni par Supabase, Inc., agissant comme notre sous-traitant de traitement des données).
+
+Le déclenchement varie selon la fonctionnalité. Les points 1, 2 et 5 ne s'exécutent que lorsque vous effectuez l'action correspondante (créer ou rejoindre une session de partage, publier une page de réservation, ouvrir un lien de transfert). Les points 3 et 4 s'exécutent automatiquement à chaque ouverture de l'onglet des articles, une fois que vous avez accepté la boîte de dialogue de consentement au partage affichée la première fois (si vous n'acceptez pas, rien n'est envoyé ; voir également la Section 2).
 
 ① Partage vendeur (partage des ventes entre plusieurs appareils)
-・Envoyé : nom de la session, noms d'affichage et symboles des membres participants, données de vente partagées (nom du produit, montant, quantité, moyen de paiement, etc.), informations produit partagées (nom du produit, prix, stock, composition du lot, etc.), images de menu.
+・Envoyé : nom de la session, noms d'affichage et symboles des membres participants, données de vente partagées (nom du produit, montant, quantité, moyen de paiement, etc.), informations produit partagées (nom du produit, prix, stock, composition du lot, etc.), images de menu, et un identifiant d'appareil anonyme (ID d'installation — un identifiant aléatoire qui ne vous identifie pas personnellement, utilisé pour qu'un même appareil qui rejoint à nouveau soit traité comme le même vendeur).
+・Si l'hôte a publié une page de réservation, les clés permettant d'ouvrir cette page (l'identifiant de la page et son jeton de gestion) sont également distribuées aux participants et stockées sur leurs appareils (elles sont supprimées lorsque vous quittez le partage).
 ・Visible par : uniquement les participants de la session qui connaissent le même code d'accès.
 
 ② Publication de page de réservation
 ・Envoyé : nom du cercle, événement et jour, informations produit publiées (nom du produit, prix, images, composition du lot, etc.), mot de passe (valeur hachée, si défini), nombre maximum de réservations.
 ・Visible par : les participants généraux (acheteurs) connaissant l'URL de la page peuvent consulter et réserver.
-・Les informations soumises par les personnes qui réservent (nom, notes, coordonnées, etc.) sont également stockées sur le serveur.
+・Les informations envoyées par les personnes qui réservent (le nom affiché saisi lors de la réservation, les articles et quantités réservés, un identifiant d'appareil anonyme) sont également stockées sur le serveur. La page de réservation ne demande ni nom réel ni coordonnées.
 
 ③ Inscription de cercle (intégration Torehan)
 ・Envoyé : nom du cercle, nom de l'auteur, emplacement, tags de genre, informations produit, images de menu, etc.
 ・Visible par : les utilisateurs de l'application compagnon « とれはんっ！» peuvent rechercher et consulter.
+・Exclusion : les lots de vente dont l'événement est réglé sur « Autre (non pris en charge par l'application) » ne relèvent pas de cette inscription (rien n'est envoyé au serveur).
 
 ④ Nombre d'inscrits
 ・Envoyé : un identifiant d'appareil anonyme (identifiant d'installation = un identifiant aléatoire n'identifiant pas la personne, utilisé pour exclure les doublons d'un même appareil).
 ・Finalité : uniquement compter les inscrits, dédupliqués par appareil.
 
+⑤ Import via un lien de transfert de サク品っ！
+・Envoyé : uniquement l'identifiant de transfert (un identifiant aléatoire temporaire émis par サク品っ！). Aucun nom, coordonnée ni identifiant d'appareil n'est envoyé.
+・Reçu : les informations produit déposées par サク品っ！ (noms de produits, prix, etc.). Elles sont supprimées du serveur dès leur récupération, et les données jamais récupérées expirent automatiquement au bout de 24 heures.
+・Visibilité : uniquement la personne ayant reçu le lien de transfert.
+
 ※ À propos des images de menu : les images de menu que vous partagez ou enregistrez sont stockées dans un stockage public lisible par quiconque dispose de l'URL. N'envoyez pas d'images pour lesquelles vous n'avez pas l'autorisation du titulaire des droits d'auteur.
 ※ Vous pouvez choisir de ne pas saisir votre vrai nom comme nom d'affichage. Nous recommandons de ne partager que les informations nécessaires.</p>
-
     <h2>4. Accès à la photothèque et à l'appareil photo</h2>
     <p>Avec votre autorisation, l'Application accède à votre photothèque et à votre appareil photo afin de vous permettre d'ajouter des images de menu. Ils ne s'activent que lorsque vous utilisez la fonction d'image.</p>
-
     <h2>5. Reconnaissance de menu par IA (transmission externe)</h2>
     <p>La fonction « reconnaissance de menu par IA » comporte deux voies de traitement.
 
 ① OCR cloud (haute précision, basé sur des crédits)
 Lorsque vous disposez de crédits OCR cloud restants, les données de l'image sélectionnée sont envoyées, via le serveur relais OCR de l'Application (une fonction serveur sur Supabase), à un service d'IA tiers, « Anthropic » (Claude API), afin d'extraire du texte tel que les noms de produits et les prix.
+・Les crédits OCR cloud ne s'obtiennent pas uniquement par achat : un certain nombre d'images gratuites est accordé pour chaque jour d'événement (il existe en outre un essai gratuit unique pour toute l'application). Par conséquent, même sans avoir acheté de fonctionnalité payante, lancer la reconnaissance par IA emprunte par défaut cette voie ①, et l'image est envoyée à l'extérieur.
 ・Seules l'image de menu que vous sélectionnez et un identifiant d'appareil anonyme (identifiant d'installation) servant à gérer le décompte d'utilisation sont envoyés ; les contacts, la localisation, etc. ne le sont pas.
 ・La transmission est chiffrée (HTTPS).
 ・Le traitement par Anthropic est régi par la politique de confidentialité d'Anthropic.
 
-② OCR sur l'appareil (gratuit, sans transmission externe)
-Lorsqu'il n'y a plus de crédits cloud, le traitement de l'image est entièrement effectué sur l'appareil (ML Kit) — aucune donnée n'est envoyée à un serveur externe.
+② OCR sur l'appareil (sans transmission externe)
+Lorsque vos crédits OCR cloud restants sont insuffisants pour le nombre d'images à traiter (y compris zéro), vous pouvez choisir « Reconnaître gratuitement (sur l'appareil) ». Sur cette voie, le traitement de l'image est entièrement effectué sur l'appareil (ML Kit) — aucune donnée n'est envoyée à un serveur externe.
+・Lorsque vos crédits suffisent, la reconnaissance emprunte la voie ① sans demander de confirmation. Si vous ne souhaitez pas que vos images soient envoyées à l'extérieur, saisissez vos articles manuellement au lieu d'utiliser la reconnaissance par IA.
 
 ※ Si vous n'utilisez pas du tout la fonction de reconnaissance par IA, aucune image n'est envoyée à l'extérieur par l'une ou l'autre voie.</p>
-
     <h2>6. Tiers, publicité, analyse</h2>
-    <p>À l'exception des fonctionnalités en ligne / de partage (Section 3) et de la reconnaissance par IA (Section 5) décrites ci-dessus, l'Application ne partage pas vos données avec des tiers. Les données envoyées via ces fonctionnalités sont traitées par nos fournisseurs d'infrastructure cloud (Supabase, Inc. ; pour la reconnaissance par IA, Anthropic) uniquement dans la mesure nécessaire pour fournir la fonctionnalité. L'Application ne contient aucun SDK de publicité, d'analyse ou de suivi comportemental.</p>
+    <p>À l'exception des fonctionnalités en ligne / de partage (Section 3), de la reconnaissance par IA (Section 5) décrites ci-dessus et de la mesure d'usage décrite ci-dessous, l'Application ne partage pas vos données avec des tiers. Les données envoyées via ces fonctionnalités sont traitées par nos fournisseurs d'infrastructure cloud (Supabase, Inc. ; pour la reconnaissance par IA, Anthropic) uniquement dans la mesure nécessaire pour fournir la fonctionnalité.
 
+■ Mesure d'usage de l'application (Google Firebase Analytics)
+L'Application utilise « Firebase Analytics », un service de mesure fourni par Google LLC, afin d'améliorer l'Application et de mesurer l'efficacité publicitaire (nombre d'installations).
+・Informations collectées : un identifiant d'appareil anonyme (identifiant aléatoire généré par Firebase), l'usage de l'application (premier lancement, lancements, affichages d'écran), le modèle de votre appareil, la version de son OS et votre région approximative.
+・Vos nom, adresse e-mail, numéro de téléphone, contacts, position précise, ainsi que tout texte saisi dans l'Application (nom de cercle, nom d'article, nom affiché, notes, etc.) ne sont jamais transmis. Les montants de ventes, les niveaux de stock et autres chiffres d'activité ne sont pas non plus transmis.
+・L'identifiant publicitaire (IDFA) n'est pas collecté et nous n'effectuons aucun « suivi » vous pistant à travers les applications ou sites web d'autres sociétés.
+・Les informations collectées sont envoyées aux serveurs de Google et traitées conformément à la politique de confidentialité de Google. Elles sont également liées à notre compte Google Ads à des fins de mesure publicitaire.
+・Cette mesure relève de la collecte automatique de Firebase Analytics ; il n'existe actuellement aucun réglage dans l'Application permettant de la désactiver. Si vous souhaitez l'arrêter, veuillez désinstaller l'Application (plus rien n'est collecté après la désinstallation). Pour demander la suppression des données déjà collectées, veuillez nous contacter à l'adresse indiquée à la Section 11.
+
+Hormis la mesure ci-dessus, l'Application ne contient aucun SDK de publicité ou de suivi comportemental, et n'affiche aucune bannière publicitaire.
+
+Toutefois, la section « Bons plans » de l'onglet Informations (affichée uniquement lorsque la langue est le japonais) contient des liens d'affiliation (publicité à la performance), clairement identifiés comme publicitaires. Si vous suivez un tel lien et que vous vous inscrivez ou utilisez un service sur le site de destination, nous pouvons percevoir une commission de recommandation. Cela n'augmente jamais le montant que vous payez.
+L'Application ne transmet aucune information personnelle aux plateformes d'affiliation. Une fois le lien ouvert, le traitement des informations (y compris le suivi des conversions par cookies) est régi par la politique de confidentialité de chaque plateforme.</p>
     <h2>7. Liens externes</h2>
     <p>L'ouverture de liens externes dans l'Application lance le navigateur de votre appareil ou l'application concernée ; leur traitement suit la politique de chaque service.
 
-Les liens externes que l'Application peut ouvrir incluent des liens vers les réseaux sociaux ou des informations officielles (par ex. X / Twitter).</p>
-
+Les liens externes que l'Application peut ouvrir incluent des liens vers les réseaux sociaux ou des informations officielles (par ex. X / Twitter), ainsi que les liens d'affiliation décrits à la Section 6 (Hapitas / A8.net).</p>
     <h2>8. Suppression des données</h2>
     <p>・Vous pouvez supprimer entièrement les données présentes sur l'appareil via les fonctions de suppression intégrées ou en désinstallant l'Application.
-・Les fonctions de partage et en ligne de l'Application suivent un principe de base : « ne laisser aucune donnée sur le serveur ». Les données côté serveur sont supprimées comme indiqué ci-dessous.
+・Le traitement des données côté serveur diffère selon la fonction, comme indiqué ci-dessous.
 
 (1) Partage vendeur
-・Lorsque vous quittez une session, vos informations de participation sur le serveur sont supprimées.
-・Lorsqu'une session est dissoute, toutes les données côté serveur associées sont supprimées.
-・Même si la session n'est pas dissoute, ses données côté serveur sont automatiquement supprimées après la fin de l'événement concerné.
+・Réinitialiser l'état de participation de cet appareil ne supprime ni les informations de session ni les enregistrements de ventes partagés présents sur le serveur.
+・À ce jour, ces données ne sont pas supprimées automatiquement à la fin de l'événement concerné.
 
 (2) Page de réservation
-・Lorsque vous dépubliez ou supprimez la page dans l'Application, les informations de page et les données de réservation sur le serveur sont supprimées.
-・Les données sont automatiquement supprimées après la fin de l'événement concerné.
+・Dépublier la page dans l'Application empêche les acheteurs de la consulter et de réserver, mais les informations de page et les données de réservation (y compris les pseudonymes saisis par les acheteurs) restent sur le serveur.
+・À ce jour, ces données ne sont pas supprimées automatiquement à la fin de l'événement concerné.
 
 (3) Inscription de cercle (intégration Torehan)
-・Lorsque vous supprimez le cercle dans l'Application, l'inscription côté serveur est également retirée.
-・Les données sont automatiquement supprimées après la fin de l'événement concerné.
+・Lorsque vous supprimez un cercle (lot de vente) dans l'Application, l'inscription côté serveur est également retirée. Si aucun autre utilisateur n'a inscrit le même cercle, les images de la liste de prix sont elles aussi supprimées.
+・Les inscriptions sont supprimées automatiquement 7 jours après le dernier jour de l'événement concerné. À noter que les lots de vente dont l'événement est réglé sur « Autre (non pris en charge par l'application) » ne relèvent de toute façon pas de cette inscription (voir Section 3 (3)).
 
-Si vous souhaitez supprimer d'autres données côté serveur, veuillez contacter <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>.</p>
+(4) Statistiques d'usage (Google Firebase Analytics, Section 6)
+・La désinstallation de l'Application met fin à toute collecte ultérieure. Les statistiques déjà collectées sont conservées sous une forme qui ne permet pas de vous identifier et sont supprimées automatiquement à l'expiration de la durée de conservation de Google. Pour demander une suppression anticipée, veuillez contacter <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>.
 
+Si vous souhaitez faire supprimer les données visées aux points (1) et (2), veuillez contacter <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> (merci d'indiquer l'URL de la page pour une page de réservation, ou le code de participation pour une session de partage vendeur, afin que nous puissions l'identifier).</p>
     <h2>9. Confidentialité des enfants</h2>
     <p>L'Application s'adresse à tous les âges et n'a pas l'intention de collecter des informations personnelles auprès d'enfants.</p>
-
     <h2>10. Modifications</h2>
     <p>Si de futures fonctionnalités ou modifications affectent le traitement des données, nous mettrons à jour cette politique ainsi que la date de « dernière mise à jour ».</p>
-
     <h2>11. Contact</h2>
     <p><a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a></p>
-
     <h2>12. Formulaire de contact et commentaires</h2>
     <p>Lorsque vous soumettez un avis via le formulaire intégré à l'application, vos réponses sont collectées via Google Forms (Google LLC). L'adresse e-mail est facultative ; vous pouvez soumettre anonymement. La collecte automatique d'adresses e-mail est désactivée. Les réponses servent uniquement à améliorer l'application et ne sont pas partagées avec des tiers. Le traitement des données par Google Forms est régi par la politique de confidentialité de Google.</p>
   </div>
@@ -552,14 +747,14 @@ Si vous souhaitez supprimer d'autres données côté serveur, veuillez contacter
 </div>
 
 <script>
-  var labels = {ja:'最終更新: 2026-07-07', en:'Last updated: 2026-07-07', zh:'最后更新: 2026-07-07', ko:'최종 업데이트: 2026-07-07', fr:'Dernière mise à jour : 2026-07-07'};
+  var labels = {'ja':'最終更新: 2026-08-02', 'en':'Last updated: 2026-08-02', 'zh':'最后更新: 2026-08-02', 'zh-Hant':'最後更新: 2026-08-02', 'ko':'최종 업데이트: 2026-08-02', 'fr':'Dernière mise à jour : 2026-08-02'};
   function showLang(lang) {
     document.querySelectorAll('.policy').forEach(function(el){ el.classList.remove('visible'); });
     document.getElementById('policy-' + lang).classList.add('visible');
     document.querySelectorAll('.lang-btn').forEach(function(el){ el.classList.remove('active'); });
     document.querySelector('[onclick="showLang(\'' + lang + '\')"]').classList.add('active');
     document.getElementById('lastUpdated').textContent = labels[lang] || labels.ja;
-    document.documentElement.lang = lang === 'zh' ? 'zh-Hans' : lang;
+    document.documentElement.lang = ({'ja':'ja', 'en':'en', 'zh':'zh-Hans', 'zh-Hant':'zh-Hant', 'ko':'ko', 'fr':'fr'})[lang] || 'ja';
   }
 </script>
 </body>
