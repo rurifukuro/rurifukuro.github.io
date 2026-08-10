@@ -184,6 +184,31 @@
   .btn-tester{background:var(--orange);color:#fff;margin-top:16px}
   .btn-tester small{color:rgba(255,255,255,.88)}
 
+  /* テスター応募フォーム（2026-08-10 に Google フォームから移設） */
+  .tester-form{display:flex;flex-direction:column;gap:12px;margin:18px 0 14px}
+  .tester-form label.f{display:flex;flex-direction:column;gap:6px;font-size:13.5px;color:#ffe0d2}
+  .tester-form input[type=email],
+  .tester-form input[type=text]{
+    width:100%;padding:16px 18px;border-radius:14px;
+    border:1px solid rgba(255,255,255,.25);
+    background:rgba(255,255,255,.06);color:#fff;
+    font-size:16px;font-family:inherit;
+  }
+  .tester-form input::placeholder{color:#d6b3a2}
+  .tester-form input:focus{outline:2px solid var(--orange);outline-offset:1px}
+  .tester-form input:disabled{opacity:.6}
+  .tester-check{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:#ffe0d2;line-height:1.6}
+  .tester-check input[type=checkbox]{width:20px;height:20px;margin-top:2px;flex:none;accent-color:var(--orange)}
+  .btn-tester-submit{
+    background:var(--orange);color:#fff;border:0;width:100%;
+    cursor:pointer;font-family:inherit;
+  }
+  .tester-msg{font-size:13.5px;min-height:1px}
+  .tester-msg.is-ok{color:#7ee2a8}
+  .tester-msg.is-err{color:#ffb4a8}
+  /* ボット用の空欄（人の目にもスクリーンリーダーにも出さない） */
+  .tester-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
   /* Android版リリース通知の事前登録（テスター募集とは別の導線＝色も分ける） */
   .waitlist{
     background:rgba(59,130,246,.10);
@@ -381,7 +406,7 @@
     </a>
   </div>
 
-  <div class="tester">
+  <div class="tester" id="tester">
     <h2>🤖 Android版 テスターさん募集中</h2>
     <p>
       現在、Android版を Google Play で公開する準備を進めています。
@@ -397,10 +422,38 @@
       あらかじめご了承ください。ご登録の Google アカウント（Gmail）は、
       Google Play のテスター登録にのみ使用します。
     </p>
-    <a class="btn btn-tester" href="https://docs.google.com/forms/d/e/1FAIpQLSeJ8H3lkOh7JFaBg9lrtDjsx-0GzsWn33xK6sPYTELghTOyzg/viewform" target="_blank" rel="noopener">
-      <span class="ic">📝</span>
-      <span>テスターに応募する<small>Googleフォーム（入力1分ほど）</small></span>
-    </a>
+    <form id="tester-form" class="tester-form" novalidate>
+      <div class="tester-hp" aria-hidden="true">
+        <label>ウェブサイト<input type="text" id="tester-website" name="website" tabindex="-1" autocomplete="off"></label>
+      </div>
+      <label class="f">
+        Google Play でお使いの Google アカウント（Gmail アドレス）※必須
+        <input id="tester-email" type="email" name="email"
+               inputmode="email" autocomplete="email" spellcheck="false"
+               placeholder="例 sample@gmail.com" required>
+      </label>
+      <label class="f">
+        お使いの Android 端末（機種名）※任意
+        <input id="tester-device" type="text" name="device" autocomplete="off" placeholder="例 Pixel 7">
+      </label>
+      <label class="f">
+        Android のバージョン（わかる範囲で）※任意
+        <input id="tester-os" type="text" name="os_version" autocomplete="off" placeholder="例 Android 15">
+      </label>
+      <label class="tester-check">
+        <input id="tester-agree" type="checkbox">
+        <span>上記の内容（順次ご連絡・Gmail の利用目的）を了承して応募します ※必須</span>
+      </label>
+      <label class="tester-check">
+        <input id="tester-notify" type="checkbox" checked>
+        <span>Android 版を公開できたら、このアドレスにお知らせも受け取る（任意）</span>
+      </label>
+      <button id="tester-submit" type="submit" class="btn btn-tester-submit">
+        <span class="ic">📝</span>
+        <span id="tester-btn-label">テスターに応募する</span>
+      </button>
+    </form>
+    <p id="tester-msg" class="tester-msg" role="status" aria-live="polite"></p>
   </div>
 
   <div class="waitlist">
@@ -445,5 +498,7 @@
 </div>
 <script src="/waitlist.js"></script>
 <script>window.initWaitlist("torehan");</script>
+<script src="/tester.js"></script>
+<script>window.initTester("torehan");</script>
 </body>
 </html>
