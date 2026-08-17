@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>グループへの招待｜とれはんっ！</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="「とれはんっ！」のサークル分担グループへの招待ページです。">
+<link rel="icon" href="/icon.png">
+
+<!-- =========================================================
+     このページは何か（2026-08-17 新設・アプリ側バックログ A2）
+
+     グループ招待の共有本文は `torehan://join?code=……` を貼っていたが、
+     カスタムスキームは受信側アプリの自動リンク化に一切引っかからない
+     ＝タップできない生テキストとして表示されていた（Android で実被弾）。
+     リンク化されるのは http/https/mailto/tel だけなので、
+     共有する URL を https にしてここで受け、`torehan://` を叩き直す。
+
+     ⚠ 読み込み時に自動で torehan:// へ飛ばさない。
+       アプリ未インストール端末では OS のエラーダイアログが出るだけで、
+       「壊れているページ」に見える＝必ず本人のタップを起点にする。
+     ⚠ code はページ内で一切 innerHTML に入れない（textContent と URL エンコードのみ）。
+     ========================================================= -->
+
+<style>
+  :root{
+    --navy:#0c1a38;
+    --navy2:#142c54;
+    --orange:#f5821f;
+    --text:#1b2438;
+    --sub:#aebfe0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",YuGothic,"Meiryo",sans-serif;
+    background:linear-gradient(160deg,var(--navy) 0%,var(--navy2) 100%);
+    color:#fff;min-height:100vh;line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:520px;margin:0 auto;padding:40px 22px 56px;text-align:center}
+  .icon{
+    width:96px;height:96px;border-radius:22px;
+    box-shadow:0 8px 28px rgba(0,0,0,.35);
+    border:1px solid rgba(255,255,255,.15);
+    background:#fff;object-fit:cover;margin-bottom:18px;
+  }
+  h1{font-size:23px;font-weight:800;letter-spacing:.01em;line-height:1.5}
+  .lead{font-size:15px;color:var(--sub);margin-top:10px}
+
+  .codecard{
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:16px;padding:18px 16px;margin:26px 0 22px;
+  }
+  .codelabel{font-size:12.5px;color:var(--sub);letter-spacing:.04em}
+  .code{
+    font-size:34px;font-weight:800;letter-spacing:.18em;
+    margin:8px 0 12px;word-break:break-all;
+    font-variant-numeric:tabular-nums;
+  }
+  .copy{
+    display:inline-block;border:1px solid rgba(255,255,255,.35);
+    background:transparent;color:#fff;border-radius:999px;
+    padding:7px 20px;font-size:13.5px;font-family:inherit;cursor:pointer;
+  }
+  .copy:hover{background:rgba(255,255,255,.1)}
+
+  .btn{
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    width:100%;padding:16px 18px;border-radius:14px;
+    text-decoration:none;font-weight:700;font-size:16.5px;
+    margin-bottom:12px;
+  }
+  .btn-open{background:var(--orange);color:#fff;box-shadow:0 6px 18px rgba(245,130,31,.35)}
+  .btn-store{background:#fff;color:var(--text)}
+  .btn small{display:block;font-size:12px;font-weight:500;opacity:.75;margin-top:2px}
+
+  .hint{
+    font-size:13px;color:var(--sub);margin-top:20px;text-align:left;
+    background:rgba(0,0,0,.18);border-radius:12px;padding:14px 16px;
+  }
+  .hint b{color:#fff}
+  .foot{margin-top:28px;font-size:12.5px}
+  .foot a{color:var(--sub)}
+  [hidden]{display:none !important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <img class="icon" src="/icon.png" alt="">
+  <h1 id="t-title">グループに招待されています</h1>
+  <p class="lead" id="t-lead">「とれはんっ！」で、当日の買い物を仲間と分担できます。</p>
+
+  <div class="codecard" id="codecard" hidden>
+    <div class="codelabel" id="t-codelabel">招待コード</div>
+    <div class="code" id="code"></div>
+    <button class="copy" id="copy" type="button">コピー</button>
+  </div>
+
+  <a class="btn btn-open" id="open" href="#" hidden>
+    <span>📲</span>
+    <span id="t-open">アプリで開いて参加する<small id="t-opensub">アプリがインストール済みの方</small></span>
+  </a>
+
+  <a class="btn btn-store" id="store" href="https://apps.apple.com/jp/app/id6776913607">
+    <span>📱</span>
+    <span id="t-store">App Store でダウンロード<small id="t-storesub">iPhone・基本無料</small></span>
+  </a>
+
+  <!-- ▼ Google Play 公開時はコメントを外して href を貼る（ポータル本体と同じ扱い）
+  <a class="btn btn-store" href="GOOGLE_PLAY_URL_HERE">
+    <span>🤖</span>
+    <span>Google Play でダウンロード<small>Android</small></span>
+  </a>
+  -->
+
+  <p class="hint" id="t-hint"></p>
+
+  <p class="foot"><a href="/torehan/" id="t-foot">とれはんっ！について</a></p>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---- 表示言語（共有本文が6言語あるので、受け取る側も揃える） ---- */
+  var L = {
+    ja: {
+      title:"グループに招待されています",
+      lead:"「とれはんっ！」で、当日の買い物を仲間と分担できます。",
+      codelabel:"招待コード", copy:"コピー", copied:"コピーしました",
+      open:"アプリで開いて参加する", opensub:"アプリがインストール済みの方",
+      store:"App Store でダウンロード", storesub:"iPhone・基本無料",
+      hint:"アプリが開かないときは、<b>とれはんっ！ → リスト → サークル分担</b> を開いて、上の招待コードを入力してください。",
+      nocode:"招待コードが読み取れませんでした。送ってもらったリンクをもう一度タップするか、招待コードを直接教えてもらってください。",
+      foot:"とれはんっ！について"
+    },
+    en: {
+      title:"You've been invited to a group",
+      lead:"Split the day's shopping with your friends in \"Torehan!\".",
+      codelabel:"Invite code", copy:"Copy", copied:"Copied",
+      open:"Open the app and join", opensub:"If you already have the app",
+      store:"Download on the App Store", storesub:"iPhone / free to start",
+      hint:"If the app doesn't open, go to <b>Torehan! → List → Circle sharing</b> and enter the invite code above.",
+      nocode:"The invite code could not be read. Tap the link you were sent again, or ask for the invite code directly.",
+      foot:"About Torehan!"
+    },
+    zh: {
+      title:"你被邀请加入小组",
+      lead:"用“Torehan”与伙伴分担当天的采购。",
+      codelabel:"邀请码", copy:"复制", copied:"已复制",
+      open:"打开应用并加入", opensub:"已安装应用的用户",
+      store:"在 App Store 下载", storesub:"iPhone・基本免费",
+      hint:"如果应用没有打开，请进入 <b>Torehan → 清单 → 社团分担</b> 并输入上方的邀请码。",
+      nocode:"无法读取邀请码。请重新点击收到的链接，或直接向对方索取邀请码。",
+      foot:"关于 Torehan"
+    },
+    "zh-Hant": {
+      title:"你被邀請加入群組",
+      lead:"用「Torehan」與夥伴分擔當天的採購。",
+      codelabel:"邀請碼", copy:"複製", copied:"已複製",
+      open:"開啟應用並加入", opensub:"已安裝應用的使用者",
+      store:"在 App Store 下載", storesub:"iPhone・基本免費",
+      hint:"如果應用沒有開啟，請進入 <b>Torehan → 清單 → 社團分擔</b> 並輸入上方的邀請碼。",
+      nocode:"無法讀取邀請碼。請重新點選收到的連結，或直接向對方索取邀請碼。",
+      foot:"關於 Torehan"
+    },
+    ko: {
+      title:"그룹에 초대되었습니다",
+      lead:"‘토레한!’으로 당일 쇼핑을 동료와 분담할 수 있습니다.",
+      codelabel:"초대 코드", copy:"복사", copied:"복사했습니다",
+      open:"앱으로 열어 참가하기", opensub:"앱이 설치된 분",
+      store:"App Store에서 다운로드", storesub:"iPhone・기본 무료",
+      hint:"앱이 열리지 않으면 <b>토레한! → 리스트 → 서클 분담</b>에서 위의 초대 코드를 입력해 주세요.",
+      nocode:"초대 코드를 읽을 수 없습니다. 받은 링크를 다시 탭하거나 초대 코드를 직접 물어봐 주세요.",
+      foot:"토레한!에 대하여"
+    },
+    fr: {
+      title:"Vous êtes invité·e dans un groupe",
+      lead:"Répartissez les achats de la journée avec vos amis dans « Torehan! ».",
+      codelabel:"Code d'invitation", copy:"Copier", copied:"Copié",
+      open:"Ouvrir l'application et rejoindre", opensub:"Si vous avez déjà l'application",
+      store:"Télécharger sur l'App Store", storesub:"iPhone / gratuit",
+      hint:"Si l'application ne s'ouvre pas, allez dans <b>Torehan! → Liste → Répartition des cercles</b> et saisissez le code ci-dessus.",
+      nocode:"Le code d'invitation n'a pas pu être lu. Touchez à nouveau le lien reçu, ou demandez directement le code.",
+      foot:"À propos de Torehan!"
+    }
+  };
+
+  function pickLang() {
+    var tags = (navigator.languages && navigator.languages.length)
+      ? navigator.languages : [navigator.language || "ja"];
+    for (var i = 0; i < tags.length; i++) {
+      var tag = String(tags[i] || "");
+      var low = tag.toLowerCase();
+      if (low.indexOf("ja") === 0) return "ja";
+      if (low.indexOf("ko") === 0) return "ko";
+      if (low.indexOf("fr") === 0) return "fr";
+      if (low.indexOf("zh") === 0) {
+        /* 繁体字は zh-TW / zh-HK / zh-MO / zh-Hant-* で来る */
+        return /hant|tw|hk|mo/.test(low) ? "zh-Hant" : "zh";
+      }
+      if (low.indexOf("en") === 0) return "en";
+    }
+    return "ja";
+  }
+  var lang = pickLang();
+  var d = L[lang] || L.ja;
+  document.documentElement.lang = (lang === "zh-Hant") ? "zh-Hant" : lang;
+
+  function setText(id, s) { var el = document.getElementById(id); if (el) el.textContent = s; }
+  /* ボタンのラベルは「主文＋<small>補足」の2段。textContent で主文を入れると
+     small ごと消えるので、入れ直しまでを1つの関数にまとめる（片方だけ呼ぶ事故を作らない）。 */
+  function setBtnLabel(id, main, sub) {
+    var span = document.getElementById(id);
+    if (!span) return;
+    span.textContent = main;
+    var small = document.createElement("small");
+    small.textContent = sub;
+    span.appendChild(small);
+  }
+  setText("t-title", d.title);
+  setText("t-lead", d.lead);
+  setText("t-codelabel", d.codelabel);
+  setText("copy", d.copy);
+  setText("t-foot", d.foot);
+  setBtnLabel("t-open", d.open, d.opensub);
+  setBtnLabel("t-store", d.store, d.storesub);
+
+  /* ---- 招待コードの取り出し ----
+     サーバー（migration 0035 group_create）は
+     ABCDEFGHJKLMNPQRSTUVWXYZ23456789 × 6桁で発行する。
+     アプリ側 normalizeInviteCode と同じく大文字化・空白/ゼロ幅の除去だけ行い、
+     文字集合の外は落とさない（黙って消すと別のコードになりうる）。
+     ただし表示・リンク生成に使うのは [A-Z0-9] が4〜16文字のときだけ。 */
+  var raw = "";
+  try { raw = new URLSearchParams(location.search).get("code") || ""; } catch (e) { raw = ""; }
+  var code = raw
+    .replace(/[\u200b\u200c\u200d\ufeff]/g, "")
+    .replace(/[\s\u3000]/g, "")
+    .replace(/[\uff10-\uff19\uff21-\uff3a\uff41-\uff5a]/g, function (c) {
+      return String.fromCharCode(c.charCodeAt(0) - 0xfee0);
+    })
+    .toUpperCase();
+  if (!/^[A-Z0-9]{4,16}$/.test(code)) code = "";
+
+  var hint = document.getElementById("t-hint");
+  if (code) {
+    document.getElementById("code").textContent = code;
+    document.getElementById("codecard").hidden = false;
+    var open = document.getElementById("open");
+    open.href = "torehan://join?code=" + encodeURIComponent(code);
+    open.hidden = false;
+    hint.innerHTML = d.hint;   /* 定型文のみ（code は入らない） */
+  } else {
+    hint.textContent = d.nocode;
+  }
+
+  document.getElementById("copy").addEventListener("click", function () {
+    var btn = this;
+    var done = function () {
+      btn.textContent = d.copied;
+      setTimeout(function () { btn.textContent = d.copy; }, 1600);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(code).then(done, function () {});
+      return;
+    }
+    var ta = document.createElement("textarea");
+    ta.value = code; document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); done(); } catch (e) {}
+    document.body.removeChild(ta);
+  });
+
+  /* ---- App Store のキャンペーン計測（R61・ポータル本体と同じ作法） ----
+     招待リンク経由の新規インストールを ct=group_invite でまとめる。 */
+  (function () {
+    var PT = "128997588";  /* 瑠璃フクロウ チーム共通のプロバイダID（全アプリ共通・固定値） */
+    var links = document.querySelectorAll('a[href*="apps.apple.com"]');
+    for (var i = 0; i < links.length; i++) {
+      var u;
+      try { u = new URL(links[i].href); } catch (e) { continue; }
+      if (u.searchParams.has("ct")) continue;
+      u.searchParams.set("pt", PT);
+      u.searchParams.set("ct", "group_invite");
+      u.searchParams.set("mt", "8");
+      links[i].href = u.toString();
+    }
+  })();
+})();
+</script>
+</body>
+</html>
