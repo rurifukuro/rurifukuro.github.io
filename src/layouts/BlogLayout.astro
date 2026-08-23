@@ -236,6 +236,20 @@ const dateStr = date.toLocaleDateString('ja-JP', {
     color: var(--text-secondary);
   }
 
+  /* ネストした箇条書き（結論節の①②③…）— 親の間延びを抑えて字下げを揃える */
+  .article-body :global(li > ul),
+  .article-body :global(li > ol) {
+    margin: 8px 0 0 20px;
+  }
+
+  .article-body :global(li > p) {
+    margin-bottom: 8px;
+  }
+
+  .article-body :global(li > p:last-child) {
+    margin-bottom: 0;
+  }
+
   .article-body :global(li::marker) {
     color: var(--accent);
   }
