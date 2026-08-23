@@ -2,6 +2,7 @@
  * 瑠璃フクロウ ポータル 共通計測スクリプト  ★このファイル1本が正典★
  *
  * 読み込み先（ここに足したら必ずこの一覧も直す。実測 = grep -rln analytics.js public/ src/）:
+ *   ・src/pages/index.astro           … トップ（計測対象外だが ?dev=1 の登録を受ける）
  *   ・src/layouts/BaseLayout.astro     … ブログ全体（/blog 配下）
  *   ・public/torehan/index.html        … とれはんっ！LP
  *   ・public/torehan/join/index.html   … とれはんっ！テスター参加ページ
