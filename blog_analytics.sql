@@ -200,3 +200,23 @@ GRANT EXECUTE ON FUNCTION increment_blog_view(text, text, text, text) TO anon;
 GRANT EXECUTE ON FUNCTION record_blog_time(text, text, numeric) TO anon;
 GRANT EXECUTE ON FUNCTION record_blog_scroll(text, text, numeric) TO anon;
 GRANT EXECUTE ON FUNCTION record_blog_cta(text, text, text) TO anon;
+
+-- ============================================================
+-- ── 2026-08-23 追加: 開発者ダッシュボード（dev-dashboard）が読むための権限
+--
+--  背景: 上の「集計は SECURITY DEFINER 関数と、**サービスロールで読むダッシュボード側**だけが通る」は
+--        設計としては書いてあったが、**実際には service_role に SELECT が付いていなかった**
+--        （2026-08-23 実測＝`42501 permission denied for table blog_page_views` / `blog_events`）。
+--        テーブルを `CREATE TABLE` しただけでは Supabase の default privileges が
+--        必ずしも service_role へ届かない（このプロジェクトでは届いていなかった）＝**明示的に付ける**。
+--
+--  範囲: service_role への SELECT だけ。anon / authenticated の権限も RLS も一切変えない
+--        ＝計測スクリプト（ブラウザ）側の挙動は変わらない。
+--        service_role は RLS を迂回するので、blog_events にポリシーを足す必要は無い
+--        （＝「anon からは読めない」という上の設計はそのまま維持される）。
+--
+--  読む側: dev-dashboard の BFF（`server/sources/blogSource.ts`）。ブラウザへは集計後の数字だけを返し、
+--          referrer の生値は**ホスト名に丸めてから**返す（生 URL は画面にもログにも出さない）。
+-- ============================================================
+GRANT SELECT ON TABLE public.blog_page_views TO service_role;
+GRANT SELECT ON TABLE public.blog_events     TO service_role;
