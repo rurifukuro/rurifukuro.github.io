@@ -274,6 +274,48 @@ const dateStr = date.toLocaleDateString('ja-JP', {
     text-decoration-color: var(--accent);
   }
 
+  /* 表：罫線・行の塗り分けが無いと列の対応が読めないので明示する。
+     狭い画面では横スクロールに逃がし、セルを潰さない。 */
+  .article-body :global(.table-scroll) {
+    overflow-x: auto;
+    margin: 26px 0 30px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .article-body :global(table) {
+    width: 100%;
+    min-width: 480px;
+    border-collapse: collapse;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .article-body :global(th),
+  .article-body :global(td) {
+    border: 1px solid var(--border);
+    padding: 11px 14px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  /* 見出しは折り返させる。nowrap にすると列数の多い表が本文幅に収まらず、
+     PC でも横スクロールが必要になる（実測：6列で 753px / 本文幅 582px）。 */
+  .article-body :global(thead th) {
+    background: var(--accent-soft);
+    color: var(--text);
+    font-weight: 700;
+    line-height: 1.45;
+  }
+
+  .article-body :global(tbody tr:nth-child(even)) {
+    background: rgba(0, 0, 0, .022);
+  }
+
+  .article-body :global(tbody td:first-child) {
+    color: var(--text);
+    font-weight: 600;
+  }
+
   .article-tags {
     display: flex;
     flex-wrap: wrap;
