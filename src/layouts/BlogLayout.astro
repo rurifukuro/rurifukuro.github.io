@@ -288,6 +288,41 @@ const dateStr = date.toLocaleDateString('ja-JP', {
     text-decoration-color: var(--accent);
   }
 
+  /* 本文の流れの中に置く誘導ブロック。末尾の共通CTA（AppCTA）とは別物で、
+     記事1本につき1回だけ使う。見た目は AppCTA のボタンに合わせる。 */
+  .article-body :global(.inline-cta) {
+    margin: 30px 0 34px;
+    padding: 24px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .article-body :global(.inline-cta-btn) {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 14px 18px;
+    border-radius: var(--radius-sm);
+    background: var(--text);
+    color: #fff;
+    transition: opacity 0.2s ease;
+  }
+
+  .article-body :global(.inline-cta-btn:hover) {
+    opacity: .88;
+    text-decoration: none;
+  }
+
+  .article-body :global(.inline-cta-note) {
+    margin: 12px 0 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-align: center;
+  }
+
   /* 表：罫線・行の塗り分けが無いと列の対応が読めないので明示する。
      狭い画面では横スクロールに逃がし、セルを潰さない。 */
   .article-body :global(.table-scroll) {
