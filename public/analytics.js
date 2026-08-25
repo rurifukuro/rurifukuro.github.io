@@ -5,7 +5,8 @@
  *   ・src/pages/index.astro           … トップ（計測対象外だが ?dev=1 の登録を受ける）
  *   ・src/layouts/BaseLayout.astro     … ブログ全体（/blog 配下）
  *   ・public/torehan/index.html        … とれはんっ！LP
- *   ・public/torehan/join/index.html   … とれはんっ！テスター参加ページ
+ *   ・public/torehan/join/index.html   … とれはんっ！グループ招待の中継ページ
+ *   ・public/torehan/invite/index.html … とれはんっ！友達紹介の中継ページ
  *   ・public/urehan/index.html         … レジさぽっ！LP
  *   ・public/kyasuho-support/index.html … きゃすりん サポートページ
  *   ※ プライバシーポリシー（urehan/privacy.html）と配信停止（unsubscribe/）は
@@ -209,6 +210,35 @@
       rpc('record_blog_scroll', { p_path: path, p_session: sid, p_depth: maxScroll }, true);
     }
   });
+
+  /* -----------------------------------------------------------------------
+   * ④ 友達紹介リンクのクリック（/torehan/invite/ だけが該当）
+   *
+   *   ページ側（public/torehan/invite/index.html）が**正規化済みの**コードを
+   *   window.__TOREHAN_REFERRAL_CODE__ に置く。ここはそれを数えるだけ。
+   *   🔴 正規化をこちらへ写さないこと＝2 か所に持つと必ずずれる。
+   *   🔴 log_referral_click は p_is_dev を受け取らない（migration 0106）ので
+   *      rpc() を流用しない（付けると 404 になって黙って数が入らない）。
+   *      開発者端末では送らず console へ出す＝経路が生きていることは確かめられて、
+   *      数字は汚れない（referral_clicks に is_dev 列は無い）。
+   *   ⚠ 実在しないコードでもサーバーは {ok:true} を返す（総当たりで生きている
+   *      コードを列挙する装置にしないため）＝ここでも結果は見ない。
+   * --------------------------------------------------------------------- */
+  var refCode = null;
+  try { refCode = window.__TOREHAN_REFERRAL_CODE__ || null; } catch (e) { refCode = null; }
+  if (refCode) {
+    if (isDev) {
+      if (window.console && console.info) {
+        console.info('[analytics] referral click (dev / not sent):', refCode);
+      }
+    } else {
+      fetch(SB + '/rest/v1/rpc/log_referral_click', {
+        method: 'POST',
+        headers: hdrs,
+        body: JSON.stringify({ p_code: refCode })
+      }).catch(function () {});
+    }
+  }
 
   /* アプリ導線のクリック。
    * ブログ記事内の CTA（.cta-btn）と、LP のストアボタン（App Store へのリンク）の両方を数える。 */

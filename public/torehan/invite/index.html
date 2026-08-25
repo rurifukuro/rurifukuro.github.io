@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>友達紹介｜とれはんっ！</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="「とれはんっ！」の友達紹介リンクです。">
+<link rel="icon" href="/icon.png">
+
+<!-- =========================================================
+     このページは何か（2026-08-25 新設・RF-G2）
+
+     アプリ内の「友達を招待」から共有されるリンクの受け口。
+     共有本文へ `torehan://` を直接貼るとリンク化されない（Android で実被弾・
+     詳細は /torehan/join/ の同じ注記）ので、https でここを踏ませて
+     ここから `torehan://invite?ref=……` を叩き直す。
+
+     グループ招待（/torehan/join/）とは目的が違う:
+       ・join   … 当日の買い物を仲間と分担するグループへ入る（招待コード = 6桁）
+       ・invite … 友達紹介プログラム（紹介コード = 8桁）
+     受け口を分けているのは、コードの体系も、成立の条件も、
+     アプリ側で開く画面も別物だから（片方に寄せると必ずどちらかが嘘になる）。
+
+     ⚠ 読み込み時に自動で torehan:// へ飛ばさない。
+       アプリ未インストール端末では OS のエラーダイアログが出るだけで、
+       「壊れているページ」に見える＝必ず本人のタップを起点にする。
+     ⚠ code はページ内で一切 innerHTML に入れない（textContent と URL エンコードのみ）。
+     ⚠ 特典の条件はここに**明記する**（ユーザー指示 2026-08-25＝
+       「紹介報酬の条件は明確に紹介ポップアップなどに記載する事」）。
+       アプリ内のポップアップと**同じ3条件**を書く＝片方だけ直すと食い違う。
+     ========================================================= -->
+
+<style>
+  :root{
+    --navy:#0c1a38;
+    --navy2:#142c54;
+    --orange:#f5821f;
+    --text:#1b2438;
+    --sub:#aebfe0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",YuGothic,"Meiryo",sans-serif;
+    background:linear-gradient(160deg,var(--navy) 0%,var(--navy2) 100%);
+    color:#fff;min-height:100vh;line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:520px;margin:0 auto;padding:40px 22px 56px;text-align:center}
+  .icon{
+    width:96px;height:96px;border-radius:22px;
+    box-shadow:0 8px 28px rgba(0,0,0,.35);
+    border:1px solid rgba(255,255,255,.15);
+    background:#fff;object-fit:cover;margin-bottom:18px;
+  }
+  h1{font-size:23px;font-weight:800;letter-spacing:.01em;line-height:1.5}
+  .lead{font-size:15px;color:var(--sub);margin-top:10px}
+
+  .codecard{
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:16px;padding:18px 16px;margin:26px 0 18px;
+  }
+  .codelabel{font-size:12.5px;color:var(--sub);letter-spacing:.04em}
+  .code{
+    font-size:32px;font-weight:800;letter-spacing:.16em;
+    margin:8px 0 12px;word-break:break-all;
+    font-variant-numeric:tabular-nums;
+  }
+  .copy{
+    display:inline-block;border:1px solid rgba(255,255,255,.35);
+    background:transparent;color:#fff;border-radius:999px;
+    padding:7px 20px;font-size:13.5px;font-family:inherit;cursor:pointer;
+  }
+  .copy:hover{background:rgba(255,255,255,.1)}
+
+  /* 特典の条件。ここは「読ませる」ブロックなので左揃え。 */
+  .perk{
+    background:rgba(245,130,31,.12);
+    border:1px solid rgba(245,130,31,.45);
+    border-radius:16px;padding:16px 18px;margin:0 0 22px;text-align:left;
+  }
+  .perk h2{
+    font-size:14px;font-weight:800;letter-spacing:.03em;
+    color:var(--orange);margin-bottom:10px;
+  }
+  .perk ol{margin:0;padding-left:1.25em;font-size:13.5px}
+  .perk li{margin-bottom:7px}
+  .perk li:last-child{margin-bottom:0}
+  .perk .note{
+    display:block;margin-top:11px;font-size:11.5px;color:var(--sub);line-height:1.6;
+  }
+
+  .btn{
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    width:100%;padding:16px 18px;border-radius:14px;
+    text-decoration:none;font-weight:700;font-size:16.5px;
+    margin-bottom:12px;
+  }
+  .btn-open{background:var(--orange);color:#fff;box-shadow:0 6px 18px rgba(245,130,31,.35)}
+  .btn-store{background:#fff;color:var(--text)}
+  .btn small{display:block;font-size:12px;font-weight:500;opacity:.75;margin-top:2px}
+
+  .hint{
+    font-size:13px;color:var(--sub);margin-top:20px;text-align:left;
+    background:rgba(0,0,0,.18);border-radius:12px;padding:14px 16px;
+  }
+  .hint b{color:#fff}
+  .foot{margin-top:28px;font-size:12.5px}
+  .foot a{color:var(--sub)}
+  [hidden]{display:none !important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <img class="icon" src="/icon.png" alt="">
+  <h1 id="t-title">友達から招待されています</h1>
+  <p class="lead" id="t-lead">「とれはんっ！」は、同人イベントの戦利品リストと巡回ルートをまとめて作れるアプリです。</p>
+
+  <div class="codecard" id="codecard" hidden>
+    <div class="codelabel" id="t-codelabel">紹介コード</div>
+    <div class="code" id="code"></div>
+    <button class="copy" id="copy" type="button">コピー</button>
+  </div>
+
+  <section class="perk" id="perk" hidden>
+    <h2 id="t-perktitle">紹介特典について</h2>
+    <ol>
+      <li id="t-perk1"></li>
+      <li id="t-perk2"></li>
+      <li id="t-perk3"></li>
+    </ol>
+    <span class="note" id="t-perknote"></span>
+  </section>
+
+  <a class="btn btn-open" id="open" href="#" hidden>
+    <span>📲</span>
+    <span id="t-open">アプリで開く<small id="t-opensub">アプリがインストール済みの方</small></span>
+  </a>
+
+  <a class="btn btn-store" id="store" href="https://apps.apple.com/jp/app/id6776913607">
+    <span>📱</span>
+    <span id="t-store">App Store でダウンロード<small id="t-storesub">iPhone・基本無料</small></span>
+  </a>
+
+  <!-- ▼ Google Play 公開時はコメントを外して href を貼る（ポータル本体・/torehan/join/ と同じ扱い）
+  <a class="btn btn-store" href="GOOGLE_PLAY_URL_HERE">
+    <span>🤖</span>
+    <span>Google Play でダウンロード<small>Android</small></span>
+  </a>
+  -->
+
+  <p class="hint" id="t-hint"></p>
+
+  <p class="foot"><a href="/torehan/" id="t-foot">とれはんっ！について</a></p>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---- 表示言語（共有本文が6言語あるので、受け取る側も揃える） ----
+     ⚠ 特典の3条件は**アプリ内のポップアップと同じ内容**にすること。
+        金額は書かない＝ストア・地域によって表示通貨も価格も変わるため、
+        「開催日1日ぶんの登録上限の解放（クラウドOCR 50枚つき）」という
+        **中身の名前**で書く（アプリ内の呼称と一致させる）。 */
+  var L = {
+    ja: {
+      title:"友達から招待されています",
+      lead:"「とれはんっ！」は、同人イベントの戦利品リストと巡回ルートをまとめて作れるアプリです。",
+      codelabel:"紹介コード", copy:"コピー", copied:"コピーしました",
+      perktitle:"紹介特典について",
+      perk1:"招待された方が<b>サークルを10件登録した時点</b>で成立します。",
+      perk2:"成立すると、<b>招待した方・された方の双方</b>に「開催日1日ぶんの登録上限の解放（クラウド読み取り50枚つき）」が<b>1回ぶん無料</b>で付きます。",
+      perk3:"招待した方は複数人を招待できます。成立した回数ぶん貯まり、<b>最大5回ぶん</b>まで受け取れます。",
+      perknote:"※ 特典はアプリ内で受け取ります（どの開催日に使うかはご自身で選べます）。※ 同じ端末からの重複した招待は成立しません。※ 内容は予告なく変更・終了する場合があります。",
+      open:"アプリで開く", opensub:"アプリがインストール済みの方",
+      store:"App Store でダウンロード", storesub:"iPhone・基本無料",
+      hint:"<b>まだアプリをお持ちでない方へ:</b> 先に App Store からインストールし、<b>もう一度このリンクを開いてください</b>。紹介コードはリンクからそのまま引き継がれます。",
+      nocode:"紹介コードが読み取れませんでした。送ってもらったリンクをもう一度タップしてください。",
+      foot:"とれはんっ！について"
+    },
+    en: {
+      title:"A friend invited you",
+      lead:"\"Torehan!\" helps you build your doujin-event shopping list and walking route in one place.",
+      codelabel:"Referral code", copy:"Copy", copied:"Copied",
+      perktitle:"About the referral reward",
+      perk1:"The referral counts once the invited person has <b>registered 10 circles</b>.",
+      perk2:"When it counts, <b>both the inviter and the invited person</b> get one free \"registration-limit unlock for a single event day (includes 50 cloud scans)\".",
+      perk3:"You can invite more than one person. Rewards stack with each successful referral, <b>up to 5</b>.",
+      perknote:"* Rewards are claimed inside the app (you choose which event day to use them on). * Repeat invitations from the same device do not count. * Terms may change or end without notice.",
+      open:"Open in the app", opensub:"If you already have the app",
+      store:"Download on the App Store", storesub:"iPhone / free to start",
+      hint:"<b>Don't have the app yet?</b> Install it from the App Store first, then <b>open this link again</b>. The referral code is carried over from the link.",
+      nocode:"The referral code could not be read. Please tap the link you were sent again.",
+      foot:"About Torehan!"
+    },
+    zh: {
+      title:"朋友邀请你使用",
+      lead:"“Torehan”可以把同人展的采购清单和巡回路线一起整理好。",
+      codelabel:"邀请码", copy:"复制", copied:"已复制",
+      perktitle:"关于邀请奖励",
+      perk1:"当被邀请的人<b>登记满 10 个社团</b>时即视为成立。",
+      perk2:"成立后，<b>邀请人与被邀请人双方</b>各获得一次免费的“单个开催日的登记上限解锁（含 50 张云端识别）”。",
+      perk3:"可以邀请多位好友。每成立一次即可累积一份，<b>最多 5 份</b>。",
+      perknote:"※ 奖励在应用内领取（可自行选择用于哪一个开催日）。※ 同一台设备的重复邀请不计入。※ 内容可能在不另行通知的情况下变更或结束。",
+      open:"用应用打开", opensub:"已安装应用的用户",
+      store:"在 App Store 下载", storesub:"iPhone・基本免费",
+      hint:"<b>还没有安装应用？</b>请先从 App Store 安装，然后<b>再次打开此链接</b>。邀请码会从链接中自动带入。",
+      nocode:"无法读取邀请码。请重新点击收到的链接。",
+      foot:"关于 Torehan"
+    },
+    "zh-Hant": {
+      title:"朋友邀請你使用",
+      lead:"「Torehan」可以把同人展的採購清單與巡迴路線一起整理好。",
+      codelabel:"邀請碼", copy:"複製", copied:"已複製",
+      perktitle:"關於邀請獎勵",
+      perk1:"當被邀請的人<b>登錄滿 10 個社團</b>時即視為成立。",
+      perk2:"成立後，<b>邀請人與被邀請人雙方</b>各獲得一次免費的「單個開催日的登錄上限解鎖（含 50 張雲端辨識）」。",
+      perk3:"可以邀請多位朋友。每成立一次即可累積一份，<b>最多 5 份</b>。",
+      perknote:"※ 獎勵在應用內領取（可自行選擇用於哪一個開催日）。※ 同一台裝置的重複邀請不列入計算。※ 內容可能在不另行通知的情況下變更或結束。",
+      open:"用應用開啟", opensub:"已安裝應用的使用者",
+      store:"在 App Store 下載", storesub:"iPhone・基本免費",
+      hint:"<b>還沒有安裝應用？</b>請先從 App Store 安裝，然後<b>再次開啟此連結</b>。邀請碼會從連結中自動帶入。",
+      nocode:"無法讀取邀請碼。請重新點選收到的連結。",
+      foot:"關於 Torehan"
+    },
+    ko: {
+      title:"친구가 초대했습니다",
+      lead:"‘토레한!’은 동인 이벤트의 구매 목록과 순회 경로를 한 번에 만들 수 있는 앱입니다.",
+      codelabel:"추천 코드", copy:"복사", copied:"복사했습니다",
+      perktitle:"추천 혜택 안내",
+      perk1:"초대받은 분이 <b>서클을 10개 등록한 시점</b>에 성립합니다.",
+      perk2:"성립하면 <b>초대한 분과 초대받은 분 모두</b>에게 ‘개최일 1일분의 등록 상한 해제(클라우드 인식 50장 포함)’가 <b>1회분 무료</b>로 제공됩니다.",
+      perk3:"여러 명을 초대할 수 있습니다. 성립한 횟수만큼 쌓이며 <b>최대 5회분</b>까지 받을 수 있습니다.",
+      perknote:"※ 혜택은 앱 안에서 받습니다(어느 개최일에 사용할지는 직접 고를 수 있습니다). ※ 같은 기기에서의 중복 초대는 성립하지 않습니다. ※ 내용은 예고 없이 변경·종료될 수 있습니다.",
+      open:"앱으로 열기", opensub:"앱이 설치된 분",
+      store:"App Store에서 다운로드", storesub:"iPhone・기본 무료",
+      hint:"<b>앱이 아직 없으신 분은</b> 먼저 App Store에서 설치한 뒤 <b>이 링크를 다시 열어 주세요</b>. 추천 코드는 링크에서 그대로 이어집니다.",
+      nocode:"추천 코드를 읽을 수 없습니다. 받은 링크를 다시 탭해 주세요.",
+      foot:"토레한!에 대하여"
+    },
+    fr: {
+      title:"Un ami vous a invité·e",
+      lead:"« Torehan! » réunit votre liste d'achats et votre parcours de stand pour les événements doujin.",
+      codelabel:"Code de parrainage", copy:"Copier", copied:"Copié",
+      perktitle:"À propos de la récompense de parrainage",
+      perk1:"Le parrainage est validé lorsque la personne invitée a <b>enregistré 10 cercles</b>.",
+      perk2:"Une fois validé, <b>le parrain et la personne invitée</b> reçoivent chacun un « déblocage de la limite d'enregistrement pour une journée d'événement (50 lectures cloud incluses) » <b>offert une fois</b>.",
+      perk3:"Vous pouvez inviter plusieurs personnes. Les récompenses se cumulent à chaque parrainage validé, <b>jusqu'à 5</b>.",
+      perknote:"* Les récompenses se réclament dans l'application (vous choisissez la journée d'événement). * Les invitations répétées depuis le même appareil ne sont pas validées. * Les conditions peuvent changer ou prendre fin sans préavis.",
+      open:"Ouvrir dans l'application", opensub:"Si vous avez déjà l'application",
+      store:"Télécharger sur l'App Store", storesub:"iPhone / gratuit",
+      hint:"<b>Vous n'avez pas encore l'application ?</b> Installez-la depuis l'App Store, puis <b>rouvrez ce lien</b>. Le code de parrainage est repris depuis le lien.",
+      nocode:"Le code de parrainage n'a pas pu être lu. Touchez à nouveau le lien reçu.",
+      foot:"À propos de Torehan!"
+    }
+  };
+
+  function pickLang() {
+    var tags = (navigator.languages && navigator.languages.length)
+      ? navigator.languages : [navigator.language || "ja"];
+    for (var i = 0; i < tags.length; i++) {
+      var tag = String(tags[i] || "");
+      var low = tag.toLowerCase();
+      if (low.indexOf("ja") === 0) return "ja";
+      if (low.indexOf("ko") === 0) return "ko";
+      if (low.indexOf("fr") === 0) return "fr";
+      if (low.indexOf("zh") === 0) {
+        /* 繁体字は zh-TW / zh-HK / zh-MO / zh-Hant-* で来る */
+        return /hant|tw|hk|mo/.test(low) ? "zh-Hant" : "zh";
+      }
+      if (low.indexOf("en") === 0) return "en";
+    }
+    return "ja";
+  }
+  var lang = pickLang();
+  var d = L[lang] || L.ja;
+  document.documentElement.lang = (lang === "zh-Hant") ? "zh-Hant" : lang;
+
+  function setText(id, s) { var el = document.getElementById(id); if (el) el.textContent = s; }
+  /* 定型文のみ（利用者由来の文字列は一切入らない）。 */
+  function setHtml(id, s) { var el = document.getElementById(id); if (el) el.innerHTML = s; }
+  /* ボタンのラベルは「主文＋<small>補足」の2段。textContent で主文を入れると
+     small ごと消えるので、入れ直しまでを1つの関数にまとめる（片方だけ呼ぶ事故を作らない）。 */
+  function setBtnLabel(id, main, sub) {
+    var span = document.getElementById(id);
+    if (!span) return;
+    span.textContent = main;
+    var small = document.createElement("small");
+    small.textContent = sub;
+    span.appendChild(small);
+  }
+  setText("t-title", d.title);
+  setText("t-lead", d.lead);
+  setText("t-codelabel", d.codelabel);
+  setText("copy", d.copy);
+  setText("t-foot", d.foot);
+  setText("t-perktitle", d.perktitle);
+  setHtml("t-perk1", d.perk1);
+  setHtml("t-perk2", d.perk2);
+  setHtml("t-perk3", d.perk3);
+  setText("t-perknote", d.perknote);
+  setBtnLabel("t-open", d.open, d.opensub);
+  setBtnLabel("t-store", d.store, d.storesub);
+
+  /* ---- 紹介コードの取り出し ----
+     サーバー（migration 0106 get_or_create_referral_code）は
+     23456789ABCDEFGHJKLMNPQRSTUVWXYZ × 8桁で発行する
+     （紛らわしい 0/O/1/I を含まない集合）。
+     大文字化・空白/ゼロ幅の除去・全角→半角だけ行い、
+     文字集合の外は落とさない（黙って消すと別のコードになりうる）。
+     ⚠ 桁数を 8 に決め打ちしないのは、将来サーバー側が桁を伸ばしたときに
+        **このページだけが黙って弾く**状態を作らないため（4〜16 で受ける）。 */
+  var raw = "";
+  try { raw = new URLSearchParams(location.search).get("ref") || ""; } catch (e) { raw = ""; }
+  var code = raw
+    .replace(/[\u200b\u200c\u200d\ufeff]/g, "")
+    .replace(/[\s\u3000]/g, "")
+    .replace(/[\uff10-\uff19\uff21-\uff3a\uff41-\uff5a]/g, function (c) {
+      return String.fromCharCode(c.charCodeAt(0) - 0xfee0);
+    })
+    .toUpperCase();
+  if (!/^[A-Z0-9]{4,16}$/.test(code)) code = "";
+
+  var hint = document.getElementById("t-hint");
+  if (code) {
+    document.getElementById("code").textContent = code;
+    document.getElementById("codecard").hidden = false;
+    document.getElementById("perk").hidden = false;
+    var open = document.getElementById("open");
+    open.href = "torehan://invite?ref=" + encodeURIComponent(code);
+    open.hidden = false;
+    hint.innerHTML = d.hint;   /* 定型文のみ（code は入らない） */
+
+    /* クリック数の記録は analytics.js（＝Supabase の鍵を持つ唯一のファイル）に任せる。
+       ここでは「正規化済みのコード」を渡すだけ＝鍵も fetch もこのページには置かない。
+       analytics.js は defer なので、この行のほうが必ず先に走る。 */
+    window.__TOREHAN_REFERRAL_CODE__ = code;
+  } else {
+    hint.textContent = d.nocode;
+    /* コードが無いときは特典ブロックも出さない
+       ＝受け取れない相手に条件だけ読ませない（＝問い合わせの元になる）。 */
+  }
+
+  document.getElementById("copy").addEventListener("click", function () {
+    var btn = this;
+    var done = function () {
+      btn.textContent = d.copied;
+      setTimeout(function () { btn.textContent = d.copy; }, 1600);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(code).then(done, function () {});
+      return;
+    }
+    var ta = document.createElement("textarea");
+    ta.value = code; document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); done(); } catch (e) {}
+    document.body.removeChild(ta);
+  });
+
+  /* ---- App Store のキャンペーン計測（R61・/torehan/join/ と同じ作法） ----
+     紹介リンク経由の新規インストールを ct=referral でまとめる。
+     analytics.js の既定（ct=portal）より先に入れる＝あちらは ct 済みのリンクを触らない。 */
+  (function () {
+    var PT = "128997588";  /* 瑠璃フクロウ チーム共通のプロバイダID（全アプリ共通・固定値） */
+    var links = document.querySelectorAll('a[href*="apps.apple.com"]');
+    for (var i = 0; i < links.length; i++) {
+      var u;
+      try { u = new URL(links[i].href); } catch (e) { continue; }
+      if (u.searchParams.has("ct")) continue;
+      u.searchParams.set("pt", PT);
+      u.searchParams.set("ct", "referral");
+      u.searchParams.set("mt", "8");
+      links[i].href = u.toString();
+    }
+  })();
+})();
+</script>
+<script defer src="/analytics.js"></script>
+</body>
+</html>
