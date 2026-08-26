@@ -55,7 +55,7 @@
 <div class="wrap">
   <a href="./" class="backlink">← レジさぽっ！ トップへ</a>
   <h1>プライバシーポリシー<br><span class="appname">レジさぽっ！</span></h1>
-  <p class="updated" id="lastUpdated">最終更新: 2026-08-02</p>
+  <p class="updated" id="lastUpdated">最終更新: 2026-08-25</p>
 
   <div class="lang-bar">
     <span class="lang-btn active" onclick="showLang('ja')">日本語</span>
@@ -75,7 +75,7 @@
 
 ただし、利用者が「売り子共有」「取り置き予約ページの公開」「サークル登録（とれはんっ！連携）」「登録者数表示」などのオンライン・共有機能を使う場合に、一部のデータが本アプリのクラウドサーバーへ送信・保存されます（詳細は第3条）。
 
-このうち「サークル登録（とれはんっ！連携）」と「登録者数表示」は、共有してよいかを確認するダイアログで同意されたあと、頒布物タブを開くたびに自動で送信・更新されます。同意しなければ送信されません。現時点では、同意したあとにこの送信だけを個別に停止する設定はありません（機能ごとのオン／オフ設定は今後追加する予定です）。取り下げたい場合は、該当の頒布セットを削除してください。削除時にサーバー上の登録も解除されます（第8条③）。
+このうち「サークル登録（とれはんっ！連携）」と「登録者数表示」は、共有してよいかを確認するダイアログで同意されたあと、頒布物タブを開くたびに自動で送信・更新されます。同意しなければ送信されません。③のうち在庫（残りの個数）の公開だけは、頒布物タブの「在庫の公開設定」で利用者ご自身がオン／オフを切り替えられます。既定はオフで、イベント・開催日ごとの一括スイッチと頒布物1点ごとのスイッチの両方をオンにした頒布物だけが対象です（第3条⑥）。それ以外の項目については、同意したあとにその送信だけを個別に停止する設定は現時点ではありません（機能ごとのオン／オフ設定は順次追加する予定です）。取り下げたい場合は、該当の頒布セットを削除してください。削除時にサーバー上の登録も解除されます（第8条③）。
 
 本アプリは、利用者の氏名・メールアドレス・電話番号・位置情報・連絡先を強制的に取得する仕組みを持ちません。ただし、売り子共有で利用者が自ら入力する「表示名」は自由入力の項目であり、利用者の判断で任意の名称（実名を含む）を入力できます。
 
@@ -83,7 +83,7 @@
     <h2>3. 共有・オンライン機能で送信される情報</h2>
     <p>本アプリには、他の利用者とデータを共有・連携する機能があり、これらを使うと以下の情報が本アプリのクラウドサーバー（Supabase。Supabase, Inc. が提供するデータベース／ストレージで、当方のデータ処理委託先として機能します）へ送信・保存されます。
 
-実行のされ方は機能によって異なります。①②⑤は、利用者がその操作（共有セッションの作成／参加、取り置きページの公開、取り込みリンクを開く）を行ったときにだけ動作します。③④は、初回に表示される共有同意ダイアログで同意されたあと、頒布物タブを開くたびに自動で実行されます（同意しなければ送信されません。第2条も参照）。
+実行のされ方は機能によって異なります。①②⑤は、利用者がその操作（共有セッションの作成／参加、取り置きページの公開、取り込みリンクを開く）を行ったときにだけ動作します。③④は、初回に表示される共有同意ダイアログで同意されたあと、頒布物タブを開くたびに自動で実行されます（同意しなければ送信されません。第2条も参照）。⑥は、③に同意したうえで、さらに「在庫の公開設定」で利用者ご自身がオンにした頒布物についてだけ実行されます（既定はオフ）。⑦は、利用者がアンケートの送信ボタンを押したときにだけ動作します。
 
 ① 売り子共有（複数端末で売上を共有）
 ・送信内容: セッション名、参加メンバーの表示名・記号、共有した売上データ（品名・金額・数量・決済方法など）、共有した頒布物情報（頒布物名・価格・在庫・セット構成など）、お品書き画像、匿名の端末識別子（インストールID＝個人を特定しないランダムな識別子で、同じ端末が入り直したときに同じ売り子として扱うために使われます）。
@@ -108,6 +108,19 @@
 ・送信内容: 受け渡しID（サク品っ！が発行する一時的なランダムな識別子）のみ。氏名・連絡先・端末識別子は送信しません。
 ・受信内容: サク品っ！が預けた頒布物情報（頒布物名・価格など）。取得と同時にサーバーから削除され、受け取られなかったデータも24時間で自動的に失効します。
 ・公開範囲: 受け渡しリンクを受け取った本人のみ。
+
+⑥ 在庫の公開（とれはんっ！連携）
+・送信内容：頒布物の名称、残りの個数、用意した数（初期在庫）、および突合のためのイベント・開催日・配置（ホール／スペース番号）。
+・対象：「在庫の公開設定」で、イベント・開催日ごとの一括スイッチと頒布物1点ごとのスイッチの両方をオンにし、かつ在庫を管理している頒布物だけです。既定はすべてオフで、オフの間は1件も送信されません。
+・公開範囲：姉妹アプリ「とれはんっ！」の利用者が閲覧できます（完売したかどうかは同アプリの利用者全員が、残りの個数は同アプリの有料機能を利用している方が閲覧します）。
+・用意した数もあわせて送信するため、残りの個数との差から、およその頒布数を推測される可能性があります。売上金額・単価・購入者の情報は送信しません。
+・スイッチをオフに戻すと、その場でサーバー上の在庫が削除されます。
+
+⑦ アンケートの送信
+・送信内容：各設問への回答（選択式の回答・5段階の評価・自由記述）、匿名の端末識別子（インストールID＝個人を識別しないランダムな識別子）、アンケートの版、回答の対象として選んだイベント（開催回）。設問でお尋ねするのは、出展の経験、当日お会計をする人数、アプリの満足度と友人にすすめたいと思うか、よく使う機能・使っていない機能、有料機能を使ったことがあるかとその価格の感じ方、お会計にかかる時間や集計の手間の変化、ほかに併用しているアプリ・道具、およびそれらの理由・ご要望の自由記述です。氏名・住所・連絡先はどの設問でも尋ねません。
+・実行の時機：アンケート画面（情報タブから開くほか、イベント終了の翌日にご案内を表示することがあります）で、利用者が最後の画面まで進んで送信ボタンを押したときにだけ送信されます。途中で閉じた場合は1件も送信されません。
+・用途：アプリの改善の検討にのみ利用します。回答内容を公開することはありません。
+・自由記述欄には、氏名・連絡先などの個人情報を入力しないでください。
 
 ※ お品書き画像について: 共有・登録したお品書き画像は、URLを知っていれば誰でも閲覧できる公開ストレージに保存されます。著作権者の許可がない画像はアップロードしないでください。
 ※ 表示名には実名を入力しないこともできます。共有する情報は必要な範囲にとどめることを推奨します。</p>
@@ -166,6 +179,14 @@
 ④ 利用状況の統計（Google Firebase Analytics・第6条）
 ・アプリをアンインストールすると、以降の収集は行われません。収集済みの統計は個人を特定しない形で保存され、Google の保持期間の経過後に自動的に削除されます。それ以前の削除をご希望の場合は <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> までご連絡ください。
 
+⑤ 在庫の公開（とれはんっ！連携・第3条⑥）
+・「在庫の公開設定」のスイッチをオフに戻すと、その場でサーバー上の在庫が削除されます。頒布セットを削除した場合も③と同様に削除されます。
+・在庫は③の登録に付随するため、対象イベントの最終開催日から7日を経過した時点で、登録ごと自動的に削除されます。
+
+⑥ アンケートの回答（第3条⑦）
+・回答は、最後に送信された日から2年が経過した時点で自動的に削除されます。
+・それ以前の削除をご希望の場合は <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> までご連絡ください。
+
 ①②のデータの削除をご希望の場合は <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> までご連絡ください（取り置き予約ページはページURL、売り子共有は参加コードをお知らせいただくと対象を特定できます）。</p>
     <h2>9. 子どものプライバシー</h2>
     <p>本アプリは全年齢を対象としており、子どもから個人情報を収集することを意図していません。</p>
@@ -190,7 +211,7 @@
 
 However, when you use the online / sharing features — "Seller share", "Reservation page publishing", "Circle registration (Torehan integration)", and "Registrant count" — some data is sent to and stored on the App's cloud server (see Section 3).
 
-Of these, "Circle registration (Torehan integration)" and "Registrant count" run automatically every time you open the Products tab, once you have agreed in the sharing-consent dialog. Nothing is sent unless you agree. At present there is no setting that stops this transmission alone after you have agreed (per-feature on/off settings are planned). To withdraw a registration, delete the product set concerned; deleting it also removes the registration from the server (see Section 8, item (3)).
+Of these, "Circle registration (Torehan integration)" and "Registrant count" run automatically every time you open the Products tab, once you have agreed in the sharing-consent dialog. Nothing is sent unless you agree. Within item ③, the publication of stock (remaining quantities) alone can be switched on and off by you, under "Stock publishing" on the Products tab. It is off by default, and only items for which both the per-event-day master switch and the per-item switch are on are included (see Section 3, item ⑥). For the other items there is, at present, no setting that stops that transmission alone after you have agreed (per-feature on/off settings are being added progressively). To withdraw a registration, delete the product set concerned; deleting it also removes the registration from the server (see Section 8, item (3)).
 
 The App has no mechanism that compulsorily collects your name, email address, phone number, location, or contacts. Note, however, that the "display name" you enter yourself in the sharing features is a free-text field into which you may, at your discretion, enter any name (including your real name).
 
@@ -198,7 +219,7 @@ The App can import product data from the companion app "Sakushina!" in two ways.
     <h2>3. Information Sent via Online / Sharing Features</h2>
     <p>The App offers features that share or sync data with other users. When you use them, the following information is sent to and stored on the App's cloud server (Supabase, a database / storage service provided by Supabase, Inc., acting as our data processor).
 
-How they are triggered differs by feature. Items ①, ② and ⑤ run only when you perform the corresponding action (creating or joining a share session, publishing a reservation page, opening an import link). Items ③ and ④ run automatically every time you open the Products tab, once you have agreed in the sharing-consent dialog shown the first time; nothing is sent unless you agree (see also Section 2).
+How they are triggered differs by feature. Items ①, ② and ⑤ run only when you perform the corresponding action (creating or joining a share session, publishing a reservation page, opening an import link). Items ③ and ④ run automatically every time you open the Products tab, once you have agreed in the sharing-consent dialog shown the first time; nothing is sent unless you agree (see also Section 2). Item ⑥ runs only for the items you yourself have switched on under "Stock publishing", in addition to having agreed to item ③ (off by default). Item ⑦ runs only when you press the submit button in the survey.
 
 ① Seller share (sharing sales across multiple devices)
 ・Sent: session name, participating members' display names and symbols, shared sales data (product name, amount, quantity, payment method, etc.), shared product info (product name, price, stock, set composition, etc.), menu images, and an anonymous device identifier (installation ID — a random identifier that does not identify you personally, used so that the same device rejoining is treated as the same seller).
@@ -223,6 +244,19 @@ How they are triggered differs by feature. Items ①, ② and ⑤ run only when 
 ・Sent: only the hand-off ID (a temporary random identifier issued by Sakushina!). No name, contact details or device identifier is sent.
 ・Received: the product information deposited by Sakushina! (product names, prices, etc.). It is deleted from the server as soon as it is retrieved, and data that is never retrieved expires automatically after 24 hours.
 ・Visibility: only the person who received the hand-off link.
+
+⑥ Stock publishing (Torehan integration)
+・What is sent: the item name, the remaining quantity, the quantity prepared (initial stock), and the event, event day and booth location (hall / space number) used to match your circle.
+・Scope: only items for which, under "Stock publishing", both the per-event-day master switch and the per-item switch are on and stock is being tracked. Everything is off by default, and nothing at all is sent while it is off.
+・Visibility: users of our companion app "Torehan" (whether an item is sold out is visible to all of its users; the remaining quantity is visible to those using its paid features).
+・Because the prepared quantity is sent as well, the difference from the remaining quantity may allow others to roughly estimate how many you have distributed. Sales amounts, prices and buyer information are never sent.
+・Turning the switch back off deletes the stock from the server immediately.
+
+⑦ Survey submission
+・What is sent: your answers to each question (multiple-choice answers, 1-5 ratings and free text), an anonymous device identifier (installation ID, a random identifier that does not identify you), the survey version, and the event (edition) you select as the subject of your answers. The questions ask about your exhibiting experience, how many people handle sales on the day, your satisfaction with the App and whether you would recommend it to a friend, which features you use and do not use, whether you have used paid features and how you felt about their price, changes in checkout time and bookkeeping effort, any other apps or tools you use alongside it, and free-text answers on the reasons and your requests. No question asks for your name, address or contact details.
+・When it runs: only when you reach the last page of the survey and press the submit button. The survey can be opened from the Info tab, and we may also show an invitation on the day after an event ends. Nothing is sent if you close the survey partway.
+・Purpose: used solely to consider improvements to the App. Answers are never published.
+・Please do not enter personal information such as your name or contact details in the free-text fields.
 
 ※ About menu images: menu images you share or register are stored in public storage readable by anyone who has the URL. Do not upload images for which you do not have the copyright holder's permission.
 ※ You may choose not to enter your real name as a display name. We recommend sharing only the information that is necessary.</p>
@@ -281,6 +315,14 @@ External links the App may open include links to social media or official inform
 (4) Usage statistics (Google Firebase Analytics, Section 6)
 ・Uninstalling the App stops any further collection. Statistics already collected are stored in a form that does not identify you and are deleted automatically once Google's retention period elapses. To request earlier deletion, please contact <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>.
 
+(5) Stock publishing (Torehan integration; Section 3, item ⑥)
+・Turning the switch off under "Stock publishing" deletes the stock from the server immediately. Deleting the sales set removes it as well, just as in (3).
+・Because the stock is attached to the registration in (3), it is deleted automatically together with that registration 7 days after the last day of the relevant event.
+
+(6) Survey answers (Section 3, item ⑦)
+・Answers are deleted automatically two years after the day they were last submitted.
+・To request earlier deletion, please contact <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>.
+
 If you wish to have the data described in (1) or (2) deleted, please contact <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> (please include the page URL for a reservation page, or the join code for a seller share session, so that we can identify it).</p>
     <h2>9. Children's Privacy</h2>
     <p>The App is for all ages and does not intend to collect personal information from children.</p>
@@ -305,7 +347,7 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
 
 但仅当用户选择使用「卖手共享」「预约页面公开」「社团登记（与 Torehan 联动）」「登记人数显示」等可选的在线・共享功能时，部分数据才会被发送并保存到本应用的云服务器（详见第3条）。
 
-其中「社团登记（与 Torehan 联动）」和「登记人数显示」，在您于共享确认对话框中同意之后，每次打开贩售物标签页时都会自动发送・更新。未同意则不会发送。目前尚无仅停止该项发送的单独设置（按功能开关的设置将于今后添加）。如需撤回，请删除相应的贩售组，届时服务器上的登记也会一并解除（第8条③）。
+其中「社团登记（与 Torehan 联动）」和「登记人数显示」，在您于共享确认对话框中同意之后，每次打开贩售物标签页时都会自动发送・更新。未同意则不会发送。③之中，仅「库存（剩余数量）的公开」可由您自己在贩售物标签页的「库存公开设置」中开启／关闭。默认为关闭，且只有同时开启「按活动・举办日的总开关」与「每件颁布物的开关」的颁布物才属于对象（第3条⑥）。至于其他项目，目前尚无仅停止该项发送的单独设置（按功能开关的设置将陆续添加）。如需撤回，请删除相应的贩售组，届时服务器上的登记也会一并解除（第8条③）。
 
 本应用没有强制收集您的姓名、电子邮件地址、电话号码、位置信息、联系方式的机制。但请注意，您在卖手共享中自行输入的"显示名称"是自由文本字段，您可自行决定输入任意名称（包括真实姓名）。
 
@@ -313,7 +355,7 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
     <h2>3. 通过在线・共享功能发送的信息</h2>
     <p>本应用提供与其他用户共享・联动数据的可选功能。使用这些功能时，以下信息会被发送并保存到本应用的云服务器（Supabase，由 Supabase, Inc. 提供的数据库／存储，作为我方的数据处理受托方）。
 
-执行的时机因功能而异。①②⑤仅在用户进行相应操作（创建／参加共享会话、公开预约页面、打开交接链接）时才会运行。③④则在首次显示的共享同意对话框中同意之后，每次打开贩售物标签页时自动执行（未同意则不会发送。另见第2条）。
+执行的时机因功能而异。①②⑤仅在用户进行相应操作（创建／参加共享会话、公开预约页面、打开交接链接）时才会运行。③④则在首次显示的共享同意对话框中同意之后，每次打开贩售物标签页时自动执行（未同意则不会发送。另见第2条）。⑥在同意③的基础上，仅对您自己在「库存公开设置」中开启的颁布物执行（默认关闭）。⑦仅在用户按下问卷的发送按钮时才会运行。
 
 ① 卖手共享（在多台设备间共享销售数据）
 ・发送内容：会话名称、参加成员的显示名称和符号、共享的销售数据（商品名・金额・数量・支付方式等）、共享的商品信息（商品名・价格・库存・套装构成等）、菜单图片、匿名的设备识别符（安装ID＝不识别个人的随机标识符，用于在同一设备重新加入时视为同一售货员）。
@@ -338,6 +380,19 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
 ・发送内容：仅交接ID（サク品っ！签发的临时随机标识符）。不发送姓名、联系方式或设备标识符。
 ・接收内容：サク品っ！寄存的商品信息（商品名称、价格等）。取得后即从服务器删除，未被取得的数据也将在24小时后自动失效。
 ・公开范围：仅收到交接链接的本人。
+
+⑥ 库存的公开（与 Torehan 联动）
+・发送内容：颁布物名称、剩余数量、准备的数量（初始库存），以及用于匹配的活动・举办日・摊位位置（展厅／摊位号）。
+・对象范围：仅限在「库存公开设置」中同时开启「按活动・举办日的总开关」与「每件颁布物的开关」、且正在管理库存的颁布物。默认全部关闭，关闭期间一件都不会发送。
+・公开范围：姊妹应用「とれはんっ！」的用户可以查看（是否售罄由该应用的全体用户查看，剩余数量由使用该应用付费功能的用户查看）。
+・由于准备的数量也会一并发送，他人可能通过与剩余数量的差额大致推算您的颁布数量。销售金额・单价・购买者信息一概不发送。
+・将开关调回关闭后，服务器上的库存会立即被删除。
+
+⑦ 问卷的发送
+・发送内容：各设问的回答（选择式回答、5级评分、自由填写内容）、匿名的设备识别符（安装ID＝不识别个人的随机识别符）、问卷版本，以及您选择的作为回答对象的活动（届次）。设问询问的内容为：参展经验、当天负责收银的人数、对应用的满意度以及是否愿意推荐给朋友、常用与未使用的功能、是否使用过付费功能及对其价格的感受、结账时间与统计工作量的变化、另外并用的应用与工具，以及关于上述内容的理由与需求的自由填写。任何设问都不会询问姓名、住址与联系方式。
+・执行时机：仅在问卷画面中，用户进入最后一页并按下发送按钮时才会发送。问卷可从信息标签页打开，此外我们可能在活动结束的次日显示邀请。中途关闭则不会发送任何内容。
+・用途：仅用于研究应用的改进。不会公开回答内容。
+・请勿在自由填写栏中输入姓名、联系方式等个人信息。
 
 ※ 关于菜单图片：您共享或登记的菜单图片将保存在任何知道 URL 的人都可读取的公开存储中。请勿上传未获得著作权人许可的图片。
 ※ 您也可以不输入真实姓名作为显示名称。建议仅共享必要范围内的信息。</p>
@@ -396,6 +451,14 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
 ④ 使用情况统计（Google Firebase Analytics・第6条）
 ・卸载应用后将不再收集。已收集的统计以无法识别个人的形式保存，并在 Google 的保存期限届满后自动删除。如希望更早删除，请联系 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>。
 
+⑤ 库存的公开（与 Torehan 联动・第3条⑥）
+・在「库存公开设置」中将开关调回关闭后，服务器上的库存会立即被删除。删除贩售组时也与③相同会被删除。
+・由于库存附属于③的登记，将在相关活动最后一天起满7天后连同登记一并自动删除。
+
+⑥ 问卷的回答（第3条⑦）
+・回答将在最后一次发送之日起满2年时自动删除。
+・如希望更早删除，请联系 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>。
+
 如希望删除①②的数据，请联系 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>（预约页面请告知页面URL，卖手共享请告知参与代码，以便我们确认对象）。</p>
     <h2>9. 儿童隐私</h2>
     <p>本应用面向所有年龄段，无意从儿童处收集个人信息。</p>
@@ -416,7 +479,7 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
 
 但僅當使用者選擇使用「賣手共享」「預約頁面公開」「社團登記（與 Torehan 聯動）」「登記人數顯示」等可選的線上・共享功能時，部分資料才會被傳送並儲存到本應用的雲伺服器（詳見第3條）。
 
-其中「社團登記（與 Torehan 聯動）」和「登記人數顯示」，在您於共享確認對話方塊中同意之後，每次開啟販售物標籤頁時都會自動傳送・更新。未同意則不會傳送。目前尚無僅停止該項傳送的單獨設定（按功能開關的設定將於今後新增）。如需撤回，請刪除相應的販售組，屆時伺服器上的登記也會一併解除（第8條③）。
+其中「社團登記（與 Torehan 聯動）」和「登記人數顯示」，在您於共享確認對話方塊中同意之後，每次開啟販售物標籤頁時都會自動傳送・更新。未同意則不會傳送。③之中，僅「庫存（剩餘數量）的公開」可由您自己在販售物標籤頁的「庫存公開設定」中開啟／關閉。預設為關閉，且只有同時開啟「按活動・舉辦日的總開關」與「每件頒佈物的開關」的頒佈物才屬於對象（第3條⑥）。至於其他項目，目前尚無僅停止該項傳送的單獨設定（按功能開關的設定將陸續新增）。如需撤回，請刪除相應的販售組，屆時伺服器上的登記也會一併解除（第8條③）。
 
 本應用沒有強制收集您的姓名、電子郵件地址、電話號碼、位置資訊、聯絡方式的機制。但請注意，您在賣手共享中自行輸入的"顯示名稱"是自由文字欄位，您可自行決定輸入任意名稱（包括真實姓名）。
 
@@ -424,7 +487,7 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
     <h2>3. 透過線上・共享功能傳送的資訊</h2>
     <p>本應用提供與其他使用者共享・聯動資料的可選功能。使用這些功能時，以下資訊會被傳送並儲存到本應用的雲伺服器（Supabase，由 Supabase, Inc. 提供的資料庫／儲存，作為我方的資料處理受託方）。
 
-執行的時機因功能而異。①②⑤僅在使用者進行相應操作（建立／參加共享會話、公開預約頁面、開啟交接連結）時才會執行。③④則在首次顯示的共享同意對話方塊中同意之後，每次開啟販售物標籤頁時自動執行（未同意則不會傳送。另見第2條）。
+執行的時機因功能而異。①②⑤僅在使用者進行相應操作（建立／參加共享會話、公開預約頁面、開啟交接連結）時才會執行。③④則在首次顯示的共享同意對話方塊中同意之後，每次開啟販售物標籤頁時自動執行（未同意則不會傳送。另見第2條）。⑥在同意③的基礎上，僅對您自己在「庫存公開設定」中開啟的頒佈物執行（預設關閉）。⑦僅在使用者按下問卷的傳送按鈕時才會執行。
 
 ① 賣手共享（在多臺裝置間共享銷售資料）
 ・傳送內容：會話名稱、參加成員的顯示名稱和符號、共享的銷售資料（商品名・金額・數量・支付方式等）、共享的商品資訊（商品名・價格・庫存・套裝構成等）、選單圖片、匿名的裝置識別符（安裝ID＝不識別個人的隨機識別符號，用於在同一裝置重新加入時視為同一售貨員）。
@@ -449,6 +512,19 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
 ・傳送內容：僅交接ID（サク品っ！簽發的臨時隨機識別符號）。不傳送姓名、聯絡方式或裝置識別符號。
 ・接收內容：サク品っ！寄存的商品資訊（商品名稱、價格等）。取得後即從伺服器刪除，未被取得的資料也將在24小時後自動失效。
 ・公開範圍：僅收到交接連結的本人。
+
+⑥ 庫存的公開（與 Torehan 聯動）
+・傳送內容：頒佈物名稱、剩餘數量、準備的數量（初始庫存），以及用於比對的活動・舉辦日・攤位位置（展廳／攤位號）。
+・對象範圍：僅限在「庫存公開設定」中同時開啟「按活動・舉辦日的總開關」與「每件頒佈物的開關」、且正在管理庫存的頒佈物。預設全部關閉，關閉期間一件都不會傳送。
+・公開範圍：姊妹應用「とれはんっ！」的使用者可以檢視（是否售完由該應用的全體使用者檢視，剩餘數量由使用該應用付費功能的使用者檢視）。
+・由於準備的數量也會一併傳送，他人可能透過與剩餘數量的差額大致推算您的頒佈數量。銷售金額・單價・購買者資訊一概不傳送。
+・將開關調回關閉後，伺服器上的庫存會立即被刪除。
+
+⑦ 問卷的傳送
+・傳送內容：各設問的回答（選擇式回答、5級評分、自由填寫內容）、匿名的裝置識別符（安裝ID＝不識別個人的隨機識別符）、問卷版本，以及您選擇作為回答對象的活動（屆次）。設問詢問的內容為：參展經驗、當天負責收銀的人數、對應用的滿意度以及是否願意推薦給朋友、常用與未使用的功能、是否使用過付費功能及對其價格的感受、結帳時間與統計工作量的變化、另外併用的應用與工具，以及關於上述內容的理由與需求的自由填寫。任何設問都不會詢問姓名、住址與聯絡方式。
+・執行時機：僅在問卷畫面中，使用者進入最後一頁並按下傳送按鈕時才會傳送。問卷可從資訊標籤頁開啟，此外我們可能在活動結束的隔天顯示邀請。中途關閉則不會傳送任何內容。
+・用途：僅用於研究應用的改進。不會公開回答內容。
+・請勿在自由填寫欄中輸入姓名、聯絡方式等個人資訊。
 
 ※ 關於選單圖片：您共享或登記的選單圖片將儲存在任何知道 URL 的人都可讀取的公開儲存中。請勿上傳未獲得著作權人許可的圖片。
 ※ 您也可以不輸入真實姓名作為顯示名稱。建議僅共享必要範圍內的資訊。</p>
@@ -507,6 +583,14 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
 ④ 使用情況統計（Google Firebase Analytics・第6條）
 ・解除安裝應用後將不再收集。已收集的統計以無法識別個人的形式儲存，並在 Google 的儲存期限屆滿後自動刪除。如希望更早刪除，請聯絡 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>。
 
+⑤ 庫存的公開（與 Torehan 聯動・第3條⑥）
+・在「庫存公開設定」中將開關調回關閉後，伺服器上的庫存會立即被刪除。刪除販售組時也與③相同會被刪除。
+・由於庫存附屬於③的登記，將在相關活動最後一天起滿7天後連同登記一併自動刪除。
+
+⑥ 問卷的回答（第3條⑦）
+・回答將在最後一次傳送之日起滿2年時自動刪除。
+・如希望更早刪除，請聯絡 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>。
+
 如希望刪除①②的資料，請聯絡 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>（預約頁面請告知頁面URL，賣手共享請告知參與代碼，以便我們確認對象）。</p>
     <h2>9. 兒童隱私</h2>
     <p>本應用面向所有年齡段，無意從兒童處收集個人資訊。</p>
@@ -527,7 +611,7 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
 
 다만, 이용자가 임의로 「매장 직원 공유」「예약 페이지 공개」「서클 등록（Torehan 연동）」「등록자 수 표시」 등의 온라인・공유 기능을 사용하는 경우에 한해, 일부 데이터가 본 앱의 클라우드 서버로 전송・저장됩니다（자세한 내용은 제3조）.
 
-이 가운데 「서클 등록（Torehan 연동）」과 「등록자 수 표시」는, 공유해도 되는지 확인하는 대화상자에서 동의한 뒤에는 반포물 탭을 열 때마다 자동으로 전송・갱신됩니다. 동의하지 않으면 전송되지 않습니다. 현재로서는 동의한 뒤에 이 전송만을 개별적으로 중지하는 설정은 없습니다（기능별 켜기／끄기 설정은 앞으로 추가할 예정입니다）. 철회하고 싶은 경우에는 해당 반포 세트를 삭제해 주십시오. 삭제 시 서버상의 등록도 해제됩니다（제8조 ③）.
+이 가운데 「서클 등록（Torehan 연동）」과 「등록자 수 표시」는, 공유해도 되는지 확인하는 대화상자에서 동의한 뒤에는 반포물 탭을 열 때마다 자동으로 전송・갱신됩니다. 동의하지 않으면 전송되지 않습니다. ③ 가운데 재고（남은 개수）의 공개만은 반포물 탭의 「재고 공개 설정」에서 이용자 본인이 켜고 끌 수 있습니다. 기본값은 꺼짐이며, 행사・개최일별 일괄 스위치와 반포물 1점별 스위치를 모두 켠 반포물만 대상이 됩니다（제3조 ⑥）. 그 밖의 항목에 대해서는 현재로서 동의한 뒤에 그 전송만을 개별적으로 중지하는 설정은 없습니다（기능별 켜기／끄기 설정은 순차적으로 추가할 예정입니다）. 철회하고 싶은 경우에는 해당 반포 세트를 삭제해 주십시오. 삭제 시 서버상의 등록도 해제됩니다（제8조 ③）.
 
 본 앱은 이용자의 이름・이메일 주소・전화번호・위치 정보・연락처를 강제로 수집하는 구조를 가지고 있지 않습니다. 다만 매장 직원 공유에서 이용자가 직접 입력하는 "표시 이름"은 자유 입력 항목으로, 이용자의 판단에 따라 임의의 이름（실명 포함）을 입력할 수 있습니다.
 
@@ -535,7 +619,7 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
     <h2>3. 온라인・공유 기능으로 전송되는 정보</h2>
     <p>본 앱에는 다른 이용자와 데이터를 공유・연동하는 임의 기능이 있으며, 이를 사용하면 다음 정보가 본 앱의 클라우드 서버（Supabase. Supabase, Inc.가 제공하는 데이터베이스／스토리지로, 당사의 데이터 처리 수탁자로 기능합니다）로 전송・저장됩니다.
 
-실행되는 방식은 기능에 따라 다릅니다. ①②⑤는 이용자가 해당 조작（공유 세션 작성／참가, 예약 페이지 공개, 전달 링크 열기）을 했을 때에만 동작합니다. ③④는 처음에 표시되는 공유 동의 대화상자에서 동의한 뒤에는 반포물 탭을 열 때마다 자동으로 실행됩니다（동의하지 않으면 전송되지 않습니다. 제2조도 참조）.
+실행되는 방식은 기능에 따라 다릅니다. ①②⑤는 이용자가 해당 조작（공유 세션 작성／참가, 예약 페이지 공개, 전달 링크 열기）을 했을 때에만 동작합니다. ③④는 처음에 표시되는 공유 동의 대화상자에서 동의한 뒤에는 반포물 탭을 열 때마다 자동으로 실행됩니다（동의하지 않으면 전송되지 않습니다. 제2조도 참조）. ⑥은 ③에 동의한 다음, 「재고 공개 설정」에서 이용자 본인이 켠 반포물에 대해서만 실행됩니다（기본값은 꺼짐）. ⑦은 이용자가 설문의 전송 버튼을 눌렀을 때에만 동작합니다.
 
 ① 매장 직원 공유（여러 단말에서 매출 공유）
 ・전송 내용: 세션 이름, 참가 멤버의 표시 이름과 기호, 공유한 매출 데이터（상품명・금액・수량・결제 방법 등）, 공유한 상품 정보（상품명・가격・재고・세트 구성 등）, 메뉴 이미지, 익명의 단말 식별자（설치 ID＝개인을 특정하지 않는 무작위 식별자로, 같은 단말이 다시 참가했을 때 동일한 판매 담당자로 취급하기 위해 사용됩니다）.
@@ -560,6 +644,19 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
 ・전송 내용: 전달 ID（サク品っ！가 발행하는 일시적인 무작위 식별자）만. 이름・연락처・단말 식별자는 전송하지 않습니다.
 ・수신 내용: サク品っ！가 맡긴 상품 정보（상품명・가격 등）. 취득과 동시에 서버에서 삭제되며, 수령되지 않은 데이터도 24시간 후 자동으로 만료됩니다.
 ・공개 범위: 전달 링크를 받은 본인만.
+
+⑥ 재고의 공개（Torehan 연동）
+・전송 내용：반포물의 명칭, 남은 개수, 준비한 수량（초기 재고）, 그리고 대조에 사용하는 행사・개최일・배치（홀／스페이스 번호）.
+・대상 범위：「재고 공개 설정」에서 행사・개최일별 일괄 스위치와 반포물 1점별 스위치를 모두 켜고, 재고를 관리하고 있는 반포물만입니다. 기본값은 모두 꺼짐이며, 꺼져 있는 동안에는 한 건도 전송되지 않습니다.
+・공개 범위：자매 앱 「とれはんっ！」의 이용자가 열람할 수 있습니다（품절 여부는 해당 앱의 모든 이용자가, 남은 개수는 해당 앱의 유료 기능을 이용하는 분이 열람합니다）.
+・준비한 수량도 함께 전송하므로, 남은 개수와의 차이로 대략적인 반포 수량이 추측될 가능성이 있습니다. 매출 금액・단가・구매자 정보는 전송하지 않습니다.
+・스위치를 다시 끄면 그 자리에서 서버상의 재고가 삭제됩니다.
+
+⑦ 설문의 전송
+・전송 내용：각 설문 문항에 대한 답변（선택형 답변・5단계 평가・자유 기술）, 익명의 단말 식별자（설치ID＝개인을 식별하지 않는 무작위 식별자）, 설문의 판, 답변의 대상으로 선택하신 이벤트（회차）. 설문에서 여쭙는 내용은 출점 경험, 당일 계산을 담당하는 인원수, 앱의 만족도와 친구에게 추천하고 싶은지, 자주 쓰는 기능과 쓰지 않는 기능, 유료 기능의 이용 여부와 그 가격에 대한 느낌, 계산에 걸리는 시간과 집계 수고의 변화, 그 밖에 함께 사용하는 앱・도구, 그리고 그 이유와 요청 사항의 자유 기술입니다. 어느 문항에서도 이름・주소・연락처는 여쭙지 않습니다.
+・실행 시점：설문 화면에서 이용자가 마지막 페이지까지 진행하여 전송 버튼을 눌렀을 때에만 전송됩니다. 설문은 정보 탭에서 열 수 있으며, 이벤트 종료 다음 날에 안내를 표시하는 경우가 있습니다. 도중에 닫으신 경우에는 한 건도 전송되지 않습니다.
+・용도：앱 개선의 검토에만 이용합니다. 답변 내용을 공개하는 일은 없습니다.
+・자유 기술란에는 이름・연락처 등의 개인정보를 입력하지 말아 주십시오.
 
 ※ 메뉴 이미지에 대하여: 공유・등록한 메뉴 이미지는 URL을 아는 누구나 열람할 수 있는 공개 스토리지에 저장됩니다. 저작권자의 허가가 없는 이미지는 업로드하지 마십시오.
 ※ 표시 이름에 실명을 입력하지 않을 수도 있습니다. 공유하는 정보는 필요한 범위로 한정할 것을 권장합니다.</p>
@@ -618,6 +715,14 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
 ④ 이용 현황 통계（Google Firebase Analytics・제6조）
 ・앱을 삭제（언인스톨）하면 이후의 수집은 이루어지지 않습니다. 이미 수집된 통계는 개인을 특정할 수 없는 형태로 보관되며, Google의 보관 기간이 경과한 후 자동으로 삭제됩니다. 그 이전의 삭제를 원하시는 경우 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> 으로 연락해 주십시오.
 
+⑤ 재고의 공개（Torehan 연동・제3조 ⑥）
+・「재고 공개 설정」의 스위치를 다시 끄면 그 자리에서 서버상의 재고가 삭제됩니다. 판매 세트를 삭제한 경우에도 ③과 마찬가지로 삭제됩니다.
+・재고는 ③의 등록에 부수하므로, 해당 이벤트 최종 개최일로부터 7일이 경과한 시점에 등록과 함께 자동으로 삭제됩니다.
+
+⑥ 설문의 답변（제3조 ⑦）
+・답변은 마지막으로 전송된 날로부터 2년이 경과한 시점에 자동으로 삭제됩니다.
+・그 이전의 삭제를 원하시는 경우 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> 으로 연락해 주십시오.
+
 ①②의 데이터 삭제를 원하시는 경우 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> 으로 연락해 주십시오（예약 페이지는 페이지 URL, 매장 직원 공유는 참가 코드를 알려주시면 대상을 특정할 수 있습니다）.</p>
     <h2>9. 어린이 개인정보</h2>
     <p>본 앱은 전 연령을 대상으로 하며, 어린이로부터 개인정보를 수집할 의도가 없습니다.</p>
@@ -638,7 +743,7 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
 
 Toutefois, uniquement lorsque vous choisissez d'utiliser les fonctionnalités en ligne / de partage facultatives — « Partage vendeur », « Publication de page de réservation », « Inscription de cercle (intégration Torehan) » et « Nombre d'inscrits » —, certaines données sont envoyées et stockées sur le serveur cloud de l'Application (voir Section 3).
 
-Parmi celles-ci, « Inscription de cercle (intégration Torehan) » et « Nombre d'inscrits » sont envoyées et mises à jour automatiquement à chaque ouverture de l'onglet des articles, une fois que vous avez accepté la boîte de dialogue de consentement au partage. Si vous n'acceptez pas, rien n'est envoyé. À ce jour, il n'existe pas de réglage permettant d'interrompre uniquement cet envoi après avoir accepté (des réglages d'activation / désactivation par fonctionnalité sont prévus). Pour revenir en arrière, supprimez le lot concerné : sa suppression annule également l'inscription sur le serveur (article 8, point 3).
+Parmi celles-ci, « Inscription de cercle (intégration Torehan) » et « Nombre d'inscrits » sont envoyées et mises à jour automatiquement à chaque ouverture de l'onglet des articles, une fois que vous avez accepté la boîte de dialogue de consentement au partage. Si vous n'acceptez pas, rien n'est envoyé. Au sein du point ③, la publication du stock (quantités restantes) peut être activée ou désactivée par vous-même, via « Publication du stock » dans l'onglet des articles. Elle est désactivée par défaut, et seuls les articles dont l'interrupteur global de la journée d'événement et l'interrupteur individuel sont tous deux activés sont concernés (voir Section 3, point ⑥). Pour les autres points, il n'existe à ce jour pas de réglage permettant d'interrompre uniquement cet envoi après avoir accepté (des réglages d'activation / désactivation par fonctionnalité sont ajoutés progressivement). Pour revenir en arrière, supprimez le lot concerné : sa suppression annule également l'inscription sur le serveur (article 8, point 3).
 
 L'Application ne dispose d'aucun mécanisme collectant de force votre nom, votre adresse e-mail, votre numéro de téléphone, votre localisation ou vos contacts. Notez cependant que le « nom d'affichage » que vous saisissez vous-même dans le partage vendeur est un champ de texte libre dans lequel vous pouvez, à votre discrétion, saisir n'importe quel nom (y compris votre vrai nom).
 
@@ -646,7 +751,7 @@ L'Application peut importer des données de produits depuis l'application compag
     <h2>3. Informations envoyées via les fonctionnalités en ligne / de partage</h2>
     <p>L'Application propose des fonctionnalités facultatives qui partagent ou synchronisent des données avec d'autres utilisateurs. Lorsque vous les utilisez, les informations suivantes sont envoyées et stockées sur le serveur cloud de l'Application (Supabase, un service de base de données / stockage fourni par Supabase, Inc., agissant comme notre sous-traitant de traitement des données).
 
-Le déclenchement varie selon la fonctionnalité. Les points 1, 2 et 5 ne s'exécutent que lorsque vous effectuez l'action correspondante (créer ou rejoindre une session de partage, publier une page de réservation, ouvrir un lien de transfert). Les points 3 et 4 s'exécutent automatiquement à chaque ouverture de l'onglet des articles, une fois que vous avez accepté la boîte de dialogue de consentement au partage affichée la première fois (si vous n'acceptez pas, rien n'est envoyé ; voir également la Section 2).
+Le déclenchement varie selon la fonctionnalité. Les points 1, 2 et 5 ne s'exécutent que lorsque vous effectuez l'action correspondante (créer ou rejoindre une session de partage, publier une page de réservation, ouvrir un lien de transfert). Les points 3 et 4 s'exécutent automatiquement à chaque ouverture de l'onglet des articles, une fois que vous avez accepté la boîte de dialogue de consentement au partage affichée la première fois (si vous n'acceptez pas, rien n'est envoyé ; voir également la Section 2). Le point ⑥ ne s'exécute, en plus de votre acceptation du point ③, que pour les articles que vous avez vous-même activés sous « Publication du stock » (désactivé par défaut). Le point ⑦ ne s'exécute que lorsque vous appuyez sur le bouton d'envoi du questionnaire.
 
 ① Partage vendeur (partage des ventes entre plusieurs appareils)
 ・Envoyé : nom de la session, noms d'affichage et symboles des membres participants, données de vente partagées (nom du produit, montant, quantité, moyen de paiement, etc.), informations produit partagées (nom du produit, prix, stock, composition du lot, etc.), images de menu, et un identifiant d'appareil anonyme (ID d'installation — un identifiant aléatoire qui ne vous identifie pas personnellement, utilisé pour qu'un même appareil qui rejoint à nouveau soit traité comme le même vendeur).
@@ -671,6 +776,19 @@ Le déclenchement varie selon la fonctionnalité. Les points 1, 2 et 5 ne s'exé
 ・Envoyé : uniquement l'identifiant de transfert (un identifiant aléatoire temporaire émis par サク品っ！). Aucun nom, coordonnée ni identifiant d'appareil n'est envoyé.
 ・Reçu : les informations produit déposées par サク品っ！ (noms de produits, prix, etc.). Elles sont supprimées du serveur dès leur récupération, et les données jamais récupérées expirent automatiquement au bout de 24 heures.
 ・Visibilité : uniquement la personne ayant reçu le lien de transfert.
+
+⑥ Publication du stock (intégration Torehan)
+・Ce qui est envoyé : le nom de l'article, la quantité restante, la quantité préparée (stock initial), ainsi que l'événement, la journée et l'emplacement (hall / numéro de stand) servant à identifier votre cercle.
+・Périmètre : uniquement les articles pour lesquels, sous « Publication du stock », l'interrupteur global de la journée d'événement et l'interrupteur individuel sont tous deux activés et dont le stock est suivi. Tout est désactivé par défaut et rien n'est envoyé tant que c'est désactivé.
+・Visibilité : les utilisateurs de notre application compagnon « Torehan » (le fait qu'un article soit épuisé est visible par tous ses utilisateurs ; la quantité restante l'est par ceux qui utilisent ses fonctions payantes).
+・La quantité préparée étant également envoyée, l'écart avec la quantité restante peut permettre d'estimer approximativement combien vous avez distribué. Les montants de vente, les prix et les informations sur les acheteurs ne sont jamais envoyés.
+・Remettre l'interrupteur sur désactivé supprime immédiatement le stock présent sur le serveur.
+
+⑦ Envoi du questionnaire
+・Ce qui est envoyé : vos réponses à chaque question (réponses à choix, notes sur 5 et texte libre), un identifiant d'appareil anonyme (identifiant d'installation, un identifiant aléatoire qui ne vous identifie pas), la version du questionnaire et l'événement (édition) que vous choisissez comme objet de vos réponses. Les questions portent sur votre expérience d'exposant, le nombre de personnes qui encaissent le jour même, votre satisfaction vis-à-vis de l'Application et votre envie de la recommander à un ami, les fonctionnalités que vous utilisez ou non, le fait d'avoir utilisé des fonctionnalités payantes et votre ressenti sur leur prix, l'évolution du temps d'encaissement et de la charge de comptabilité, les autres applications ou outils que vous utilisez en parallèle, ainsi que des réponses libres sur les raisons et vos demandes. Aucune question ne demande votre nom, votre adresse ni vos coordonnées.
+・Déclenchement : uniquement lorsque vous atteignez la dernière page du questionnaire et appuyez sur le bouton d'envoi. Le questionnaire s'ouvre depuis l'onglet Informations, et il se peut que nous affichions une invitation le lendemain de la fin d'un événement. Rien n'est envoyé si vous fermez le questionnaire en cours de route.
+・Finalité : utilisé uniquement pour envisager des améliorations de l'Application. Les réponses ne sont jamais publiées.
+・Merci de ne pas saisir d'informations personnelles (nom, coordonnées) dans les champs libres.
 
 ※ À propos des images de menu : les images de menu que vous partagez ou enregistrez sont stockées dans un stockage public lisible par quiconque dispose de l'URL. N'envoyez pas d'images pour lesquelles vous n'avez pas l'autorisation du titulaire des droits d'auteur.
 ※ Vous pouvez choisir de ne pas saisir votre vrai nom comme nom d'affichage. Nous recommandons de ne partager que les informations nécessaires.</p>
@@ -729,6 +847,14 @@ Les liens externes que l'Application peut ouvrir incluent des liens vers les ré
 (4) Statistiques d'usage (Google Firebase Analytics, Section 6)
 ・La désinstallation de l'Application met fin à toute collecte ultérieure. Les statistiques déjà collectées sont conservées sous une forme qui ne permet pas de vous identifier et sont supprimées automatiquement à l'expiration de la durée de conservation de Google. Pour demander une suppression anticipée, veuillez contacter <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>.
 
+(5) Publication du stock (intégration Torehan ; Section 3, point ⑥)
+・Remettre l'interrupteur sur désactivé sous « Publication du stock » supprime immédiatement le stock présent sur le serveur. Supprimer le lot de vente le supprime également, comme au point (3).
+・Le stock étant rattaché à l'inscription du point (3), il est supprimé automatiquement avec cette inscription 7 jours après le dernier jour de l'événement concerné.
+
+(6) Réponses au questionnaire (Section 3, point ⑦)
+・Les réponses sont supprimées automatiquement deux ans après le jour de leur dernier envoi.
+・Pour demander une suppression anticipée, veuillez contacter <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>.
+
 Si vous souhaitez faire supprimer les données visées aux points (1) et (2), veuillez contacter <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> (merci d'indiquer l'URL de la page pour une page de réservation, ou le code de participation pour une session de partage vendeur, afin que nous puissions l'identifier).</p>
     <h2>9. Confidentialité des enfants</h2>
     <p>L'Application s'adresse à tous les âges et n'a pas l'intention de collecter des informations personnelles auprès d'enfants.</p>
@@ -747,7 +873,7 @@ Si vous souhaitez faire supprimer les données visées aux points (1) et (2), ve
 </div>
 
 <script>
-  var labels = {'ja':'最終更新: 2026-08-02', 'en':'Last updated: 2026-08-02', 'zh':'最后更新: 2026-08-02', 'zh-Hant':'最後更新: 2026-08-02', 'ko':'최종 업데이트: 2026-08-02', 'fr':'Dernière mise à jour : 2026-08-02'};
+  var labels = {'ja':'最終更新: 2026-08-25', 'en':'Last updated: 2026-08-25', 'zh':'最后更新: 2026-08-25', 'zh-Hant':'最後更新: 2026-08-25', 'ko':'최종 업데이트: 2026-08-25', 'fr':'Dernière mise à jour : 2026-08-25'};
   function showLang(lang) {
     document.querySelectorAll('.policy').forEach(function(el){ el.classList.remove('visible'); });
     document.getElementById('policy-' + lang).classList.add('visible');
