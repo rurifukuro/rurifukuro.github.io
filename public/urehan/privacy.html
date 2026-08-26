@@ -55,7 +55,7 @@
 <div class="wrap">
   <a href="./" class="backlink">← レジさぽっ！ トップへ</a>
   <h1>プライバシーポリシー<br><span class="appname">レジさぽっ！</span></h1>
-  <p class="updated" id="lastUpdated">最終更新: 2026-08-25</p>
+  <p class="updated" id="lastUpdated">最終更新: 2026-08-26</p>
 
   <div class="lang-bar">
     <span class="lang-btn active" onclick="showLang('ja')">日本語</span>
@@ -93,7 +93,7 @@
 ② 取り置き予約ページの公開
 ・送信内容: サークル名、開催イベント・開催日、公開する頒布物情報（頒布物名・価格・画像・セット構成など）、パスワード（設定した場合のハッシュ値）、予約上限数。
 ・公開範囲: 公開ページのURLを知る一般参加者（買い手）が閲覧・予約できます。
-・予約者から送信された情報（予約時の表示名、予約した頒布物と個数、匿名の端末識別子）もサーバーに保存されます。予約ページでは、お名前や連絡先は取得しません。
+・予約者から送信された情報（予約時の表示名、備考、予約した頒布物と個数、匿名の端末識別子）もサーバーに保存されます。予約ページでは、お名前や連絡先は取得しません。
 
 ③ サークル登録（とれはんっ！連携）
 ・送信内容: サークル名・作家名・配置・ジャンルタグ・頒布物情報・お品書き画像など。
@@ -169,7 +169,7 @@
 ・現時点では、対象イベントの終了による自動削除は行っていません。
 
 ② 取り置き予約ページ
-・アプリ内でページを「非公開」にすると、買い手からの閲覧・予約受付は停止しますが、ページ情報と予約データ（買い手が入力したニックネームを含む）はサーバー上に残ります。
+・アプリ内でページを「非公開」にすると、買い手からの閲覧・予約受付は停止しますが、ページ情報と予約データ（買い手が入力したニックネーム・備考を含む）はサーバー上に残ります。
 ・現時点では、対象イベントの終了による自動削除は行っていません。
 
 ③ サークル登録（とれはんっ！連携）
@@ -229,7 +229,7 @@ How they are triggered differs by feature. Items ①, ② and ⑤ run only when 
 ② Reservation page publishing
 ・Sent: circle name, event and day, published product info (product name, price, images, set composition, etc.), password (hashed value, if set), reservation limit.
 ・Visible to: general attendees (buyers) who know the page URL can view and reserve.
-・Information submitted by reservation makers (the display name they enter, the products and quantities they reserve, and an anonymous device identifier) is also stored on the server. The reservation page does not ask for real names or contact details.
+・Information submitted by reservation makers (the display name they enter, any note they add, the products and quantities they reserve, and an anonymous device identifier) is also stored on the server. The reservation page does not ask for real names or contact details.
 
 ③ Circle registration (Torehan integration)
 ・Sent: circle name, author name, placement, genre tags, product info, menu images, etc.
@@ -305,7 +305,7 @@ External links the App may open include links to social media or official inform
 ・At present, this data is not deleted automatically when the relevant event ends.
 
 (2) Reservation page
-・Unpublishing the page in the App stops buyers from viewing it or making reservations, but the page information and reservation data (including nicknames entered by buyers) remain on the server.
+・Unpublishing the page in the App stops buyers from viewing it or making reservations, but the page information and reservation data (including nicknames and notes entered by buyers) remain on the server.
 ・At present, this data is not deleted automatically when the relevant event ends.
 
 (3) Circle registration (Torehan integration)
@@ -365,7 +365,7 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
 ② 预约页面公开
 ・发送内容：社团名称、活动和举办日、公开的商品信息（商品名・价格・图片・套装构成等）、密码（如设置则为哈希值）、预约上限数。
 ・可见范围：知道页面 URL 的一般参加者（买家）可以浏览和预约。
-・预约者提交的信息（预约时填写的显示名称、预约的商品与数量、匿名的设备识别码）也会保存在服务器上。预约页面不会收集真实姓名或联系方式。
+・预约者提交的信息（预约时填写的显示名称、备注、预约的商品与数量、匿名的设备识别码）也会保存在服务器上。预约页面不会收集真实姓名或联系方式。
 
 ③ 社团登记（与 Torehan 联动）
 ・发送内容：社团名・作者名・摊位位置・类型标签・商品信息・菜单图片等。
@@ -441,7 +441,7 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
 ・目前不会在相关活动结束后自动删除。
 
 ② 预约页面
-・在应用内将页面设为「非公开」后，买家将无法浏览和预约，但页面信息与预约数据（包括买家填写的昵称）仍保留在服务器上。
+・在应用内将页面设为「非公开」后，买家将无法浏览和预约，但页面信息与预约数据（包括买家填写的昵称与备注）仍保留在服务器上。
 ・目前不会在相关活动结束后自动删除。
 
 ③ 社团登记（与 Torehan 联动）
@@ -497,7 +497,7 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
 ② 預約頁面公開
 ・傳送內容：社團名稱、活動和舉辦日、公開的商品資訊（商品名・價格・圖片・套裝構成等）、密碼（如設定則為雜湊值）、預約上限數。
 ・可見範圍：知道頁面 URL 的一般參加者（買家）可以瀏覽和預約。
-・預約者提交的資訊（預約時填寫的顯示名稱、預約的商品與數量、匿名的裝置識別碼）也會儲存在伺服器上。預約頁面不會收集真實姓名或聯絡方式。
+・預約者提交的資訊（預約時填寫的顯示名稱、備註、預約的商品與數量、匿名的裝置識別碼）也會儲存在伺服器上。預約頁面不會收集真實姓名或聯絡方式。
 
 ③ 社團登記（與 Torehan 聯動）
 ・傳送內容：社團名・作者名・攤位位置・類型標籤・商品資訊・選單圖片等。
@@ -573,7 +573,7 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
 ・目前不會在相關活動結束後自動刪除。
 
 ② 預約頁面
-・在應用內將頁面設為「非公開」後，買家將無法瀏覽和預約，但頁面資訊與預約資料（包括買家填寫的暱稱）仍保留在伺服器上。
+・在應用內將頁面設為「非公開」後，買家將無法瀏覽和預約，但頁面資訊與預約資料（包括買家填寫的暱稱與備註）仍保留在伺服器上。
 ・目前不會在相關活動結束後自動刪除。
 
 ③ 社團登記（與 Torehan 聯動）
@@ -629,7 +629,7 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
 ② 예약 페이지 공개
 ・전송 내용: 서클 이름, 이벤트와 개최일, 공개하는 상품 정보（상품명・가격・이미지・세트 구성 등）, 비밀번호（설정한 경우 해시값）, 예약 상한 수.
 ・공개 범위: 페이지 URL을 아는 일반 참가자（구매자）가 열람 및 예약할 수 있습니다.
-・예약자가 전송한 정보（예약 시 입력한 표시 이름, 예약한 반포물과 수량, 익명 단말 식별자）도 서버에 저장됩니다. 예약 페이지에서는 실명이나 연락처를 수집하지 않습니다.
+・예약자가 전송한 정보（예약 시 입력한 표시 이름, 비고, 예약한 반포물과 수량, 익명 단말 식별자）도 서버에 저장됩니다. 예약 페이지에서는 실명이나 연락처를 수집하지 않습니다.
 
 ③ 서클 등록（Torehan 연동）
 ・전송 내용: 서클명・작가명・배치・장르 태그・상품 정보・메뉴 이미지 등.
@@ -705,7 +705,7 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
 ・현재로서는 해당 이벤트 종료에 따른 자동 삭제는 이루어지지 않습니다.
 
 ② 예약 페이지
-・앱 내에서 페이지를 「비공개」로 전환하면 구매자의 열람 및 예약 접수는 중지되지만, 페이지 정보와 예약 데이터（구매자가 입력한 닉네임 포함）는 서버상에 남습니다.
+・앱 내에서 페이지를 「비공개」로 전환하면 구매자의 열람 및 예약 접수는 중지되지만, 페이지 정보와 예약 데이터（구매자가 입력한 닉네임・비고 포함）는 서버상에 남습니다.
 ・현재로서는 해당 이벤트 종료에 따른 자동 삭제는 이루어지지 않습니다.
 
 ③ 서클 등록（Torehan 연동）
@@ -761,7 +761,7 @@ Le déclenchement varie selon la fonctionnalité. Les points 1, 2 et 5 ne s'exé
 ② Publication de page de réservation
 ・Envoyé : nom du cercle, événement et jour, informations produit publiées (nom du produit, prix, images, composition du lot, etc.), mot de passe (valeur hachée, si défini), nombre maximum de réservations.
 ・Visible par : les participants généraux (acheteurs) connaissant l'URL de la page peuvent consulter et réserver.
-・Les informations envoyées par les personnes qui réservent (le nom affiché saisi lors de la réservation, les articles et quantités réservés, un identifiant d'appareil anonyme) sont également stockées sur le serveur. La page de réservation ne demande ni nom réel ni coordonnées.
+・Les informations envoyées par les personnes qui réservent (le nom affiché saisi lors de la réservation, une remarque éventuelle, les articles et quantités réservés, un identifiant d'appareil anonyme) sont également stockées sur le serveur. La page de réservation ne demande ni nom réel ni coordonnées.
 
 ③ Inscription de cercle (intégration Torehan)
 ・Envoyé : nom du cercle, nom de l'auteur, emplacement, tags de genre, informations produit, images de menu, etc.
@@ -837,7 +837,7 @@ Les liens externes que l'Application peut ouvrir incluent des liens vers les ré
 ・À ce jour, ces données ne sont pas supprimées automatiquement à la fin de l'événement concerné.
 
 (2) Page de réservation
-・Dépublier la page dans l'Application empêche les acheteurs de la consulter et de réserver, mais les informations de page et les données de réservation (y compris les pseudonymes saisis par les acheteurs) restent sur le serveur.
+・Dépublier la page dans l'Application empêche les acheteurs de la consulter et de réserver, mais les informations de page et les données de réservation (y compris les pseudonymes et les remarques saisis par les acheteurs) restent sur le serveur.
 ・À ce jour, ces données ne sont pas supprimées automatiquement à la fin de l'événement concerné.
 
 (3) Inscription de cercle (intégration Torehan)
@@ -873,7 +873,7 @@ Si vous souhaitez faire supprimer les données visées aux points (1) et (2), ve
 </div>
 
 <script>
-  var labels = {'ja':'最終更新: 2026-08-25', 'en':'Last updated: 2026-08-25', 'zh':'最后更新: 2026-08-25', 'zh-Hant':'最後更新: 2026-08-25', 'ko':'최종 업데이트: 2026-08-25', 'fr':'Dernière mise à jour : 2026-08-25'};
+  var labels = {'ja':'最終更新: 2026-08-26', 'en':'Last updated: 2026-08-26', 'zh':'最后更新: 2026-08-26', 'zh-Hant':'最後更新: 2026-08-26', 'ko':'최종 업데이트: 2026-08-26', 'fr':'Dernière mise à jour : 2026-08-26'};
   function showLang(lang) {
     document.querySelectorAll('.policy').forEach(function(el){ el.classList.remove('visible'); });
     document.getElementById('policy-' + lang).classList.add('visible');
