@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>友達紹介｜レジさぽっ！</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="「レジさぽっ！」の友達紹介リンクです。">
+<link rel="icon" href="/icon.png">
+
+<!-- =========================================================
+     このページは何か（2026-08-26 新設）
+
+     アプリ内の「友達を招待」「アンケート回答後の紹介ポップアップ」から
+     共有されるリンクの受け口。踏んだ人はここから App Store へ進む。
+
+     ■ なぜポータル（/urehan/）へ直接送らないのか
+       閲覧の記録（analytics.js → increment_blog_view）は
+       **パスしか持たない**（`p_path: window.location.pathname`）。
+       招待リンクを /urehan/ に向けると、紹介で来た人と
+       広告・検索・X から来た人が**同じ1つの数字に混ざる**＝
+       「紹介がどれだけ効いたか」が最初から測れない。
+       受け口のパスを分ければ、サーバー側は何も足さずに
+       開発者ダッシュボードのポータルアクセス画面でそのまま数えられる。
+       /urehan は既に TRACK_PREFIXES に入っているので、
+       このディレクトリを置いた時点で計測対象になる（allowlist の前方一致）。
+
+     ■ 🔴 とれはんっ！の /torehan/invite/ と作りが違う（写して直さない）
+       あちらは「紹介コード（8桁）を受け取ってアプリへ渡す」ための中継で、
+       特典の成立条件を明記する義務がある。
+       こちらは **レジさぽっ！に紹介報酬が無い**（2026-08-26 ユーザー確定）ので、
+       ・紹介コードのカード
+       ・特典（perk）ブロック
+       ・torehan:// を叩き直す「アプリで開く」ボタン
+       のいずれも**置かない**。
+       🔴 ここに特典めいた文言を書き足さない＝報酬が無いのに書けば虚偽表示になる。
+
+     ■ ct（App Store のキャンペーン計測）
+       `?src=` が付いていればそれを使い、無ければ `referral` を入れる。
+       アプリ側は導線ごとに src を分けて渡す（survey / info）＝
+       どちらの導線から紹介が生まれたかを Apple 側でも分けて見られる。
+       🔴 analytics.js は「既に ct が入っているリンクは触らない」ので、
+          この inline script（defer より先に走る）で入れた値が必ず勝つ。
+     ========================================================= -->
+
+<style>
+  :root{
+    /* ポータル本体（/urehan/index.html）と同じ配色を使う＝
+       踏んだ先が同じアプリのページだと一目で分かるように。 */
+    --bg1:#241a13;
+    --bg2:#3a2a1e;
+    --coral:#e67a38;
+    --sub:#cbb9a7;
+    --text:#1b2438;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",YuGothic,"Meiryo",sans-serif;
+    background:linear-gradient(160deg,var(--bg1) 0%,var(--bg2) 100%);
+    color:#fff;min-height:100vh;line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:520px;margin:0 auto;padding:40px 22px 56px;text-align:center}
+  .icon{
+    width:96px;height:96px;border-radius:22px;
+    box-shadow:0 8px 28px rgba(0,0,0,.35);
+    border:1px solid rgba(255,255,255,.15);
+    background:#fff;object-fit:cover;margin-bottom:18px;
+  }
+  h1{font-size:23px;font-weight:800;letter-spacing:.01em;line-height:1.5}
+  .lead{font-size:15px;color:var(--sub);margin-top:10px}
+
+  /* 「何ができるアプリか」を3行で。読ませるブロックなので左揃え。 */
+  .points{
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:16px;padding:16px 18px;margin:26px 0 20px;text-align:left;
+  }
+  .points h2{
+    font-size:13px;font-weight:800;letter-spacing:.04em;
+    color:var(--coral);margin-bottom:11px;
+  }
+  .points ul{margin:0;padding-left:1.15em;font-size:14px}
+  .points li{margin-bottom:8px}
+  .points li:last-child{margin-bottom:0}
+
+  .btn{
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    width:100%;padding:16px 18px;border-radius:14px;
+    text-decoration:none;font-weight:700;font-size:16.5px;
+    margin-bottom:12px;
+  }
+  .btn-store{background:#fff;color:var(--text)}
+  .btn small{display:block;font-size:12px;font-weight:500;opacity:.75;margin-top:2px}
+
+  .free{
+    display:inline-block;margin-top:4px;font-size:13px;color:var(--sub);
+  }
+  .more{
+    display:inline-block;margin-top:22px;font-size:14px;
+    color:#fff;text-decoration:none;
+    border-bottom:1px solid rgba(255,255,255,.35);padding-bottom:2px;
+  }
+  .foot{margin-top:30px;font-size:12.5px;color:var(--sub)}
+  .foot a{color:var(--sub)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <img class="icon" src="/urehan/icon.png" alt="" onerror="this.style.display='none'">
+  <h1 id="t-title">お知り合いから紹介されています</h1>
+  <p class="lead" id="t-lead">「レジさぽっ！」は、同人即売会のサークル（売り手）向けのレジ・在庫・売上管理アプリです。</p>
+
+  <section class="points">
+    <h2 id="t-pointstitle">できること</h2>
+    <ul>
+      <li id="t-p1"></li>
+      <li id="t-p2"></li>
+      <li id="t-p3"></li>
+    </ul>
+  </section>
+
+  <a class="btn btn-store" id="store" href="https://apps.apple.com/app/id6786309116">
+    <span>📱</span>
+    <span id="t-store">App Store でダウンロード<small id="t-storesub">iPhone・基本無料</small></span>
+  </a>
+
+  <!-- ▼ Google Play 公開時はコメントを外して href を貼る（ポータル本体・/torehan/invite/ と同じ扱い）
+  <a class="btn btn-store" href="GOOGLE_PLAY_URL_HERE">
+    <span>🤖</span>
+    <span>Google Play でダウンロード<small>Android</small></span>
+  </a>
+  -->
+
+  <span class="free" id="t-free">基本無料ではじめられます</span>
+
+  <p><a class="more" href="/urehan/" id="t-more">レジさぽっ！について詳しく</a></p>
+
+  <p class="foot"><a href="/urehan/privacy.html" id="t-privacy">プライバシーポリシー</a></p>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---- 表示言語（アプリの共有本文が6言語あるので、受け取る側も揃える） ---- */
+  var L = {
+    ja: {
+      title:"お知り合いから紹介されています",
+      lead:"「レジさぽっ！」は、同人即売会のサークル（売り手）向けのレジ・在庫・売上管理アプリです。",
+      pointstitle:"できること",
+      p1:"頒布物を選んで数量を押すだけの<b>秒会計</b>。合計もおつりも自動で計算します。",
+      p2:"<b>取り置き予約</b>の受付から受け渡しまで。受取番号で管理するので、モレもダブりも防げます。",
+      p3:"<b>売上・利益・経費を自動集計</b>。確定申告のときに困りません。",
+      store:"App Store でダウンロード", storesub:"iPhone・基本無料",
+      free:"基本無料ではじめられます",
+      more:"レジさぽっ！について詳しく",
+      privacy:"プライバシーポリシー"
+    },
+    en: {
+      title:"A friend recommended this app",
+      lead:"\"Rejisapo!\" is a point-of-sale, stock and sales app for circles (sellers) at doujin events.",
+      pointstitle:"What it does",
+      p1:"<b>Checkout in seconds</b> — pick an item, tap the quantity. Totals and change are calculated for you.",
+      p2:"<b>Reservations</b> from request to hand-over. Pickup numbers keep you from missing or double-handing an order.",
+      p3:"<b>Sales, profit and expenses add up automatically</b>, so tax filing is no longer a scramble.",
+      store:"Download on the App Store", storesub:"iPhone / free to start",
+      free:"Free to start",
+      more:"More about Rejisapo!",
+      privacy:"Privacy Policy"
+    },
+    zh: {
+      title:"朋友向你推荐了这款应用",
+      lead:"“Rejisapo”是面向同人展社团（卖方）的收银、库存与销售管理应用。",
+      pointstitle:"可以做什么",
+      p1:"<b>秒级结账</b>——选择商品、点一下数量即可，合计与找零自动计算。",
+      p2:"<b>预留预约</b>从受理到交付一站式管理。使用取货编号，避免漏发与重复发放。",
+      p3:"<b>销售额、利润与开支自动汇总</b>，报税时不再手忙脚乱。",
+      store:"在 App Store 下载", storesub:"iPhone・基本免费",
+      free:"基本免费即可开始使用",
+      more:"了解更多关于 Rejisapo",
+      privacy:"隐私政策"
+    },
+    "zh-Hant": {
+      title:"朋友向你推薦了這款應用",
+      lead:"「Rejisapo」是專為同人展社團（賣方）打造的收銀、庫存與銷售管理應用。",
+      pointstitle:"可以做什麼",
+      p1:"<b>秒速結帳</b>——選擇商品、點一下數量即可，合計與找零自動計算。",
+      p2:"<b>預留預約</b>從受理到交付一站式管理。使用取貨編號，避免漏發與重複發放。",
+      p3:"<b>營業額、利潤與支出自動彙總</b>，報稅時不再手忙腳亂。",
+      store:"在 App Store 下載", storesub:"iPhone・基本免費",
+      free:"基本免費即可開始使用",
+      more:"了解更多關於 Rejisapo",
+      privacy:"隱私權政策"
+    },
+    ko: {
+      title:"지인이 이 앱을 추천했습니다",
+      lead:"‘레지사포!’는 동인 행사에 참가하는 서클(판매자)을 위한 계산·재고·매출 관리 앱입니다.",
+      pointstitle:"할 수 있는 일",
+      p1:"품목을 고르고 수량만 누르는 <b>초단위 계산</b>. 합계와 거스름돈을 자동으로 계산합니다.",
+      p2:"<b>예약(취소 방지)</b> 접수부터 전달까지. 수령 번호로 관리해 누락과 중복을 막습니다.",
+      p3:"<b>매출·이익·경비를 자동 집계</b>. 세금 신고 때 곤란해지지 않습니다.",
+      store:"App Store에서 다운로드", storesub:"iPhone・기본 무료",
+      free:"기본 무료로 시작할 수 있습니다",
+      more:"레지사포!에 대해 자세히 보기",
+      privacy:"개인정보처리방침"
+    },
+    fr: {
+      title:"Un ami vous recommande cette application",
+      lead:"« Rejisapo! » est une application de caisse, de stock et de suivi des ventes pour les cercles (vendeurs) des événements doujin.",
+      pointstitle:"Ce qu'elle fait",
+      p1:"<b>Encaissement en quelques secondes</b> : choisissez un article, touchez la quantité. Le total et la monnaie sont calculés.",
+      p2:"<b>Réservations</b> de la demande à la remise. Le numéro de retrait évite les oublis et les doubles remises.",
+      p3:"<b>Ventes, bénéfices et dépenses se cumulent automatiquement</b> : la déclaration fiscale n'est plus un casse-tête.",
+      store:"Télécharger sur l'App Store", storesub:"iPhone / gratuit",
+      free:"Gratuit pour commencer",
+      more:"En savoir plus sur Rejisapo!",
+      privacy:"Politique de confidentialité"
+    }
+  };
+
+  function pickLang() {
+    var tags = (navigator.languages && navigator.languages.length)
+      ? navigator.languages : [navigator.language || "ja"];
+    for (var i = 0; i < tags.length; i++) {
+      var low = String(tags[i] || "").toLowerCase();
+      if (low.indexOf("ja") === 0) return "ja";
+      if (low.indexOf("ko") === 0) return "ko";
+      if (low.indexOf("fr") === 0) return "fr";
+      if (low.indexOf("zh") === 0) {
+        /* 繁体字は zh-TW / zh-HK / zh-MO / zh-Hant-* で来る */
+        return /hant|tw|hk|mo/.test(low) ? "zh-Hant" : "zh";
+      }
+      if (low.indexOf("en") === 0) return "en";
+    }
+    return "ja";
+  }
+  var lang = pickLang();
+  var d = L[lang] || L.ja;
+  document.documentElement.lang = (lang === "zh-Hant") ? "zh-Hant" : lang;
+
+  function setText(id, s) { var el = document.getElementById(id); if (el) el.textContent = s; }
+  /* 定型文のみ（利用者由来の文字列は一切入らない）。 */
+  function setHtml(id, s) { var el = document.getElementById(id); if (el) el.innerHTML = s; }
+  /* ボタンのラベルは「主文＋<small>補足」の2段。textContent で主文を入れると
+     small ごと消えるので、入れ直しまでを1つの関数にまとめる（片方だけ呼ぶ事故を作らない）。 */
+  function setBtnLabel(id, main, sub) {
+    var span = document.getElementById(id);
+    if (!span) return;
+    span.textContent = main;
+    var small = document.createElement("small");
+    small.textContent = sub;
+    span.appendChild(small);
+  }
+  setText("t-title", d.title);
+  setText("t-lead", d.lead);
+  setText("t-pointstitle", d.pointstitle);
+  setHtml("t-p1", d.p1);
+  setHtml("t-p2", d.p2);
+  setHtml("t-p3", d.p3);
+  setBtnLabel("t-store", d.store, d.storesub);
+  setText("t-free", d.free);
+  setText("t-more", d.more);
+  setText("t-privacy", d.privacy);
+
+  /* ---- App Store のキャンペーン計測（R61・/torehan/invite/ と同じ作法） ----
+     `?src=` があればそれを、無ければ `referral` を ct に入れる。
+     analytics.js は ct 済みのリンクを触らないので、ここで入れた値が勝つ。 */
+  (function () {
+    var PT = "128997588";  /* 瑠璃フクロウ チーム共通のプロバイダID（全アプリ共通・固定値） */
+    var src = "";
+    try { src = new URLSearchParams(location.search).get("src") || ""; } catch (e) { src = ""; }
+    /* analytics.js の sanitizeCt と同じ規則（英数字・_・- のみ／40文字）。
+       規則を緩めない＝ct に使えない文字が混ざると Apple 側で黙って落ちる。 */
+    var ct = String(src).replace(/[^A-Za-z0-9_-]/g, "").slice(0, 40) || "referral";
+
+    var links = document.querySelectorAll('a[href*="apps.apple.com"]');
+    for (var i = 0; i < links.length; i++) {
+      var u;
+      try { u = new URL(links[i].href); } catch (e) { continue; }
+      if (u.searchParams.has("ct")) continue;
+      u.searchParams.set("pt", PT);
+      u.searchParams.set("ct", ct);
+      u.searchParams.set("mt", "8");
+      links[i].href = u.toString();
+    }
+  })();
+})();
+</script>
+<script defer src="/analytics.js"></script>
+</body>
+</html>
