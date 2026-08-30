@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>きゃすりん｜コンカフェ専用の予約・店舗管理｜先行アンケート</title>
+<meta name="description" content="コンカフェ専用の予約・店舗管理サービス「きゃすりん」は現在開発中です。公開前にお店の声を聞かせてください。リリース時のご案内も承っています。">
+<meta name="robots" content="index,follow">
+<meta property="og:title" content="きゃすりん｜コンカフェ専用の予約・店舗管理">
+<meta property="og:description" content="開発中のサービスです。公開前にお店の声を聞かせてください。">
+<meta property="og:type" content="website">
+<style>
+/* 配色は kyasuho/docs/lp_draft.html と揃える。
+   🔴 文字色は目視で選ばず実測で決めている（[[web_design_rules]] DS24）＝
+      本文 #2b2350 は 13.66:1、補助 #4e4864 は 8.18:1（背景 #fff7f9 に対して）。
+      ブランドピンク #ff5c8d に白文字は 2.93:1 しかないので**文字を載せない**（罫線と見出しの飾りだけ）。
+      白文字を載せるボタンは #b82f5f＝5.82:1。 */
+:root{
+  --pink:#ff5c8d; --pink-btn:#b82f5f; --pink-btn-hover:#a82a57;
+  --navy:#2b2350; --cream:#fff7f9; --gray:#4e4864;
+  --card:#ffffff; --line:#f3d9e2; --line-strong:#e7bfd0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",sans-serif;
+  color:var(--navy);background:var(--cream);line-height:1.8;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px}
+header{padding:44px 0 30px;text-align:center;border-bottom:2px solid var(--line)}
+.logo{font-size:30px;font-weight:800;letter-spacing:.04em}
+.logo .dot{color:var(--pink)}
+.tag{margin-top:8px;font-size:15px;color:var(--gray)}
+.badge{
+  display:inline-block;margin-top:18px;padding:6px 16px;border-radius:999px;
+  background:var(--card);border:1px solid var(--line-strong);
+  font-size:13px;font-weight:700;color:var(--gray);
+}
+section{padding:38px 0;border-bottom:1px solid var(--line)}
+/* 折返しても2行目が飾りバーの下に潜らないよう flex で段組みする */
+h2{font-size:21px;font-weight:800;margin-bottom:6px;display:flex;align-items:flex-start;gap:10px}
+h2::before{content:"";flex:0 0 auto;width:6px;height:20px;margin-top:7px;
+  background:var(--pink);border-radius:3px}
+.lead{color:var(--gray);font-size:15px;margin-bottom:20px}
+p+p{margin-top:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px}
+.card+.card{margin-top:12px}
+.feat{display:grid;gap:12px}
+@media(min-width:600px){.feat{grid-template-columns:1fr 1fr}}
+.feat h3{font-size:15px;font-weight:800;margin-bottom:4px}
+.feat p{font-size:13.5px;color:var(--gray);line-height:1.7}
+table{width:100%;border-collapse:collapse;font-size:14px;margin-top:6px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left}
+th{font-weight:700;white-space:nowrap}
+td.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.tblnote{font-size:12.5px;color:var(--gray);margin-top:10px}
+.scroll{overflow-x:auto}
+
+/* ── フォーム ─────────────────────────────── */
+.kp-page{margin-top:26px}
+.kp-page:first-child{margin-top:0}
+.kp-page-title{font-size:16px;font-weight:800;padding-bottom:6px;border-bottom:2px solid var(--line-strong)}
+.kp-page-lead{font-size:13px;color:var(--gray);margin-top:8px}
+.kp-q{margin-top:20px}
+.kp-q-label{font-size:15px;font-weight:700;line-height:1.6}
+.kp-req{
+  display:inline-block;margin-left:8px;padding:1px 8px;border-radius:999px;
+  background:var(--pink-btn);color:#fff;font-size:11px;font-weight:700;vertical-align:2px;
+}
+.kp-q-hint{font-size:12.5px;color:var(--gray);margin-top:4px}
+.kp-opts{margin-top:10px;display:grid;gap:8px}
+.kp-opt,.kp-scale-item{
+  display:flex;align-items:flex-start;gap:10px;cursor:pointer;
+  background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:11px 14px;font-size:14px;line-height:1.6;
+}
+.kp-opt:hover,.kp-scale-item:hover{border-color:var(--line-strong)}
+.kp-opt input,.kp-scale-item input{margin-top:4px;flex:0 0 auto;accent-color:var(--pink-btn)}
+.kp-scale{margin-top:10px;display:grid;gap:8px}
+.kp-scale-n{font-weight:800;min-width:1.2em}
+.kp-scale-t{color:var(--gray)}
+.kp-text{
+  width:100%;margin-top:10px;font-family:inherit;font-size:15px;line-height:1.7;
+  color:var(--navy);background:var(--card);
+  border:1px solid var(--line-strong);border-radius:12px;padding:12px 14px;
+}
+.kp-text:focus{outline:2px solid var(--pink-btn);outline-offset:1px}
+.kp-field{margin-top:14px}
+.kp-field label{display:block;font-size:14px;font-weight:700;margin-bottom:6px}
+.kp-field input{
+  width:100%;font-family:inherit;font-size:16px;color:var(--navy);background:var(--card);
+  border:1px solid var(--line-strong);border-radius:12px;padding:13px 14px;
+}
+.kp-field input:focus{outline:2px solid var(--pink-btn);outline-offset:1px}
+.kp-check{
+  display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:15px;font-weight:700;
+}
+.kp-check input{margin-top:5px;accent-color:var(--pink-btn)}
+.kp-inline{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.kp-inline label{
+  display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:8px 16px;
+}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+button{
+  display:block;width:100%;margin-top:26px;
+  background:var(--pink-btn);color:#fff;border:0;border-radius:14px;
+  padding:17px 20px;font-size:16px;font-weight:800;font-family:inherit;cursor:pointer;
+}
+button:hover{background:var(--pink-btn-hover)}
+button:disabled{opacity:.55;cursor:default}
+.kp-msg{font-size:14px;margin-top:16px;min-height:1px;line-height:1.7}
+.kp-msg.is-ok{color:#0f7a4a;font-weight:700}
+.kp-msg.is-err{color:#b3261e;font-weight:700}
+footer{padding:30px 0 56px;font-size:13px;color:var(--gray);text-align:center}
+footer a{color:var(--gray)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <p class="logo">きゃすりん<span class="dot">.</span></p>
+    <p class="tag">コンカフェ専用の 予約・店舗管理サービス</p>
+    <p class="badge">開発中／公開前です</p>
+  </div>
+</header>
+
+<main>
+
+<section>
+  <div class="wrap">
+    <h2>公開前に、お店の声を聞かせてください</h2>
+    <p class="lead">このページは、これから公開する「きゃすりん」についてのアンケートです。</p>
+    <p>
+      大箱の夜のお店向けに作られたシステムを、コンカフェが我慢して使っている——
+      そこを何とかしたくて作っているサービスです。
+      ただ、実際に店を回している方から見て何が足りないのかは、外からでは分かりません。
+    </p>
+    <p>
+      下のアンケートは<strong>すべて任意</strong>です。答えられるところだけで構いません。
+      公開時のご案内が必要な方は、あわせてご登録いただけます。
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>できること（8つのモジュール）</h2>
+    <p class="lead">必要なものだけ選んで契約できます。全部を入れる必要はありません。</p>
+    <div class="feat">
+      <div class="card">
+        <h3>base｜予約と受付</h3>
+        <p>お客様が自分で予約できるページ。指名・キャストの管理、来店前の通知、Q&amp;Aの自動応答まで。</p>
+      </div>
+      <div class="card">
+        <h3>register｜オーダーと会計</h3>
+        <p>注文はタップだけ。伝票・席料・日報・レシート印刷と、ドリンクの在庫。</p>
+      </div>
+      <div class="card">
+        <h3>shift｜シフト表</h3>
+        <p>テンプレートを選んで確認するだけ。SNSに載せる告知画像まで自動で作ります。</p>
+      </div>
+      <div class="card">
+        <h3>sales｜売上と給与</h3>
+        <p>バック・スライド時給を自動計算。締め日の電卓仕事がなくなります。</p>
+      </div>
+      <div class="card">
+        <h3>analytics｜分析</h3>
+        <p>どの曜日が売れているか、キャストのランキング、期間の推移をグラフで。</p>
+      </div>
+      <div class="card">
+        <h3>customer｜お客様向け</h3>
+        <p>ポイント・スタンプ・景品。常連さんの来店理由を作ります。</p>
+      </div>
+      <div class="card">
+        <h3>attendance｜勤怠</h3>
+        <p>打刻、遅刻・早退・欠勤の記録、月次の集計まで手書きゼロ。</p>
+      </div>
+      <div class="card">
+        <h3>expense｜経費</h3>
+        <p>レシートは撮るだけ。読み取って明細に変えます。固定費の登録も。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="price">
+  <div class="wrap">
+    <h2>料金（予定）</h2>
+    <p class="lead">すべて月額・税別です。まだ公開前のため、変わる可能性があります。</p>
+
+    <div class="card scroll">
+      <table>
+        <thead>
+          <tr><th>単品で選ぶ場合</th><th class="num">月額（税別）</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>base（予約と受付）</td><td class="num">12,800円</td></tr>
+          <tr><td>register（オーダーと会計）</td><td class="num">9,800円</td></tr>
+          <tr><td>shift（シフト表）</td><td class="num">8,800円</td></tr>
+          <tr><td>sales（売上と給与）</td><td class="num">8,800円</td></tr>
+          <tr><td>analytics（分析）</td><td class="num">7,800円</td></tr>
+          <tr><td>customer（お客様向け）</td><td class="num">7,800円</td></tr>
+          <tr><td>attendance（勤怠）</td><td class="num">5,800円</td></tr>
+          <tr><td>expense（経費）</td><td class="num">5,800円</td></tr>
+        </tbody>
+      </table>
+      <p class="tblnote">2つ以上を組み合わせると自動で割引されます（2個で5%、3個で10%、4〜5個で20%、6〜7個で30%）。</p>
+    </div>
+
+    <div class="card scroll">
+      <table>
+        <thead>
+          <tr><th>まとめて選ぶ場合</th><th>内容</th><th class="num">月額（税別）</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>接客パック</td><td>base＋register＋customer</td><td class="num">24,800円</td></tr>
+          <tr><td>スタッフパック</td><td>base＋shift＋attendance</td><td class="num">21,800円</td></tr>
+          <tr><td>経営パック</td><td>sales＋expense＋analytics</td><td class="num">17,800円</td></tr>
+          <tr><td>オールイン</td><td>8モジュールすべて</td><td class="num">39,800円</td></tr>
+        </tbody>
+      </table>
+      <p class="tblnote">初月は無料でお試しいただけます。契約期間の縛りはなく、データはCSVで持ち出せます。</p>
+    </div>
+  </div>
+</section>
+
+<section id="survey">
+  <div class="wrap">
+    <h2>アンケート</h2>
+    <p class="lead">答えられる設問だけで構いません。所要 3〜5分ほどです。</p>
+
+    <form id="kp-form" novalidate>
+      <div class="card">
+        <!-- 設問は prelaunch-survey.generated.js から描く。ここに設問文を書かない -->
+        <div id="kp-survey"></div>
+      </div>
+
+      <div class="card" style="margin-top:20px">
+        <label class="kp-check" for="kp-want-notify">
+          <input type="checkbox" id="kp-want-notify">
+          <span>公開したときに案内を受け取る</span>
+        </label>
+        <p class="kp-q-hint">ご案内以外の目的では使いません。いつでも配信を停止できます。</p>
+
+        <div id="kp-contact" hidden>
+          <div class="kp-inline">
+            <label for="kp-method-email"><input type="radio" name="kp-method" id="kp-method-email" checked>メールで受け取る</label>
+            <label for="kp-method-x"><input type="radio" name="kp-method" id="kp-method-x">X（旧Twitter）のDMで受け取る</label>
+          </div>
+
+          <div class="kp-field" id="kp-email-row">
+            <label for="kp-email">メールアドレス</label>
+            <input type="email" id="kp-email" autocomplete="email" inputmode="email" placeholder="shop@example.com">
+          </div>
+
+          <div class="kp-field" id="kp-x-row" hidden>
+            <label for="kp-x-handle">X のユーザー名（@ は不要）</label>
+            <input type="text" id="kp-x-handle" autocomplete="off" placeholder="your_shop">
+          </div>
+
+          <div class="kp-field">
+            <label for="kp-shop-name">店舗名（任意）</label>
+            <input type="text" id="kp-shop-name" autocomplete="organization" maxlength="120">
+          </div>
+
+          <div class="kp-field">
+            <label for="kp-contact-name">ご担当者名（任意）</label>
+            <input type="text" id="kp-contact-name" autocomplete="name" maxlength="60">
+          </div>
+        </div>
+      </div>
+
+      <!-- ボット用の空欄（人には見えない） -->
+      <div class="hp" aria-hidden="true">
+        <label for="kp-website">Website</label>
+        <input type="text" id="kp-website" name="website" tabindex="-1" autocomplete="off">
+      </div>
+
+      <button type="submit" id="kp-submit"><span id="kp-submit-label">送信する</span></button>
+      <p id="kp-msg" class="kp-msg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>いただいた情報の扱い</h2>
+    <p class="lead">お約束していることだけ、短く書きます。</p>
+    <div class="card">
+      <p>・アンケートの回答は、機能や料金を決めるためだけに使います。個人や店舗が分かる形で公開することはありません。</p>
+      <p>・連絡先は、公開のご案内をお送りするためだけに使います。第三者へ渡すことはありません。</p>
+      <p>・配信の停止はいつでもできます。ご案内メールの末尾のリンクか、下記の連絡先までご一報ください。</p>
+      <p>・アンケートだけのご回答、ご登録だけ、どちらでも構いません。</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>きゃすりん（開発中）／個人開発 瑠璃フクロウ</p>
+    <p>お問い合わせ <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>　／　<a href="https://x.com/RuriFukuro" rel="noopener">X @RuriFukuro</a></p>
+  </div>
+</footer>
+
+<script src="./prelaunch-survey.generated.js"></script>
+<script src="./prelaunch.js"></script>
+<script>window.initKyasuhoPrelaunch();</script>
+</body>
+</html>
