@@ -33,16 +33,27 @@ body{
   -webkit-font-smoothing:antialiased;
 }
 .wrap{max-width:760px;margin:0 auto;padding:0 20px}
-header{padding:44px 0 30px;text-align:center;border-bottom:2px solid var(--line)}
-.logo{font-size:30px;font-weight:800;letter-spacing:.04em}
+/* 🔴 ヘッダーのロゴをあえて小さくしている（[[web_design_rules]] DS26）＝
+      人は大きいものから小さいものへ読む。このページで最初に読ませたいのは
+      ブランド名ではなく「誰のためのものか」の1行（.hero）なので、
+      ロゴ22px < hero 26px の順に**比較**で order を作る。全部大きくすると順番が消える。 */
+header{padding:34px 0 24px;text-align:center;border-bottom:2px solid var(--line)}
+.logo{font-size:22px;font-weight:800;letter-spacing:.04em}
 .logo .dot{color:var(--pink)}
-.tag{margin-top:8px;font-size:15px;color:var(--gray)}
+.tag{margin-top:6px;font-size:14px;color:var(--gray)}
 .badge{
-  display:inline-block;margin-top:18px;padding:6px 16px;border-radius:999px;
+  display:inline-block;margin-top:14px;padding:6px 16px;border-radius:999px;
   background:var(--card);border:1px solid var(--line-strong);
   font-size:13px;font-weight:700;color:var(--gray);
 }
 section{padding:38px 0;border-bottom:1px solid var(--line)}
+
+/* ── FV（否定→対象→救済）─────────────────────
+   [[web_marketing_rules]] CP35（1行だけ不親切）＋ CP36（3部構成）。
+   🔴 否定は**1行だけ**＝連続させると重くなって拒絶に変わる。 */
+.hero{font-size:26px;font-weight:800;line-height:1.55;letter-spacing:.01em}
+.hero-sub{margin-top:16px}
+@media(max-width:479px){.hero{font-size:22px}}
 /* 折返しても2行目が飾りバーの下に潜らないよう flex で段組みする */
 h2{font-size:21px;font-weight:800;margin-bottom:6px;display:flex;align-items:flex-start;gap:10px}
 h2::before{content:"";flex:0 0 auto;width:6px;height:20px;margin-top:7px;
@@ -61,6 +72,21 @@ th{font-weight:700;white-space:nowrap}
 td.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
 .tblnote{font-size:12.5px;color:var(--gray);margin-top:10px}
 .scroll{overflow-x:auto}
+
+/* ── 特典カード（料金表の直後に1枚だけ）───────────
+   🔴 ここをボタンにしない（[[web_design_rules]] DS28-1＝CTAは「アンケートへ」の1種類だけ）。
+      押させる導線を足した時点で、このページの目的が2つになる。
+   🔴 色は実測済みの組みだけを使う（DS24）＝地は白／文字は navy と gray、
+      ブランドピンク #ff5c8d は罫線と枠にしか使わない（白文字を載せると 2.93:1）。
+      実測（2026-08-30）＝offer-lead 14.39:1／offer-body 8.62:1／offer-label 8.18:1（地 #fff7f9）。 */
+.offer{border:2px solid var(--line-strong)}
+.offer-label{
+  display:inline-block;padding:4px 12px;border-radius:999px;
+  background:var(--cream);border:1px solid var(--line-strong);
+  font-size:12px;font-weight:800;color:var(--gray);
+}
+.offer-lead{margin-top:12px;font-size:16px;font-weight:700;line-height:1.7}
+.offer-body{margin-top:10px;font-size:14px;color:var(--gray)}
 
 /* ── フォーム ─────────────────────────────── */
 .kp-page{margin-top:26px}
@@ -108,12 +134,18 @@ td.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
   background:var(--card);border:1px solid var(--line);border-radius:999px;padding:8px 16px;
 }
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
-button{
+/* 🔴 CTAは1種類しか置かない（[[web_design_rules]] DS28-1）＝
+      「アンケートへ」だけ。問い合わせ・料金への誘導をボタンにしない（目的が複数になった時点でLPでなくなる）。
+   🔴 FV直下のリンクと末尾の送信ボタンは**同じ意味なので同じ形・同じ色**（DS27）＝
+      片方だけ色を変えない。 */
+.cta,button{
   display:block;width:100%;margin-top:26px;
   background:var(--pink-btn);color:#fff;border:0;border-radius:14px;
   padding:17px 20px;font-size:16px;font-weight:800;font-family:inherit;cursor:pointer;
 }
-button:hover{background:var(--pink-btn-hover)}
+.cta{text-align:center;text-decoration:none;margin-top:22px}
+.cta:hover,button:hover{background:var(--pink-btn-hover)}
+.cta-note{margin-top:10px;font-size:12.5px;color:var(--gray);text-align:center}
 button:disabled{opacity:.55;cursor:default}
 .kp-msg{font-size:14px;margin-top:16px;min-height:1px;line-height:1.7}
 .kp-msg.is-ok{color:#0f7a4a;font-weight:700}
@@ -136,17 +168,33 @@ footer a{color:var(--gray)}
 
 <section>
   <div class="wrap">
-    <h2>公開前に、お店の声を聞かせてください</h2>
-    <p class="lead">このページは、これから公開する「きゃすりん」についてのアンケートです。</p>
+    <!-- 🔴 この3段は [[web_marketing_rules]] CP36（否定→対象→救済）の型。
+         ①否定＝1行・理由を書かない・優しくしない（CP35 期待破壊型）
+         ②対象＝機能スペックではなく「今どういう状態か」で描く＝読み手に自己判定させる
+         ③救済＝「その代わりこうなる」を短く
+         🔴 否定を連続させない（重くなって拒絶に変わる）。ここ以外に否定文を足さないこと。
+         🔴 CP33＝当事者性を捏造しない＝「私も店をやっていたから分かる」とは書かない。 -->
+    <h1 class="hero">今のやり方で困っていないお店は、ここから先を読まなくて大丈夫です。</h1>
+
+    <p class="hero-sub">
+      きゃすりんを作っているのは、出勤表と予約と売上がそれぞれ別の場所にあって、
+      同じことを二度も三度も入力しているお店のためです。
+      大箱の夜のお店向けに作られたシステムに、コンカフェ側が我慢して合わせている——
+      変えたいのはそこです。
+    </p>
+
     <p>
-      大箱の夜のお店向けに作られたシステムを、コンカフェが我慢して使っている——
-      そこを何とかしたくて作っているサービスです。
+      その代わり、入力は一度で済みます。出勤表を組めば予約ページに反映され、
+      会計を切れば売上と給与に乗り、締め日の電卓仕事がなくなります。
+    </p>
+
+    <p>
       ただ、実際に店を回している方から見て何が足りないのかは、外からでは分かりません。
+      公開前に、そこだけ教えていただけませんか。
     </p>
-    <p>
-      下のアンケートは<strong>すべて任意</strong>です。答えられるところだけで構いません。
-      公開時のご案内が必要な方は、あわせてご登録いただけます。
-    </p>
+
+    <a class="cta" href="#survey">アンケートに答える</a>
+    <p class="cta-note">3〜5分・設問はすべて任意です。公開時のご案内も同じフォームから承ります。</p>
   </div>
 </section>
 
@@ -227,7 +275,34 @@ footer a{color:var(--gray)}
           <tr><td>オールイン</td><td>8モジュールすべて</td><td class="num">39,800円</td></tr>
         </tbody>
       </table>
-      <p class="tblnote">初月は無料でお試しいただけます。契約期間の縛りはなく、データはCSVで持ち出せます。</p>
+      <!-- 🔴 ここに書く条件は DM文面（kyasurin_DM文面_2026-08-30.txt）と同じことを言う。
+           片方だけ直すと「DMで約束したことがLPで確認できない」状態になる＝二重資産の乖離
+           （[[web_dev_rules]] WEB18 と同型）。文言を変えるときは必ず両方を同じ日に直す。 -->
+      <p class="tblnote">
+        <strong>契約期間の縛りはありません。</strong>いつでも解約でき、解約金もかかりません。
+        無料のあいだだけ使ってみて、合わなければそのままおやめいただいても構いません。
+        トライアルが終わっても、こちらから自動で課金することはありません。データはCSVで持ち出せます。
+      </p>
+    </div>
+
+    <!-- 🔴 このページで「今だけ」と言ってよいのはここだけ＝**終わる時期が実際に決まっているから**書ける
+         （[[web_marketing_rules]] CP23-32＝虚偽の希少性を作らない。在庫のないものに残り数を作らない）。
+         🔴 配り方は実装済みのクーポン機構（ky_billing_coupons・trial_days の既定 60・再取得防止つき）で、
+            利用規約の「30日間」は据え置き＝**クーポンを当てた店舗だけが2か月になる**。
+            規約側の日数を変えていない以上、ここに「全店2か月無料」と書いてはいけない（虚偽文言）。
+         🔴 文言を変えるときは DM文面・アンケートの案内欄（#kp-want-notify の下）と同じ日に直す。 -->
+    <div class="card offer">
+      <p class="offer-label">リリース記念・お試し期間の延長</p>
+      <p class="offer-lead">お試し期間を30日から2か月に延ばすクーポンを、いまお渡ししています。</p>
+      <p class="offer-body">
+        対象は、①正式リリース前にこのページからご登録いただいたお店（事前登録の特典）と、
+        ②正式リリースから1か月のあいだにお申し込みいただいたお店（リリース記念）です。
+        クーポンコードは、公開のご案内と一緒にお送りします。
+      </p>
+      <p class="tblnote">
+        ②の受付は正式リリースから1か月で終了します。①の対象は正式リリースまでにご登録いただいたお店です。
+        クーポンを使わない場合のお試しは30日間です。どちらの場合も、期間が終わったあとに自動で課金されることはありません。
+      </p>
     </div>
   </div>
 </section>
@@ -249,6 +324,15 @@ footer a{color:var(--gray)}
           <span>公開したときに案内を受け取る</span>
         </label>
         <p class="kp-q-hint">ご案内以外の目的では使いません。いつでも配信を停止できます。</p>
+        <!-- 🔴 料金セクションの特典カードと同じことを言う欄（ユーザー指示＝アンケート内にも書く）。
+             片方だけ直すと「フォームで約束したことが料金欄で確認できない」状態になる
+             （[[web_dev_rules]] WEB18 と同型の二重資産）。文言を変えるときは必ず両方を同じ日に直す。
+             🔴 設問そのものは prelaunch-survey.generated.js（正典＝kyasuho/src/config/prelaunchSurvey.json）
+                から描くので、**設問文をここに書き足さない**。ここはフォーム側の固定文言だけ。 -->
+        <p class="kp-q-hint">
+          <strong>正式リリース前にご登録いただいたお店には、お試し期間を30日から2か月に延ばすクーポンを、公開のご案内と一緒にお送りします。</strong>
+          正式リリース後も1か月のあいだは同じクーポンをお渡ししています。クーポンを使わない場合のお試しは30日間です。
+        </p>
 
         <div id="kp-contact" hidden>
           <div class="kp-inline">
@@ -266,11 +350,12 @@ footer a{color:var(--gray)}
             <input type="text" id="kp-x-handle" autocomplete="off" placeholder="your_shop">
           </div>
 
-          <div class="kp-field">
-            <label for="kp-shop-name">店舗名（任意）</label>
-            <input type="text" id="kp-shop-name" autocomplete="organization" maxlength="120">
-          </div>
-
+          <!-- 🔴 店舗名の欄はここに置かない（2026-08-30 ユーザー指示）。
+               この箱は「案内を受け取る」にチェックしたときだけ開く＝チェックしないお店の名前が
+               どこにも残らず、**回答のお礼すら伝えられなかった**。
+               店舗名はアンケート側の設問（正典 prelaunchSurvey.json の KP-21）へ移し、
+               案内登録の shop_name もその回答から取っている（prelaunch.js の SHOP_NAME_QID）。
+               ＝ここに入力欄を戻すと、同じことを2回聞く画面になる。 -->
           <div class="kp-field">
             <label for="kp-contact-name">ご担当者名（任意）</label>
             <input type="text" id="kp-contact-name" autocomplete="name" maxlength="60">
@@ -295,7 +380,11 @@ footer a{color:var(--gray)}
     <h2>いただいた情報の扱い</h2>
     <p class="lead">お約束していることだけ、短く書きます。</p>
     <div class="card">
+      <!-- 🔴 「〜のためだけに使います」と書く以上、**実際に他の用途があるならここへ書き足す**（虚偽文言）。
+           2026-08-30 に店舗名（設問 KP-21）を足した＝案内が要らないお店にも回答のお礼をお伝えするため
+           ＝「機能や料金を決めるためだけ」では実態と食い違うので、下の1行を同じ Rev で足した。 -->
       <p>・アンケートの回答は、機能や料金を決めるためだけに使います。個人や店舗が分かる形で公開することはありません。</p>
+      <p>・店舗名をお書きいただいた場合は、上記に加えて、ご回答のお礼をお伝えするためにも使わせていただきます。空欄のままでも送信できます。</p>
       <p>・連絡先は、公開のご案内をお送りするためだけに使います。第三者へ渡すことはありません。</p>
       <p>・配信の停止はいつでもできます。ご案内メールの末尾のリンクか、下記の連絡先までご一報ください。</p>
       <p>・アンケートだけのご回答、ご登録だけ、どちらでも構いません。</p>

@@ -30,6 +30,13 @@
   var EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
   var HANDLE_RE = /^[A-Za-z0-9_]{1,15}$/;
 
+  // 🔴 店舗名の入力欄は**アンケート側の設問1本だけ**にしてある（2026-08-30 ユーザー指示）。
+  //    理由＝「回答はするがリリース案内は要らない」お店にも、お礼を伝えられるようにするため。
+  //    以前は連絡先ブロック（案内を受け取るにチェックしたときだけ開く）の中にあり、
+  //    チェックしない回答者の店舗名は**どこにも残らなかった**。
+  //    ここに設問文は書かない＝正典は prelaunchSurvey.json。参照するのはIDだけ。
+  var SHOP_NAME_QID = "KP-21";
+
   function uuid() {
     if (window.crypto && window.crypto.randomUUID) return window.crypto.randomUUID();
     // 古い環境向けの控え。突き合わせ用の相関IDなので暗号強度は要らない。
@@ -167,7 +174,6 @@
     var xRow = document.getElementById("kp-x-row");
     var emailInput = document.getElementById("kp-email");
     var xInput = document.getElementById("kp-x-handle");
-    var shopInput = document.getElementById("kp-shop-name");
     var nameInput = document.getElementById("kp-contact-name");
     if (!schema || !form || !surveyRoot || !button || !label || !msg) return;
 
@@ -205,8 +211,15 @@
       var answers = collect(surveyRoot, schema);
       var wants = wantNotify.checked;
 
+      // 🔴 店舗名は設問の形をしているが「回答」ではない＝答えた数に混ぜない。
+      //    混ぜると、店舗名だけ書いて送った人が集計上「アンケートに答えた1件」になり、
+      //    中身の無い行で母数を自分から汚す（意向スコアの分母がずれる）。
+      var answered = Object.keys(answers).filter(function (k) {
+        return k !== SHOP_NAME_QID;
+      });
+
       // 空送信よけ。**どちらも空**のときだけ止める（片方だけなら通す）。
-      if (!wants && !Object.keys(answers).length) {
+      if (!wants && !answered.length) {
         say("アンケートにお答えいただくか、リリース案内のご登録にチェックを入れてください。", "err");
         return;
       }
@@ -228,7 +241,8 @@
         }
         signup = {
           submission_id: null, // 下で埋める
-          shop_name: (shopInput.value || "").trim() || null,
+          // 店舗名は上の設問（SHOP_NAME_QID）から取る＝入力欄を二重に置かない。
+          shop_name: answers[SHOP_NAME_QID] || null,
           contact_name: (nameInput.value || "").trim() || null,
           contact_method: useEmail ? "email" : "x_dm",
           email: useEmail ? email : null,
@@ -246,7 +260,9 @@
       say("", "");
 
       var jobs = [];
-      if (Object.keys(answers).length) {
+      // 🔴 `answered`（＝店舗名を除いた実回答）で判定する。店舗名だけの行を作らない
+      //    ＝案内登録だけしたい人の店舗名は signup 側に入るので、ここで落としても失われない。
+      if (answered.length) {
         jobs.push(
           post("ky_prelaunch_survey_responses", [
             {
