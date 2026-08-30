@@ -76,13 +76,20 @@
 
   <h2>法的情報</h2>
   <div class="section">
-    <!-- 🔴 以前はここから /kyasuho/#/privacy ・ /kyasuho/#/terms へ張っていたが、
-         その2つのルートは Web 側に存在せず、飛び先は事前アンケートのページだった
-         （＝デッドリンクであり、かつ「リンクを知っている人だけ」に反する導線）。
-         きゃすりんの公開版プライバシーポリシー・利用規約は未公開なので、
-         リンクは張らずアプリ内の所在だけ案内する。公開したらここに張り直す。 -->
-    <p>プライバシーポリシーと利用規約は、アプリの「設定」画面からご確認いただけます。</p>
-    <p>ご入用の場合は <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> までお申し付けください。</p>
+    <!-- 🔴 飛び先は「きゃすりん」客側Web（kyasurin-app.github.io）に実在する公開版。
+         2026-08-30 実測＝どちらも HTTP 200（/legal/privacy 17,955B・/legal/terms 13,521B）で、
+         ASC の Privacy Policy URL と Play のプライバシーポリシー URL に登録済みのものと同じ。
+         正典は kyasuho/src/data/privacyPolicy.ts ・ termsOfUse.ts の1本で、
+         そこから web/generated/legal-static.json 経由で静的HTMLが生成される
+         ＝ここへ本文を写さない（WEB18＝二重資産は転記でなく正本から生成する）。
+         以前ここは /kyasuho/#/privacy ・ /kyasuho/#/terms へ張っていたが、
+         その2ルートは実在せず飛び先が事前アンケートのページだった（デッドリンク）。
+         その是正で一旦リンクを外したが、外した理由（「公開版が無い」）自体が誤りで、
+         探した先が rurifukuro.github.io 配下だけだった＝配信元が別リポジトリだと数えていなかった。 -->
+    <p><a href="https://kyasurin-app.github.io/legal/privacy">プライバシーポリシー</a></p>
+    <p><a href="https://kyasurin-app.github.io/legal/terms">利用規約</a></p>
+    <p>アプリの「設定」画面からも同じ内容をご確認いただけます。</p>
+    <p>ご不明な点は <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> までお申し付けください。</p>
   </div>
 
   <footer>
