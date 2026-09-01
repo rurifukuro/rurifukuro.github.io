@@ -67,7 +67,13 @@
   }
   .wrap{max-width:680px;margin:0 auto;padding:28px 24px 64px}
 
-  .backlink{display:inline-block;font-size:13px;color:#9fb0d4;text-decoration:none;margin-bottom:20px}
+  /* ★Rev517（ラウンド57 C-1・★UI-REACH）: 押せる物は 48px 以上（Android 48dp / iOS 44pt）。
+   根拠の全文は `public/kyasuho/index.html` の同名注記。**`label` は箱ぜんぶが当たり判定**なので、
+   `padding` の無い `label` は文字1行ぶんの高さがそのままタップ目標になる。 */
+.backlink{display:inline-flex;align-items:center;min-height:48px;
+    /* ★Rev517（C-1）: 22.1px → 48px+。padding で当たり判定を伸ばし、
+       同値の負マージンで**見た目の位置は1px も動かさない**（HIT-SLOP-BASE の Web 版）。 */
+    padding:0 12px;margin-left:-12px;font-size:13px;color:#9fb0d4;text-decoration:none;margin-bottom:20px}
   .backlink:hover{color:#cdd9f0}
 
   .hero{text-align:center;margin-bottom:40px}
@@ -168,7 +174,8 @@
   .tester-form input::placeholder{color:#d6b3a2}
   .tester-form input:focus{outline:2px solid var(--orange);outline-offset:1px}
   .tester-form input:disabled{opacity:.6}
-  .tester-check{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:#ffe0d2;line-height:1.6}
+  /* ★Rev517（C-1）: 21.6px（1行）→ 48px+。テスター応募の**唯一の同意チェック**がここ。 */
+  .tester-check{display:flex;gap:10px;align-items:flex-start;min-height:48px;padding:13px 0;font-size:13.5px;color:#ffe0d2;line-height:1.6}
   .tester-check input[type=checkbox]{width:20px;height:20px;margin-top:2px;flex:none;accent-color:var(--orange)}
   .btn-tester-submit{
     background:var(--orange);color:#fff;border:0;width:100%;
@@ -463,7 +470,7 @@
   </div>
 
   <div class="events">
-    対応イベント 4種＋拡大中：<b>コミケ / コミティア / 学園スターフェス / アイドルスターフェス</b>
+    対応イベント 6種＋拡大中：<b>コミケ / コミティア / デザインフェスタ / 学園スターフェス / アイドルスターフェス / ホロクル</b>
   </div>
 
   <footer>
