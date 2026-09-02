@@ -102,10 +102,17 @@
     display:flex;align-items:center;justify-content:center;gap:12px;
     text-decoration:none;font-weight:700;font-size:18px;
     padding:18px 22px;border-radius:16px;transition:transform .12s ease,opacity .12s ease;
+    min-height:48px;  /* ★UI-REACH: padding で偶然超えるのでなく、床を宣言で保証する */
   }
   .btn:active{transform:scale(.98)}
-  .btn-x{background:rgba(255,255,255,.10);color:#fff;border:1px solid rgba(255,255,255,.25)}
   .btn-store{background:#fff;color:var(--bg1)}
+  /* 副次導線＝主CTA（App Store）より一段弱くする（DS28-1 / DS26・とれはんっ！側と同一の作法） */
+  .btn-x{
+    background:rgba(255,255,255,.07);color:#fff;border:1px solid rgba(255,255,255,.20);
+    font-size:15px;padding:13px 18px;border-radius:14px;
+  }
+  .btn-x .ic{font-size:18px}
+  .btn-x small{font-size:11.5px;color:#c0ae9b}  /* DS24: 最も明るい地(#3a2a1e)でも 6.39:1 */
   .btn .ic{font-size:22px;line-height:1}
   .btn small{display:block;font-size:12px;font-weight:500;color:rgba(255,255,255,.8)}
   .btn-store small{color:#6b5a48}
@@ -174,6 +181,7 @@
     display:inline-flex;align-items:center;gap:8px;text-decoration:none;
     font-weight:700;font-size:15px;color:#fff;background:rgba(255,255,255,.1);
     border:1px solid rgba(255,255,255,.25);padding:12px 18px;border-radius:14px;
+    min-height:48px;  /* ★UI-REACH: 床を宣言で保証する */
   }
 
   .tester{
@@ -256,7 +264,8 @@
   .events b{color:var(--coral)}
 
   footer{
-    text-align:center;font-size:12px;color:#a1907e;margin-top:48px;
+    /* DS24: #a1907e は最も明るい地(#3a2a1e)で 4.45:1 と補助テキストの下限(4.5:1)を割っていた */
+    text-align:center;font-size:12px;color:#b5a390;margin-top:48px;
     border-top:1px solid rgba(255,255,255,.1);padding-top:24px;
   }
   footer a{color:#d9c3ac}
@@ -319,16 +328,16 @@
   <div class="hero-feat">
     <div class="feat">
       <h3>📅 取り置き予約の"受け渡しモレ"、ゼロに</h3>
-      <p>取り置き予約の公開設定から受け渡し管理まで、アプリひとつで完結。「誰に・何を・いつ」が一覧で一目瞭然。受取番号で管理するので、モレもダブりも防ぎます。</p>
+      <p>取り置き予約の公開設定から受け渡し管理まで、アプリひとつで完結。品目ごとに「お一人様1点まで」の限数や頒布上限を決められ、受付の自動〆切やパスワード保護もかけられます。「誰に・何を・いつ」は一覧で一目瞭然。受取番号で管理するので、モレもダブりも防ぎます。</p>
       <div class="shots two">
-        <img src="img/shot5.jpg" alt="取り置き予約の公開設定画面" loading="lazy">
-        <img src="img/shot6.jpg" alt="取り置き予約の管理・一覧画面" loading="lazy">
+        <img src="img/shot5.jpg" alt="取り置き予約の公開設定画面。品目ごとの限数とパスワード保護" loading="lazy">
+        <img src="img/shot6.jpg" alt="取り置き予約の管理・一覧画面。受付の自動〆切と受取番号" loading="lazy">
       </div>
     </div>
     <hr class="divider">
     <div class="feat">
       <h3>🌐 買い手はブラウザから予約。アプリ不要、URLだけ</h3>
-      <p>生成されたURLを共有するだけで、買い手はスマホのブラウザから取り置き予約ができます。アプリのインストールは不要。お品書きと個数を選ぶだけで受取番号が即発行されます。</p>
+      <p>生成されたURLを共有するだけで、買い手はスマホのブラウザから取り置き予約ができます。アプリのインストールは不要。お品書きと個数を選ぶだけで受取番号が即発行されます。買い手の連絡先は取得しないので、相手にとっても気軽です。</p>
       <div class="shots two">
         <img src="img/shot7.jpg" alt="Web取り置き予約ページ（買い手向け）" loading="lazy">
         <img src="img/shot8.jpg" alt="取り置き完了・受取番号の画面" loading="lazy">
@@ -345,17 +354,17 @@
       <h3>🧮 もう暗算しない。ワンタップで、"秒"会計</h3>
       <p>頒布物を選んで数量を押すだけ。合計もおつりも自動で、もう暗算に迷いません。行列ができる頒布時間でもサッとお会計。現金・キャッシュレスどちらも記録できます。</p>
       <div class="shots two">
-        <img src="img/shot1.jpg" alt="レジ画面" loading="lazy">
+        <img src="img/shot1.jpg" alt="レジ画面（一覧モード）" loading="lazy">
         <img src="img/shot2.jpg" alt="会計・おつり計算の画面" loading="lazy">
       </div>
     </div>
 
     <div class="feat">
       <h3>🤖 お品書きを撮るだけ。手入力ゼロで、すぐ頒布開始</h3>
-      <p>お品書きを撮影するだけで、名前も価格もAIが自動で読み取り。手入力の手間なく、ワンタップで商品リストが完成します。セット組み合わせも自由に作成できます。</p>
+      <p>お品書きを撮影するだけで、名前も価格もAIが自動で読み取り。手入力の手間なく、ワンタップで商品リストが完成します。セット組み合わせも自由に作れて、レジ画面はお品書き画像つきの表示にも切り替えられます。</p>
       <div class="shots two">
-        <img src="img/shot3.jpg" alt="商品の追加・AI自動入力の画面" loading="lazy">
-        <img src="img/shot4.jpg" alt="商品（頒布物）一覧の画面" loading="lazy">
+        <img src="img/shot3.jpg" alt="セット編集画面。お品書き画像からのAI自動入力" loading="lazy">
+        <img src="img/shot4.jpg" alt="お品書き画像つきで並ぶレジ画面（画像モード）" loading="lazy">
       </div>
     </div>
 
@@ -369,16 +378,18 @@
 
     <div class="feat">
       <h3>📊 確定申告、もう怖くない。売上も経費もその場で集計</h3>
-      <p>売上と利益をその場で自動集計し、グラフでひと目で把握。参加費や材料費などの経費も記録でき、確定申告の準備がぐっとラクになります。売り子共有で複数端末の売上を同期することも。</p>
-      <div class="shots two">
-        <img src="img/shot10.jpg" alt="売上集計の画面" loading="lazy">
-        <img src="img/shot11.jpg" alt="確定申告・経費記録の画面" loading="lazy">
-      </div>
+      <p>売上と利益をその場で自動集計。支払方法別・品目別の内訳まで出るので、参加費や材料費などの経費を足せば確定申告の準備がぐっとラクになります。確定申告サマリーは無料でお使いいただけます。売り子共有で複数端末の売上を同期することも。</p>
+      <!-- 🔴 画像を外している理由（2026-09-02）:
+           旧 shot10（売上）/ shot11（確定申告）は 2026-07-10 撮影で、アプリ Rev135〔TAX-FREE〕(2026-08-25) で
+           撤去した解放ゲート（「イベント全日合計を表示 🔒」「全ての開催日を解放すると表示されます（あと1日）」）が
+           写っていた＝**今は無い制限を見せる画像**なので取り下げた。
+           2026-09-01 撮影の新スクショ10枚には売上・確定申告の画面が含まれていない。
+           撮り直しが手に入ったら shot10 / shot11 を差し替えて、この節に .shots two を戻す。 -->
     </div>
 
     <div class="feat">
       <h3>⚙️ 電波なしでもサクサク。オフラインで安心動作</h3>
-      <p>レジの挙動を好みに合わせてカスタマイズ。オフラインでもサクサク動くので、電波が弱い会場でも安心です。</p>
+      <p>レジの挙動やAI読み取りの枚数など、設定は好みに合わせて調整できます。オフラインでもサクサク動くので、電波が弱い会場でも安心です。</p>
       <div class="shots one">
         <img src="img/shot12.jpg" alt="設定画面" loading="lazy">
       </div>
@@ -394,7 +405,7 @@
       <li><span class="dot" style="background:#3b82f6">✓</span>セット割・まとめ買い会計もワンタップ</li>
       <li><span class="dot" style="background:#f59e0b">✓</span>取り置き予約の受付・管理をアプリで一元化</li>
       <li><span class="dot" style="background:#ec4899">✓</span>Web予約ページで、どこからでも取り置き受付</li>
-      <li><span class="dot" style="background:#22c55e">✓</span>売上・利益をその場で自動集計＆グラフ表示</li>
+      <li><span class="dot" style="background:#22c55e">✓</span>売上・利益を支払方法別・品目別にその場で自動集計</li>
       <li><span class="dot" style="background:#14b8a6">✓</span>経費記録で確定申告がぐっとラクに</li>
       <li><span class="dot" style="background:#ef4444">✓</span>現金もキャッシュレスも支払い記録</li>
       <li><span class="dot" style="background:#a855f7">✓</span>売り子共有で複数端末の売上を同期</li>
