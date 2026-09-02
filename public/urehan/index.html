@@ -65,7 +65,13 @@
   }
   .wrap{max-width:680px;margin:0 auto;padding:28px 24px 64px}
 
-  .backlink{display:inline-block;font-size:13px;color:#d9c3ac;text-decoration:none;margin-bottom:20px}
+  /* ★Rev517（ラウンド57 C-1・★UI-REACH）: 押せる物は 48px 以上（Android 48dp / iOS 44pt）。
+   根拠の全文は `public/kyasuho/index.html` の同名注記。**`label` は箱ぜんぶが当たり判定**なので、
+   `padding` の無い `label` は文字1行ぶんの高さがそのままタップ目標になる。 */
+.backlink{display:inline-flex;align-items:center;min-height:48px;
+    /* ★Rev517（C-1）: 22.1px → 48px+。padding で当たり判定を伸ばし、
+       同値の負マージンで**見た目の位置は1px も動かさない**（HIT-SLOP-BASE の Web 版）。 */
+    padding:0 12px;margin-left:-12px;font-size:13px;color:#d9c3ac;text-decoration:none;margin-bottom:20px}
   .backlink:hover{color:#f2e2cf}
 
   .hero{text-align:center;margin-bottom:36px}
@@ -202,7 +208,8 @@
   .tester-form input::placeholder{color:#d6b3a2}
   .tester-form input:focus{outline:2px solid var(--coral);outline-offset:1px}
   .tester-form input:disabled{opacity:.6}
-  .tester-check{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:#ffe0d2;line-height:1.6}
+  /* ★Rev517（C-1）: 21.6px（1行）→ 48px+。テスター応募の**唯一の同意チェック**がここ。 */
+  .tester-check{display:flex;gap:10px;align-items:flex-start;min-height:48px;padding:13px 0;font-size:13.5px;color:#ffe0d2;line-height:1.6}
   .tester-check input[type=checkbox]{width:20px;height:20px;margin-top:2px;flex:none;accent-color:var(--coral)}
   .btn-tester-submit{
     background:var(--coral);color:#fff;border:0;width:100%;
@@ -354,7 +361,7 @@
 
     <div class="feat">
       <h3>🔗 「とれはんっ！」連携で、買い手に見つけてもらう</h3>
-      <p>レジさぽっ！で登録したお品書きは、買い手向けアプリ「とれはんっ！」に自動掲載。来場者の横断検索であなたのサークルが発見されやすくなります。「登録者数」で事前の注目度も把握できます。</p>
+      <p>レジさぽっ！で登録したお品書きは、買い手向けアプリ「とれはんっ！」に自動掲載。来場者の横断検索であなたのサークルが発見されやすくなります。「登録者数」で事前の注目度も把握できます（この表示だけはイベント開催日ごとの買い切り課金です）。</p>
       <div class="shots one">
         <img src="img/shot9.jpg" alt="商品画面の登録者数・とれはんっ！連携" loading="lazy">
       </div>
@@ -399,7 +406,7 @@
   <!-- 姉妹アプリ連携 -->
   <div class="sister">
     <h2>🤝 売り手のあなたと、買い手をつなぐ</h2>
-    <p>レジさぽっ！で登録した頒布物は、買い手向けアプリ「とれはんっ！」に自動で掲載。来場者の横断検索であなたのサークルが見つかりやすくなり、新しいお客さんとの出会いが生まれます。「登録者数」であなたのサークルへの注目度も事前に確認できます。</p>
+    <p>レジさぽっ！で登録した頒布物は、買い手向けアプリ「とれはんっ！」に自動で掲載。来場者の横断検索であなたのサークルが見つかりやすくなり、新しいお客さんとの出会いが生まれます。「登録者数」であなたのサークルへの注目度も事前に確認できます（この表示だけはイベント開催日ごとの買い切り課金です）。</p>
     <a class="link" href="/torehan/">
       とれはんっ！を見る →
     </a>

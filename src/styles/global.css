@@ -4,10 +4,11 @@
   --text: #1a1a2e;
   --text-secondary: #33334a;
   --text-muted: #5f5f75;
-  --text-dim: #b5b5c8;
+  --text-dim: #69698e;
   --accent: #f5821f;
   --accent-soft: rgba(245, 130, 31, 0.06);
   --accent-border: rgba(245, 130, 31, 0.25);
+  --accent-text: #b05508;
   --accent-hover: #e06a00;
   --border: #e5e7eb;
   --border-light: #f0f1f5;
@@ -40,7 +41,7 @@ body {
 }
 
 a {
-  color: var(--accent);
+  color: var(--accent-text);
   text-decoration: none;
 }
 

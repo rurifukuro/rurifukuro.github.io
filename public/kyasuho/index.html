@@ -101,10 +101,25 @@ td.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
 }
 .kp-q-hint{font-size:12.5px;color:var(--gray);margin-top:4px}
 .kp-opts{margin-top:10px;display:grid;gap:8px}
+/* ★Rev517（ラウンド57 C-1・★UI-REACH）: **押せる物の高さは 48px 以上**にする。
+   根拠＝Android の最小タップ目標が 48dp（iOS は 44pt）。`label` は中の `input` だけでなく
+   **ラベルの箱ぜんぶが当たり判定**なので、箱が痩せているとテキスト行の高さがそのまま
+   タップ目標になる＝指の腹（実測でおよそ 45〜57px）が入らず取りこぼす。
+   実測（vw=375・是正前）:
+     .kp-check      27.0px  ← 48 の 56%。**ウェイトリスト登録の唯一のオプトイン**がここ
+     .kp-inline label 43.2px
+     .kp-opt / .kp-scale-item 46.4px（44pt は超えるが 48dp 未満）
+   高さは `min-height` と `padding` の**両方**で作る＝`min-height` だけだと
+   `align-items:flex-start` のせいで下側の余白が視覚的に不自然になり、
+   `padding` だけだとフォントが小さく描画される端末で 48 を割る。
+   ※ 例外（この規約を当てない物）:
+     ・本文中に埋まったインラインリンク（mailto 等）＝行の中に収まるのが正しい
+     ・入力欄の**見出し** `label`＝押す物は下の `input`（51.5〜128px）側
+     ・視覚的に隠している honeypot */
 .kp-opt,.kp-scale-item{
   display:flex;align-items:flex-start;gap:10px;cursor:pointer;
   background:var(--card);border:1px solid var(--line);border-radius:12px;
-  padding:11px 14px;font-size:14px;line-height:1.6;
+  padding:13px 14px;font-size:14px;line-height:1.6;min-height:48px;
 }
 .kp-opt:hover,.kp-scale-item:hover{border-color:var(--line-strong)}
 .kp-opt input,.kp-scale-item input{margin-top:4px;flex:0 0 auto;accent-color:var(--pink-btn)}
@@ -126,12 +141,16 @@ td.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
 .kp-field input:focus{outline:2px solid var(--pink-btn);outline-offset:1px}
 .kp-check{
   display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:15px;font-weight:700;
+  /* ★Rev517（C-1）: 27.0px → 48px+。上の★UI-REACH 注記を参照。 */
+  padding:11px 0;min-height:48px;
 }
 .kp-check input{margin-top:5px;accent-color:var(--pink-btn)}
 .kp-inline{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
 .kp-inline label{
   display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;
-  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:8px 16px;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:12px 16px;
+  /* ★Rev517（C-1）: 43.2px → 48px+ */
+  min-height:48px;
 }
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 /* 🔴 CTAは1種類しか置かない（[[web_design_rules]] DS28-1）＝
@@ -278,16 +297,27 @@ footer a{color:var(--gray)}
       <!-- 🔴 ここに書く条件は DM文面（kyasurin_DM文面_2026-08-30.txt）と同じことを言う。
            片方だけ直すと「DMで約束したことがLPで確認できない」状態になる＝二重資産の乖離
            （[[web_dev_rules]] WEB18 と同型）。文言を変えるときは必ず両方を同じ日に直す。 -->
+      <!-- 🔴★Rev516（ラウンド56 C-1 / C-2）: 旧文は「契約期間の縛りはありません。いつでも解約でき」
+           「データはCSVで持ち出せます」と言い切っていたが、どちらも実装と食い違っていた。
+           ① 解約は決済方法で手順が別（termsOfUse.ts 第9条(5)）。Stripe・銀行振込は解約専用ページが
+              未実装で自分では解約できない。銀行振込は半年／年の一括前払い限定で日割り返金なし
+              ＝「縛りがない」は実態と違う。なお最低契約期間・解約金の定めは規約に存在しない
+              （grep 0 件）＝この2点は真なので残す。
+           ② CSV 書き出しは 7 面のみ。予約・顧客・キャストの台帳には downloadCsv が 0 件。
+           🔴 ここに「今後対応予定」と書かない＝予定が確定していない約束は新しい虚偽文言になる。 -->
       <p class="tblnote">
-        <strong>契約期間の縛りはありません。</strong>いつでも解約でき、解約金もかかりません。
-        無料のあいだだけ使ってみて、合わなければそのままおやめいただいても構いません。
-        トライアルが終わっても、こちらから自動で課金することはありません。データはCSVで持ち出せます。
+        <strong>最低契約期間の定めはなく、解約金もかかりません。</strong>
+        アプリ内課金（App Store／Google Play）でご契約の場合は、各ストアの設定からご自身でいつでも解約できます。
+        クレジットカード（Stripe）・銀行振込でご契約の場合は、解約専用ページの準備が整うまでのあいだ、お問い合わせで承ります。
+        銀行振込は半年払い・年払いの一括前払いに限り、いずれの決済方法でも日割り返金は行いません（解約後も契約期間の満了日までご利用いただけます）。
+        トライアルが終わっても、こちらから自動で課金することはありません。
+        売上・給与・勤怠・キャスト実績・経費・日報・在庫は CSV で書き出せます。
       </p>
     </div>
 
     <!-- 🔴 このページで「今だけ」と言ってよいのはここだけ＝**終わる時期が実際に決まっているから**書ける
          （[[web_marketing_rules]] CP23-32＝虚偽の希少性を作らない。在庫のないものに残り数を作らない）。
-         🔴 配り方は実装済みのクーポン機構（ky_billing_coupons・trial_days の既定 60・再取得防止つき）で、
+         🔴 配り方は実装済みのクーポン機構（ky_coupon_campaigns・trial_days の既定 60・再取得防止つき）で、
             利用規約の「30日間」は据え置き＝**クーポンを当てた店舗だけが2か月になる**。
             規約側の日数を変えていない以上、ここに「全店2か月無料」と書いてはいけない（虚偽文言）。
          🔴 文言を変えるときは DM文面・アンケートの案内欄（#kp-want-notify の下）と同じ日に直す。 -->
@@ -385,9 +415,27 @@ footer a{color:var(--gray)}
            ＝「機能や料金を決めるためだけ」では実態と食い違うので、下の1行を同じ Rev で足した。 -->
       <p>・アンケートの回答は、機能や料金を決めるためだけに使います。個人や店舗が分かる形で公開することはありません。</p>
       <p>・店舗名をお書きいただいた場合は、上記に加えて、ご回答のお礼をお伝えするためにも使わせていただきます。空欄のままでも送信できます。</p>
-      <p>・連絡先は、公開のご案内をお送りするためだけに使います。第三者へ渡すことはありません。</p>
+      <!-- 🔴★Rev516（ラウンド56 C-5）: 旧文は「第三者へ渡すことはありません」とだけ書いていたが、
+           実際には保管を Supabase、このページの配信を GitHub Pages に委託している。
+           アプリ内のプライバシーポリシー第3条は「以下の場合を除き提供しません」という**網羅の形**で
+           委託先を列挙しており、同じ基準で見ると LP 側だけが例外の形を持たない状態だった。 -->
+      <p>・連絡先は、公開のご案内をお送りするためだけに使います。名簿を売ったり、他社の広告に使ったりすることはありません。
+        ただし、いただいた情報は保管のため Supabase（Supabase, Inc.）のサーバーに保存され、このページ自体は GitHub Pages（GitHub, Inc.）から配信しています。
+        法令にもとづく開示要求があった場合を除き、これ以外に提供することはありません。</p>
       <p>・配信の停止はいつでもできます。ご案内メールの末尾のリンクか、下記の連絡先までご一報ください。</p>
       <p>・アンケートだけのご回答、ご登録だけ、どちらでも構いません。</p>
+      <!-- 🔴★Rev516（ラウンド56 C-3）: この節は「使い道」しか書いていなかった。
+           個人情報保護法 17 条（利用目的の特定）・21 条（取得時の公表）は
+           **何を取るのか**と**どこへ言えば消せるのか**までを求める。
+           Rev514 で本番適用済み＝すでに収集を始めているので、公開中の版で不足していた。
+           アプリ内のプライバシーポリシー（privacyPolicy.ts）が正本で、ここはその要約。
+           🔴 片方だけ直すと二重資産の乖離になる（WEB18）＝必ず両方を同じ Rev で直す。 -->
+      <p>・お預かりするのは、ご入力いただいた<strong>店舗名・ご担当者名・メールアドレスまたは X（Twitter）のアカウント名・アンケートのご回答</strong>だけです。
+        クレジットカード番号・住所・電話番号はどの設問でもお尋ねしません。</p>
+      <p>・保管する期間は、公開のご案内をお送りし終えるまでです。配信停止のご連絡をいただいた場合は、その時点でご案内の対象から外します。</p>
+      <p>・ご自身の情報の<strong>開示・訂正・削除・利用の停止</strong>をご希望の場合は、下記の連絡先までお知らせください。
+        ご本人であることを確認したうえで、遅滞なく対応します（手数料はいただきません）。
+        個人情報の取扱いに関するご質問も、同じ連絡先で承ります。</p>
     </div>
   </div>
 </section>

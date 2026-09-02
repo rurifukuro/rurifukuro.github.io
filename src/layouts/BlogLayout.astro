@@ -122,7 +122,7 @@ const dateStr = date.toLocaleDateString('ja-JP', {
 
   .nav-logo:hover {
     text-decoration: none;
-    color: var(--accent);
+    color: var(--accent-text);
   }
 
   .breadcrumb {
@@ -175,7 +175,7 @@ const dateStr = date.toLocaleDateString('ja-JP', {
     display: inline-block;
     font-size: 12px;
     font-weight: 700;
-    color: var(--accent);
+    color: var(--accent-text);
     background: var(--accent-soft);
     padding: 4px 14px;
     border-radius: 4px;
@@ -251,7 +251,7 @@ const dateStr = date.toLocaleDateString('ja-JP', {
   }
 
   .article-body :global(li::marker) {
-    color: var(--accent);
+    color: var(--accent-text);
   }
 
   .article-body :global(strong) {
@@ -277,7 +277,7 @@ const dateStr = date.toLocaleDateString('ja-JP', {
   }
 
   .article-body :global(a) {
-    color: var(--accent);
+    color: var(--accent-text);
     text-decoration: underline;
     text-decoration-color: var(--accent-border);
     text-underline-offset: 3px;
@@ -285,7 +285,7 @@ const dateStr = date.toLocaleDateString('ja-JP', {
   }
 
   .article-body :global(a:hover) {
-    text-decoration-color: var(--accent);
+    text-decoration-color: var(--accent-text);
   }
 
   /* 本文の流れの中に置く誘導ブロック。末尾の共通CTA（AppCTA）とは別物で、
@@ -416,7 +416,7 @@ const dateStr = date.toLocaleDateString('ja-JP', {
 
   .footer-copy {
     font-size: 12px;
-    color: #666;
+    color: #888;
   }
 
   @media (max-width: 1080px) {

@@ -24,7 +24,12 @@
   a{color:var(--coral)}
   a:hover{color:#f2a56e}
 
-  .backlink{display:inline-block;font-size:13px;color:#d9c3ac;text-decoration:none;margin-bottom:16px}
+  /* ★Rev517（ラウンド57 C-1・★UI-REACH）: 押せる物は 48px 以上（Android 48dp / iOS 44pt）。
+   根拠の全文は `public/kyasuho/index.html` の同名注記。**`label` は箱ぜんぶが当たり判定**なので、
+   `padding` の無い `label` は文字1行ぶんの高さがそのままタップ目標になる。 */
+.backlink{display:inline-flex;align-items:center;min-height:48px;
+    /* ★Rev517（C-1）: 23.4px → 48px+（padding+負マージンで見た目は不動）。 */
+    padding:0 12px;margin-left:-12px;font-size:13px;color:#d9c3ac;text-decoration:none;margin-bottom:16px}
   .backlink:hover{color:#f2e2cf}
 
   h1{font-size:24px;font-weight:800;margin-bottom:4px}

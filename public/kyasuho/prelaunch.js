@@ -224,6 +224,23 @@
         return;
       }
 
+      // 🔴★Rev516（ラウンド56 B-8 / C-4）: 設問の「必須」ラベルは描画側（`if (q.required)` の1箇所）
+      //    でしか使われておらず、送信時に一度も検査していなかった＝**必須と書いてあるのに未回答で送れる**。
+      //    表示だけの必須は、利用者から見れば嘘であり、集計側から見れば「主軸の設問が欠けた行」が
+      //    黙って混ざる原因になる（intent_score は製品と価格を決める分母）。
+      //    🔴 ただし LP は「アンケートだけのご回答、ご登録だけ、どちらでも構いません」と書いている＝
+      //       案内の登録だけしたい人を止めてはいけない。そこで**アンケートに1問でも答えた人にだけ**
+      //       必須を当てる（`answered.length` の条件）。店舗名は回答ではない（SHOP_NAME_QID）ので除く。
+      var missing = schema.questions.filter(function (q) {
+        return q.required && q.id !== SHOP_NAME_QID && !(q.id in answers);
+      });
+      if (answered.length && missing.length) {
+        say("「" + missing[0].label + "」にお答えください。", "err");
+        var missBox = surveyRoot.querySelector('[data-qid="' + missing[0].id + '"]');
+        if (missBox && missBox.scrollIntoView) missBox.scrollIntoView({ block: "center" });
+        return;
+      }
+
       var signup = null;
       if (wants) {
         var useEmail = methodEmail.checked;

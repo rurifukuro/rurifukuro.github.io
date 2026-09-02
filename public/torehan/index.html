@@ -103,7 +103,13 @@
   }
   .btn:active{transform:scale(.98)}
   .btn-store{background:#fff;color:var(--navy)}
-  .btn-x{background:rgba(255,255,255,.10);color:#fff;border:1px solid rgba(255,255,255,.25)}
+  /* 副次導線＝主CTA（App Store）より一段弱くする（DS28-1 / DS26） */
+  .btn-x{
+    background:rgba(255,255,255,.07);color:#fff;border:1px solid rgba(255,255,255,.20);
+    font-size:15px;padding:13px 18px;border-radius:14px;
+  }
+  .btn-x .ic{font-size:18px}
+  .btn-x small{font-size:11.5px;color:#a2aab9}  /* DS24: 半透明白の上＝4.81:1 */
   .btn .ic{font-size:22px;line-height:1}
   .btn small{display:block;font-size:12px;font-weight:500;color:var(--sub)}
   .btn-store small{color:#6b7488}
@@ -222,7 +228,7 @@
   .events b{color:var(--orange)}
 
   footer{
-    text-align:center;font-size:12px;color:#7f8eb0;margin-top:48px;
+    text-align:center;font-size:12px;color:#9ca7c2;margin-top:48px;
     border-top:1px solid rgba(255,255,255,.1);padding-top:24px;
   }
   footer a{color:#9fb0d4}
@@ -327,7 +333,7 @@
 
     <div class="feat">
       <h3>🔍 みんなの頒布物を横断検索。気になるサークルを即追加</h3>
-      <p>登録されたお品書き・サークル情報をサーバーから横断検索。気になるサークルはその場でリストに追加。登録者数順に並べ替えれば、人気サークル＝ライバルの動きも丸わかりです。</p>
+      <p>登録されたお品書き・サークル情報をサーバーから横断検索。気になるサークルはその場でリストに追加。登録者数順に並べ替えれば、人気サークル＝ライバルの動きも丸わかりです（登録者数の表示・並べ替えは有料開放の機能です）。</p>
       <div class="shots one">
         <img src="img/feat-search.jpg" alt="サーバーからお品書き・サークル情報を検索する画面" loading="lazy">
       </div>
@@ -350,7 +356,7 @@
     </div>
 
     <div class="feat">
-      <h3>📖 10年超の参加経験から生まれた、実戦ノウハウ</h3>
+      <h3>📖 10年超の一般参加経験から生まれた、実戦ノウハウ</h3>
       <p>傘やキャリーケースの注意点、おすすめ降車駅まで網羅した「コミケ攻略情報」と、忘れ物を防ぐ「持ち物チェックリスト」。初参加でも、当日はもう困りません。</p>
       <div class="shots two">
         <img src="img/feat-guide.jpg" alt="コミケ攻略情報の画面" loading="lazy">
@@ -373,7 +379,7 @@
       <li><span class="dot" style="background:#f97316">✓</span>仲間とサークルを分担して、効率よく制覇</li>
       <li><span class="dot" style="background:#0ea5e9">✓</span>お品書き・サークル情報をサーバーで共有</li>
       <li><span class="dot" style="background:#10b981">✓</span>サーバーからサークル情報をまとめて取り込み</li>
-      <li><span class="dot" style="background:#eab308">✓</span>登録者数で人気サークル＝ライバルを把握</li>
+      <li><span class="dot" style="background:#eab308">✓</span>登録者数で人気サークル＝ライバルを把握<small>（有料開放）</small></li>
     </ul>
   </div>
 
