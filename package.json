@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "check:stale-comiket": "node scripts/check-stale-comiket.mjs",
+    "check:tap-target": "node scripts/check-tap-target.mjs"
   },
   "dependencies": {
     "astro": "^4.16.0",
