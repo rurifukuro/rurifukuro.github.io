@@ -140,6 +140,30 @@
     font-size:13px;color:#fff;margin-top:1px;
   }
 
+  /* 料金（パック名は 2026-09-04 ユーザー決定＝アプリ内 i18n が正典）。
+     🔴 ストア（App Store / Play）の課金アイテム表示名は未反映なので、
+        反映前に公開するとストアの一覧では旧名が見える。 */
+  .plans{
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);
+    border-radius:20px;padding:26px 24px;margin:40px 0;
+  }
+  .plans h2{font-size:18px;margin-bottom:8px;font-weight:800}
+  .plans-lead{font-size:13.5px;color:#aebfe0;margin-bottom:18px}
+  .plan{
+    background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.10);
+    border-radius:14px;padding:16px 16px 14px;margin-bottom:12px;
+  }
+  .plan-main{border-color:rgba(227,59,51,.35);background:rgba(227,59,51,.07)}
+  .plan-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+  .plan-name{font-size:16.5px;font-weight:800;color:#fff}
+  .plan-price{font-size:15px;font-weight:800;color:#ffd0c4;white-space:nowrap}
+  .plan-price small{display:block;font-size:11.5px;font-weight:500;color:#9fb0d4;text-align:right}
+  .plan ul{list-style:none;display:grid;gap:8px}
+  .plan li{font-size:14px;color:#cdd8ef;padding-left:17px;position:relative;line-height:1.65}
+  .plan li::before{content:"・";position:absolute;left:0;color:#8fa3c8}
+  .plan-note{font-size:13px;color:#aebfe0;margin-top:10px;line-height:1.7}
+  .plans-foot{font-size:12.5px;color:#8fa3c8;margin-top:14px;line-height:1.8}
+
   .showcase{margin:46px 0 10px}
   .showcase-h{font-size:21px;font-weight:800;text-align:center;letter-spacing:.01em}
   .showcase-sub{text-align:center;color:#aebfe0;font-size:13.5px;margin:8px 0 6px}
@@ -271,7 +295,7 @@
   </div>
 
   <div class="note">
-    基本無料・広告なし／<span class="paid">アプリ内課金あり</span>（有料開放でさらに便利に）
+    基本無料・広告なし／<span class="paid">アプリ内課金あり</span>（じゅんびパック／さくせんパック・開催日ごとの買い切り）
   </div>
 
   <div class="empathy">
@@ -333,7 +357,7 @@
 
     <div class="feat">
       <h3>🔍 みんなの頒布物を横断検索。気になるサークルを即追加</h3>
-      <p>登録されたお品書き・サークル情報をサーバーから横断検索。気になるサークルはその場でリストに追加。登録者数順に並べ替えれば、人気サークル＝ライバルの動きも丸わかりです（登録者数の表示・並べ替えは有料開放の機能です）。</p>
+      <p>登録されたお品書き・サークル情報をサーバーから横断検索。気になるサークルはその場でリストに追加。登録者数順に並べ替えれば、人気サークル＝ライバルの動きも丸わかりです（登録者数の表示・並べ替えは「さくせんパック」の機能です）。</p>
       <div class="shots one">
         <img src="img/feat-search.jpg" alt="サーバーからお品書き・サークル情報を検索する画面" loading="lazy">
       </div>
@@ -379,8 +403,43 @@
       <li><span class="dot" style="background:#f97316">✓</span>仲間とサークルを分担して、効率よく制覇</li>
       <li><span class="dot" style="background:#0ea5e9">✓</span>お品書き・サークル情報をサーバーで共有</li>
       <li><span class="dot" style="background:#10b981">✓</span>サーバーからサークル情報をまとめて取り込み</li>
-      <li><span class="dot" style="background:#eab308">✓</span>登録者数で人気サークル＝ライバルを把握<small>（有料開放）</small></li>
+      <li><span class="dot" style="background:#eab308">✓</span>登録者数で人気サークル＝ライバルを把握<small>（さくせんパック）</small></li>
     </ul>
+  </div>
+
+  <div class="plans">
+    <h2>料金 — 基本は無料。必要な日だけ、2つのパック</h2>
+    <p class="plans-lead">月額でも自動更新でもありません。<strong>イベントの開催日ごとの買い切り</strong>です。行く日のぶんだけ選べます。</p>
+
+    <div class="plan">
+      <div class="plan-head"><span class="plan-name">無料</span><span class="plan-price">0円</span></div>
+      <ul>
+        <li>サークルの登録は1開催日あたり5サークルまで</li>
+        <li>お品書きの読み取り・軍資金の計算・会場マップ・グループ分担・戦利品チェックは、ぜんぶ無料で使えます</li>
+      </ul>
+    </div>
+
+    <div class="plan plan-main">
+      <div class="plan-head"><span class="plan-name">じゅんびパック</span><span class="plan-price">500円<small>／開催日1日ぶん</small></span></div>
+      <ul>
+        <li>買った1イベント・1開催日について、<strong>サークル登録の上限がなくなります</strong></li>
+        <li>クラウドの高精度読み取り <strong>50枚ぶん</strong>付き</li>
+      </ul>
+    </div>
+
+    <div class="plan plan-main">
+      <div class="plan-head"><span class="plan-name">さくせんパック</span><span class="plan-price">1,000円<small>／開催日1日ぶん</small></span></div>
+      <ul>
+        <li>じゅんびパックの内容をそのまま含みます</li>
+        <li>さらに<strong>「登録者数」の表示と並べ替え</strong>＝人気サークル＝ライバルの動きが読めます</li>
+      </ul>
+      <p class="plan-note">じゅんびパックを買ったあとでも、<strong>差額でさくせんパックへアップグレード</strong>できます。二重払いにはなりません。</p>
+    </div>
+
+    <p class="plans-foot">
+      友達紹介が成立すると、招待した方・された方の双方に「じゅんびパック」（開催日1日ぶん）が無料で付きます。<br>
+      価格は税込の目安です。最新の価格・購入条件はストアの表示をご確認ください。
+    </p>
   </div>
 
   <div class="dl">

@@ -167,8 +167,9 @@
   /* ---- 表示言語（共有本文が6言語あるので、受け取る側も揃える） ----
      ⚠ 特典の3条件は**アプリ内のポップアップと同じ内容**にすること。
         金額は書かない＝ストア・地域によって表示通貨も価格も変わるため、
-        「開催日1日ぶんの登録上限の解放（クラウドOCR 50枚つき）」という
-        **中身の名前**で書く（アプリ内の呼称と一致させる）。 */
+        **商品名（じゅんびパック）＋中身**で書く。
+        🔴 正典はアプリ内 i18n の `referral.json` ref_perk_2＝**呼び名を変えたら必ずここも直す**
+        （2026-09-04「プラン」→「パック」の改称でこの3行を追随させた）。 */
   var L = {
     ja: {
       title:"友達から招待されています",
@@ -176,7 +177,7 @@
       codelabel:"紹介コード", copy:"コピー", copied:"コピーしました",
       perktitle:"紹介特典について",
       perk1:"招待された方が<b>サークルを10件登録した時点</b>で成立します。",
-      perk2:"成立すると、<b>招待した方・された方の双方</b>に「開催日1日ぶんの登録上限の解放（クラウド読み取り50枚つき）」が<b>1回ぶん無料</b>で付きます。",
+      perk2:"成立すると、<b>招待した方・された方の双方</b>に「<b>じゅんびパック</b>（開催日1日ぶん・登録上限の解放＋クラウド読み取り50枚つき）」が<b>1回ぶん無料</b>で付きます。",
       perk3:"招待した方は複数人を招待できます。成立した回数ぶん貯まり、<b>最大5回ぶん</b>まで受け取れます。",
       perknote:"※ 特典はアプリ内で受け取ります（どの開催日に使うかはご自身で選べます）。※ 同じ端末からの重複した招待は成立しません。※ 内容は予告なく変更・終了する場合があります。",
       open:"アプリで開く", opensub:"アプリがインストール済みの方",
@@ -191,7 +192,7 @@
       codelabel:"Referral code", copy:"Copy", copied:"Copied",
       perktitle:"About the referral reward",
       perk1:"The referral counts once the invited person has <b>registered 10 circles</b>.",
-      perk2:"When it counts, <b>both the inviter and the invited person</b> get one free \"registration-limit unlock for a single event day (includes 50 cloud scans)\".",
+      perk2:"When it counts, <b>both the inviter and the invited person</b> get one free <b>Prep Pack</b> for a single event day (circle limit unlocked + 50 cloud scans).",
       perk3:"You can invite more than one person. Rewards stack with each successful referral, <b>up to 5</b>.",
       perknote:"* Rewards are claimed inside the app (you choose which event day to use them on). * Repeat invitations from the same device do not count. * Terms may change or end without notice.",
       open:"Open in the app", opensub:"If you already have the app",
@@ -206,7 +207,7 @@
       codelabel:"邀请码", copy:"复制", copied:"已复制",
       perktitle:"关于邀请奖励",
       perk1:"当被邀请的人<b>登记满 10 个社团</b>时即视为成立。",
-      perk2:"成立后，<b>邀请人与被邀请人双方</b>各获得一次免费的“单个开催日的登记上限解锁（含 50 张云端识别）”。",
+      perk2:"成立后，<b>邀请人与被邀请人双方</b>各获得一次免费的「<b>准备包</b>（单个开催日・社团登记上限解锁＋云端识别50张）」。",
       perk3:"可以邀请多位好友。每成立一次即可累积一份，<b>最多 5 份</b>。",
       perknote:"※ 奖励在应用内领取（可自行选择用于哪一个开催日）。※ 同一台设备的重复邀请不计入。※ 内容可能在不另行通知的情况下变更或结束。",
       open:"用应用打开", opensub:"已安装应用的用户",
@@ -221,7 +222,7 @@
       codelabel:"邀請碼", copy:"複製", copied:"已複製",
       perktitle:"關於邀請獎勵",
       perk1:"當被邀請的人<b>登錄滿 10 個社團</b>時即視為成立。",
-      perk2:"成立後，<b>邀請人與被邀請人雙方</b>各獲得一次免費的「單個開催日的登錄上限解鎖（含 50 張雲端辨識）」。",
+      perk2:"成立後，<b>邀請人與被邀請人雙方</b>各獲得一次免費的「<b>準備包</b>（單個開催日・社團登記上限解鎖＋雲端辨識50張）」。",
       perk3:"可以邀請多位朋友。每成立一次即可累積一份，<b>最多 5 份</b>。",
       perknote:"※ 獎勵在應用內領取（可自行選擇用於哪一個開催日）。※ 同一台裝置的重複邀請不列入計算。※ 內容可能在不另行通知的情況下變更或結束。",
       open:"用應用開啟", opensub:"已安裝應用的使用者",
@@ -236,7 +237,7 @@
       codelabel:"추천 코드", copy:"복사", copied:"복사했습니다",
       perktitle:"추천 혜택 안내",
       perk1:"초대받은 분이 <b>서클을 10개 등록한 시점</b>에 성립합니다.",
-      perk2:"성립하면 <b>초대한 분과 초대받은 분 모두</b>에게 ‘개최일 1일분의 등록 상한 해제(클라우드 인식 50장 포함)’가 <b>1회분 무료</b>로 제공됩니다.",
+      perk2:"성립하면 <b>초대한 분과 초대받은 분 모두</b>에게 ‘<b>준비 팩</b>(개최일 1일분・등록 상한 해제 + 클라우드 인식 50장)’가 <b>1회분 무료</b>로 제공됩니다.",
       perk3:"여러 명을 초대할 수 있습니다. 성립한 횟수만큼 쌓이며 <b>최대 5회분</b>까지 받을 수 있습니다.",
       perknote:"※ 혜택은 앱 안에서 받습니다(어느 개최일에 사용할지는 직접 고를 수 있습니다). ※ 같은 기기에서의 중복 초대는 성립하지 않습니다. ※ 내용은 예고 없이 변경·종료될 수 있습니다.",
       open:"앱으로 열기", opensub:"앱이 설치된 분",
@@ -251,7 +252,7 @@
       codelabel:"Code de parrainage", copy:"Copier", copied:"Copié",
       perktitle:"À propos de la récompense de parrainage",
       perk1:"Le parrainage est validé lorsque la personne invitée a <b>enregistré 10 cercles</b>.",
-      perk2:"Une fois validé, <b>le parrain et la personne invitée</b> reçoivent chacun un « déblocage de la limite d'enregistrement pour une journée d'événement (50 lectures cloud incluses) » <b>offert une fois</b>.",
+      perk2:"Une fois validé, <b>le parrain et la personne invitée</b> reçoivent chacun un <b>Pack Préparation</b> offert pour une journée d'événement (limite de cercles levée + 50 analyses cloud).",
       perk3:"Vous pouvez inviter plusieurs personnes. Les récompenses se cumulent à chaque parrainage validé, <b>jusqu'à 5</b>.",
       perknote:"* Les récompenses se réclament dans l'application (vous choisissez la journée d'événement). * Les invitations répétées depuis le même appareil ne sont pas validées. * Les conditions peuvent changer ou prendre fin sans préavis.",
       open:"Ouvrir dans l'application", opensub:"Si vous avez déjà l'application",
