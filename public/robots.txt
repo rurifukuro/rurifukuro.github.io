@@ -1,0 +1,7 @@
+# 瑠璃フクロウ ポータル
+# 🔴 このファイルが無い間（〜2026-09-05）、検索エンジンに記事の在り処を伝える経路が
+#    1 本も無かった。Sitemap 行の URL は astro.config.mjs の sitemap() が生成する名前と対。
+User-agent: *
+Allow: /
+
+Sitemap: https://rurifukuro.github.io/sitemap-index.xml

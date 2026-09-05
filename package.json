@@ -10,7 +10,7 @@
     "check:tap-target": "node scripts/check-tap-target.mjs"
   },
   "dependencies": {
-    "astro": "^4.16.0",
-    "@astrojs/sitemap": "^3.2.0"
+    "@astrojs/sitemap": "3.2.1",
+    "astro": "^4.16.0"
   }
 }

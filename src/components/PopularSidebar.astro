@@ -4,15 +4,19 @@ import { getCollection } from 'astro:content';
 const posts = (await getCollection('blog')).filter((p) => !p.data.draft).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
-
-const articleMap = Object.fromEntries(
-  posts.map((p) => [`/blog/${p.slug}/`, p.data.title])
-);
 ---
 
 <div class="sidebar-widget">
-  <h3 class="widget-title">よく読まれている記事</h3>
-  <ol class="popular-list" id="popular-list" data-articles={JSON.stringify(articleMap)}>
+  {/*
+    🔴 見出しは「よく読まれている記事」ではない（2026-09-05 是正）。
+       閲覧数は貯まっているが、その表の SELECT 権限は service_role だけ＝
+       ブラウザ（anon）からは **必ず 403** で、この欄は公開初日から一度も
+       閲覧数順になったことがなかった。res.ok を見て黙って諦める作りだったので、
+       画面には新着順が出たまま、見出しだけが嘘をついていた。
+       閲覧数は開発者ダッシュボード（ポータル記事アクセス）で読む＝訪問者には出さない。
+  */}
+  <h3 class="widget-title">新着記事</h3>
+  <ol class="popular-list">
     {posts.map((post, i) => (
       <li>
         <a href={`/blog/${post.slug}/`}>
@@ -23,38 +27,6 @@ const articleMap = Object.fromEntries(
     ))}
   </ol>
 </div>
-
-<script>
-  (async function () {
-    const list = document.getElementById('popular-list');
-    if (!list) return;
-    const articles = JSON.parse(list.dataset.articles || '{}');
-    const SB_URL = 'https://vuazrgebojcnyjcnhpuq.supabase.co';
-    const SB_KEY = 'sb_publishable_pin4V9zyMx6el2Z_fswzUA_dXlom2jf';
-    try {
-      const res = await fetch(
-        `${SB_URL}/rest/v1/blog_page_views?select=page_path,view_count&order=view_count.desc`,
-        { headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}` } }
-      );
-      if (!res.ok) return;
-      const data = await res.json();
-      if (!Array.isArray(data) || data.length === 0) return;
-
-      const ranked = data.filter((d) => articles[d.page_path]);
-      const remaining = Object.keys(articles).filter(
-        (p) => !ranked.find((r) => r.page_path === p)
-      );
-      remaining.forEach((p) => ranked.push({ page_path: p, view_count: 0 }));
-
-      list.innerHTML = ranked
-        .map(
-          (d, i) => `<li><a href="${d.page_path}"><span class="popular-rank">${i + 1}</span><span class="popular-text">${articles[d.page_path]}</span>${d.view_count > 0 ? `<span class="popular-views">${d.view_count} views</span>` : ''}</a></li>`
-        )
-        .join('');
-    } catch (_) {}
-  })();
-</script>
-
 <style>
   .sidebar-widget {
     background: var(--bg-card);
@@ -124,11 +96,4 @@ const articleMap = Object.fromEntries(
     min-width: 0;
   }
 
-  :global(.popular-views) {
-    font-size: 11px;
-    color: var(--text-dim);
-    width: 100%;
-    padding-left: 32px;
-    margin-top: -2px;
-  }
 </style>
