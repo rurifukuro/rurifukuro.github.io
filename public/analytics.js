@@ -8,6 +8,7 @@
  *   ・public/torehan/join/index.html   … とれはんっ！グループ招待の中継ページ
  *   ・public/torehan/invite/index.html … とれはんっ！友達紹介の中継ページ
  *   ・public/urehan/index.html         … レジさぽっ！LP
+ *   ・public/kyasuho/index.html        … きゃすりん LP（事前登録・事前アンケート）
  *   ・public/kyasuho-support/index.html … きゃすりん サポートページ
  *   ※ プライバシーポリシー（urehan/privacy.html）と配信停止（unsubscribe/）は
  *     事務ページなので**あえて読み込まない**＝LP の数字にノイズを混ぜない。
@@ -33,7 +34,7 @@
   /* 🔴 計測するページは「許すものを並べる」（allowlist）。
    *    「これは数えない」を並べる形にすると、ページを 1 枚足した瞬間に
    *    黙って計測対象へ紛れ込む（＝気づけない）。前方一致で判定する。 */
-  var TRACK_PREFIXES = ['/blog', '/torehan', '/urehan', '/kyasuho-support'];
+  var TRACK_PREFIXES = ['/blog', '/torehan', '/urehan', '/kyasuho', '/kyasuho-support'];
 
   var path = window.location.pathname;
 
