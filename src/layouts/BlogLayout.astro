@@ -369,6 +369,15 @@ const dateStr = date.toLocaleDateString('ja-JP', {
     font-weight: 600;
   }
 
+  /* 表のなかで自社アプリの行を赤字で立てる。#a51b12 は白地で 7.59:1・
+     even 行の敷き色（#fafafa 相当）でも 7.28:1＝DS24 の「本文 7:1 以上」を満たす値。
+     strong より詳細度を上げないと :global(strong) の色に負けるので両方に当てる。 */
+  .article-body :global(.hl-red),
+  .article-body :global(.hl-red strong) {
+    color: #a51b12;
+    font-weight: 700;
+  }
+
   .article-tags {
     display: flex;
     flex-wrap: wrap;

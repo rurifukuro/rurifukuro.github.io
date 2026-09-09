@@ -162,6 +162,16 @@
   .plan ul{list-style:none;display:grid;gap:8px}
   .plan li{font-size:14px;color:#cdd8ef;padding-left:17px;position:relative;line-height:1.65}
   .plan li::before{content:"・";position:absolute;left:0;color:#8fa3c8}
+  /* 料金欄の訴求ブロック。文面はアプリ内の登録上限ポップアップ（CircleLimitModal /
+     i18n list_limit_pitch_*）が正本＝文の順番「手や紙との比較 → 90% → 本1冊分の値段
+     → 当日はお品書きをゆっくり」は向こうで固定されているので、ここでも崩さない。
+     数字を動かすときは向こうと同じ Rev で直すこと。 */
+  .plans-pitch{
+    background:rgba(227,59,51,.10);border:1px solid rgba(227,59,51,.30);
+    border-radius:14px;padding:15px 16px;margin:0 0 12px;
+  }
+  .plans-pitch h3{font-size:15px;font-weight:800;color:#ffd0c4;margin-bottom:7px;line-height:1.6}
+  .plans-pitch p{font-size:13.5px;color:#cdd8ef;line-height:1.8}
   .plan-note{font-size:13px;color:#aebfe0;margin-top:10px;line-height:1.7}
   .plans-foot{font-size:12.5px;color:#8fa3c8;margin-top:14px;line-height:1.8}
 
@@ -284,7 +294,7 @@
 
     <a class="btn btn-store" href="https://play.google.com/store/apps/details?id=com.torehan.app">
       <span class="ic">🤖</span>
-      <span>Google Play で今すぐ入手<small>Android</small></span>
+      <span>Google Play で今すぐ入手<small>Android・基本無料</small></span>
     </a>
 
     <a class="btn btn-x" href="https://x.com/rurifukuro">
@@ -418,6 +428,11 @@
       </ul>
     </div>
 
+    <div class="plans-pitch">
+      <h3>「リスト作成めんどくさ」から解放されませんか？</h3>
+      <p>手や紙でリストをまとめていたときと比べて、準備の時間は90%短くなります。本1冊分の値段で、当日はお品書きをゆっくり探す時間を確保しませんか。</p>
+    </div>
+
     <div class="plan plan-main">
       <div class="plan-head"><span class="plan-name">じゅんびパック</span><span class="plan-price">500円<small>／開催日1日ぶん</small></span></div>
       <ul>
@@ -437,7 +452,8 @@
 
     <p class="plans-foot">
       友達紹介が成立すると、招待した方・された方の双方に「じゅんびパック」（開催日1日ぶん）が無料で付きます。<br>
-      価格は税込の目安です。最新の価格・購入条件はストアの表示をご確認ください。
+      価格は税込の目安です。最新の価格・購入条件はストアの表示をご確認ください。<br>
+      「準備の時間が90%短くなる」は、同じ一覧を手作業で作った場合との開発者による実測値です。
     </p>
   </div>
 
@@ -445,6 +461,11 @@
     <a class="btn btn-store" href="https://apps.apple.com/jp/app/id6776913607" onclick="torehanTrackStoreClick()">
       <span class="ic">📱</span>
       <span>App Store で今すぐ入手<small>iPhone・基本無料</small></span>
+    </a>
+
+    <a class="btn btn-store" href="https://play.google.com/store/apps/details?id=com.torehan.app">
+      <span class="ic">🤖</span>
+      <span>Google Play で今すぐ入手<small>Android・基本無料</small></span>
     </a>
   </div>
 
