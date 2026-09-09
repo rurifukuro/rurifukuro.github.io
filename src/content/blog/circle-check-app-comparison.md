@@ -66,7 +66,7 @@ Webカタログは有料サービスで、公式の記載では **月額660円�
 | Caico | iOS / Android | 無料 |
 | しまっぷ | iOS / Android | 無料 |
 | サクッチェ | iOS | 無料 |
-| **とれはんっ！** | iOS（Android版は準備中） | 無料（じゅんびパック500円〜／開催日ごとの買い切り・サブスクなし） |
+| **とれはんっ！** | iOS / Android | 無料（じゅんびパック500円〜／開催日ごとの買い切り・サブスクなし） |
 
 上3つは「アプリは無料」と表示されますが、**公式カタログの契約が前提**なので、実際の負担は月額660円からのスタートになります。下のグループはカタログ契約なしで完結するかわりに、全サークルのデータは手元に来ません。どちらが得かというより、**何を手に入れたいか**で分かれるところです。
 
@@ -310,7 +310,8 @@ Xで見つけたお品書きの画像を取り込むと、AIがサークル名�
 
 <div class="inline-cta">
   <a class="inline-cta-btn" href="https://apps.apple.com/jp/app/id6776913607">App Store で無料ダウンロード</a>
-  <p class="inline-cta-note">まず無料の5サークルぶんで、お品書きを1枚読み取らせてみてください。Android 版は現在テスト配信の段階です。</p>
+  <a class="inline-cta-btn" href="https://play.google.com/store/apps/details?id=com.torehan.app">Google Play で無料ダウンロード</a>
+  <p class="inline-cta-note">まず無料の5サークルぶんで、お品書きを1枚読み取らせてみてください。</p>
 </div>
 
 

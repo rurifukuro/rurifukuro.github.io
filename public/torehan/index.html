@@ -282,12 +282,10 @@
       <span>App Store で今すぐ入手<small>iPhone・基本無料</small></span>
     </a>
 
-    <!-- ▼ Google Play 公開時はコメントを外して href を貼ってください
-    <a class="btn btn-store" href="GOOGLE_PLAY_URL_HERE">
+    <a class="btn btn-store" href="https://play.google.com/store/apps/details?id=com.torehan.app">
       <span class="ic">🤖</span>
       <span>Google Play で今すぐ入手<small>Android</small></span>
     </a>
-    -->
 
     <a class="btn btn-x" href="https://x.com/rurifukuro">
       <span class="ic">𝕏</span>
@@ -504,6 +502,10 @@
   </div>
   -->
 
+  <!-- 2026-09-09: Google Play で製品版を公開したため、「出たらお知らせします」の事前登録は非表示にした。
+       すでに登録済みの方への一斉送信は android_waitlist 側で行う（この面とは別）。
+       再掲するときは、このコメントの開始と終了を外すだけで戻る
+       （/waitlist.js は読み込んだままだが、フォーム要素が無ければ何もしない実装）。
   <div class="waitlist">
     <h2>📬 Android版が出たらお知らせします</h2>
     <p>
@@ -534,6 +536,7 @@
       いつでも解除していただけます。
     </p>
   </div>
+  -->
 
   <!-- 〔OK-33〕2026-09-01 ユーザー決定（逐語「デザインフェスタとホロクルも追加してOK」）:
        ここは「対応イベントの種別」を件数つきで列挙する面。件数を書くと集合が育つたびに腐るが

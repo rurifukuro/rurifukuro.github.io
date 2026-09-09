@@ -68,7 +68,7 @@ targetApp: "urehan"
 | DoLog | iOS | 無料（Notionのアカウントと対応テンプレートが必要） |
 | Airレジ | iOS / Android | 無料（AirIDの登録が必要） |
 | Square POSレジ | iOS / Android | アプリ無料・決済手数料2.5%〜 |
-| **レジさぽっ！** | iOS（Android版は準備中） | 無料（1開催日500円・10枚100円の買い切り課金・サブスクなし） |
+| **レジさぽっ！** | iOS / Android | 無料（1開催日500円・10枚100円の買い切り課金・サブスクなし） |
 
 レジアプリは「無料で配って、使い込む人だけ追加で払う」という形が定着しています。なので**料金では差がつきにくい**。実際の選び分けは、この後の機能の話になります。
 
@@ -236,9 +236,8 @@ Notion と連携して、同人活動のデータを一元管理するアプリ�
 
 ## 近日公開予定の機能
 
-現在、次の3つを準備しています。
+現在、次の2つを準備しています。
 
-- **Android版** … 現在テスト配信の段階です。公開まで少しお待ちください
 - **サークル情報の一次情報化** … サークル主本人がレジさぽっ！に登録した情報を、買い手側の表記を揃えるための一次情報として使えるようにします
 - **参加者動向レポートの公開** … 買い手向けの とれはんっ！ 側で集めているアンケートの回答や、当日の参加者の動きを集計して、**サークル側の判断材料になるレポート**としてお渡しすることを考えています。どのジャンルがどれくらい見られているか、何時ごろに人が動くか、といった数字です。搬入数や頒布計画を「勘」ではなく数字で決められるようにするのが狙いです。公開するときは、上の**登録者数と同じ500円の中身**として提供する予定です
 
@@ -262,7 +261,8 @@ Notion と連携して、同人活動のデータを一元管理するアプリ�
 
 <div class="inline-cta">
   <a class="inline-cta-btn" href="https://apps.apple.com/app/id6786309116">App Store で無料ダウンロード</a>
-  <p class="inline-cta-note">課金なしで、次のイベント1回ぶんをそのまま通せます。Android 版は現在テスト配信の段階です。</p>
+  <a class="inline-cta-btn" href="https://play.google.com/store/apps/details?id=com.urehan.app">Google Play で無料ダウンロード</a>
+  <p class="inline-cta-note">課金なしで、次のイベント1回ぶんをそのまま通せます。</p>
 </div>
 
 
@@ -313,7 +313,8 @@ Notion と連携して、同人活動のデータを一元管理するアプリ�
 
 <div class="inline-cta">
   <a class="inline-cta-btn" href="https://apps.apple.com/app/id6786309116">App Store で無料ダウンロード</a>
-  <p class="inline-cta-note">Android 版は現在テスト配信の段階です。公開までもう少しお待ちください。</p>
+  <a class="inline-cta-btn" href="https://play.google.com/store/apps/details?id=com.urehan.app">Google Play で無料ダウンロード</a>
+  <p class="inline-cta-note">iPhone でも Android でも、同じ機能をそのまま使えます。</p>
 </div>
 
 
@@ -361,4 +362,4 @@ Notion と連携して、同人活動のデータを一元管理するアプリ�
 
 ### Androidで使えるものはありますか？
 
-記事執筆時点で Android 版があるのは、即売レジ・ぷちレジ・頒布ポケット、それに汎用POS（Airレジ・Square）です。同人向けアプリは iOS のみのものが多いのが実情です。レジさぽっ！の Android 版は現在テスト配信の段階で、公開に向けて準備しています。
+記事執筆時点で Android 版があるのは、即売レジ・ぷちレジ・頒布ポケット、それに汎用POS（Airレジ・Square）です。同人向けアプリは iOS のみのものが多いのが実情です。レジさぽっ！は iOS / Android の両方で公開しています。

@@ -9,6 +9,7 @@ const torehan = {
   name: 'とれはんっ！',
   desc: '同人イベント攻略アプリ。会場マップ・AI読取・予算管理・サークル分担をスマホ1つで。',
   url: 'https://apps.apple.com/jp/app/id6776913607',
+  play: 'https://play.google.com/store/apps/details?id=com.torehan.app',
   page: '/torehan/',
 };
 
@@ -16,6 +17,7 @@ const urehan = {
   name: 'レジさぽっ！',
   desc: '即売会サークルのためのレジ・会計アプリ。秒会計・取り置き予約・売上集計・確定申告サポート。',
   url: 'https://apps.apple.com/app/id6786309116',
+  play: 'https://play.google.com/store/apps/details?id=com.urehan.app',
   page: '/urehan/',
 };
 
@@ -38,6 +40,9 @@ const apps = app === 'both' ? [torehan, urehan] : app === 'torehan' ? [torehan] 
       <p class="cta-desc">{a.desc}</p>
       <a class="cta-btn" href={a.url}>
         App Store で無料ダウンロード
+      </a>
+      <a class="cta-btn" href={a.play}>
+        Google Play で無料ダウンロード
       </a>
     </div>
   ))}
@@ -123,6 +128,10 @@ const apps = app === 'both' ? [torehan, urehan] : app === 'torehan' ? [torehan] 
     color: var(--text-secondary);
     margin-bottom: 20px;
     line-height: 1.7;
+  }
+
+  .cta-btn + .cta-btn {
+    margin-top: 8px;
   }
 
   .cta-btn {

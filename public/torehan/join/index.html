@@ -113,12 +113,10 @@
     <span id="t-store">App Store でダウンロード<small id="t-storesub">iPhone・基本無料</small></span>
   </a>
 
-  <!-- ▼ Google Play 公開時はコメントを外して href を貼る（ポータル本体と同じ扱い）
-  <a class="btn btn-store" href="GOOGLE_PLAY_URL_HERE">
+  <a class="btn btn-store" href="https://play.google.com/store/apps/details?id=com.torehan.app">
     <span>🤖</span>
-    <span>Google Play でダウンロード<small>Android</small></span>
+    <span id="t-play">Google Play でダウンロード<small id="t-playsub">Android・基本無料</small></span>
   </a>
-  -->
 
   <p class="hint" id="t-hint"></p>
 
@@ -137,6 +135,7 @@
       codelabel:"招待コード", copy:"コピー", copied:"コピーしました",
       open:"アプリで開いて参加する", opensub:"アプリがインストール済みの方",
       store:"App Store でダウンロード", storesub:"iPhone・基本無料",
+      play:"Google Play でダウンロード", playsub:"Android・基本無料",
       hint:"アプリが開かないときは、<b>とれはんっ！ → リスト → サークル分担</b> を開いて、上の招待コードを入力してください。",
       nocode:"招待コードが読み取れませんでした。送ってもらったリンクをもう一度タップするか、招待コードを直接教えてもらってください。",
       foot:"とれはんっ！について"
@@ -147,6 +146,7 @@
       codelabel:"Invite code", copy:"Copy", copied:"Copied",
       open:"Open the app and join", opensub:"If you already have the app",
       store:"Download on the App Store", storesub:"iPhone / free to start",
+      play:"Get it on Google Play", playsub:"Android / free to start",
       hint:"If the app doesn't open, go to <b>Torehan! → List → Circle sharing</b> and enter the invite code above.",
       nocode:"The invite code could not be read. Tap the link you were sent again, or ask for the invite code directly.",
       foot:"About Torehan!"
@@ -157,6 +157,7 @@
       codelabel:"邀请码", copy:"复制", copied:"已复制",
       open:"打开应用并加入", opensub:"已安装应用的用户",
       store:"在 App Store 下载", storesub:"iPhone・基本免费",
+      play:"在 Google Play 下载", playsub:"Android・基本免费",
       hint:"如果应用没有打开，请进入 <b>Torehan → 清单 → 社团分担</b> 并输入上方的邀请码。",
       nocode:"无法读取邀请码。请重新点击收到的链接，或直接向对方索取邀请码。",
       foot:"关于 Torehan"
@@ -167,6 +168,7 @@
       codelabel:"邀請碼", copy:"複製", copied:"已複製",
       open:"開啟應用並加入", opensub:"已安裝應用的使用者",
       store:"在 App Store 下載", storesub:"iPhone・基本免費",
+      play:"在 Google Play 下載", playsub:"Android・基本免費",
       hint:"如果應用沒有開啟，請進入 <b>Torehan → 清單 → 社團分擔</b> 並輸入上方的邀請碼。",
       nocode:"無法讀取邀請碼。請重新點選收到的連結，或直接向對方索取邀請碼。",
       foot:"關於 Torehan"
@@ -177,6 +179,7 @@
       codelabel:"초대 코드", copy:"복사", copied:"복사했습니다",
       open:"앱으로 열어 참가하기", opensub:"앱이 설치된 분",
       store:"App Store에서 다운로드", storesub:"iPhone・기본 무료",
+      play:"Google Play에서 다운로드", playsub:"Android・기본 무료",
       hint:"앱이 열리지 않으면 <b>토레한! → 리스트 → 서클 분담</b>에서 위의 초대 코드를 입력해 주세요.",
       nocode:"초대 코드를 읽을 수 없습니다. 받은 링크를 다시 탭하거나 초대 코드를 직접 물어봐 주세요.",
       foot:"토레한!에 대하여"
@@ -187,6 +190,7 @@
       codelabel:"Code d'invitation", copy:"Copier", copied:"Copié",
       open:"Ouvrir l'application et rejoindre", opensub:"Si vous avez déjà l'application",
       store:"Télécharger sur l'App Store", storesub:"iPhone / gratuit",
+      play:"Disponible sur Google Play", playsub:"Android / gratuit",
       hint:"Si l'application ne s'ouvre pas, allez dans <b>Torehan! → Liste → Répartition des cercles</b> et saisissez le code ci-dessus.",
       nocode:"Le code d'invitation n'a pas pu être lu. Touchez à nouveau le lien reçu, ou demandez directement le code.",
       foot:"À propos de Torehan!"
@@ -232,6 +236,7 @@
   setText("t-foot", d.foot);
   setBtnLabel("t-open", d.open, d.opensub);
   setBtnLabel("t-store", d.store, d.storesub);
+  setBtnLabel("t-play", d.play, d.playsub);
 
   /* ---- 招待コードの取り出し ----
      サーバー（migration 0035 group_create）は
