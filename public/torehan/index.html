@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>とれはんっ！｜同人イベント攻略アプリ ダウンロード</title>
-<meta name="description" content="コミケ・コミティアなど同人イベントの会場攻略アプリ「とれはんっ！」。サークル管理・お品書きAI読み取り・ホール別会場マップ・軍資金/おつり計算・サークル分担・サーバー共有・戦利品チェック。6言語対応・基本無料・広告なし。">
+<meta name="description" content="コミケ・学園スターフェスなど同人イベントの会場攻略アプリ「とれはんっ！」。サークル管理・お品書きAI読み取り・ホール別会場マップ・軍資金/おつり計算・サークル分担・サーバー共有・戦利品チェック。6言語対応・基本無料・広告なし。">
 <link rel="canonical" href="https://rurifukuro.github.io/torehan/">
 
 <!-- ========================================================= -->
@@ -284,7 +284,7 @@
   <div class="catch">
     もう1冊も、<span class="o">逃さない。</span>
   </div>
-  <p class="catch-sub">AI読取・会場マップ・軍資金管理・仲間分担——<br>コミケも、コミティアも、スマホ1つで完全攻略。</p>
+  <p class="catch-sub">AI読取・会場マップ・軍資金管理・仲間分担——<br>コミケも、学園スターフェスも、スマホ1つで完全攻略。</p>
 
   <div class="dl">
     <a class="btn btn-store" href="https://apps.apple.com/jp/app/id6776913607" onclick="torehanTrackStoreClick()">
@@ -563,11 +563,18 @@
        ここは「対応イベントの種別」を件数つきで列挙する面。件数を書くと集合が育つたびに腐るが
        （CANON-COUNT）、列挙する形をユーザーが選んだので残している。
        🔴 とれはんっ！の src/types/index.ts の EVENTS を増減させたら、この行も必ず数え直すこと。
-       数え方＝hidden: true でない EVENTS を種別（EventType）に畳んだ数。
+       🔴🔴 2026-09-16（Rev660）に数え方が変わった＝ユーザー決定の逐語
+       「地図が実装されているもののみアプリでドロップダウンで選択できるようにして、
+         ただしその他だけは例外でOK／またLPやStoreページなどに公開するイベントも同様にして」。
+       数え方＝**専用の会場マップが実装済み かつ 掲載許可のある** EVENTS を種別に畳んだ数
+       （旧: hidden: true でない EVENTS を畳んだ数＝6種）。
+       ＝コミティア・デザインフェスタは**許可はあるが専用マップが未実装**なので落ちて 4 種。
+       🔴 実装したらここも増える＝数えるのは人手でなく `npm run check:event-faces`（とれはんっ！側）。
+          この面も検査対象に入っているので、食い違えばビルド前に赤で止まる。
        🔴 赤ブー系（COMIC CITY / SUPER COMIC CITY / TOKYO FES / COMIC CITY VEGA）は
        2026-09-01 に掲載許可が得られず対応イベントから除外済み＝ここに書かない（〔OK-29〕〔OK-31〕）。 -->
   <div class="events">
-    対応イベント 6種＋拡大中：<b>コミケ / コミティア / デザインフェスタ / 学園スターフェス / アイドルスターフェス / ホロクル</b>
+    対応イベント 4種＋拡大中：<b>コミケ / 学園スターフェス / アイドルスターフェス / ホロクル</b>
   </div>
 
   <footer>
