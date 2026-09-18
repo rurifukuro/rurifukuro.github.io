@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>きゃすりん｜コンカフェ専用の予約・店舗管理システム【LP案 v3・非公開】</title>
+<meta name="description" content="コンカフェ専用の予約・店舗管理システム「きゃすりん」。予約台帳・レジ・シフト表・給与・勤怠・経費を、必要な機能だけ選んで月¥12,800から。全機能30日間無料・無料期間後の自動課金なし。">
+<!--
+  LP案 v3（2026-09-19・きゃすりん Rev545）＝v2（Rev535）に SPEC §75 の決定10件と 6_最新版_20260919 の撮り直し画面を反映
+  土台＝kyasuho/docs/lp_draft.html（08-17版）。画面は 4_デモデータ充実版_20260918 の実スクショ（IG12＝AIに描かせない）。
+  監査（販促ルール CP/LP/DS 照合）の是正を反映済み。公開前に必ず:
+    grep -cE '<(span|p) class="todo"' index.html  → 0 であること（F16・宿題⑧。v3 でコメント内の語を拾わない形に変更）
+  ✅ SPEC §75 で決着済み（再質問しない）: 申込先＝ポータル /kyasuho/ ／特商法＝ポータル /kyasuho/tokushoho/ ／
+     PP＝kyasurin-app.github.io/legal/privacy ／計測＝ポータル共通 analytics.js ／募集数＝書かない ／対応OS＝下記文言。
+  🔴 公開（ポータルへの push）は WEB9＝許可制。iOS・Android の両方を公開してから LP を公開する（§75-4）。
+-->
+<style>
+  :root{
+    /* DS24: 白背景で 本文7:1以上・補助4.5:1以上 を計算で満たす値 */
+    --accent:#c2185b;      /* 白地で 5.9:1（白文字を載せても 5.9:1） */
+    --accent-soft:#fde7ef; /* 装飾のみ（文字色には使わない） */
+    --navy:#2b2350;        /* 白地で 14:1 */
+    --gray:#4e4864;        /* 白地で 8.6:1・#ffe3ec 上でも 7.2:1 */
+    --cream:#fff7f9; --card:#ffffff; --line:#f0d3de;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",sans-serif;color:var(--navy);background:var(--cream);line-height:1.8;font-size:16px;padding-bottom:72px;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px;}
+  .narrow{max-width:760px;margin:0 auto;}
+  section{padding:64px 0;}
+  h2{font-size:1.55rem;margin-bottom:24px;text-align:center;line-height:1.5;}
+  h2 .en{display:block;font-size:.8rem;color:var(--accent);letter-spacing:.2em;margin-bottom:6px;}
+  .draft-banner{position:sticky;top:0;z-index:99;background:var(--navy);color:#fff;text-align:center;font-size:.8rem;padding:6px;}
+  .todo{background:#fff3cd;color:#5c4300;border:1px dashed #b38600;border-radius:6px;padding:0 6px;font-size:.85rem;}
+  .demo-note{font-size:.8rem;color:var(--gray);text-align:center;margin-top:10px;}
+
+  /* CTA（DS28: 主CTAは1種類だけ・同じ見た目は同じ意味） */
+  .cta{display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:1.05rem;padding:16px 40px;border-radius:999px;text-decoration:none;box-shadow:0 6px 18px rgba(194,24,91,.3);}
+  .cta:hover{background:#a3144c;}
+  .cta-note{display:block;font-size:.85rem;color:var(--gray);margin-top:10px;}
+  .sublink{color:var(--navy);font-size:.95rem;text-decoration:underline;}
+
+  /* S1 FV */
+  .fv{background:linear-gradient(160deg,#ffe3ec 0%,#fff7f9 55%,#f3e8ff 100%);padding:64px 0 48px;}
+  .fv-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:36px;align-items:center;}
+  .fv .origin{font-size:1.15rem;font-weight:800;margin-bottom:14px;}
+  .fv .origin em{font-style:normal;color:var(--accent);}
+  .fv .badge{display:inline-block;background:var(--navy);color:#fff;font-size:.85rem;padding:4px 14px;border-radius:999px;margin-bottom:16px;}
+  .fv h1{font-size:1.8rem;line-height:1.55;margin-bottom:16px;}
+  .fv h1 em{font-style:normal;background:linear-gradient(transparent 62%, #ffc9dc 62%);}
+  .fv .sub{color:var(--gray);margin-bottom:26px;}
+  .fv-visual{position:relative;padding-bottom:40px;}
+  .fv-visual .pc{border-radius:10px;box-shadow:0 12px 32px rgba(43,35,80,.18);border:1px solid var(--line);}
+  .fv-visual .sp{position:absolute;right:-8px;bottom:0;width:30%;border-radius:18px;border:5px solid #2b2350;box-shadow:0 12px 28px rgba(43,35,80,.3);background:#fff;}
+
+  /* S2 課題 */
+  .pain .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-bottom:14px;}
+  .pain .card b{color:var(--accent);}
+  .pain .closing{text-align:center;margin-top:26px;font-weight:700;}
+
+  /* S3 差別化 */
+  .diff{background:#fff;}
+  .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:26px 0;}
+  .tile{background:var(--cream);border:1.5px solid var(--line);border-radius:12px;padding:14px 6px;text-align:center;font-size:.95rem;}
+  .tile .p{display:block;font-size:.8rem;color:var(--gray);}
+  .diff .note{text-align:center;color:var(--gray);}
+
+  /* S5 機能（画面つき） */
+  .feat{background:#fff;}
+  .fblock{display:grid;grid-template-columns:1fr 1.25fr;gap:32px;align-items:center;padding:40px 0;border-bottom:1px solid var(--line);}
+  .fblock:nth-of-type(even) .txt{order:2;}
+  .fblock h3{font-size:1.25rem;margin-bottom:10px;line-height:1.5;}
+  .fblock h3 .mod{display:inline-block;background:var(--navy);color:#fff;font-size:.75rem;padding:2px 8px;border-radius:6px;margin-right:8px;vertical-align:3px;}
+  .fblock p{color:var(--gray);}
+  .fblock ul{margin-top:12px;list-style:none;}
+  .fblock li{color:var(--gray);padding-left:1.4em;position:relative;margin-bottom:6px;line-height:1.65;}
+  .fblock li::before{content:"✓";color:var(--accent);position:absolute;left:0;font-weight:700;}
+  .fblock li b{color:var(--navy);}
+  .shots{display:flex;flex-direction:column;gap:12px;}
+  .shots.pair{flex-direction:row;align-items:flex-start;}
+  .shots.pair figure{flex:1;}
+  .shots.pair figure.phone{flex:0 0 34%;}
+  figure a{display:block;}
+  figure img{border-radius:8px;border:1px solid var(--line);box-shadow:0 6px 18px rgba(43,35,80,.1);background:#fff;}
+  figure.phone img{border-radius:14px;border:4px solid var(--navy);max-height:560px;width:100%;object-fit:cover;object-position:top;}
+  figcaption{font-size:.85rem;color:var(--gray);margin-top:6px;text-align:center;}
+  figcaption b{color:var(--accent);}
+
+  /* 多言語 */
+  .i18n{background:var(--cream);}
+  .i18n-grid{display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:20px;align-items:center;}
+  .langs{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+  .langs span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:.9rem;}
+
+  /* S3.5 競合比較 */
+  .cmp{background:var(--cream);}
+  .cmp-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .cmp table{min-width:680px;font-size:.9rem;}
+  .cmp th,.cmp td{text-align:center;padding:9px 6px;}
+  .cmp th:first-child,.cmp td:first-child{text-align:left;min-width:160px;}
+  .cmp thead th{background:#ffeef4;}
+  .cmp thead th.me{background:var(--accent);color:#fff;}
+  .cmp td.me{background:#fff4f8;font-weight:700;}
+  .cmp .y{color:var(--accent);font-weight:700;}
+  .cmp .t,.cmp .n{color:var(--gray);}
+  .cmp-note{font-size:.85rem;color:var(--gray);margin-top:12px;line-height:1.7;}
+
+  /* S4 料金 */
+  table{width:100%;border-collapse:collapse;background:#fff;}
+  th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;}
+  th{background:#ffeef4;}
+  td.price{text-align:right;white-space:nowrap;font-weight:700;}
+  .ladder{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:22px 0;}
+  .step{background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:8px 12px;font-size:.9rem;text-align:center;}
+  .step b{color:var(--accent);display:block;font-size:1rem;}
+  .packs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px;}
+  .pack{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:22px 12px 16px;text-align:center;position:relative;}
+  .pack.best{border-color:var(--accent);box-shadow:0 4px 16px rgba(194,24,91,.15);}
+  .pack .reco{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;font-size:.8rem;padding:2px 12px;border-radius:999px;white-space:nowrap;}
+  .pack .mods{display:block;font-size:.85rem;color:var(--gray);}
+  .pack .yen{font-size:1.4rem;font-weight:800;color:var(--accent);}
+  .pack .yen small{font-size:.8rem;color:var(--gray);font-weight:400;}
+  .pack .off{display:block;font-size:.85rem;color:var(--navy);margin-top:4px;}
+  .pack .off s{color:var(--gray);}
+  .breakdown{background:#fff4f8;border-radius:12px;padding:16px 20px;margin-top:24px;text-align:center;}
+  .taxnote{font-size:.85rem;color:var(--gray);text-align:center;margin-top:12px;}
+
+  /* S6 不安 */
+  .risk .worry{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:12px;}
+  .risk .worry .q{color:var(--gray);margin-bottom:8px;}
+  .risk .worry .q::before{content:"💭 ";}
+  .honest{background:#f3f0ff;border-radius:12px;padding:18px 22px;margin-top:18px;color:var(--navy);}
+  .honest ul{margin:8px 0 0 1.2em;color:var(--gray);}
+
+  /* S6.5 流れ */
+  .flow{background:#fff;}
+  .flow-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;}
+  .flow ol{list-style:none;counter-reset:st;}
+  .flow li{counter-increment:st;background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:16px 18px 16px 60px;margin-bottom:12px;position:relative;}
+  .flow li::before{content:counter(st);position:absolute;left:16px;top:22px;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;text-align:center;line-height:30px;}
+  .flow li b{display:block;}
+  .flow li span{font-size:.95rem;color:var(--gray);}
+
+  /* S7 先行導入 */
+  .early{background:linear-gradient(160deg,#fff0f5,#f3e8ff);text-align:center;}
+
+  /* S8 FAQ */
+  details{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:10px;}
+  summary{cursor:pointer;font-weight:700;}
+  details p{margin-top:8px;color:var(--gray);}
+
+  /* S9 */
+  .close{background:var(--navy);color:#fff;text-align:center;}
+  .close h2{color:#fff;}
+  .nolose{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:18px 0 4px;}
+  .nolose .chip{background:rgba(255,255,255,.12);border:1px solid rgba(255,201,220,.6);color:#fff;font-size:.9rem;padding:6px 14px;border-radius:999px;}
+  .close .cta{background:#fff;color:var(--accent);box-shadow:none;}
+  .close .cta-note{color:#e6e1f5;}
+  .ps{background:#fff;}
+  .ps .letter{background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:26px 24px;}
+  .ps .letter p{margin-bottom:14px;}
+  .ps .sign{text-align:right;font-size:.95rem;color:var(--gray);margin-bottom:0;}
+  footer{background:#1e1840;color:#d9d3ee;font-size:.85rem;text-align:center;padding:26px 16px;}
+  footer a{color:#ffc9dc;}
+  .fixedbar{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.97);border-top:1px solid var(--line);padding:10px;text-align:center;z-index:98;box-shadow:0 -4px 14px rgba(43,35,80,.08);}
+  .fixedbar .cta{padding:11px 34px;font-size:1rem;}
+
+  @media(max-width:820px){
+    .fv-grid,.fblock,.flow-grid,.i18n-grid{grid-template-columns:1fr;}
+    .fblock:nth-of-type(even) .txt{order:0;}
+    .packs{grid-template-columns:repeat(2,1fr);}
+    .fv h1{font-size:1.45rem;}
+  }
+  @media(max-width:560px){
+    .tiles{grid-template-columns:repeat(2,1fr);}
+    .packs{grid-template-columns:1fr;}
+    .shots.pair{flex-direction:column;}
+    .shots.pair figure.phone{width:60%;margin:0 auto;}
+  }
+</style>
+<script defer src="/analytics.js"></script>
+<!-- 🔴 きゃすりんの公開前ページは「リンクを知っている人だけ」に見せる（2026-08-30 ユーザー指示・/kyasuho/ と同じ扱い）。
+     正式公開のときに外すかをユーザーに確認すること。 -->
+<meta name="robots" content="noindex,nofollow">
+</head>
+<body>
+
+
+<!-- S1 FV -->
+<section class="fv">
+  <div class="wrap fv-grid">
+    <div>
+      <p class="origin">キャストと、お店と、お客様を<em>リンク</em>する。</p>
+      <span class="badge">コンカフェ専用の予約・店舗管理システム</span>
+      <h1>キャバクラ用のシステムを、<br><em>コンカフェに合わせて我慢</em>していませんか？</h1>
+      <p class="sub"><b>予約台帳・レジ・シフト表・給与・勤怠・経費を、ひとつに。</b><br>必要な機能だけ選んで月¥12,800から。全機能30日間無料・無料期間が終わっても自動で課金されません。</p>
+      <a class="cta" href="#cta">30日間無料ではじめる</a>
+      <span class="cta-note">クレジットカードの登録は不要です</span>
+    </div>
+    <div class="fv-visual">
+      <img class="pc" src="img/casts.jpg" alt="管理Webのキャスト管理画面。キャストの写真と紹介文が並んでいる">
+      <img class="sp" src="img/cust_top.jpg" alt="お客様がスマホで見る予約ページ。カレンダーに空き状況が表示されている">
+    </div>
+  </div>
+</section>
+
+<!-- S2 課題共感 -->
+<section class="pain">
+  <div class="wrap narrow">
+    <h2><span class="en">PROBLEM</span>こんな運用、していませんか？</h2>
+    <div class="card">🗒 予約は<b>DMと紙台帳</b>。当日になって「誰の推し来店か」がスタッフ全員に伝わっていない。</div>
+    <div class="card">📅 シフト表は<b>Excelで手作業</b>。SNSの出勤告知画像は、毎日別のアプリで手作り。</div>
+    <div class="card">🧮 時給もバックも<b>閉店後に電卓</b>。締め日が近づくたびに憂鬱になる。</div>
+    <p class="closing">キャバクラ向けのPOSでは、この悩みは解けませんでした。<br>コンカフェの営業は、キャバクラとは違うから。</p>
+  </div>
+</section>
+
+<!-- S3 差別化宣言 -->
+<section class="diff">
+  <div class="wrap narrow">
+    <h2><span class="en">CONCEPT</span>使わない機能に、お金を払うのはもう終わり。</h2>
+    <p style="text-align:center;">きゃすりんは8つの機能モジュールから、<b>必要なものだけ</b>選べます。</p>
+    <div class="tiles">
+      <div class="tile">📖 予約・受付<span class="p">base</span></div>
+      <div class="tile">💴 レジ・会計<span class="p">register</span></div>
+      <div class="tile">📅 シフト<span class="p">shift</span></div>
+      <div class="tile">💰 売上・給与<span class="p">sales</span></div>
+      <div class="tile">📊 分析<span class="p">analytics</span></div>
+      <div class="tile">🎀 お客様<span class="p">customer</span></div>
+      <div class="tile">⏰ 勤怠<span class="p">attendance</span></div>
+      <div class="tile">🧾 経費<span class="p">expense</span></div>
+    </div>
+    <p class="note">組み合わせるほど割引、パックならさらにお得。8つ全部でも月¥39,800。<br>
+    料金は下の価格表がすべてです。<b>「問い合わせないと料金が分からない」はやめました。</b></p>
+  </div>
+</section>
+
+<!-- S5 機能紹介（実画面つき） -->
+<section class="feat" id="features">
+  <div class="wrap">
+    <h2><span class="en">FEATURES</span>実際の画面で見る、8つのモジュール</h2>
+    <p class="demo-note">※画面はすべて開発中の実際の画面です。店舗名・お客様名・キャスト・金額はデモ用の架空データです。画像を押すと拡大します。</p>
+
+    <div class="fblock">
+      <div class="txt">
+        <h3><span class="mod">base</span>予約も推し来店も、ぜんぶ一画面に。</h3>
+        <p>お店専用の予約ページを発行できるので、営業中も閉店後も、お客様がスマホから自分で予約できます。入った予約はそのまま台帳へ。</p>
+        <ul>
+          <li><b>お店専用の予約ページ</b>＝お客様はアプリ不要、24時間いつでも予約</li>
+          <li>席は空き状況から<b>自動で割り当て</b>＝ダブルブッキングを防止</li>
+          <li>お客様は<b>席種（カウンター・テーブルなど）で空きを絞り込んで</b>予約できる</li>
+          <li>予約台帳には<b>指名キャスト・人数・メモ</b>まで並ぶ。来店・キャンセル・無断もワンタップで記録</li>
+        </ul>
+      </div>
+      <div class="shots pair">
+        <figure class="phone"><a href="img/cust_filter.jpg" target="_blank"><img src="img/cust_filter.jpg" alt="お客様側の予約ページ。席種を選んで空き状況を絞り込んでいる" loading="lazy"></a><figcaption><b>お客様</b>：席種で絞ってスマホで予約</figcaption></figure>
+        <figure><a href="img/reservations.jpg" target="_blank"><img src="img/reservations.jpg" alt="管理Webの予約台帳" loading="lazy"></a><figcaption><b>お店</b>：予約台帳に自動で並ぶ</figcaption></figure>
+      </div>
+    </div>
+
+    <div class="fblock">
+      <div class="txt">
+        <h3><span class="mod">register</span>伝票から日報まで、1本の流れに。</h3>
+        <p>席料・セット・キャストドリンクをタップで伝票へ。会計した内容は日報に自動で集計されるので、閉店後に電卓で売上を足し直す必要がありません。</p>
+        <ul>
+          <li>注文はタップで伝票へ。<b>席料・延長・指名料</b>もその場で</li>
+          <li>会計の内容から<b>日報を自動作成</b>。現金の過不足もメモできる</li>
+          <li><b>メニュー別ランキング</b>＝月ごとの売れ筋を注文数・売上で確認</li>
+          <li><b>ボトルキープ・在庫</b>もこのモジュールで管理</li>
+        </ul>
+      </div>
+      <div class="shots">
+        <div class="shots pair">
+          <figure class="phone"><a href="img/app_order.jpg" target="_blank"><img src="img/app_order.jpg" alt="スマホアプリの伝票入力画面" loading="lazy"></a><figcaption><b>入口</b>：スマホで伝票入力</figcaption></figure>
+          <figure><a href="img/daily.jpg" target="_blank"><img src="img/daily.jpg" alt="管理Webの日報一覧" loading="lazy"></a><figcaption><b>結果</b>：日報が自動で並ぶ</figcaption></figure>
+        </div>
+        <figure><a href="img/menu_ranking.jpg" target="_blank"><img src="img/menu_ranking.jpg" alt="管理Webのメニュー別ランキング。メニューごとの注文数と売上が並んでいる" loading="lazy"></a><figcaption>メニュー別ランキング：会計済みの伝票から自動で集計</figcaption></figure>
+      </div>
+    </div>
+
+    <div class="fblock">
+      <div class="txt">
+        <h3><span class="mod">shift</span>シフト表が、そのまま告知画像に。</h3>
+        <p>キャストが自分のアプリからシフト希望を提出し、オーナーは承認するだけ。確定したシフトは、テンプレートを選ぶだけでSNS用の画像になります。</p>
+        <ul>
+          <li>キャストが<b>アプリからシフト希望を提出</b>→承認で確定</li>
+          <li><b>テンプレート40種</b>から選んで、月間シフト表・本日の出勤表を画像に</li>
+          <li>雰囲気を文章で伝えると<b>AIが配色を提案</b>（月100回まで）</li>
+        </ul>
+      </div>
+      <div class="shots">
+        <figure><a href="img/shift.jpg" target="_blank"><img src="img/shift.jpg" alt="シフト表作成画面。左に完成したシフト表画像、右にAIデザインとテンプレート一覧" loading="lazy"></a><figcaption>左が完成画像・右がテンプレート40種とAIデザイン</figcaption></figure>
+      </div>
+    </div>
+
+    <div class="fblock">
+      <div class="txt">
+        <h3><span class="mod">sales</span>バック計算を、締め日の電卓から解放。</h3>
+        <p>時給・指名バック・ドリンクバック・指名数ボーナス。営業の記録から自動で積み上がるので、締め日にまとめて計算し直す必要がありません。</p>
+        <ul>
+          <li>スライド時給・各種バック・<b>指名数ボーナスの段階</b>を設定</li>
+          <li><b>計算の内訳がすべて画面に出る</b>＝キャストへの説明もしやすい</li>
+          <li>キャスト別の成績（指名・ドリンク・売上貢献）も一覧に。<b>給与・成績はCSVで出力</b>できます</li>
+        </ul>
+      </div>
+      <div class="shots">
+        <figure><a href="img/payroll.jpg" target="_blank"><img src="img/payroll.jpg" alt="給与計算画面" loading="lazy"></a><figcaption><b>入口</b>：お店の給与ルールを設定</figcaption></figure>
+        <figure><a href="img/castperf.jpg" target="_blank"><img src="img/castperf.jpg" alt="キャスト成績画面" loading="lazy"></a><figcaption><b>結果</b>：キャストごとの成績と支給額</figcaption></figure>
+      </div>
+    </div>
+
+    <div class="fblock">
+      <div class="txt">
+        <h3><span class="mod">analytics</span>強い曜日も、指名ランキングも、数字で。</h3>
+        <p>期間の売上・営業日数・日別平均を自動で集計。月ごとの推移や曜日ごとの傾向、キャスト別の指名ランキングで、お店の判断を数字でできるようになります。</p>
+        <ul>
+          <li>期間集計と<b>前月比・前年同月比のグラフ</b></li>
+          <li><b>曜日別の平均売上</b>と、フリーのお客様の来店時間帯</li>
+          <li><b>キャスト別の指名ランキング</b>と売上貢献</li>
+        </ul>
+      </div>
+      <div class="shots pair">
+        <figure class="phone"><a href="img/app_dashboard.jpg" target="_blank"><img src="img/app_dashboard.jpg" alt="スマホアプリのダッシュボード。キャスト別ランキング" loading="lazy"></a><figcaption>スマホでもランキングを確認</figcaption></figure>
+        <figure><a href="img/sales.jpg" target="_blank"><img src="img/sales.jpg" alt="管理Webの売上管理" loading="lazy"></a><figcaption>日別の売上・セット・ドリンク・指名</figcaption></figure>
+      </div>
+    </div>
+
+    <div class="fblock">
+      <div class="txt">
+        <h3><span class="mod">customer</span>常連さんを、ポイントと回数券で応援。</h3>
+        <p>来店回数・ポイント・スタンプをお客様ごとに記録。回数券やクーポン券の発行・使用も管理できるので、「また来る理由」を作れます。</p>
+        <ul>
+          <li>お客様ごとに<b>来店回数・最終来店日・ポイント・スタンプ</b></li>
+          <li><b>回数券・クーポン券</b>を発行して、使うたびに残数を管理</li>
+          <li>ポイントは<b>景品と交換</b>できる</li>
+        </ul>
+      </div>
+      <div class="shots">
+        <figure><a href="img/customers.jpg" target="_blank"><img src="img/customers.jpg" alt="顧客管理画面" loading="lazy"></a><figcaption>顧客管理：来店回数・ポイント・スタンプ</figcaption></figure>
+        <figure><a href="img/vouchers.jpg" target="_blank"><img src="img/vouchers.jpg" alt="回数券・クーポン券管理画面" loading="lazy"></a><figcaption>回数券・クーポン券の残数管理</figcaption></figure>
+      </div>
+    </div>
+
+    <div class="fblock">
+      <div class="txt">
+        <h3><span class="mod">attendance</span>キャストのスマホが、タイムカードに。</h3>
+        <p>出退勤はキャスト本人がスマホで打刻。遅刻・欠勤・早退も記録され、月ごとに集計されます。</p>
+        <ul>
+          <li>打刻は<b>キャスト本人のスマホ</b>から</li>
+          <li>遅刻・欠勤・早退・代打を記録して<b>月次で集計</b></li>
+          <li>売上・給与モジュールと連動し、<b>勤怠から給与を自動で作成</b>。勤怠もCSVで出力できます</li>
+        </ul>
+      </div>
+      <div class="shots">
+        <figure><a href="img/attendance.jpg" target="_blank"><img src="img/attendance.jpg" alt="勤怠管理画面" loading="lazy"></a><figcaption>「本人打刻」の記録が並ぶ勤怠管理</figcaption></figure>
+      </div>
+    </div>
+
+    <div class="fblock" style="border-bottom:none;">
+      <div class="txt">
+        <h3><span class="mod">expense</span>レシートは撮るだけ。経費の記帳まで。</h3>
+        <p>撮影したレシートをAI-OCRが読み取り、経費として記帳します。家賃などの固定経費は毎月自動で計上。</p>
+        <ul>
+          <li>レシートを撮ると<b>AI-OCRが金額・日付を読み取る</b>（月100枚まで）</li>
+          <li>家賃などの<b>固定経費は毎月自動で計上</b></li>
+          <li>カテゴリ別集計・月次収支・<b>年次サマリとCSV出力</b></li>
+        </ul>
+      </div>
+      <div class="shots">
+        <figure><a href="img/expenses.jpg" target="_blank"><img src="img/expenses.jpg" alt="管理Webの経費・収支画面。月の売上・経費・収支とカテゴリ別の内訳" loading="lazy"></a><figcaption>経費・収支：カテゴリ別の内訳と月次の収支</figcaption></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 多言語 -->
+<section class="i18n">
+  <div class="wrap i18n-grid">
+    <div>
+      <h2 style="text-align:left;"><span class="en">MULTILINGUAL</span>海外のお客様も、<br>そのまま予約できます。</h2>
+      <p>お客様用の予約ページは5言語に対応。言語を切り替えると、カレンダーやボタンの表示が切り替わります。</p>
+      <div class="langs"><span>日本語</span><span>English</span><span>中文</span><span>한국어</span><span>Français</span></div>
+      <p style="font-size:.9rem;color:var(--gray);margin-top:10px;">※お店が入力したイベント名・紹介文などは、入力した言語のまま表示されます。</p>
+    </div>
+    <figure class="phone"><img src="img/cust_top.jpg" alt="予約ページ（日本語）" loading="lazy"><figcaption>日本語</figcaption></figure>
+    <figure class="phone" style="max-width:260px;"><img src="img/cust_en.jpg" alt="予約ページ（英語）" loading="lazy"><figcaption>English</figcaption></figure>
+  </div>
+</section>
+
+<!-- S3.5 競合比較（名前ぼかし） -->
+<section class="cmp">
+  <div class="wrap narrow">
+    <h2><span class="en">COMPARISON</span>よくある店舗システムと、どう違う？</h2>
+    <p style="text-align:center;margin-bottom:20px;">予約・レジ・給与・集客——どれか1つに強いサービスはあります。<br>
+    ただ、コンカフェ向けに<b>予約から会計・給与・分析までを1つで扱うもの</b>は、当社が調べた範囲では見当たりませんでした<span style="font-size:.85rem;color:var(--gray);">（2026年7月 当社調べ）</span>。</p>
+    <div class="cmp-scroll">
+    <table>
+      <thead>
+        <tr><th></th><th class="me">きゃすりん</th><th>A社<br><span style="font-weight:400;">大手POS</span></th><th>B社<br><span style="font-weight:400;">水商売POS</span></th><th>C社<br><span style="font-weight:400;">格安POS</span></th><th>D社<br><span style="font-weight:400;">集客アプリ</span></th></tr>
+      </thead>
+      <tbody>
+        <tr><td>主な対象</td><td class="me">コンカフェ専用</td><td>ナイトワーク全般</td><td>水商売全般</td><td>水商売全般</td><td>コンカフェ<br>（集客のみ）</td></tr>
+        <tr><td>お客様のWeb予約・予約台帳</td><td class="me"><span class="y">●</span></td><td class="n">−</td><td class="n">−</td><td class="n">−</td><td class="n">−</td></tr>
+        <tr><td>レジ・会計（POS）</td><td class="me"><span class="y">●</span></td><td>●</td><td>●</td><td>●</td><td class="n">−</td></tr>
+        <tr><td>シフト表→SNS告知画像</td><td class="me"><span class="y">●</span></td><td class="n">−</td><td class="n">−</td><td class="n">−</td><td class="t">▲出勤表のみ</td></tr>
+        <tr><td>給与・バック計算</td><td class="me"><span class="y">●</span></td><td>●</td><td>●</td><td>●</td><td class="n">−</td></tr>
+        <tr><td>お客様ポイント・スタンプ</td><td class="me"><span class="y">●</span></td><td class="t">▲顧客管理</td><td class="t">▲顧客管理</td><td class="t">▲顧客管理</td><td>●</td></tr>
+        <tr><td>経費・レシートOCR</td><td class="me"><span class="y">●</span></td><td class="n">−</td><td class="n">−</td><td class="n">−</td><td class="n">−</td></tr>
+        <tr><td>必要な機能だけ選んで支払う</td><td class="me"><span class="y">●</span> 8モジュール</td><td class="n">−</td><td class="n">−</td><td class="t">▲3プラン</td><td class="t">▲2プラン</td></tr>
+        <tr><td>料金をWebで全公開</td><td class="me"><span class="y">●</span></td><td class="n">要問い合わせ</td><td>●</td><td>●</td><td>●</td></tr>
+        <tr><td>月額の目安（税別）</td><td class="me">¥12,800〜<br>¥39,800</td><td>非公開</td><td>約¥30,000<br><span style="font-size:.8rem;">（税込表示）</span></td><td>¥9,800〜<br>¥29,800</td><td>¥0〜<br>¥4,800</td></tr>
+        <tr><td>初期費用</td><td class="me">¥0</td><td class="n">公表なし</td><td>¥0</td><td class="n">公表なし</td><td>¥0</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="cmp-note">※2026年7月時点の各社公開情報をもとにした当社調べです。特定を避けるため他社名は伏せています。▲＝近い機能あり／−＝公開情報では確認できず。料金・機能の最新かつ正確な内容は、各サービスに直接ご確認ください。</p>
+    <p style="text-align:center;font-weight:700;margin-top:18px;">安さで選ぶならC社、集客だけならD社もいい選択です。<br>
+    <span style="color:var(--accent);">「コンカフェの営業をまるごと1つで」なら、きゃすりんです。</span></p>
+  </div>
+</section>
+
+<!-- S4 料金 -->
+<section id="price">
+  <div class="wrap narrow">
+    <h2><span class="en">PRICE</span>料金表（月額・税別）</h2>
+    <table>
+      <tr><th>モジュール</th><th>できること</th><th style="text-align:right;">月額</th></tr>
+      <tr><td><b>base</b>（基盤）</td><td>予約台帳・受付・キャスト管理・お客様Web・通知・Q&amp;A AI</td><td class="price">¥12,800</td></tr>
+      <tr><td>register</td><td>オーダー・伝票・会計・席料・日報・印刷・在庫・メニュー別ランキング</td><td class="price">¥9,800</td></tr>
+      <tr><td>shift</td><td>シフト表テンプレ40種・AIデザイン月100回・SNS投稿</td><td class="price">¥8,800</td></tr>
+      <tr><td>sales</td><td>売上・給与・バック・スライド時給</td><td class="price">¥8,800</td></tr>
+      <tr><td>analytics</td><td>期間集計・ランキング・グラフ・ダッシュボード</td><td class="price">¥7,800</td></tr>
+      <tr><td>customer</td><td>お客様モード・ポイント・景品・スタンプ</td><td class="price">¥7,800</td></tr>
+      <tr><td>attendance</td><td>打刻・欠勤遅刻早退・月次集計</td><td class="price">¥5,800</td></tr>
+      <tr><td>expense</td><td>経費・定期固定経費・レシートOCR月100枚</td><td class="price">¥5,800</td></tr>
+    </table>
+    <div class="ladder">
+      <div class="step">2個<b>5%OFF</b></div>
+      <div class="step">3個<b>10%OFF</b></div>
+      <div class="step">4〜5個<b>20%OFF</b></div>
+      <div class="step">6〜7個<b>30%OFF</b></div>
+      <div class="step">8個全部<b>¥39,800</b>実質41%OFF</div>
+    </div>
+    <p style="text-align:center;font-size:.95rem;margin-top:-8px;">下の<b>パックなら、自由に選ぶよりさらにお得</b>です。</p>
+    <div class="packs">
+      <div class="pack">🏪 接客パック<span class="mods">base＋register＋customer</span><span class="yen">¥24,800<small>/月</small></span><span class="off"><s>単品合計¥30,400</s> → 約18%OFF</span></div>
+      <div class="pack">👥 スタッフパック<span class="mods">base＋shift＋attendance</span><span class="yen">¥21,800<small>/月</small></span><span class="off"><s>単品合計¥27,400</s> → 約20%OFF</span></div>
+      <div class="pack">📈 経営パック<span class="mods">sales＋expense＋analytics</span><span class="yen">¥17,800<small>/月</small></span><span class="off"><s>単品合計¥22,400</s> → 約20%OFF</span></div>
+      <div class="pack best"><span class="reco">割引率がいちばん大きい</span>👑 オールイン<span class="mods">8モジュール全部</span><span class="yen">¥39,800<small>/月</small></span><span class="off"><s>単品合計¥67,400</s> → 実質41%OFF</span></div>
+    </div>
+    <div class="breakdown">オールインでも<b>1日あたり約¥1,330</b>。baseだけなら月¥12,800＝<b>1日あたり約¥430</b>です。</div>
+    <p style="text-align:center;margin-top:16px;font-size:.95rem;">追加パック：AI生成50回 ¥1,980 ／ レシートOCR 300枚 ¥980（月内使い切り）</p>
+    <p class="taxnote">※Web（クレジットカード）でのお申し込みは税別表示で、決済時に消費税を加算します。アプリ内課金は各ストアに表示される税込価格です。<br>※有料プランは月額の自動更新です。</p>
+  </div>
+</section>
+
+<!-- S6 不安の解消（リスクリバーサル） -->
+<section class="risk">
+  <div class="wrap narrow">
+    <h2><span class="en">Q&amp;A</span>こんな不安、ありませんか？</h2>
+    <div class="worry"><div class="q">「月額が負担にならないか心配…」</div><div class="a">全モジュール30日間無料。baseだけの¥12,800から始めて、必要になったら足せば大丈夫です。</div></div>
+    <div class="worry"><div class="q">「今の台帳やExcelから移行するのが大変そう…」</div><div class="a">今の運用と並行して使いはじめられます。移行を急かすことはありません。</div></div>
+    <!-- F3: 最低利用期間は決済方法で異なる（termsOfUse.ts:36 銀行振込は半年/年の前払い・:50 日割り返金なし）。
+         Rev424 の方針（Billing Portal 実装までは「いつでも解約」と書かない）も維持。 -->
+    <div class="worry"><div class="q">「契約したら、やめたくてもやめられないんじゃ…」</div><div class="a">月額プラン（クレジットカード・アプリ内課金）に最低利用期間や解約金はありません。アプリ内課金は各ストアの設定から、クレジットカードはお問い合わせから解約を承ります。銀行振込は半年払いか年払いの前払いのみで、どの決済方法でも日割りの返金はありません。</div></div>
+    <div class="worry"><div class="q">「給与計算をシステム任せにするのは怖い…」</div><div class="a">時給・バック・控除の計算の内訳を、すべて画面で確認できます。ブラックボックスにしません。</div></div>
+    <div class="worry"><div class="q">「設定に時間を取られそう…」</div><div class="a">初期設定ガイドに沿って上から入力するだけです。項目ごとに保存されるので、途中でやめて後日つづきから入力しても大丈夫です。</div></div>
+    <div class="honest">🙏 <b>正直に書きます</b>
+      <ul>
+        <li>現在は正式リリース前です。料金の請求はまだ行っていません。</li>
+        <li>CSVで出力できるのは売上・給与・勤怠・キャスト成績・日報・経費・在庫・顧客台帳・予約データです（顧客台帳と予約データはパソコンの管理Webから、オーナーのみ）。</li>
+        <li>他のサービスや表計算ソフトからの一括取り込みには、現在は対応していません。</li>
+        <li>現在は1アカウントにつき1店舗です。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- S6.5 利用の流れ -->
+<section class="flow">
+  <div class="wrap flow-grid">
+    <div>
+      <h2><span class="en">HOW TO START</span>はじめかたは、4ステップ。</h2>
+      <ol>
+        <li><b>申し込む（この時点で費用ゼロ）</b><span>下のボタンからお申し込み。30日間の無料期間が終わっても<b>自動で課金されることはありません</b>。続けてお使いになる場合だけ、あらためて購入手続きをしてください。</span></li>
+        <li><b>初期設定ガイドでお店の情報を登録</b><span>店舗名・営業時間・席・キャストを、ガイドの順に入力します。</span></li>
+        <li><b>30日間無料で、実際の営業で試す</b><span>全モジュールを30日間、いつもの営業の中で使ってみてください。</span></li>
+        <li><b>合う機能だけ続ける</b><span>必要なモジュールだけ選んで購入。購入しなければ、新しい登録は止まり、過去のデータは閲覧だけできる状態になります。</span></li>
+      </ol>
+    </div>
+    <figure><img src="img/setup.jpg" alt="初期設定ガイドの画面" loading="lazy"><figcaption>初期設定ガイド：上から順に入力して保存</figcaption></figure>
+  </div>
+</section>
+
+<!-- S7 先行導入募集（販促ルール：根拠のない募集数は書かない＝§75-5） -->
+<section class="early">
+  <div class="wrap narrow">
+    <h2><span class="en">EARLY ACCESS</span>先行導入店舗を募集しています</h2>
+    <p>無料期間の延長（通算で最大60日）＋機能リクエストの優先対応つき。</p>
+    <p style="margin-top:18px;"><a class="sublink" href="mailto:rurifukuro@gmail.com?subject=%E3%81%8D%E3%82%83%E3%81%99%E3%82%8A%E3%82%93%20%E5%85%88%E8%A1%8C%E5%B0%8E%E5%85%A5%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">先行導入についてメールで問い合わせる</a></p>
+  </div>
+</section>
+
+<!-- S8 FAQ -->
+<section id="faq">
+  <div class="wrap narrow">
+    <h2><span class="en">FAQ</span>よくある質問</h2>
+    <details><summary>管理Webとスマホアプリは、どう違いますか？</summary><p>お店の管理は、パソコンの管理Webとスマホ・タブレットのアプリのどちらからでも行えます。表や集計を広い画面で見るなら管理Web、営業中の予約確認や伝票入力はアプリが便利です。お客様はアプリ不要で、Webの予約ページから予約できます。</p></details>
+    <details><summary>スマホだけでも使えますか？</summary><p>予約・受付・レジ・キャスト・分析・設定はアプリから操作できます。対応環境：iPhone・Androidアプリ＋パソコン・タブレットのブラウザ（管理Web）。</p></details>
+    <details><summary>今使っている台帳やExcelからデータ移行できますか？</summary><p>一括取り込みの機能は現在は非対応です。並行運用からの段階的な移行をおすすめしています。</p></details>
+    <details><summary>複数店舗で使えますか？</summary><p>現在は1アカウントにつき1店舗です。複数の店舗を運営している場合は、店舗ごとにアカウントをお作りください。</p></details>
+    <details><summary>解約したらデータはどうなりますか？</summary><p>売上・給与・勤怠・経費などの帳票は、解約前にCSVで出力できます（顧客台帳・予約データはパソコンの管理Webから）。退会後のデータの保持期間はプライバシーポリシーに記載します。</p></details>
+    <!-- Rev430 の是正（通信の暗号化・店舗分離の断言を落とす）を維持 -->
+    <details><summary>お客様の個人情報の扱いは？</summary><p>インターネットを経由する通信はTLS/SSLで暗号化しています。店舗の業務データは店舗ごとに分離され、予約者の氏名・ご連絡先は当該店舗とご本人だけがご覧になれます。ただし公開予約ページに掲載するキャスト写真・シフト表の背景画像など、掲載を目的とするものは公開の場に置かれます。取扱いの全体はプライバシーポリシーをご覧ください。</p></details>
+    <details><summary>給与計算は税務的に大丈夫？</summary><p>計算の内訳（時給・バック・控除）をすべて画面で確認・出力できます。最終的な税務判断は税理士等にご相談ください。</p></details>
+  </div>
+</section>
+
+<!-- S9 クロージング -->
+<section class="close" id="cta">
+  <div class="wrap narrow">
+    <h2>コンカフェ専用。<br>必要な機能だけ、月¥12,800から。</h2>
+    <div class="nolose">
+      <span class="chip">✓ 全機能 30日間無料</span>
+      <span class="chip">✓ 無料期間後の自動課金なし</span>
+      <span class="chip">✓ 初期費用 ¥0</span>
+    </div>
+    <p style="margin:14px 0 26px;">試して合わなければ、購入しなければ費用はかかりません。</p>
+    <a class="cta" href="/kyasuho/">30日間無料ではじめる</a>
+  </div>
+</section>
+
+<!-- S10 追伸 -->
+<section class="ps">
+  <div class="wrap narrow">
+    <h2><span class="en">P.S.</span>さいごに — なぜ「コンカフェ専用」を作ったのか</h2>
+    <div class="letter">
+      <p>きゃすりんは、キャバクラ向けシステムの機能を削って作った「簡易版」ではありません。予約台帳も、シフト表も、給与計算も、最初からコンカフェの営業だけを考えて設計しました。</p>
+      <p>推し来店、スタンプカード、SNSの出勤告知——コンカフェの「当たり前」は、既存の水商売向けシステムには入っていませんでした。無いなら、専用のものを作ろう。それが、きゃすりんの出発点です。</p>
+      <p>キャストとお客様に向き合う時間が、閉店後の事務作業に奪われませんように。その一心で作っています。</p>
+      <p class="sign">きゃすりん開発者　瑠璃フクロウ</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  お問い合わせ：<a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>｜
+  <a href="https://kyasurin-app.github.io/legal/privacy">プライバシーポリシー</a>｜<a href="/kyasuho/tokushoho/">特定商取引法に基づく表記</a><br>
+  運営：瑠璃フクロウ｜X：<a href="https://x.com/RuriFukuro">@RuriFukuro</a>
+</footer>
+
+<div class="fixedbar"><a class="cta" href="#cta">30日間無料ではじめる</a></div>
+
+</body>
+</html>

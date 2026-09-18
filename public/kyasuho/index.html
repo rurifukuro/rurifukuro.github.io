@@ -315,6 +315,36 @@ footer a{color:var(--gray)}
       </p>
     </div>
 
+    <!-- ★きゃすりん SPEC §75-1（2026-09-19 ユーザー決定）: Web版の登録リンクと「Web版の方が安い」の紹介。
+         🔴 CTA はこのページで「アンケートへ」の1種類だけ（DS28-1）＝ここはボタンにせず本文中のテキストリンクにする。
+         🔴 比較は双方とも税込にそろえる（ストアの価格は税込・上の表は税別）＝Web の税込は税別×1.1。
+         🔴 ストア側の数字は 2026-07-31 に App Store Connect へ登録した税込価格（kyasuho SPEC §52-11-5）。
+            公開前に ASC / Play の API で実測し直すこと（R74）。変えたらここと LP を同じ日に直す（WEB18）。
+         🔴 経営パック（sales＋expense＋analytics）はストアに同じ組み合わせの商品が無い＝比較表に載せない。 -->
+    <div class="card scroll">
+      <h3>Web版（PC・ブラウザからのお申し込み）がおトクです</h3>
+      <table>
+        <thead>
+          <tr><th>同じ内容で比べた場合</th><th class="num">Web版<br>（税込）</th><th class="num">アプリ内課金<br>（税込）</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>接客パック（base＋register＋customer）</td><td class="num">27,280円</td><td class="num">29,800円</td></tr>
+          <tr><td>スタッフパック（base＋shift＋attendance）</td><td class="num">23,980円</td><td class="num">25,800円</td></tr>
+          <tr><td>オールイン（8モジュールすべて）</td><td class="num">43,780円</td><td class="num">47,800円</td></tr>
+        </tbody>
+      </table>
+      <p class="tblnote">
+        上の料金表（税別）に消費税10%を加えた金額と、App Store／Google Play のアプリ内課金の金額（税込）を並べています。
+        アプリ内課金の金額は登録時点のもので、ストア側の都合で変わることがあります。
+        <strong>モジュールを1つずつ選ぶ（単品で選ぶ・組み合わせ割引）お申し込みは Web 版だけ</strong>で、アプリ内課金はまとめたプランのみです。
+      </p>
+      <p class="tblnote">
+        Web版のお申し込みは、PCのブラウザで
+        <a href="https://kyasurin-app.github.io/admin" target="_blank" rel="noopener">きゃすりん 管理サイト（Web版）</a>
+        を開き、「新規登録」からアカウントと店舗を作成してください。
+      </p>
+    </div>
+
     <!-- 🔴 このページで「今だけ」と言ってよいのはここだけ＝**終わる時期が実際に決まっているから**書ける
          （[[web_marketing_rules]] CP23-32＝虚偽の希少性を作らない。在庫のないものに残り数を作らない）。
          🔴 配り方は実装済みのクーポン機構（ky_coupon_campaigns・trial_days の既定 60・再取得防止つき）で、
@@ -446,6 +476,7 @@ footer a{color:var(--gray)}
   <div class="wrap">
     <p>きゃすりん（開発中）／個人開発 瑠璃フクロウ</p>
     <p>お問い合わせ <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>　／　<a href="https://x.com/RuriFukuro" rel="noopener">X @RuriFukuro</a></p>
+    <p><a href="/kyasuho/lp/">サービス紹介ページ</a>　／　<a href="/kyasuho/tokushoho/">特定商取引法に基づく表記</a></p>
   </div>
 </footer>
 

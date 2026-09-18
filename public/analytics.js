@@ -9,8 +9,10 @@
  *   ・public/torehan/invite/index.html … とれはんっ！友達紹介の中継ページ
  *   ・public/urehan/index.html         … レジさぽっ！LP
  *   ・public/kyasuho/index.html        … きゃすりん LP（事前登録・事前アンケート）
+ *   ・public/kyasuho/lp/index.html     … きゃすりん サービス紹介LP（申込ボタンは /kyasuho/ へ）
  *   ・public/kyasuho-support/index.html … きゃすりん サポートページ
  *   ※ プライバシーポリシー（urehan/privacy.html）と配信停止（unsubscribe/）は
+ *     きゃすりんの特定商取引法表記（kyasuho/tokushoho/）は
  *     事務ページなので**あえて読み込まない**＝LP の数字にノイズを混ぜない。
  *
  * 🔴 計測ロジックを別の場所へ写さないこと。
