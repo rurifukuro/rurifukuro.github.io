@@ -61,7 +61,7 @@
 <div class="wrap">
   <a href="./" class="backlink">← レジさぽっ！ トップへ</a>
   <h1>プライバシーポリシー<br><span class="appname">レジさぽっ！</span></h1>
-  <p class="updated" id="lastUpdated">最終更新: 2026-08-27</p>
+  <p class="updated" id="lastUpdated">最終更新: 2026-09-19</p>
 
   <div class="lang-bar">
     <span class="lang-btn active" onclick="showLang('ja')">日本語</span>
@@ -89,7 +89,7 @@
     <h2>3. 共有・オンライン機能で送信される情報</h2>
     <p>本アプリには、他の利用者とデータを共有・連携する機能があり、これらを使うと以下の情報が本アプリのクラウドサーバー（Supabase。Supabase, Inc. が提供するデータベース／ストレージで、当方のデータ処理委託先として機能します）へ送信・保存されます。
 
-実行のされ方は機能によって異なります。①②⑤は、利用者がその操作（共有セッションの作成／参加、取り置きページの公開、取り込みリンクを開く）を行ったときにだけ動作します。③④は、初回起動時に表示される利用規約・プライバシーポリシーに同意されたあと、頒布物タブを開くたびに自動で実行されます（設定 →「共有とプライバシー」でオフにすると、以後は送信されません。第2条も参照）。⑥は、共有がオンであることに加えて、「在庫の公開設定」のスイッチがオンになっている頒布物についてだけ実行されます（既定はオン）。⑦は、利用者がアンケートの送信ボタンを押したときにだけ動作します。
+実行のされ方は機能によって異なります。①②⑤は、利用者がその操作（共有セッションの作成／参加、取り置きページの公開、取り込みリンクを開く）を行ったときにだけ動作します。③④は、初回起動時に表示される利用規約・プライバシーポリシーに同意されたあと、頒布物タブを開くたびに自動で実行されます（設定 →「共有とプライバシー」でオフにすると、以後は送信されません。第2条も参照）。⑥は、共有がオンであることに加えて、「在庫の公開設定」のスイッチがオンになっている頒布物についてだけ実行されます（既定はオン）。⑦は、利用者がアンケートの送信ボタンを押したときにだけ動作します。⑧は、有料機能を購入したときに自動で送信されます（購入しなければ送信されません）。
 
 ① 売り子共有（複数端末で売上を共有）
 ・送信内容: セッション名、参加メンバーの表示名・記号、共有した売上データ（品名・金額・数量・決済方法など）、共有した頒布物情報（頒布物名・価格・在庫・セット構成など）、お品書き画像、匿名の端末識別子（インストールID＝個人を特定しないランダムな識別子で、同じ端末が入り直したときに同じ売り子として扱うために使われます）。
@@ -125,10 +125,16 @@
 ・スイッチをオフに戻すと、その場でサーバー上の在庫が削除されます。
 
 ⑦ アンケートの送信
-・送信内容：各設問への回答（選択式の回答・5段階の評価・自由記述）、匿名の端末識別子（インストールID＝個人を識別しないランダムな識別子）、アンケートの版、回答の対象として選んだイベント（開催回）。設問でお尋ねするのは、出展の経験、当日お会計をする人数、アプリの満足度と友人にすすめたいと思うか、よく使う機能・使っていない機能、有料機能を使ったことがあるかとその価格の感じ方、お会計にかかる時間や集計の手間の変化、ほかに併用しているアプリ・道具、およびそれらの理由・ご要望の自由記述です。氏名・住所・連絡先はどの設問でも尋ねません。
+・送信内容：各設問への回答（選択式の回答・5段階の評価・自由記述）、匿名の端末識別子（インストールID＝個人を識別しないランダムな識別子）、アンケートの版、回答の対象として選んだイベント（開催回）、回答時のアプリの表示言語。設問でお尋ねするのは、出展の経験、当日お会計をする人数、アプリの満足度と友人にすすめたいと思うか、よく使う機能・使っていない機能、有料機能を使ったことがあるかとその価格の感じ方、お会計にかかる時間や集計の手間の変化、ほかに併用しているアプリ・道具、およびそれらの理由・ご要望の自由記述です。氏名・住所・連絡先はどの設問でも尋ねません。
 ・実行の時機：アンケート画面（情報タブから開くほか、イベント終了の翌日にご案内を表示することがあります）で、利用者が最後の画面まで進んで送信ボタンを押したときにだけ送信されます。途中で閉じた場合は1件も送信されません。
 ・用途：アプリの改善の検討にのみ利用します。回答内容を公開することはありません。
 ・自由記述欄には、氏名・連絡先などの個人情報を入力しないでください。
+
+⑧ 有料機能の購入記録
+・送信内容：購入した商品ID、価格（日本での定価）および通貨コード（例: JPY。海外ストアでは現地通貨のコードになります）、アプリ識別子（開発者が複数のアプリの売上を区別するための固定文字列）、ストア種別（App Store / Google Play）、ストアが発行する取引ID、匿名の端末識別子（インストールID）、購入日時、対象イベント・開催日、購入環境の種別（開発版からの購入は「テスト」、それ以外は「不明」。テスト購入を売上集計から除外するために使います）。
+・用途：開発者による売上集計（会計・税務上の記録）と、同じ購入の二重計上の防止のみ。
+・氏名・メールアドレス・支払い方法・クレジットカード情報は一切送信しません。決済処理は Apple / Google が行い、当方はこれらの情報にアクセスできません。
+・実行の時機：本項は共有機能ではなく、有料機能を購入したときに自動で送信されます（オン／オフの設定はありません。購入しなければ送信されません）。
 
 ※ お品書き画像について: 共有・登録したお品書き画像は、URLを知っていれば誰でも閲覧できる公開ストレージに保存されます。著作権者の許可がない画像はアップロードしないでください。
 ※ 表示名には実名を入力しないこともできます。共有する情報は必要な範囲にとどめることを推奨します。</p>
@@ -154,7 +160,7 @@
 
 ■ アプリの利用状況の計測（Google Firebase Analytics）
 本アプリは、アプリの改善および広告の効果測定（インストール数の把握）のため、Google LLC が提供する計測サービス「Firebase Analytics」を使用しています。
-・収集される情報: 匿名の端末識別子（Firebase が生成するランダムなID）、アプリの利用状況（初回起動、起動、画面表示）、端末の機種・OSバージョン・おおよその地域。
+・収集される情報: 匿名の端末識別子（Firebase が生成するランダムなID）、アプリの利用状況（初回起動、起動、画面表示、有料機能の購入完了（商品の種類）・一部のエラーの発生）、端末の機種・OSバージョン・おおよその地域。
 ・氏名・メールアドレス・電話番号・連絡先・正確な位置情報や、アプリ内で入力した文章（サークル名・頒布物名・表示名・備考など）が送信されることはありません。売上金額・在庫数などの経営に関わる数値も送信しません。
 ・広告識別子（IDFA）は取得せず、他社のアプリやWebサイトを横断して利用者を追跡する「トラッキング」は行いません。
 ・収集された情報は Google のサーバーへ送信され、Google のプライバシーポリシーに従って取り扱われます。また、広告の効果測定のため、当方の Google 広告アカウントと連携しています。
@@ -195,6 +201,9 @@
 ・回答は、最後に送信された日から2年が経過した時点で自動的に削除されます。
 ・それ以前の削除をご希望の場合は <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> までご連絡ください。
 
+⑦ 有料機能の購入記録（第3条⑧）
+・売上集計（会計・税務上の記録）のためサーバーに保存され、アプリ内に個別の削除機能はありません。法令上の保存義務がある期間中は削除できませんが、その期間を過ぎたものは <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> へのご連絡により削除します。
+
 ①②のデータの削除をご希望の場合は <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> までご連絡ください（取り置き予約ページはページURL、売り子共有は参加コードをお知らせいただくと対象を特定できます）。</p>
     <h2>9. 子どものプライバシー</h2>
     <p>本アプリは全年齢を対象としており、子どもから個人情報を収集することを意図していません。</p>
@@ -227,7 +236,7 @@ The App can import product data from the companion app "Sakushina!" in two ways.
     <h2>3. Information Sent via Online / Sharing Features</h2>
     <p>The App offers features that share or sync data with other users. When you use them, the following information is sent to and stored on the App's cloud server (Supabase, a database / storage service provided by Supabase, Inc., acting as our data processor).
 
-How they are triggered differs by feature. Items ①, ② and ⑤ run only when you perform the corresponding action (creating or joining a share session, publishing a reservation page, opening an import link). Items ③ and ④ run automatically every time you open the Products tab, once you have agreed to the Terms of Use and Privacy Policy shown when you first launch the app; if you turn sharing off under Settings → Sharing &amp; Privacy, nothing is sent from then on (see also Section 2). Item ⑥ runs, in addition to sharing being on, only for the items whose switches under "Stock publishing" are on (on by default). Item ⑦ runs only when you press the submit button in the survey.
+How they are triggered differs by feature. Items ①, ② and ⑤ run only when you perform the corresponding action (creating or joining a share session, publishing a reservation page, opening an import link). Items ③ and ④ run automatically every time you open the Products tab, once you have agreed to the Terms of Use and Privacy Policy shown when you first launch the app; if you turn sharing off under Settings → Sharing &amp; Privacy, nothing is sent from then on (see also Section 2). Item ⑥ runs, in addition to sharing being on, only for the items whose switches under "Stock publishing" are on (on by default). Item ⑦ runs only when you press the submit button in the survey. Item ⑧ is sent automatically when you purchase a paid feature (nothing is sent unless you make a purchase).
 
 ① Seller share (sharing sales across multiple devices)
 ・Sent: session name, participating members' display names and symbols, shared sales data (product name, amount, quantity, payment method, etc.), shared product info (product name, price, stock, set composition, etc.), menu images, and an anonymous device identifier (installation ID — a random identifier that does not identify you personally, used so that the same device rejoining is treated as the same seller).
@@ -263,10 +272,16 @@ How they are triggered differs by feature. Items ①, ② and ⑤ run only when 
 ・Turning the switch back off deletes the stock from the server immediately.
 
 ⑦ Survey submission
-・What is sent: your answers to each question (multiple-choice answers, 1-5 ratings and free text), an anonymous device identifier (installation ID, a random identifier that does not identify you), the survey version, and the event (edition) you select as the subject of your answers. The questions ask about your exhibiting experience, how many people handle sales on the day, your satisfaction with the App and whether you would recommend it to a friend, which features you use and do not use, whether you have used paid features and how you felt about their price, changes in checkout time and bookkeeping effort, any other apps or tools you use alongside it, and free-text answers on the reasons and your requests. No question asks for your name, address or contact details.
+・What is sent: your answers to each question (multiple-choice answers, 1-5 ratings and free text), an anonymous device identifier (installation ID, a random identifier that does not identify you), the survey version, the event (edition) you select as the subject of your answers, and the App's display language at the time you answer. The questions ask about your exhibiting experience, how many people handle sales on the day, your satisfaction with the App and whether you would recommend it to a friend, which features you use and do not use, whether you have used paid features and how you felt about their price, changes in checkout time and bookkeeping effort, any other apps or tools you use alongside it, and free-text answers on the reasons and your requests. No question asks for your name, address or contact details.
 ・When it runs: only when you reach the last page of the survey and press the submit button. The survey can be opened from the Info tab, and we may also show an invitation on the day after an event ends. Nothing is sent if you close the survey partway.
 ・Purpose: used solely to consider improvements to the App. Answers are never published.
 ・Please do not enter personal information such as your name or contact details in the free-text fields.
+
+⑧ Paid feature purchase records
+・What is sent: the product ID you purchased, the price (the Japanese list price) and currency code (e.g. JPY; for overseas stores, the local currency code), an app identifier (a fixed string the developer uses to tell sales of multiple apps apart), the store type (App Store / Google Play), the transaction ID issued by the store, an anonymous device identifier (installation ID), the purchase date and time, the target event and day, and the purchase environment type ("test" for purchases from development builds, otherwise "unknown"; used to exclude test purchases from sales totals).
+・Purpose: solely for the developer's sales accounting (accounting and tax records) and to prevent the same purchase from being counted twice.
+・Your name, email address, payment method and credit card details are never sent. Payments are processed by Apple / Google, and we have no access to this information.
+・When it runs: this item is not a sharing feature; it is sent automatically when you purchase a paid feature (there is no on/off setting; nothing is sent unless you make a purchase).
 
 ※ About menu images: menu images you share or register are stored in public storage readable by anyone who has the URL. Do not upload images for which you do not have the copyright holder's permission.
 ※ You may choose not to enter your real name as a display name. We recommend sharing only the information that is necessary.</p>
@@ -292,7 +307,7 @@ When your remaining cloud OCR credits are fewer than the number of images to be 
 
 ■ Usage measurement (Google Firebase Analytics)
 The App uses "Firebase Analytics", a measurement service provided by Google LLC, to improve the App and to measure advertising effectiveness (number of installs).
-・Collected: an anonymous device identifier (a random ID generated by Firebase), app usage (first launch, launches, screen views), and your device model, OS version and approximate region.
+・Collected: an anonymous device identifier (a random ID generated by Firebase), app usage (first launch, launches, screen views, completion of a paid feature purchase (the type of product), and the occurrence of certain errors), and your device model, OS version and approximate region.
 ・Your name, email address, phone number, contacts, precise location, and any text you enter in the App (circle name, item name, display name, notes, etc.) are never sent. Sales amounts, stock counts and other business figures are not sent either.
 ・The advertising identifier (IDFA) is not collected, and we do not perform "tracking" that follows you across other companies' apps or websites.
 ・Collected information is sent to Google's servers and handled under Google's privacy policy. It is also linked to our Google Ads account for advertising measurement.
@@ -333,6 +348,9 @@ External links the App may open include links to social media or official inform
 ・Answers are deleted automatically two years after the day they were last submitted.
 ・To request earlier deletion, please contact <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>.
 
+(7) Paid feature purchase records (Section 3, item ⑧)
+・These are stored on the server for sales accounting (accounting and tax records), and there is no deletion function in the App. They cannot be deleted while a legal retention obligation applies, but once that period has passed we will delete them upon request to <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>.
+
 If you wish to have the data described in (1) or (2) deleted, please contact <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> (please include the page URL for a reservation page, or the join code for a seller share session, so that we can identify it).</p>
     <h2>9. Children's Privacy</h2>
     <p>The App is for all ages and does not intend to collect personal information from children.</p>
@@ -365,7 +383,7 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
     <h2>3. 通过在线・共享功能发送的信息</h2>
     <p>本应用提供与其他用户共享・联动数据的可选功能。使用这些功能时，以下信息会被发送并保存到本应用的云服务器（Supabase，由 Supabase, Inc. 提供的数据库／存储，作为我方的数据处理受托方）。
 
-执行的时机因功能而异。①②⑤仅在用户进行相应操作（创建／参加共享会话、公开预约页面、打开交接链接）时才会运行。③④则在同意首次启动时显示的使用条款・隐私政策之后，每次打开贩售物标签页时自动执行（在「设置 →共享与隐私」中关闭后，此后将不再发送。另见第2条）。⑥在共享处于开启状态的基础上，仅对「库存公开设置」的开关为开启的颁布物执行（默认开启）。⑦仅在用户按下问卷的发送按钮时才会运行。
+执行的时机因功能而异。①②⑤仅在用户进行相应操作（创建／参加共享会话、公开预约页面、打开交接链接）时才会运行。③④则在同意首次启动时显示的使用条款・隐私政策之后，每次打开贩售物标签页时自动执行（在「设置 →共享与隐私」中关闭后，此后将不再发送。另见第2条）。⑥在共享处于开启状态的基础上，仅对「库存公开设置」的开关为开启的颁布物执行（默认开启）。⑦仅在用户按下问卷的发送按钮时才会运行。⑧在用户购买付费功能时自动发送（不购买则不会发送）。
 
 ① 卖手共享（在多台设备间共享销售数据）
 ・发送内容：会话名称、参加成员的显示名称和符号、共享的销售数据（商品名・金额・数量・支付方式等）、共享的商品信息（商品名・价格・库存・套装构成等）、菜单图片、匿名的设备识别符（安装ID＝不识别个人的随机标识符，用于在同一设备重新加入时视为同一售货员）。
@@ -401,10 +419,16 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
 ・将开关调回关闭后，服务器上的库存会立即被删除。
 
 ⑦ 问卷的发送
-・发送内容：各设问的回答（选择式回答、5级评分、自由填写内容）、匿名的设备识别符（安装ID＝不识别个人的随机识别符）、问卷版本，以及您选择的作为回答对象的活动（届次）。设问询问的内容为：参展经验、当天负责收银的人数、对应用的满意度以及是否愿意推荐给朋友、常用与未使用的功能、是否使用过付费功能及对其价格的感受、结账时间与统计工作量的变化、另外并用的应用与工具，以及关于上述内容的理由与需求的自由填写。任何设问都不会询问姓名、住址与联系方式。
+・发送内容：各设问的回答（选择式回答、5级评分、自由填写内容）、匿名的设备识别符（安装ID＝不识别个人的随机识别符）、问卷版本、您选择的作为回答对象的活动（届次），以及回答时应用的显示语言。设问询问的内容为：参展经验、当天负责收银的人数、对应用的满意度以及是否愿意推荐给朋友、常用与未使用的功能、是否使用过付费功能及对其价格的感受、结账时间与统计工作量的变化、另外并用的应用与工具，以及关于上述内容的理由与需求的自由填写。任何设问都不会询问姓名、住址与联系方式。
 ・执行时机：仅在问卷画面中，用户进入最后一页并按下发送按钮时才会发送。问卷可从信息标签页打开，此外我们可能在活动结束的次日显示邀请。中途关闭则不会发送任何内容。
 ・用途：仅用于研究应用的改进。不会公开回答内容。
 ・请勿在自由填写栏中输入姓名、联系方式等个人信息。
+
+⑧ 付费功能的购买记录
+・发送内容：所购买的商品ID、价格（日本的定价）及货币代码（例如 JPY；海外商店为当地货币代码）、应用识别符（开发者用于区分多个应用销售额的固定字符串）、商店类型（App Store / Google Play）、商店发行的交易ID、匿名的设备识别符（安装ID）、购买日期时间、对象活动・举办日、购买环境类型（从开发版购买为「测试」，其他为「未知」。用于将测试购买排除在销售统计之外）。
+・用途：仅用于开发者的销售统计（会计・税务记录）以及防止同一购买被重复计算。
+・不会发送姓名、电子邮件地址、支付方式及信用卡信息。付款由 Apple / Google 处理，我方无法访问这些信息。
+・执行时机：本项并非共享功能，而是在购买付费功能时自动发送（没有开关设置；不购买则不会发送）。
 
 ※ 关于菜单图片：您共享或登记的菜单图片将保存在任何知道 URL 的人都可读取的公开存储中。请勿上传未获得著作权人许可的图片。
 ※ 您也可以不输入真实姓名作为显示名称。建议仅共享必要范围内的信息。</p>
@@ -430,7 +454,7 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
 
 ■ 应用使用情况的计测（Google Firebase Analytics）
 为改进应用以及衡量广告效果（掌握安装数量），本应用使用 Google LLC 提供的计测服务「Firebase Analytics」。
-・收集的信息: 匿名的设备识别码（Firebase 生成的随机ID）、应用的使用情况（首次启动、启动、画面显示）、设备机型・操作系统版本・大致地区。
+・收集的信息: 匿名的设备识别码（Firebase 生成的随机ID）、应用的使用情况（首次启动、启动、画面显示、付费功能购买完成（商品种类）・部分错误的发生）、设备机型・操作系统版本・大致地区。
 ・不会发送姓名、电子邮件地址、电话号码、通讯录、精确位置信息，也不会发送用户在应用内输入的文字（社团名称、商品名称、显示名称、备注等）。销售金额、库存数量等经营数据同样不会发送。
 ・不获取广告识别码（IDFA），也不进行跨其他公司应用或网站追踪用户的「追踪」行为。
 ・收集到的信息将发送至 Google 的服务器，并依据 Google 的隐私政策处理。此外，为衡量广告效果，已与我方的 Google Ads 账户关联。
@@ -471,6 +495,9 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
 ・回答将在最后一次发送之日起满2年时自动删除。
 ・如希望更早删除，请联系 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>。
 
+⑦ 付费功能的购买记录（第3条⑧）
+・为进行销售统计（会计・税务记录）保存在服务器上，应用内没有单独的删除功能。在法定保存期间内无法删除，超过该期间后，可通过联系 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> 予以删除。
+
 如希望删除①②的数据，请联系 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>（预约页面请告知页面URL，卖手共享请告知参与代码，以便我们确认对象）。</p>
     <h2>9. 儿童隐私</h2>
     <p>本应用面向所有年龄段，无意从儿童处收集个人信息。</p>
@@ -499,7 +526,7 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
     <h2>3. 透過線上・共享功能傳送的資訊</h2>
     <p>本應用提供與其他使用者共享・聯動資料的可選功能。使用這些功能時，以下資訊會被傳送並儲存到本應用的雲伺服器（Supabase，由 Supabase, Inc. 提供的資料庫／儲存，作為我方的資料處理受託方）。
 
-執行的時機因功能而異。①②⑤僅在使用者進行相應操作（建立／參加共享會話、公開預約頁面、開啟交接連結）時才會執行。③④則在同意首次啟動時顯示的使用條款・隱私權政策之後，每次開啟販售物標籤頁時自動執行（在「設定 →共享與隱私」中關閉後，此後將不再傳送。另見第2條）。⑥在共享處於開啟狀態的基礎上，僅對「庫存公開設定」的開關為開啟的頒佈物執行（預設開啟）。⑦僅在使用者按下問卷的傳送按鈕時才會執行。
+執行的時機因功能而異。①②⑤僅在使用者進行相應操作（建立／參加共享會話、公開預約頁面、開啟交接連結）時才會執行。③④則在同意首次啟動時顯示的使用條款・隱私權政策之後，每次開啟販售物標籤頁時自動執行（在「設定 →共享與隱私」中關閉後，此後將不再傳送。另見第2條）。⑥在共享處於開啟狀態的基礎上，僅對「庫存公開設定」的開關為開啟的頒佈物執行（預設開啟）。⑦僅在使用者按下問卷的傳送按鈕時才會執行。⑧在使用者購買付費功能時自動傳送（不購買則不會傳送）。
 
 ① 賣手共享（在多臺裝置間共享銷售資料）
 ・傳送內容：會話名稱、參加成員的顯示名稱和符號、共享的銷售資料（商品名・金額・數量・支付方式等）、共享的商品資訊（商品名・價格・庫存・套裝構成等）、選單圖片、匿名的裝置識別符（安裝ID＝不識別個人的隨機識別符號，用於在同一裝置重新加入時視為同一售貨員）。
@@ -535,10 +562,16 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
 ・將開關調回關閉後，伺服器上的庫存會立即被刪除。
 
 ⑦ 問卷的傳送
-・傳送內容：各設問的回答（選擇式回答、5級評分、自由填寫內容）、匿名的裝置識別符（安裝ID＝不識別個人的隨機識別符）、問卷版本，以及您選擇作為回答對象的活動（屆次）。設問詢問的內容為：參展經驗、當天負責收銀的人數、對應用的滿意度以及是否願意推薦給朋友、常用與未使用的功能、是否使用過付費功能及對其價格的感受、結帳時間與統計工作量的變化、另外併用的應用與工具，以及關於上述內容的理由與需求的自由填寫。任何設問都不會詢問姓名、住址與聯絡方式。
+・傳送內容：各設問的回答（選擇式回答、5級評分、自由填寫內容）、匿名的裝置識別符（安裝ID＝不識別個人的隨機識別符）、問卷版本、您選擇作為回答對象的活動（屆次），以及回答時應用的顯示語言。設問詢問的內容為：參展經驗、當天負責收銀的人數、對應用的滿意度以及是否願意推薦給朋友、常用與未使用的功能、是否使用過付費功能及對其價格的感受、結帳時間與統計工作量的變化、另外併用的應用與工具，以及關於上述內容的理由與需求的自由填寫。任何設問都不會詢問姓名、住址與聯絡方式。
 ・執行時機：僅在問卷畫面中，使用者進入最後一頁並按下傳送按鈕時才會傳送。問卷可從資訊標籤頁開啟，此外我們可能在活動結束的隔天顯示邀請。中途關閉則不會傳送任何內容。
 ・用途：僅用於研究應用的改進。不會公開回答內容。
 ・請勿在自由填寫欄中輸入姓名、聯絡方式等個人資訊。
+
+⑧ 付費功能的購買記錄
+・傳送內容：所購買的商品ID、價格（日本的定價）及貨幣代碼（例如 JPY；海外商店為當地貨幣代碼）、應用識別符（開發者用於區分多個應用銷售額的固定字串）、商店類型（App Store / Google Play）、商店發行的交易ID、匿名的裝置識別符（安裝ID）、購買日期時間、對象活動・舉辦日、購買環境類型（從開發版購買為「測試」，其他為「未知」。用於將測試購買排除在銷售統計之外）。
+・用途：僅用於開發者的銷售統計（會計・稅務記錄）以及防止同一購買被重複計算。
+・不會傳送姓名、電子郵件地址、付款方式及信用卡資訊。付款由 Apple / Google 處理，我方無法存取這些資訊。
+・執行時機：本項並非共享功能，而是在購買付費功能時自動傳送（沒有開關設定；不購買則不會傳送）。
 
 ※ 關於選單圖片：您共享或登記的選單圖片將儲存在任何知道 URL 的人都可讀取的公開儲存中。請勿上傳未獲得著作權人許可的圖片。
 ※ 您也可以不輸入真實姓名作為顯示名稱。建議僅共享必要範圍內的資訊。</p>
@@ -564,7 +597,7 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
 
 ■ 應用使用情況的計測（Google Firebase Analytics）
 為改進應用以及衡量廣告效果（掌握安裝數量），本應用使用 Google LLC 提供的計測服務「Firebase Analytics」。
-・收集的資訊: 匿名的裝置識別碼（Firebase 生成的隨機ID）、應用的使用情況（首次啟動、啟動、畫面顯示）、裝置機型・作業系統版本・大致地區。
+・收集的資訊: 匿名的裝置識別碼（Firebase 生成的隨機ID）、應用的使用情況（首次啟動、啟動、畫面顯示、付費功能購買完成（商品種類）・部分錯誤的發生）、裝置機型・作業系統版本・大致地區。
 ・不會傳送姓名、電子郵件地址、電話號碼、通訊錄、精確位置資訊，也不會傳送使用者在應用內輸入的文字（社團名稱、商品名稱、顯示名稱、備註等）。銷售金額、庫存數量等經營資料同樣不會傳送。
 ・不獲取廣告識別碼（IDFA），也不進行跨其他公司應用或網站追蹤使用者的「追蹤」行為。
 ・收集到的資訊將傳送至 Google 的伺服器，並依據 Google 的隱私政策處理。此外，為衡量廣告效果，已與我方的 Google Ads 帳戶關聯。
@@ -605,6 +638,9 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
 ・回答將在最後一次傳送之日起滿2年時自動刪除。
 ・如希望更早刪除，請聯絡 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>。
 
+⑦ 付費功能的購買記錄（第3條⑧）
+・為進行銷售統計（會計・稅務記錄）保存在伺服器上，應用內沒有單獨的刪除功能。在法定保存期間內無法刪除，超過該期間後，可透過聯絡 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> 予以刪除。
+
 如希望刪除①②的資料，請聯絡 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>（預約頁面請告知頁面URL，賣手共享請告知參與代碼，以便我們確認對象）。</p>
     <h2>9. 兒童隱私</h2>
     <p>本應用面向所有年齡段，無意從兒童處收集個人資訊。</p>
@@ -633,7 +669,7 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
     <h2>3. 온라인・공유 기능으로 전송되는 정보</h2>
     <p>본 앱에는 다른 이용자와 데이터를 공유・연동하는 임의 기능이 있으며, 이를 사용하면 다음 정보가 본 앱의 클라우드 서버（Supabase. Supabase, Inc.가 제공하는 데이터베이스／스토리지로, 당사의 데이터 처리 수탁자로 기능합니다）로 전송・저장됩니다.
 
-실행되는 방식은 기능에 따라 다릅니다. ①②⑤는 이용자가 해당 조작（공유 세션 작성／참가, 예약 페이지 공개, 전달 링크 열기）을 했을 때에만 동작합니다. ③④는 최초 실행 시 표시되는 이용약관・개인정보처리방침에 동의하신 뒤에는 반포물 탭을 열 때마다 자동으로 실행됩니다（설정 → 「공유 및 개인정보」에서 끄시면 이후에는 전송되지 않습니다. 제2조도 참조）. ⑥은 공유가 켜져 있는 것에 더해, 「재고 공개 설정」의 스위치가 켜져 있는 반포물에 대해서만 실행됩니다（기본값은 켜짐）. ⑦은 이용자가 설문의 전송 버튼을 눌렀을 때에만 동작합니다.
+실행되는 방식은 기능에 따라 다릅니다. ①②⑤는 이용자가 해당 조작（공유 세션 작성／참가, 예약 페이지 공개, 전달 링크 열기）을 했을 때에만 동작합니다. ③④는 최초 실행 시 표시되는 이용약관・개인정보처리방침에 동의하신 뒤에는 반포물 탭을 열 때마다 자동으로 실행됩니다（설정 → 「공유 및 개인정보」에서 끄시면 이후에는 전송되지 않습니다. 제2조도 참조）. ⑥은 공유가 켜져 있는 것에 더해, 「재고 공개 설정」의 스위치가 켜져 있는 반포물에 대해서만 실행됩니다（기본값은 켜짐）. ⑦은 이용자가 설문의 전송 버튼을 눌렀을 때에만 동작합니다. ⑧은 유료 기능을 구매했을 때 자동으로 전송됩니다（구매하지 않으면 전송되지 않습니다）.
 
 ① 매장 직원 공유（여러 단말에서 매출 공유）
 ・전송 내용: 세션 이름, 참가 멤버의 표시 이름과 기호, 공유한 매출 데이터（상품명・금액・수량・결제 방법 등）, 공유한 상품 정보（상품명・가격・재고・세트 구성 등）, 메뉴 이미지, 익명의 단말 식별자（설치 ID＝개인을 특정하지 않는 무작위 식별자로, 같은 단말이 다시 참가했을 때 동일한 판매 담당자로 취급하기 위해 사용됩니다）.
@@ -669,10 +705,16 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
 ・스위치를 다시 끄면 그 자리에서 서버상의 재고가 삭제됩니다.
 
 ⑦ 설문의 전송
-・전송 내용：각 설문 문항에 대한 답변（선택형 답변・5단계 평가・자유 기술）, 익명의 단말 식별자（설치ID＝개인을 식별하지 않는 무작위 식별자）, 설문의 판, 답변의 대상으로 선택하신 이벤트（회차）. 설문에서 여쭙는 내용은 출점 경험, 당일 계산을 담당하는 인원수, 앱의 만족도와 친구에게 추천하고 싶은지, 자주 쓰는 기능과 쓰지 않는 기능, 유료 기능의 이용 여부와 그 가격에 대한 느낌, 계산에 걸리는 시간과 집계 수고의 변화, 그 밖에 함께 사용하는 앱・도구, 그리고 그 이유와 요청 사항의 자유 기술입니다. 어느 문항에서도 이름・주소・연락처는 여쭙지 않습니다.
+・전송 내용：각 설문 문항에 대한 답변（선택형 답변・5단계 평가・자유 기술）, 익명의 단말 식별자（설치ID＝개인을 식별하지 않는 무작위 식별자）, 설문의 판, 답변의 대상으로 선택하신 이벤트（회차）, 답변 시 앱의 표시 언어. 설문에서 여쭙는 내용은 출점 경험, 당일 계산을 담당하는 인원수, 앱의 만족도와 친구에게 추천하고 싶은지, 자주 쓰는 기능과 쓰지 않는 기능, 유료 기능의 이용 여부와 그 가격에 대한 느낌, 계산에 걸리는 시간과 집계 수고의 변화, 그 밖에 함께 사용하는 앱・도구, 그리고 그 이유와 요청 사항의 자유 기술입니다. 어느 문항에서도 이름・주소・연락처는 여쭙지 않습니다.
 ・실행 시점：설문 화면에서 이용자가 마지막 페이지까지 진행하여 전송 버튼을 눌렀을 때에만 전송됩니다. 설문은 정보 탭에서 열 수 있으며, 이벤트 종료 다음 날에 안내를 표시하는 경우가 있습니다. 도중에 닫으신 경우에는 한 건도 전송되지 않습니다.
 ・용도：앱 개선의 검토에만 이용합니다. 답변 내용을 공개하는 일은 없습니다.
 ・자유 기술란에는 이름・연락처 등의 개인정보를 입력하지 말아 주십시오.
+
+⑧ 유료 기능의 구매 기록
+・전송 내용：구매한 상품 ID, 가격（일본 정가）및 통화 코드（예: JPY. 해외 스토어에서는 현지 통화 코드）, 앱 식별자（개발자가 여러 앱의 매출을 구분하기 위한 고정 문자열）, 스토어 종류（App Store / Google Play）, 스토어가 발행하는 거래 ID, 익명의 단말 식별자（설치ID）, 구매 일시, 대상 이벤트・개최일, 구매 환경의 종류（개발판에서의 구매는 「테스트」, 그 외는 「불명」. 테스트 구매를 매출 집계에서 제외하기 위해 사용합니다）.
+・용도：개발자의 매출 집계（회계・세무상의 기록）및 같은 구매의 이중 계상 방지에만 이용합니다.
+・이름・이메일 주소・결제 수단・신용카드 정보는 일절 전송하지 않습니다. 결제 처리는 Apple / Google 이 수행하며, 당사는 이러한 정보에 접근할 수 없습니다.
+・실행 시점：본 항목은 공유 기능이 아니며, 유료 기능을 구매했을 때 자동으로 전송됩니다（온/오프 설정은 없습니다. 구매하지 않으면 전송되지 않습니다）.
 
 ※ 메뉴 이미지에 대하여: 공유・등록한 메뉴 이미지는 URL을 아는 누구나 열람할 수 있는 공개 스토리지에 저장됩니다. 저작권자의 허가가 없는 이미지는 업로드하지 마십시오.
 ※ 표시 이름에 실명을 입력하지 않을 수도 있습니다. 공유하는 정보는 필요한 범위로 한정할 것을 권장합니다.</p>
@@ -698,7 +740,7 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
 
 ■ 앱 이용 현황의 측정（Google Firebase Analytics）
 본 앱은 앱 개선 및 광고 효과 측정（설치 수 파악）을 위해 Google LLC가 제공하는 측정 서비스 「Firebase Analytics」를 사용합니다.
-・수집되는 정보: 익명의 단말 식별자（Firebase가 생성하는 랜덤 ID）, 앱 이용 현황（최초 실행, 실행, 화면 표시）, 단말의 기종・OS 버전・대략적인 지역.
+・수집되는 정보: 익명의 단말 식별자（Firebase가 생성하는 랜덤 ID）, 앱 이용 현황（최초 실행, 실행, 화면 표시, 유료 기능 구매 완료（상품 종류）・일부 오류 발생）, 단말의 기종・OS 버전・대략적인 지역.
 ・이름・이메일 주소・전화번호・연락처・정확한 위치 정보나, 앱 내에서 입력한 문장（서클명・판매물명・표시명・비고 등）이 전송되는 일은 없습니다. 매출 금액・재고 수 등 경영에 관한 수치도 전송하지 않습니다.
 ・광고 식별자（IDFA）는 취득하지 않으며, 타사의 앱이나 웹사이트를 넘나들며 이용자를 추적하는 「트래킹」은 하지 않습니다.
 ・수집된 정보는 Google의 서버로 전송되어 Google의 개인정보 처리방침에 따라 취급됩니다. 또한 광고 효과 측정을 위해 당사의 Google Ads 계정과 연동되어 있습니다.
@@ -739,6 +781,9 @@ If you wish to have the data described in (1) or (2) deleted, please contact <a 
 ・답변은 마지막으로 전송된 날로부터 2년이 경과한 시점에 자동으로 삭제됩니다.
 ・그 이전의 삭제를 원하시는 경우 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> 으로 연락해 주십시오.
 
+⑦ 유료 기능의 구매 기록（제3조 ⑧）
+・매출 집계（회계・세무상의 기록）를 위해 서버에 보존되며, 앱 내에 개별 삭제 기능은 없습니다. 법령상 보존 의무가 있는 기간에는 삭제할 수 없으나, 그 기간이 지난 것은 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> 으로 연락 주시면 삭제합니다.
+
 ①②의 데이터 삭제를 원하시는 경우 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> 으로 연락해 주십시오（예약 페이지는 페이지 URL, 매장 직원 공유는 참가 코드를 알려주시면 대상을 특정할 수 있습니다）.</p>
     <h2>9. 어린이 개인정보</h2>
     <p>본 앱은 전 연령을 대상으로 하며, 어린이로부터 개인정보를 수집할 의도가 없습니다.</p>
@@ -767,7 +812,7 @@ L'Application peut importer des données de produits depuis l'application compag
     <h2>3. Informations envoyées via les fonctionnalités en ligne / de partage</h2>
     <p>L'Application propose des fonctionnalités facultatives qui partagent ou synchronisent des données avec d'autres utilisateurs. Lorsque vous les utilisez, les informations suivantes sont envoyées et stockées sur le serveur cloud de l'Application (Supabase, un service de base de données / stockage fourni par Supabase, Inc., agissant comme notre sous-traitant de traitement des données).
 
-Le déclenchement varie selon la fonctionnalité. Les points 1, 2 et 5 ne s'exécutent que lorsque vous effectuez l'action correspondante (créer ou rejoindre une session de partage, publier une page de réservation, ouvrir un lien de transfert). Les points 3 et 4 s'exécutent automatiquement à chaque ouverture de l'onglet des articles, une fois que vous avez accepté les Conditions d'utilisation et la Politique de confidentialité affichées au premier lancement ; si vous désactivez le partage dans Réglages → Partage et confidentialité, plus rien n'est envoyé ensuite (voir également la Section 2). Le point ⑥ ne s'exécute, en plus du partage activé, que pour les articles dont les interrupteurs sous « Publication du stock » sont activés (activé par défaut). Le point ⑦ ne s'exécute que lorsque vous appuyez sur le bouton d'envoi du questionnaire.
+Le déclenchement varie selon la fonctionnalité. Les points 1, 2 et 5 ne s'exécutent que lorsque vous effectuez l'action correspondante (créer ou rejoindre une session de partage, publier une page de réservation, ouvrir un lien de transfert). Les points 3 et 4 s'exécutent automatiquement à chaque ouverture de l'onglet des articles, une fois que vous avez accepté les Conditions d'utilisation et la Politique de confidentialité affichées au premier lancement ; si vous désactivez le partage dans Réglages → Partage et confidentialité, plus rien n'est envoyé ensuite (voir également la Section 2). Le point ⑥ ne s'exécute, en plus du partage activé, que pour les articles dont les interrupteurs sous « Publication du stock » sont activés (activé par défaut). Le point ⑦ ne s'exécute que lorsque vous appuyez sur le bouton d'envoi du questionnaire. Le point ⑧ est envoyé automatiquement lorsque vous achetez une fonctionnalité payante (rien n'est envoyé si vous n'effectuez aucun achat).
 
 ① Partage vendeur (partage des ventes entre plusieurs appareils)
 ・Envoyé : nom de la session, noms d'affichage et symboles des membres participants, données de vente partagées (nom du produit, montant, quantité, moyen de paiement, etc.), informations produit partagées (nom du produit, prix, stock, composition du lot, etc.), images de menu, et un identifiant d'appareil anonyme (ID d'installation — un identifiant aléatoire qui ne vous identifie pas personnellement, utilisé pour qu'un même appareil qui rejoint à nouveau soit traité comme le même vendeur).
@@ -803,10 +848,16 @@ Le déclenchement varie selon la fonctionnalité. Les points 1, 2 et 5 ne s'exé
 ・Remettre l'interrupteur sur désactivé supprime immédiatement le stock présent sur le serveur.
 
 ⑦ Envoi du questionnaire
-・Ce qui est envoyé : vos réponses à chaque question (réponses à choix, notes sur 5 et texte libre), un identifiant d'appareil anonyme (identifiant d'installation, un identifiant aléatoire qui ne vous identifie pas), la version du questionnaire et l'événement (édition) que vous choisissez comme objet de vos réponses. Les questions portent sur votre expérience d'exposant, le nombre de personnes qui encaissent le jour même, votre satisfaction vis-à-vis de l'Application et votre envie de la recommander à un ami, les fonctionnalités que vous utilisez ou non, le fait d'avoir utilisé des fonctionnalités payantes et votre ressenti sur leur prix, l'évolution du temps d'encaissement et de la charge de comptabilité, les autres applications ou outils que vous utilisez en parallèle, ainsi que des réponses libres sur les raisons et vos demandes. Aucune question ne demande votre nom, votre adresse ni vos coordonnées.
+・Ce qui est envoyé : vos réponses à chaque question (réponses à choix, notes sur 5 et texte libre), un identifiant d'appareil anonyme (identifiant d'installation, un identifiant aléatoire qui ne vous identifie pas), la version du questionnaire, l'événement (édition) que vous choisissez comme objet de vos réponses, et la langue d'affichage de l'Application au moment de répondre. Les questions portent sur votre expérience d'exposant, le nombre de personnes qui encaissent le jour même, votre satisfaction vis-à-vis de l'Application et votre envie de la recommander à un ami, les fonctionnalités que vous utilisez ou non, le fait d'avoir utilisé des fonctionnalités payantes et votre ressenti sur leur prix, l'évolution du temps d'encaissement et de la charge de comptabilité, les autres applications ou outils que vous utilisez en parallèle, ainsi que des réponses libres sur les raisons et vos demandes. Aucune question ne demande votre nom, votre adresse ni vos coordonnées.
 ・Déclenchement : uniquement lorsque vous atteignez la dernière page du questionnaire et appuyez sur le bouton d'envoi. Le questionnaire s'ouvre depuis l'onglet Informations, et il se peut que nous affichions une invitation le lendemain de la fin d'un événement. Rien n'est envoyé si vous fermez le questionnaire en cours de route.
 ・Finalité : utilisé uniquement pour envisager des améliorations de l'Application. Les réponses ne sont jamais publiées.
 ・Merci de ne pas saisir d'informations personnelles (nom, coordonnées) dans les champs libres.
+
+⑧ Enregistrement des achats de fonctionnalités payantes
+・Ce qui est envoyé : l'identifiant du produit acheté, le prix (prix catalogue au Japon) et le code de devise (par ex. JPY ; pour les boutiques étrangères, le code de la devise locale), un identifiant d'application (chaîne fixe permettant au développeur de distinguer les ventes de plusieurs applications), le type de boutique (App Store / Google Play), l'identifiant de transaction émis par la boutique, un identifiant d'appareil anonyme (identifiant d'installation), la date et l'heure de l'achat, l'événement et le jour concernés, et le type d'environnement d'achat (« test » pour les achats depuis une version de développement, sinon « inconnu » ; sert à exclure les achats de test des totaux de ventes).
+・Finalité : uniquement la comptabilisation des ventes par le développeur (registres comptables et fiscaux) et la prévention du double comptage d'un même achat.
+・Votre nom, votre adresse e-mail, votre moyen de paiement et vos informations de carte bancaire ne sont jamais envoyés. Les paiements sont traités par Apple / Google, et nous n'avons pas accès à ces informations.
+・Déclenchement : ce point n'est pas une fonction de partage ; il est envoyé automatiquement lorsque vous achetez une fonctionnalité payante (aucun réglage marche/arrêt ; rien n'est envoyé si vous n'effectuez aucun achat).
 
 ※ À propos des images de menu : les images de menu que vous partagez ou enregistrez sont stockées dans un stockage public lisible par quiconque dispose de l'URL. N'envoyez pas d'images pour lesquelles vous n'avez pas l'autorisation du titulaire des droits d'auteur.
 ※ Vous pouvez choisir de ne pas saisir votre vrai nom comme nom d'affichage. Nous recommandons de ne partager que les informations nécessaires.</p>
@@ -832,7 +883,7 @@ Lorsque vos crédits OCR cloud restants sont insuffisants pour le nombre d'image
 
 ■ Mesure d'usage de l'application (Google Firebase Analytics)
 L'Application utilise « Firebase Analytics », un service de mesure fourni par Google LLC, afin d'améliorer l'Application et de mesurer l'efficacité publicitaire (nombre d'installations).
-・Informations collectées : un identifiant d'appareil anonyme (identifiant aléatoire généré par Firebase), l'usage de l'application (premier lancement, lancements, affichages d'écran), le modèle de votre appareil, la version de son OS et votre région approximative.
+・Informations collectées : un identifiant d'appareil anonyme (identifiant aléatoire généré par Firebase), l'usage de l'application (premier lancement, lancements, affichages d'écran, achèvement d'un achat de fonctionnalité payante (type de produit) et survenue de certaines erreurs), le modèle de votre appareil, la version de son OS et votre région approximative.
 ・Vos nom, adresse e-mail, numéro de téléphone, contacts, position précise, ainsi que tout texte saisi dans l'Application (nom de cercle, nom d'article, nom affiché, notes, etc.) ne sont jamais transmis. Les montants de ventes, les niveaux de stock et autres chiffres d'activité ne sont pas non plus transmis.
 ・L'identifiant publicitaire (IDFA) n'est pas collecté et nous n'effectuons aucun « suivi » vous pistant à travers les applications ou sites web d'autres sociétés.
 ・Les informations collectées sont envoyées aux serveurs de Google et traitées conformément à la politique de confidentialité de Google. Elles sont également liées à notre compte Google Ads à des fins de mesure publicitaire.
@@ -873,6 +924,9 @@ Les liens externes que l'Application peut ouvrir incluent des liens vers les ré
 ・Les réponses sont supprimées automatiquement deux ans après le jour de leur dernier envoi.
 ・Pour demander une suppression anticipée, veuillez contacter <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>.
 
+(7) Enregistrement des achats de fonctionnalités payantes (Section 3, point ⑧)
+・Ils sont conservés sur le serveur pour la comptabilisation des ventes (registres comptables et fiscaux), et l'Application ne propose pas de fonction de suppression. Ils ne peuvent pas être supprimés pendant la durée de conservation légale, mais passé ce délai, nous les supprimerons sur demande adressée à <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>.
+
 Si vous souhaitez faire supprimer les données visées aux points (1) et (2), veuillez contacter <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> (merci d'indiquer l'URL de la page pour une page de réservation, ou le code de participation pour une session de partage vendeur, afin que nous puissions l'identifier).</p>
     <h2>9. Confidentialité des enfants</h2>
     <p>L'Application s'adresse à tous les âges et n'a pas l'intention de collecter des informations personnelles auprès d'enfants.</p>
@@ -891,7 +945,7 @@ Si vous souhaitez faire supprimer les données visées aux points (1) et (2), ve
 </div>
 
 <script>
-  var labels = {'ja':'最終更新: 2026-08-27', 'en':'Last updated: 2026-08-27', 'zh':'最后更新: 2026-08-27', 'zh-Hant':'最後更新: 2026-08-27', 'ko':'최종 업데이트: 2026-08-27', 'fr':'Dernière mise à jour : 2026-08-27'};
+  var labels = {'ja':'最終更新: 2026-09-19', 'en':'Last updated: 2026-09-19', 'zh':'最后更新: 2026-09-19', 'zh-Hant':'最後更新: 2026-09-19', 'ko':'최종 업데이트: 2026-09-19', 'fr':'Dernière mise à jour : 2026-09-19'};
   function showLang(lang) {
     document.querySelectorAll('.policy').forEach(function(el){ el.classList.remove('visible'); });
     document.getElementById('policy-' + lang).classList.add('visible');
