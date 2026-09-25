@@ -49,13 +49,13 @@
 
 <style>
   :root{
-    --bg1:#241a13;
-    --bg2:#3a2a1e;
-    --coral:#e67a38;
-    --coral-d:#c15c26;
+    --bg1:#084028;  /* 2026-09-25 チラシ（汎用版2026-09）の帯色に合わせて焦げ茶→深緑 */
+    --bg2:#0b4a2e;  /* チラシの明側 #10603a は小さい文字が多い Web では明るすぎ（白 5.18:1）＝暗側はチラシと同じ・明側だけ一段暗く（2026-09-25 DS24 実測） */
+    --gold:#ffd246;  /* 強調色＝チラシの強調線と同じ金。旧 coral #e67a38 は緑の上で 2.61:1＝DS24 を割るので置換 */
+    --gold-d:#e0b020;
     --money:#2fb36a;
     --text:#fff;
-    --sub:#cbb9a7;
+    --sub:#d3e6da;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{
@@ -72,8 +72,8 @@
 .backlink{display:inline-flex;align-items:center;min-height:48px;
     /* ★Rev517（C-1）: 22.1px → 48px+。padding で当たり判定を伸ばし、
        同値の負マージンで**見た目の位置は1px も動かさない**（HIT-SLOP-BASE の Web 版）。 */
-    padding:0 12px;margin-left:-12px;font-size:13px;color:#d9c3ac;text-decoration:none;margin-bottom:20px}
-  .backlink:hover{color:#f2e2cf}
+    padding:0 12px;margin-left:-12px;font-size:13px;color:#e1efe6;text-decoration:none;margin-bottom:20px}
+  .backlink:hover{color:#ffffff}
 
   .hero{text-align:center;margin-bottom:36px}
   .icon{
@@ -83,19 +83,19 @@
     margin-bottom:20px;background:#fff;object-fit:cover;
   }
   .appname{font-size:34px;font-weight:800;letter-spacing:.02em}
-  .tagline{font-size:15.5px;color:#d9c3ac;margin-top:8px}
+  .tagline{font-size:15.5px;color:#e1efe6;margin-top:8px}
 
   .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px}
-  .chip{font-size:12.5px;font-weight:700;color:#ffe4cf;background:rgba(230,122,56,.18);
-        border:1px solid rgba(230,122,56,.4);padding:5px 12px;border-radius:20px}
+  .chip{font-size:12.5px;font-weight:700;color:#fff0bf;background:rgba(255,210,70,.108);
+        border:1px solid rgba(255,210,70,.4);padding:5px 12px;border-radius:20px}
 
   .catch{
     text-align:center;font-size:22px;font-weight:800;
     margin:34px 0 6px;line-height:1.55;
   }
-  .catch .o{color:var(--coral)}
+  .catch .o{color:var(--gold)}
   .catch-sub{
-    text-align:center;font-size:14.5px;color:#d9c3ac;margin:8px 0 0;line-height:1.7;
+    text-align:center;font-size:14.5px;color:#e1efe6;margin:8px 0 0;line-height:1.7;
   }
 
   .dl{display:flex;flex-direction:column;gap:14px;margin:30px 0 8px}
@@ -113,30 +113,30 @@
     font-size:15px;padding:13px 18px;border-radius:14px;
   }
   .btn-x .ic{font-size:18px}
-  .btn-x small{font-size:11.5px;color:#c0ae9b}  /* DS24: 最も明るい地(#3a2a1e)でも 6.39:1 */
+  .btn-x small{font-size:11.5px;color:#d3e6da}  /* DS24: 緑地(2026-09-25〜)の最も明るい地でも 4.5:1 以上＝lp_green_check */
   .btn .ic{font-size:22px;line-height:1}
   .btn small{display:block;font-size:12px;font-weight:500;color:rgba(255,255,255,.8)}
-  .btn-store small{color:#6b5a48}
+  .btn-store small{color:#3f5a4a}
 
-  .note{text-align:center;font-size:13px;color:#cbb9a7;margin-top:10px}
+  .note{text-align:center;font-size:13px;color:#d3e6da;margin-top:10px}
   .note .free{color:#8ff0be;font-weight:700}
 
   .empathy{
-    background:rgba(230,122,56,.08);border:1px solid rgba(230,122,56,.3);
+    background:rgba(255,210,70,.048);border:1px solid rgba(255,210,70,.18);
     border-radius:20px;padding:24px;margin:36px 0;
   }
-  .empathy h2{font-size:17px;font-weight:800;margin-bottom:14px;color:#ffe4cf}
+  .empathy h2{font-size:17px;font-weight:800;margin-bottom:14px;color:#fff0bf}
   .empathy ul{list-style:none;margin-bottom:16px}
-  .empathy li{font-size:14.5px;color:#e6d6c5;padding:7px 0;padding-left:24px;position:relative}
-  .empathy li::before{content:"✕";position:absolute;left:0;color:var(--coral);font-size:13px;font-weight:700;top:8px}
+  .empathy li{font-size:14.5px;color:#f1f8f4;padding:7px 0;padding-left:24px;position:relative}
+  .empathy li::before{content:"✕";position:absolute;left:0;color:var(--gold);font-size:13px;font-weight:700;top:8px}
   .empathy .answer{text-align:center;font-size:15px;font-weight:700;color:#fff;margin-top:4px}
 
   .showcase{margin:46px 0 10px}
   .showcase-h{font-size:21px;font-weight:800;text-align:center;letter-spacing:.01em}
-  .showcase-sub{text-align:center;color:#d9c3ac;font-size:13.5px;margin:8px 0 6px}
+  .showcase-sub{text-align:center;color:#e1efe6;font-size:13.5px;margin:8px 0 6px}
   .feat{margin:34px 0}
   .feat h3{font-size:17px;font-weight:800;margin-bottom:8px}
-  .feat p{font-size:14.5px;color:#e6d6c5;margin-bottom:16px}
+  .feat p{font-size:14.5px;color:#f1f8f4;margin-bottom:16px}
   .shots{display:flex;gap:14px;justify-content:center;align-items:flex-start;flex-wrap:wrap}
   .shots img{
     border-radius:16px;border:1px solid rgba(255,255,255,.14);
@@ -146,8 +146,8 @@
   .shots.one img{width:min(70%,270px)}
 
   .hero-feat{
-    background:linear-gradient(135deg,rgba(230,122,56,.15) 0%,rgba(236,72,153,.10) 100%);
-    border:2px solid rgba(230,122,56,.5);border-radius:24px;
+    background:linear-gradient(135deg,rgba(255,210,70,.09) 0%,rgba(236,72,153,.10) 100%);
+    border:2px solid rgba(255,210,70,.5);border-radius:24px;
     padding:28px 22px 24px;margin:40px 0 10px;position:relative;
   }
   .hero-feat::before{
@@ -156,7 +156,7 @@
   .hero-feat .feat{margin:20px 0 0}
   .hero-feat .feat h3{font-size:18.5px}
   .hero-feat .divider{
-    border:none;border-top:1px solid rgba(230,122,56,.3);margin:28px 0 8px;
+    border:none;border-top:1px solid rgba(255,210,70,.3);margin:28px 0 8px;
   }
 
   .features{
@@ -165,7 +165,7 @@
   }
   .features h2{font-size:18px;margin-bottom:18px;font-weight:800}
   .features ul{list-style:none;display:grid;gap:12px}
-  .features li{display:flex;align-items:flex-start;gap:11px;font-size:15px;color:#f0e5d9}
+  .features li{display:flex;align-items:flex-start;gap:11px;font-size:15px;color:#f1f8f4}
   .features .dot{
     flex:0 0 auto;width:22px;height:22px;border-radius:50%;
     display:flex;align-items:center;justify-content:center;
@@ -173,11 +173,11 @@
   }
 
   .sister{
-    background:rgba(230,122,56,.12);border:1px solid rgba(230,122,56,.4);
+    background:rgba(255,210,70,.072);border:1px solid rgba(255,210,70,.24);
     border-radius:20px;padding:24px;margin:40px 0;text-align:center;
   }
-  .sister h2{font-size:18px;font-weight:800;margin-bottom:10px;color:#ffd9bf}
-  .sister p{font-size:14.5px;color:#f0e5d9;margin-bottom:14px}
+  .sister h2{font-size:18px;font-weight:800;margin-bottom:10px;color:#fff0bf}
+  .sister p{font-size:14.5px;color:#f1f8f4;margin-bottom:14px}
   .sister a.link{
     display:inline-flex;align-items:center;gap:8px;text-decoration:none;
     font-weight:700;font-size:15px;color:#fff;background:rgba(255,255,255,.1);
@@ -186,27 +186,27 @@
   }
 
   .tester{
-    background:rgba(230,122,56,.10);
-    border:1px solid rgba(230,122,56,.35);
+    background:rgba(255,210,70,.06);
+    border:1px solid rgba(255,210,70,.35);
     border-radius:20px;padding:24px;margin:40px 0;
   }
   .tester h2{font-size:18px;font-weight:800;margin-bottom:12px}
-  .tester p{font-size:14px;color:#e6d6c5;margin-bottom:12px}
+  .tester p{font-size:14px;color:#f1f8f4;margin-bottom:12px}
   .tester p:last-of-type{margin-bottom:0}
   .tester .tester-perk{
     font-size:14px;color:#fff;line-height:1.7;
-    background:rgba(230,122,56,.22);
-    border:1px solid rgba(230,122,56,.45);
+    background:rgba(255,210,70,.132);
+    border:1px solid rgba(255,210,70,.45);
     border-radius:12px;padding:14px 16px;
   }
-  .tester .tester-perk b{color:#ffd9b0}
-  .tester .tester-note{font-size:13px;color:#ffd0c4}
-  .btn-tester{background:var(--coral);color:#fff;margin-top:16px}
-  .btn-tester small{color:rgba(255,255,255,.88)}
+  .tester .tester-perk b{color:#ffe27a}
+  .tester .tester-note{font-size:13px;color:#fff4d6}
+  .btn-tester{background:var(--gold);color:var(--bg1);margin-top:16px}
+  .btn-tester small{color:rgba(8,64,40,.85)}
 
   /* テスター応募フォーム（2026-08-10 に Google フォームから移設） */
   .tester-form{display:flex;flex-direction:column;gap:12px;margin:18px 0 14px}
-  .tester-form label.f{display:flex;flex-direction:column;gap:6px;font-size:13.5px;color:#ffe0d2}
+  .tester-form label.f{display:flex;flex-direction:column;gap:6px;font-size:13.5px;color:#fff4d6}
   .tester-form input[type=email],
   .tester-form input[type=text]{
     width:100%;padding:16px 18px;border-radius:14px;
@@ -214,14 +214,14 @@
     background:rgba(255,255,255,.06);color:#fff;
     font-size:16px;font-family:inherit;
   }
-  .tester-form input::placeholder{color:#d6b3a2}
-  .tester-form input:focus{outline:2px solid var(--coral);outline-offset:1px}
+  .tester-form input::placeholder{color:#c9dccf}
+  .tester-form input:focus{outline:2px solid var(--gold);outline-offset:1px}
   .tester-form input:disabled{opacity:.6}
   /* ★Rev517（C-1）: 21.6px（1行）→ 48px+。テスター応募の**唯一の同意チェック**がここ。 */
-  .tester-check{display:flex;gap:10px;align-items:flex-start;min-height:48px;padding:13px 0;font-size:13.5px;color:#ffe0d2;line-height:1.6}
-  .tester-check input[type=checkbox]{width:20px;height:20px;margin-top:2px;flex:none;accent-color:var(--coral)}
+  .tester-check{display:flex;gap:10px;align-items:flex-start;min-height:48px;padding:13px 0;font-size:13.5px;color:#fff4d6;line-height:1.6}
+  .tester-check input[type=checkbox]{width:20px;height:20px;margin-top:2px;flex:none;accent-color:var(--gold)}
   .btn-tester-submit{
-    background:var(--coral);color:#fff;border:0;width:100%;
+    background:var(--gold);color:var(--bg1);border:0;width:100%;
     cursor:pointer;font-family:inherit;
   }
   .tester-msg{font-size:13.5px;min-height:1px}
@@ -237,8 +237,8 @@
     border-radius:20px;padding:24px;margin:40px 0;
   }
   .waitlist h2{font-size:18px;font-weight:800;margin-bottom:12px}
-  .waitlist p{font-size:14px;color:#e6d6c5;margin-bottom:12px}
-  .waitlist .waitlist-note{font-size:13px;color:#cbb9a7;margin-bottom:0}
+  .waitlist p{font-size:14px;color:#f1f8f4;margin-bottom:12px}
+  .waitlist .waitlist-note{font-size:13px;color:#d3e6da;margin-bottom:0}
   .waitlist-form{display:flex;flex-direction:column;gap:12px;margin:18px 0 14px}
   .waitlist-form input[type=email]{
     width:100%;padding:16px 18px;border-radius:14px;
@@ -247,29 +247,29 @@
     /* 16px 未満だと iOS Safari がフォーカス時にページを拡大する */
     font-size:16px;font-family:inherit;
   }
-  .waitlist-form input[type=email]::placeholder{color:#b3a292}
+  .waitlist-form input[type=email]::placeholder{color:#c9dccf}
   .waitlist-form input[type=email]:focus{outline:2px solid var(--money);outline-offset:1px}
   .waitlist-form input[type=email]:disabled{opacity:.6}
   .btn-waitlist{
     background:var(--money);color:#fff;border:0;width:100%;
     cursor:pointer;font-family:inherit;
   }
-  .waitlist-consent{font-size:12.5px;color:#cbb9a7;margin:0 0 12px}
+  .waitlist-consent{font-size:12.5px;color:#d3e6da;margin:0 0 12px}
   .waitlist-msg{font-size:13.5px;min-height:1px}
   .waitlist-msg.is-ok{color:#8ce8b4}
   .waitlist-msg.is-err{color:#ffb4a8}
   /* ボット用の空欄（人の目にもスクリーンリーダーにも出さない） */
   .waitlist-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 
-  .events{text-align:center;font-size:14px;color:#d9c3ac;margin:8px 0 0}
-  .events b{color:var(--coral)}
+  .events{text-align:center;font-size:14px;color:#e1efe6;margin:8px 0 0}
+  .events b{color:var(--gold)}
 
   footer{
-    /* DS24: #a1907e は最も明るい地(#3a2a1e)で 4.45:1 と補助テキストの下限(4.5:1)を割っていた */
-    text-align:center;font-size:12px;color:#b5a390;margin-top:48px;
+    /* DS24: #a1907e は旧・最も明るい地(#3a2a1e)で 4.45:1 と補助テキストの下限(4.5:1)を割っていた（2026-09-25 緑地へ移行後は #d3e6da） */
+    text-align:center;font-size:12px;color:#d3e6da;margin-top:48px;
     border-top:1px solid rgba(255,255,255,.1);padding-top:24px;
   }
-  footer a{color:#d9c3ac}
+  footer a{color:#e1efe6}
 </style>
 </head>
 <body>
