@@ -123,6 +123,12 @@
    *     それ以外           → portal            … LP・その他はまとめて
    *
    *   🔴 既に ct が入っているリンクは触らない（手で指定した値を上書きしない）。
+   *
+   *   Google Play リンクにも同じ ct を utm_source として載せる（2026-09-29 追加）。
+   *     …/details?id=com.torehan.app → …&referrer=utm_source%3Dxad_holo_a%26utm_medium%3Dportal
+   *   Play Console の 統計情報 → 獲得レポート（UTM 別）で見える。
+   *   それまで Play ボタンには何も付いておらず、Android 側の広告効果は測れなかった。
+   *   🔴 既に referrer が入っているリンクは触らない（App Store の ct と同じ扱い）。
    * --------------------------------------------------------------------- */
   function defaultCt() {
     var m = path.match(/^\/blog\/([^/]+)\/?$/);
@@ -135,10 +141,16 @@
     return String(value || '').replace(/[^A-Za-z0-9_-]/g, '').slice(0, 40);
   }
 
-  var ct = sanitizeCt((query && query.get('src')) || '') || sanitizeCt(defaultCt()) || 'portal';
+  /* ?src= をそのまま整えた値（無ければ null）。閲覧の記録（③）にはこちらを載せる＝
+   * portal 等の既定値と「指定なしで来た」を区別できるようにするため。 */
+  var src = sanitizeCt((query && query.get('src')) || '') || null;
+  var ct = src || sanitizeCt(defaultCt()) || 'portal';
+
+  var APP_STORE_SEL = 'a[href*="apps.apple.com"]';
+  var PLAY_SEL = 'a[href*="play.google.com/store/apps"]';
 
   function tagStoreLinks() {
-    var links = document.querySelectorAll('a[href*="apps.apple.com"]');
+    var links = document.querySelectorAll(APP_STORE_SEL);
     for (var i = 0; i < links.length; i++) {
       var u;
       try {
@@ -151,6 +163,21 @@
       u.searchParams.set('ct', ct);
       u.searchParams.set('mt', '8');
       links[i].href = u.toString();
+    }
+
+    var plays = document.querySelectorAll(PLAY_SEL);
+    for (var j = 0; j < plays.length; j++) {
+      var g;
+      try {
+        g = new URL(plays[j].href);
+      } catch (e) {
+        continue;
+      }
+      if (g.searchParams.has('referrer')) continue;
+      /* referrer の値そのものが「utm_source=…&utm_medium=…」というクエリ文字列。
+       * searchParams.set が = と & を %3D / %26 に符号化する＝Play が求める形になる。 */
+      g.searchParams.set('referrer', 'utm_source=' + ct + '&utm_medium=portal');
+      plays[j].href = g.toString();
     }
   }
 
@@ -205,7 +232,8 @@
     p_path: path,
     p_session: sid,
     p_referrer: document.referrer || null,
-    p_device: device
+    p_device: device,
+    p_src: src /* 2026-09-29: どの広告素材・投稿から LP に来たか（blog_analytics.sql「流入元ラベル」節） */
   });
 
   var t0 = Date.now();
@@ -271,11 +299,15 @@
   }
 
   /* アプリ導線のクリック。
-   * ブログ記事内の CTA（.cta-btn）と、LP のストアボタン（App Store へのリンク）の両方を数える。 */
+   * ブログ記事内の CTA（.cta-btn）と、LP のストアボタン（App Store／Google Play）を数える。
+   *
+   * 🔴 keepalive: true 必須（2026-09-29）。ストアボタンは同じタブで遷移する＝
+   *    keepalive 無しの fetch は遷移の瞬間に打ち切られることがあり、クリック数が下振れしていた。
+   *    （time / scroll が pagehide で true を渡しているのと同じ理由） */
   document.addEventListener('click', function (e) {
     var t = e.target;
     if (!t || !t.closest) return;
-    var a = t.closest('.cta-btn') || t.closest('a[href*="apps.apple.com"]');
-    if (a) rpc('record_blog_cta', { p_path: path, p_session: sid, p_target: a.href });
+    var a = t.closest('.cta-btn') || t.closest(APP_STORE_SEL) || t.closest(PLAY_SEL);
+    if (a) rpc('record_blog_cta', { p_path: path, p_session: sid, p_target: a.href }, true);
   });
 })();

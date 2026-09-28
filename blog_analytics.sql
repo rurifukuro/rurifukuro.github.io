@@ -61,6 +61,18 @@ CREATE TABLE IF NOT EXISTS blog_events (
 -- ============================================================
 ALTER TABLE blog_events ADD COLUMN IF NOT EXISTS is_dev boolean NOT NULL DEFAULT false;
 
+-- ============================================================
+--  流入元ラベル（src）── 2026-09-29 追加
+--
+--  何のため: LP を ?src=xad_holo_a のように開いても、閲覧の記録は location.pathname
+--            （＝クエリなし）だけだった。**どの広告素材から来た人が何人 LP を見たか**が
+--            App Store ボタンを押した人（ct= に残る）しか分からず、分母が取れなかった。
+--  入れる値: analytics.js が ?src= を ct と同じ規則で整えた値（英数字・_・- の 40 文字まで）。
+--            ?src= が無い閲覧は NULL（portal 等の既定値は入れない＝「指定なし」と区別する）。
+--  入れる行: pageview だけ。CTA はリンク先 URL（referrer 列）に ct= / utm_source= が載るので要らない。
+-- ============================================================
+ALTER TABLE blog_events ADD COLUMN IF NOT EXISTS src text;
+
 CREATE INDEX IF NOT EXISTS idx_blog_events_path ON blog_events (page_path);
 CREATE INDEX IF NOT EXISTS idx_blog_events_type ON blog_events (event_type);
 CREATE INDEX IF NOT EXISTS idx_blog_events_created ON blog_events (created_at DESC);
@@ -115,6 +127,9 @@ CREATE POLICY "blog_page_views_select" ON blog_page_views
 --    古い HTML をキャッシュしているブラウザは p_is_dev を送ってこないが、
 --    p_is_dev には DEFAULT があるので PostgREST 側で既定値が入る＝計測は途切れない。
 DROP FUNCTION IF EXISTS increment_blog_view(text, text, text, text);
+-- 2026-09-29: p_src を足した＝5 引数版も落とす（SEC-REPLACE-SIG＝残すと古い方を掴み続ける）。
+--             p_src には DEFAULT があるので、p_src を送らない古いキャッシュの JS も新しい方に解決される。
+DROP FUNCTION IF EXISTS increment_blog_view(text, text, text, text, boolean);
 DROP FUNCTION IF EXISTS record_blog_time(text, text, numeric);
 DROP FUNCTION IF EXISTS record_blog_scroll(text, text, numeric);
 DROP FUNCTION IF EXISTS record_blog_cta(text, text, text);
@@ -125,7 +140,8 @@ CREATE OR REPLACE FUNCTION increment_blog_view(
   p_session text,
   p_referrer text DEFAULT NULL,
   p_device text DEFAULT NULL,
-  p_is_dev boolean DEFAULT false
+  p_is_dev boolean DEFAULT false,
+  p_src text DEFAULT NULL
 )
 RETURNS void
 LANGUAGE plpgsql
@@ -138,6 +154,8 @@ DECLARE
   v_referrer text := left(btrim(p_referrer), 512);
   v_device   text := left(btrim(p_device), 32);
   v_is_dev   boolean := coalesce(p_is_dev, false);
+  -- ブラウザ側と同じ規則（英数字・_・-／40 文字）でサーバーでも整える＝anon から任意の文字列を書かせない。
+  v_src      text := nullif(left(regexp_replace(coalesce(p_src, ''), '[^A-Za-z0-9_-]', '', 'g'), 40), '');
 BEGIN
   -- 空パス・空セッションは計測として意味が無いうえ、'' に PV が積み上がるとランキングを汚す。
   IF v_path = '' OR v_session = '' THEN
@@ -160,8 +178,8 @@ BEGIN
       updated_at = now();
   END IF;
 
-  INSERT INTO blog_events (page_path, session_id, event_type, referrer, device_type, is_dev)
-  VALUES (v_path, v_session, 'pageview', v_referrer, v_device, v_is_dev);
+  INSERT INTO blog_events (page_path, session_id, event_type, referrer, device_type, is_dev, src)
+  VALUES (v_path, v_session, 'pageview', v_referrer, v_device, v_is_dev, v_src);
 END;
 $$;
 
@@ -252,7 +270,7 @@ BEGIN
 END;
 $$;
 
-GRANT EXECUTE ON FUNCTION increment_blog_view(text, text, text, text, boolean) TO anon;
+GRANT EXECUTE ON FUNCTION increment_blog_view(text, text, text, text, boolean, text) TO anon;
 GRANT EXECUTE ON FUNCTION record_blog_time(text, text, numeric, boolean) TO anon;
 GRANT EXECUTE ON FUNCTION record_blog_scroll(text, text, numeric, boolean) TO anon;
 GRANT EXECUTE ON FUNCTION record_blog_cta(text, text, text, boolean) TO anon;
