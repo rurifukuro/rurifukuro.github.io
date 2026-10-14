@@ -31,10 +31,17 @@ def save_web(img, path, width=720, q=92):
     return r.size
 
 
+# 🔴 2026-10-15 実測: 3.簡体中国語 と 4.繫体中国語 は一部の画面が入れ替わって入っている
+#   （簡体フォルダに繁体字の画面・繁体フォルダに簡体字の画面）。見出し・ボタンの字体で確かめた。
+#   入れ替わっている画面だけ、もう片方のフォルダから取る。攻略情報(9)は正しい側に入っている。
+SWAPPED = {'１全体マップ.png', '2 全体マップ.png', '4 サークル分担作成画面.png'}
+OTHER = {'zh-hans': '4.繫体中国語', 'zh-hant': '3.簡体中国語'}
+
 for d, folder in LANGS.items():
     os.makedirs(os.path.join(OUT, d), exist_ok=True)
     for name, (src, box) in SHOTS.items():
-        im = Image.open(os.path.join(SRC, folder, src)).convert('RGB')
+        f = OTHER[d] if (d in OTHER and src in SWAPPED) else folder
+        im = Image.open(os.path.join(SRC, f, src)).convert('RGB')
         assert im.size == (1290, 2796), (folder, src, im.size)
         size = save_web(im.crop(box), os.path.join(OUT, d, name))
         print(d, name, size)
