@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<!-- 🔴 このファイルは生成物の雛形。public/torehan/<lang>/index.html は
+     `npm run build:torehan-intl` で scripts/torehan-intl/{template.html,strings.json} から作る（WEB18＝正本は1つ）。
+     生成物を手で直さないこと（次の生成で消える。`npm run check:torehan-intl` が差分を赤で止める）。 -->
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Torehan! — 用你的語言攻略日本同人展｜Comiket 攻略 App</title>
+<meta name="description" content="Torehan! 是日本同人展（如 Comiket）的攻略應用程式。整個應用程式支援 6 種語言，社團名、作者名和商品名都能翻譯成你的語言。會場地圖、日圓預算自動計算、品書辨識、與同伴分工。基本免費，無廣告。">
+<link rel="canonical" href="https://rurifukuro.github.io/torehan/zh-hant/">
+<link rel="alternate" hreflang="ja" href="https://rurifukuro.github.io/torehan/">
+<link rel="alternate" hreflang="en" href="https://rurifukuro.github.io/torehan/en/">
+<link rel="alternate" hreflang="zh-Hans" href="https://rurifukuro.github.io/torehan/zh-hans/">
+<link rel="alternate" hreflang="zh-Hant" href="https://rurifukuro.github.io/torehan/zh-hant/">
+<link rel="alternate" hreflang="ko" href="https://rurifukuro.github.io/torehan/ko/">
+<link rel="alternate" hreflang="fr" href="https://rurifukuro.github.io/torehan/fr/">
+<link rel="alternate" hreflang="x-default" href="https://rurifukuro.github.io/torehan/en/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Torehan! — 日本同人展，用你的語言逛">
+<meta property="og:description" content="應用程式全介面 6 種語言，並可翻譯社團名與商品名。支援 Comiket 等同人展的會場地圖與預算管理。基本免費，無廣告。">
+<meta property="og:url" content="https://rurifukuro.github.io/torehan/zh-hant/">
+<meta property="og:image" content="https://rurifukuro.github.io/icon.png">
+<meta property="og:locale" content="zh_TW">
+<meta name="twitter:card" content="summary">
+
+<!-- Google広告のコンバージョン計測（値は日本語版 /torehan/ と同じ＝ストアボタンのクリックを数える） -->
+<script>
+  window.GADS_TAG_ID           = "AW-18258676158";
+  window.GADS_CONVERSION_LABEL = "7h44CNnR_9YcEL6TtYJE";
+
+  (function () {
+    var ok = window.GADS_TAG_ID && window.GADS_TAG_ID.indexOf("XXXX") === -1;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { dataLayer.push(arguments); };
+    if (ok) {
+      var s = document.createElement("script");
+      s.async = true;
+      s.src = "https://www.googletagmanager.com/gtag/js?id=" + window.GADS_TAG_ID;
+      document.head.appendChild(s);
+      gtag("js", new Date());
+      gtag("config", window.GADS_TAG_ID);
+    }
+  })();
+
+  function torehanTrackStoreClick() {
+    var ok = window.GADS_TAG_ID && window.GADS_TAG_ID.indexOf("XXXX") === -1
+          && window.GADS_CONVERSION_LABEL && window.GADS_CONVERSION_LABEL.indexOf("XXXX") === -1;
+    if (ok && typeof window.gtag === "function") {
+      window.gtag("event", "conversion", {
+        "send_to": window.GADS_TAG_ID + "/" + window.GADS_CONVERSION_LABEL
+      });
+    }
+    return true;
+  }
+
+  /* 端末に合うストアを主ボタンにする（日本語版と同じ）。
+     🔴 ストアのリンクは全部 HTML に静的に書く＝analytics.js が流入元（ct / referrer）を付けてクリックを数える。 */
+  (function () {
+    var ua = navigator.userAgent || "";
+    var root = document.documentElement;
+    if (/iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1)) {
+      root.classList.add("is-ios");
+    } else if (/Android/i.test(ua)) {
+      root.classList.add("is-android");
+    }
+  })();
+</script>
+
+<style>
+  /* 色は日本語版 /torehan/ と同じトークン（DS24＝比で決めた値。測り方と比は日本語版の注記を参照）。 */
+  :root{
+    --navy:#0c1a38;
+    --navy2:#142c54;
+    --orange:#f5821f;
+    --accent-text:#ffa24d;
+    --red:#e23b33;
+    --text:#e4ebf7;
+    --sub:#b8c7e6;
+    --faint:#9fb0d4;
+    --card:rgba(255,255,255,.06);
+    --line:rgba(255,255,255,.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif;
+    background:linear-gradient(160deg,var(--navy) 0%,var(--navy2) 100%);
+    background-color:var(--navy);
+    color:var(--text); min-height:100vh; line-height:1.75; font-size:16px;
+    word-break:normal; overflow-wrap:anywhere;
+    -webkit-font-smoothing:antialiased;
+  }
+  [lang="ja"]{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",YuGothic,"Meiryo",sans-serif}
+  .wrap{max-width:680px;margin:0 auto;padding:16px 20px 48px}
+  img{max-width:100%}
+
+  .top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .icon{
+    width:56px;height:56px;border-radius:13px;flex:none;
+    box-shadow:0 4px 14px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.15);
+    background:#fff;object-fit:cover;
+  }
+  .appname{font-size:22px;font-weight:800;letter-spacing:.02em;line-height:1.3;color:#fff}
+  .tagline{font-size:14px;color:var(--sub);line-height:1.4}
+
+  .soon{
+    display:inline-block;margin:0 0 12px;padding:6px 12px;border-radius:999px;
+    background:rgba(245,130,31,.16);border:1px solid rgba(245,130,31,.55);
+    font-size:14px;font-weight:700;color:#ffd0a8;line-height:1.5;
+  }
+  .soon[hidden]{display:none}
+
+  h1.catch{font-size:min(26px,6.4vw);font-weight:800;line-height:1.4;color:#fff;margin:0 0 14px;letter-spacing:.01em}
+  h1.catch .o{color:var(--accent-text)}
+
+  .three{list-style:none;display:grid;gap:8px;margin:0 0 18px}
+  .three li{
+    display:flex;gap:10px;align-items:flex-start;
+    font-size:16px;line-height:1.6;color:var(--text);
+  }
+  .three .n{
+    flex:none;width:24px;height:24px;border-radius:50%;margin-top:1px;
+    background:var(--orange);color:#fff;font-size:14px;font-weight:800;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .three b{color:#fff}
+  .three small{display:block;font-size:13px;color:var(--sub)}
+
+  /* ストアボタン（CTA は1種類＝「アプリを入れる」。DS28-1） */
+  .dl{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .btn{
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    min-height:60px;padding:10px 16px;border-radius:14px;
+    text-decoration:none;font-weight:800;font-size:17px;line-height:1.3;
+    background:#fff;color:var(--navy);
+    box-shadow:0 6px 18px rgba(0,0,0,.28);
+    transition:transform .12s ease;
+  }
+  .btn:active{transform:scale(.98)}
+  .btn .ic{font-size:22px;line-height:1;flex:none}
+  .btn small{display:block;font-size:12.5px;font-weight:600;color:#4a5468}
+  .is-ios .dl,.is-android .dl{grid-template-columns:1fr}
+  .is-android .btn-play{order:-1}
+  .is-ios .btn-play,.is-android .btn-ios{
+    min-height:48px;background:transparent;color:var(--text);
+    border:1px solid rgba(255,255,255,.35);box-shadow:none;font-size:15px;font-weight:700;
+  }
+  /* 日本語版は控えのボタンの小字を横並びにするが、英仏は文言が長く途中で折れる＝縦積みのまま色だけ控えめに */
+  .is-ios .btn-play small,.is-android .btn-ios small{color:var(--sub)}
+  .is-ios .btn-play .ic,.is-android .btn-ios .ic{font-size:17px}
+  @media (max-width:420px){ .dl{grid-template-columns:1fr} }
+
+  .note{font-size:13.5px;color:var(--sub);margin-top:10px;text-align:center;line-height:1.6}
+  .paid{color:#ffd0c4;font-weight:700}
+
+  .events{font-size:14px;color:var(--sub);margin-top:12px;text-align:center;line-height:1.7}
+  .events b{color:var(--accent-text)}
+
+  section{margin:48px 0}
+  h2.sec{font-size:21px;font-weight:800;color:#fff;line-height:1.5;margin-bottom:6px;text-align:center}
+  .sec-sub{font-size:14.5px;color:var(--sub);text-align:center;margin-bottom:8px}
+
+  .feat{margin:30px 0 0;padding:22px 18px 20px;background:var(--card);border:1px solid var(--line);border-radius:18px}
+  .feat .kicker{font-size:14px;color:var(--accent-text);font-weight:700;margin-bottom:4px}
+  .feat h3{font-size:19px;font-weight:800;color:#fff;line-height:1.5;margin-bottom:8px}
+  .feat h3 .num{color:var(--accent-text);margin-right:6px}
+  .feat p{font-size:16px;color:var(--text);margin-bottom:14px}
+  .feat p small{display:block;font-size:13.5px;color:var(--sub);margin-top:6px}
+  .shots{display:flex;gap:12px;justify-content:center;align-items:flex-start}
+  .shots img{
+    border-radius:14px;border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 10px 26px rgba(0,0,0,.4);height:auto;display:block;
+  }
+  .shots.two img{width:min(48%,260px)}
+  .shots.one img{width:min(66%,280px)}
+  .shot-note{font-size:13px;color:var(--faint);text-align:center;margin-top:10px}
+
+  /* 翻訳の見本（日本語の原文 → 表示言語）。スクリーンショットが日本語表示しか無いので、
+     「何が訳されるか」をここで文字として見せる。中身は見本＝実際の訳はアプリが作る。 */
+  .demo{
+    background:rgba(0,0,0,.20);border:1px solid rgba(255,255,255,.12);
+    border-radius:14px;padding:14px 14px 12px;margin:0 0 12px;
+  }
+  .demo-label{font-size:12.5px;color:var(--faint);margin-bottom:8px;letter-spacing:.02em}
+  .demo-row{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;
+    padding:6px 0;border-top:1px solid rgba(255,255,255,.08)}
+  .demo-row:first-of-type{border-top:0}
+  .demo-row .ja{font-size:15px;color:var(--sub)}
+  .demo-row .arr{color:var(--accent-text);font-weight:800}
+  .demo-row .tr{font-size:15px;color:#fff;font-weight:700}
+  .demo-row .yen{color:var(--faint);font-weight:500;white-space:nowrap}
+
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+  .chips span{
+    font-size:14px;font-weight:700;color:#fff;padding:5px 12px;border-radius:999px;
+    background:rgba(245,130,31,.14);border:1px solid rgba(245,130,31,.45);
+  }
+
+  .mid{margin:32px 0 0}
+  .mid .note{margin-top:8px}
+
+  /* ほかの機能（DS23＝打ち出す良さは上の3つ＋ここの4つで7つまで） */
+  .more{display:grid;gap:12px;margin-top:18px}
+  @media (min-width:600px){ .more{grid-template-columns:1fr 1fr} }
+  .mcard{
+    display:flex;gap:14px;align-items:flex-start;
+    background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;
+  }
+  .mcard img{
+    flex:none;width:92px;height:128px;object-fit:cover;object-position:top;
+    border-radius:10px;border:1px solid rgba(255,255,255,.14);
+  }
+  .mcard h3{font-size:17px;font-weight:800;color:#fff;line-height:1.45;margin-bottom:4px}
+  .mcard p{font-size:15px;color:var(--text);line-height:1.7}
+  .mcard p small{display:block;font-size:13px;color:var(--sub);margin-top:4px}
+  .spec{font-size:14px;color:var(--sub);text-align:center;margin-top:14px}
+
+  /* 料金（文面は日本語版の意味を変えずに訳す＝CP32。価格は円のまま） */
+  .plans{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:20px;padding:24px 18px;
+  }
+  .plans h2{font-size:19px;margin-bottom:8px;font-weight:800;color:#fff;line-height:1.5}
+  .plans-lead{font-size:15px;color:var(--sub);margin-bottom:18px}
+  .plans-lead strong{color:#fff}
+  .plan{
+    background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.10);
+    border-radius:14px;padding:16px 16px 14px;margin-bottom:12px;
+  }
+  .plan-main{border-color:rgba(227,59,51,.35);background:rgba(227,59,51,.07)}
+  .plan-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+  .plan-name{font-size:17px;font-weight:800;color:#fff}
+  .plan-price{font-size:16px;font-weight:800;color:#ffd0c4;white-space:nowrap}
+  .plan-price small{display:block;font-size:12.5px;font-weight:500;color:var(--faint);text-align:right}
+  .plan ul{list-style:none;display:grid;gap:8px}
+  .plan li{font-size:15.5px;color:var(--text);padding-left:17px;position:relative;line-height:1.7}
+  .plan li::before{content:"•";position:absolute;left:2px;color:var(--faint)}
+  .plan strong{color:#fff}
+  .plans-pitch{
+    background:rgba(227,59,51,.10);border:1px solid rgba(227,59,51,.30);
+    border-radius:14px;padding:15px 16px;margin:0 0 12px;
+  }
+  .plans-pitch h3{font-size:16px;font-weight:800;color:#ffd0c4;margin-bottom:7px;line-height:1.6}
+  .plans-pitch p{font-size:15.5px;color:var(--text);line-height:1.8}
+  .plan-note{font-size:14px;color:var(--sub);margin-top:10px;line-height:1.7}
+  .plan-note strong{color:#fff}
+  .plans-foot{font-size:13px;color:var(--faint);margin-top:14px;line-height:1.8}
+
+  .end{text-align:center}
+  .end .catch2{font-size:24px;font-weight:800;color:#fff;margin-bottom:6px;line-height:1.5}
+  .end .catch2 .o{color:var(--accent-text)}
+  .end .sec-sub{margin-bottom:16px}
+
+  footer{
+    text-align:center;font-size:13px;color:var(--faint);margin-top:48px;line-height:1.9;
+    border-top:1px solid rgba(255,255,255,.1);padding-top:20px;
+  }
+  footer p{margin-bottom:6px}
+  footer a{color:var(--sub)}
+  .backlink{display:inline-flex;align-items:center;min-height:48px;padding:0 12px;font-size:14px;color:var(--sub);text-decoration:none}
+  .backlink:hover{color:#fff}
+
+  /* 言語の切り替え（押せる物は 48px 以上＝★UI-REACH） */
+  .langs{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 6px;margin:4px 0 10px}
+  .langs a{
+    display:inline-flex;align-items:center;min-height:48px;padding:0 12px;
+    font-size:14px;color:var(--sub);text-decoration:none;border-radius:10px;
+  }
+  .langs a:hover{color:#fff}
+  .langs a[aria-current="page"]{color:#fff;font-weight:800;background:rgba(255,255,255,.08)}
+
+  .fab{
+    position:fixed;left:0;right:0;bottom:0;z-index:50;
+    padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+    background:rgba(12,26,56,.94);border-top:1px solid rgba(255,255,255,.14);
+    -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+    transform:translateY(110%);visibility:hidden;
+    transition:transform .22s ease,visibility 0s linear .22s;
+  }
+  .fab.show{transform:none;visibility:visible;transition:transform .22s ease}
+  .fab .dl{max-width:640px;margin:0 auto;grid-template-columns:1fr 1fr}
+  .fab .btn{min-height:52px;font-size:16px;box-shadow:none}
+  .fab .btn small{font-size:12px}
+  .is-ios .fab .btn-play,.is-android .fab .btn-ios{display:none}
+  .is-ios .fab .dl,.is-android .fab .dl{grid-template-columns:1fr}
+  @media (min-width:768px){ .fab{display:none} }
+  @media (max-width:767px){ .wrap{padding-bottom:calc(96px + env(safe-area-inset-bottom))} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <img class="icon" src="/icon.png" alt="Torehan! 應用程式圖示" width="56" height="56"
+         onerror="this.style.display='none'">
+    <div>
+      <div class="appname">Torehan!</div>
+      <div class="tagline">同人展攻略應用程式</div>
+    </div>
+  </header>
+
+  <p class="soon" id="soon" data-until="2026-11-16T00:00:00+09:00" hidden>🗺️ 已收錄會場地圖：11/14（六）VGGC 12th · 11/15（日）學園明星祭 04</p>
+  <script>
+    (function () {
+      var el = document.getElementById("soon");
+      var until = Date.parse(el.getAttribute("data-until"));
+      if (!isNaN(until) && Date.now() < until) el.hidden = false;
+    })();
+  </script>
+
+  <h1 class="catch">日本同人展，<br><span class='o'>用你的語言逛。</span></h1>
+
+  <ul class="three">
+    <li><span class="n">1</span><span><b>整個應用程式支援 6 種語言</b>：English、简体中文、繁體中文、한국어、Français、日本語</span></li>
+    <li><span class="n">2</span><span><b>翻譯社團資訊</b>：社團名、作者名、商品名<small>AI 翻譯為選用功能。前 10 個社團免費，日文原文始終保留。</small></span></li>
+    <li><span class="n">3</span><span><b>會場地圖與預算</b>：標記想去的社團，所需金額（日圓）自動加總</span></li>
+  </ul>
+
+  <div class="dl" id="cta-hero" data-cta>
+    <a class="btn btn-ios" href="https://apps.apple.com/app/id6776913607" onclick="torehanTrackStoreClick()">
+      <span class="ic" aria-hidden="true">📱</span>
+      <span>在 App Store 下載<small>iPhone · 基本免費</small></span>
+    </a>
+    <a class="btn btn-play" href="https://play.google.com/store/apps/details?id=com.torehan.app">
+      <span class="ic" aria-hidden="true">▶️</span>
+      <span>在 Google Play 下載<small>Android · 基本免費</small></span>
+    </a>
+  </div>
+
+  <div class="note">基本免費 · 無廣告／<span class='paid'>含應用程式內購買</span>（準備包／攻略包：依舉辦日購買；追加翻譯次數）</div>
+
+  <!-- 対応イベントの集合は日本語版と同じ（専用の会場マップが実装済み かつ 掲載許可のある種別）。
+       🔴 増減は日本語版と同じ Rev で strings.json の events_list を直す＝`npm run check:event-faces`（とれはんっ！側）が
+          public/torehan/** を全部数えるので、食い違えば赤で止まる。 -->
+  <div class="events">支援的同人展 6 類，持續增加中：<b>Comic Market（Comiket）/ 學園明星祭 / IDOL STAR FESTIVAL / Holokle / SHINY STAR FESTIV@L / VGGC</b></div>
+
+  <section>
+    <h2 class="sec">Torehan! 能幫你做的 3 件事</h2>
+
+    <div class="feat">
+      <p class="kicker">看不懂社團名？沒關係。</p>
+      <h3><span class="num">1</span>把社團名和商品名翻譯成你的語言</h3>
+      <p>社團名、作者名和品書上的商品名大多是日文。點一下「翻譯」，就會以你的應用程式語言顯示——排隊之前就知道自己要買的是什麼。價格照原樣以日圓顯示。</p>
+      <div class="demo">
+        <p class="demo-label">範例（僅供參考）</p>
+        <div class="demo-row"><span class="ja" lang="ja">新刊セット <span class="yen">¥1,500</span></span><span class="arr" aria-hidden="true">→</span><span class="tr">新刊套組 <span class="yen">¥1,500</span></span></div>
+        <div class="demo-row"><span class="ja" lang="ja">アクリルスタンド <span class="yen">¥1,200</span></span><span class="arr" aria-hidden="true">→</span><span class="tr">壓克力立牌 <span class="yen">¥1,200</span></span></div>
+        <div class="demo-row"><span class="ja" lang="ja">既刊 <span class="yen">¥500</span></span><span class="arr" aria-hidden="true">→</span><span class="tr">舊刊 <span class="yen">¥500</span></span></div>
+      </div>
+      <p><small>翻譯為選用功能，只在你點選「翻譯」時執行。翻譯使用 Anthropic 提供的 AI：為完成翻譯，會傳送社團名、作者名和商品名。前 10 個社團免費，之後每 50 個社團 ¥100。譯文儲存在你的裝置上，再次查看同一社團不會消耗次數，日文原文也會保留。</small></p>
+    </div>
+
+    <div class="feat">
+      <p class="kicker">選單、按鈕、攻略——全部是你的語言</p>
+      <h3><span class="num">2</span>整個應用程式都說你的語言</h3>
+      <div class="chips"><span>English</span><span lang="zh-Hans">简体中文</span><span lang="zh-Hant">繁體中文</span><span lang="ko">한국어</span><span lang="fr">Français</span><span lang="ja">日本語</span></div>
+      <p>不只是商店頁面：選單、按鈕、設定、Comiket 攻略資訊和隨身物品清單，每個畫面都有你的語言版本。<small>社團資訊來自日文資料，社團名和商品名請使用上方的翻譯功能。價格以日圓顯示。</small></p>
+    </div>
+
+    <div class="feat">
+      <p class="kicker">不再在會場裡到處找社團</p>
+      <h3><span class="num">3</span>會場地圖與預算，一個應用程式搞定</h3>
+      <p>在依展廳劃分的會場地圖上查看每個社團的位置，雙指放大，直接在地圖上標記。清單會自動加總所需金額（日圓），買到的打勾，避免漏買。</p>
+      <div class="shots two">
+        <img src="/torehan/img/feat-map1.jpg" alt="會場全圖畫面" width="720" height="1355" loading="lazy">
+        <img src="/torehan/img/feat-map2.jpg" alt="放大後的詳細地圖畫面" width="720" height="1355" loading="lazy">
+      </div>
+      <p class="shot-note">螢幕截圖為日文顯示。應用程式本身可切換為全部 6 種語言。</p>
+    </div>
+
+    <div class="mid">
+      <div class="dl" data-cta>
+        <a class="btn btn-ios" href="https://apps.apple.com/app/id6776913607" onclick="torehanTrackStoreClick()">
+          <span class="ic" aria-hidden="true">📱</span>
+          <span>在 App Store 下載<small>iPhone · 基本免費</small></span>
+        </a>
+        <a class="btn btn-play" href="https://play.google.com/store/apps/details?id=com.torehan.app">
+          <span class="ic" aria-hidden="true">▶️</span>
+          <span>在 Google Play 下載<small>Android · 基本免費</small></span>
+        </a>
+      </div>
+      <div class="note">基本免費 · 無廣告</div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec">活動當天，更輕鬆</h2>
+    <p class="sec-sub">從付款、與同伴分工，到事前調查和隨身物品。</p>
+    <div class="more">
+      <div class="mcard">
+        <img src="/torehan/img/feat-add.jpg" alt="拍攝品書、辨識商品名與價格的新增社團畫面" width="720" height="1498" loading="lazy">
+        <div>
+          <h3>📷 拍照辨識品書</h3>
+          <p>拍下社團的品書，商品名和價格會被辨識，並直接加入清單和預算。<small>AI 辨識為選用功能，也可以手動輸入。</small></p>
+        </div>
+      </div>
+      <div class="mcard">
+        <img src="/torehan/img/feat-change.jpg" alt="找零計算畫面" width="720" height="752" loading="lazy">
+        <div>
+          <h3>🧮 找零計算</h3>
+          <p>輸入合計金額和支付金額，立即算出找零。在攤位前結帳不用慌著心算。</p>
+        </div>
+      </div>
+      <div class="mcard">
+        <img src="/torehan/img/feat-group2.jpg" alt="依成員分配社團的畫面" width="720" height="1498" loading="lazy">
+        <div>
+          <h3>🤝 與同伴分工</h3>
+          <p>用邀請碼建立群組，把社團分配給每位成員。代購時墊付的錢也會自動結算。</p>
+        </div>
+      </div>
+      <div class="mcard">
+        <img src="/torehan/img/feat-guide.jpg" alt="Comiket 攻略資訊畫面" width="720" height="1253" loading="lazy">
+        <div>
+          <h3>📚 第一次去 Comiket 也不迷路</h3>
+          <p>收錄應用程式使用方法、Comiket 攻略資訊（雨傘和行李箱的注意事項、推薦下車站等）以及隨身物品清單。</p>
+        </div>
+      </div>
+    </div>
+    <p class="spec">6 種語言（英文、簡體中文、繁體中文、韓文、法文、日文）／8 種配色主題</p>
+    <p class="shot-note">螢幕截圖為日文顯示。應用程式本身可切換為全部 6 種語言。</p>
+  </section>
+
+  <section>
+  <div class="plans">
+    <h2>價格 — 基本免費。只為需要的日子選擇 2 種包</h2>
+    <p class="plans-lead">不是月費，也不會自動續訂。<strong>每個包依一個舉辦日購買</strong>，只選你要去的日子即可。</p>
+
+    <div class="plan">
+      <div class="plan-head"><span class="plan-name">免費</span><span class="plan-price">¥0</span></div>
+      <ul>
+        <li>每個舉辦日最多登錄 5 個社團</li>
+        <li>品書辨識、預算計算、會場地圖、群組分工、戰利品清單全部免費使用</li>
+        <li>社團資訊翻譯：前 10 個社團免費</li>
+      </ul>
+    </div>
+
+    <div class="plans-pitch">
+      <h3>手動整理清單太麻煩，要不要從這項工作中解放出來？</h3>
+      <p>與用手寫、紙張整理同一份清單相比，準備時間可縮短 90%。用一本書的價格，把當天的時間留給慢慢挑選商品目錄吧。</p>
+    </div>
+
+    <div class="plan plan-main">
+      <div class="plan-head"><span class="plan-name">準備包</span><span class="plan-price">¥500<small>／每個舉辦日</small></span></div>
+      <ul>
+        <li>對所購買的 1 個活動的 1 個舉辦日，<strong>取消社團登錄上限</strong></li>
+        <li>附帶雲端高精度辨識 <strong>50 張</strong></li>
+      </ul>
+    </div>
+
+    <div class="plan plan-main">
+      <div class="plan-head"><span class="plan-name">攻略包</span><span class="plan-price">¥1,000<small>／每個舉辦日</small></span></div>
+      <ul>
+        <li>包含準備包的全部內容</li>
+        <li>另外可<strong>顯示「登錄人數」並依其排序</strong>：看出熱門社團，也就是對手的動向</li>
+      </ul>
+      <p class="plan-note">已購買準備包後，也可以<strong>只付差價升級為攻略包</strong>，不會重複付費。</p>
+    </div>
+
+    <div class="plan">
+      <div class="plan-head"><span class="plan-name">追加翻譯次數</span><span class="plan-price">¥100<small>／50 個社團</small></span></div>
+      <ul>
+        <li>前 10 個社團可免費試用</li>
+        <li>可用於任何活動、任何日子。已翻譯的社團儲存在裝置上，再次查看不消耗次數</li>
+      </ul>
+    </div>
+
+    <p class="plans-foot">好友推薦成立後，邀請方與被邀請方雙方都可免費獲得 1 個舉辦日的準備包。<br>以上為日本的含稅參考價格。商店可能以你所在地區的貨幣顯示，最新價格和購買條件請以商店顯示為準。<br>「準備時間縮短 90%」是開發者與手動製作同一清單相比的實測值。</p>
+  </div>
+  </section>
+
+  <section class="end">
+    <p class="catch2">一本都<span class='o'>不錯過。</span></p>
+    <p class="sec-sub">基本免費，無廣告。先免費試用，最多可登錄 5 個社團。</p>
+    <div class="dl" data-cta>
+      <a class="btn btn-ios" href="https://apps.apple.com/app/id6776913607" onclick="torehanTrackStoreClick()">
+        <span class="ic" aria-hidden="true">📱</span>
+        <span>在 App Store 下載<small>iPhone · 基本免費</small></span>
+      </a>
+      <a class="btn btn-play" href="https://play.google.com/store/apps/details?id=com.torehan.app">
+        <span class="ic" aria-hidden="true">▶️</span>
+        <span>在 Google Play 下載<small>Android · 基本免費</small></span>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <nav class="langs" aria-label="語言">
+      <a href="/torehan/" hreflang="ja" lang="ja">日本語</a>
+      <a href="/torehan/en/" hreflang="en" lang="en">English</a>
+      <a href="/torehan/zh-hans/" hreflang="zh-Hans" lang="zh-Hans">简体中文</a>
+      <a href="/torehan/zh-hant/" hreflang="zh-Hant" lang="zh-Hant" aria-current="page">繁體中文</a>
+      <a href="/torehan/ko/" hreflang="ko" lang="ko">한국어</a>
+      <a href="/torehan/fr/" hreflang="fr" lang="fr">Français</a>
+    </nav>
+    <p>新增支援的同人展會在官方 X <a href='https://x.com/rurifukuro'>@rurifukuro</a>（日文）上公布。</p>
+    <p>© Torehan! ｜ 聯絡方式： <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a></p>
+    <a class="backlink" href="/">← Ruri Fukuro 的全部應用程式（日文）</a>
+  </footer>
+
+</div>
+
+<div class="fab" id="fab">
+  <div class="dl">
+    <a class="btn btn-ios" href="https://apps.apple.com/app/id6776913607" onclick="torehanTrackStoreClick()">
+      <span class="ic" aria-hidden="true">📱</span>
+      <span>在 App Store 下載<small>iPhone · 基本免費</small></span>
+    </a>
+    <a class="btn btn-play" href="https://play.google.com/store/apps/details?id=com.torehan.app">
+      <span class="ic" aria-hidden="true">▶️</span>
+      <span>在 Google Play 下載<small>Android · 基本免費</small></span>
+    </a>
+  </div>
+</div>
+<script>
+  /* 出す条件＝「1画面目のボタンが画面の上へ抜けた」かつ「ページ内のどのストアボタンも見えていない」（日本語版と同じ） */
+  (function () {
+    var fab = document.getElementById("fab");
+    var hero = document.getElementById("cta-hero");
+    var blocks = document.querySelectorAll("[data-cta]");
+    if (!fab || !hero) return;
+    function update() {
+      var h = window.innerHeight || document.documentElement.clientHeight;
+      var passed = hero.getBoundingClientRect().bottom < 0;
+      var anyVisible = false;
+      for (var k = 0; k < blocks.length; k++) {
+        var r = blocks[k].getBoundingClientRect();
+        if (r.bottom > 0 && r.top < h) { anyVisible = true; break; }
+      }
+      fab.classList.toggle("show", passed && !anyVisible);
+    }
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    update();
+  })();
+</script>
+<script defer src="/analytics.js"></script>
+</body>
+</html>

@@ -6,6 +6,13 @@
 <title>とれはんっ！｜同人イベント攻略アプリ ダウンロード</title>
 <meta name="description" content="コミケ・学園スターフェス・アイドルスターフェス・ホロクル・SHINY STAR FESTIV@L・VGGCに対応した同人イベント攻略アプリ「とれはんっ！」。会場マップに行きたいサークルを登録、お品書きの読み取り（手入力も可）、軍資金と必要予算の自動計算、仲間との分担。6言語対応・基本無料・広告なし。">
 <link rel="canonical" href="https://rurifukuro.github.io/torehan/">
+<link rel="alternate" hreflang="ja" href="https://rurifukuro.github.io/torehan/">
+<link rel="alternate" hreflang="en" href="https://rurifukuro.github.io/torehan/en/">
+<link rel="alternate" hreflang="zh-Hans" href="https://rurifukuro.github.io/torehan/zh-hans/">
+<link rel="alternate" hreflang="zh-Hant" href="https://rurifukuro.github.io/torehan/zh-hant/">
+<link rel="alternate" hreflang="ko" href="https://rurifukuro.github.io/torehan/ko/">
+<link rel="alternate" hreflang="fr" href="https://rurifukuro.github.io/torehan/fr/">
+<link rel="alternate" hreflang="x-default" href="https://rurifukuro.github.io/torehan/en/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="とれはんっ！｜同人イベント攻略アプリ">
 <meta property="og:description" content="会場マップに行きたいサークルを登録。お品書きは撮るだけで取り込み、軍資金と必要予算は自動で計算。基本無料・広告なし。">
@@ -326,6 +333,14 @@
      一覧への戻り道は 2026-09-30 にページ先頭からフッターへ移した（1画面目をストアボタンに使うため）。 */
   .backlink{display:inline-flex;align-items:center;min-height:48px;padding:0 12px;font-size:14px;color:var(--sub);text-decoration:none}
   .backlink:hover{color:#fff}
+  /* 言語切替（海外向けLPと共通の見た目。各リンクは48px以上＝UI-REACH） */
+  .langs{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 6px;margin:4px 0 10px}
+  .langs a{
+    display:inline-flex;align-items:center;min-height:48px;padding:0 12px;
+    font-size:14px;color:var(--sub);text-decoration:none;border-radius:10px;
+  }
+  .langs a:hover{color:#fff}
+  .langs a[aria-current="page"]{color:#fff;font-weight:800;background:rgba(255,255,255,.08)}
 
   /* ---------- 下に付くストアボタン（スマホだけ） ----------
      出すのは「1画面目のボタンが画面の上へ消えた」あとだけ。途中と最後のボタンが見えている間は引っ込める
@@ -660,6 +675,14 @@
        🔴 赤ブー系（COMIC CITY / SUPER COMIC CITY / TOKYO FES / COMIC CITY VEGA）は
        2026-09-01 に掲載許可が得られず対応イベントから除外済み＝ここに書かない（〔OK-29〕〔OK-31〕）。 -->
   <footer>
+    <nav class="langs" aria-label="言語 / Language">
+      <a href="/torehan/" hreflang="ja" lang="ja" aria-current="page">日本語</a>
+      <a href="/torehan/en/" hreflang="en" lang="en">English</a>
+      <a href="/torehan/zh-hans/" hreflang="zh-Hans" lang="zh-Hans">简体中文</a>
+      <a href="/torehan/zh-hant/" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a>
+      <a href="/torehan/ko/" hreflang="ko" lang="ko">한국어</a>
+      <a href="/torehan/fr/" hreflang="fr" lang="fr">Français</a>
+    </nav>
     <p>対応イベントの追加は、公式X <a href="https://x.com/rurifukuro">@rurifukuro</a> でお知らせしています。</p>
     <p>© とれはんっ！ ｜ お問い合わせ：<a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a></p>
     <a class="backlink" href="/">← 瑠璃フクロウの開発アプリ一覧</a>

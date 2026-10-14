@@ -7,7 +7,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "check:stale-comiket": "node scripts/check-stale-comiket.mjs",
-    "check:tap-target": "node scripts/check-tap-target.mjs"
+    "check:tap-target": "node scripts/check-tap-target.mjs",
+    "build:torehan-intl": "node scripts/build-torehan-intl-lp.mjs",
+    "check:torehan-intl": "node scripts/build-torehan-intl-lp.mjs --check"
   },
   "dependencies": {
     "@astrojs/sitemap": "3.2.1",

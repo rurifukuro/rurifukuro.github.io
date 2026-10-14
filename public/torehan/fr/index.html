@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<!-- 🔴 このファイルは生成物の雛形。public/torehan/<lang>/index.html は
+     `npm run build:torehan-intl` で scripts/torehan-intl/{template.html,strings.json} から作る（WEB18＝正本は1つ）。
+     生成物を手で直さないこと（次の生成で消える。`npm run check:torehan-intl` が差分を赤で止める）。 -->
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Torehan! — Les conventions doujin japonaises dans votre langue | Appli Comiket</title>
+<meta name="description" content="Torehan! est une appli pour préparer les conventions doujin japonaises comme le Comiket. Toute l’appli est disponible en 6 langues, et les noms de cercles, d’auteurs et d’articles peuvent être traduits dans votre langue. Plans des salles, budget en yens, lecture des listes d’articles et répartition entre amis. Gratuit pour commencer, sans publicité.">
+<link rel="canonical" href="https://rurifukuro.github.io/torehan/fr/">
+<link rel="alternate" hreflang="ja" href="https://rurifukuro.github.io/torehan/">
+<link rel="alternate" hreflang="en" href="https://rurifukuro.github.io/torehan/en/">
+<link rel="alternate" hreflang="zh-Hans" href="https://rurifukuro.github.io/torehan/zh-hans/">
+<link rel="alternate" hreflang="zh-Hant" href="https://rurifukuro.github.io/torehan/zh-hant/">
+<link rel="alternate" hreflang="ko" href="https://rurifukuro.github.io/torehan/ko/">
+<link rel="alternate" hreflang="fr" href="https://rurifukuro.github.io/torehan/fr/">
+<link rel="alternate" hreflang="x-default" href="https://rurifukuro.github.io/torehan/en/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Torehan! — Les conventions doujin au Japon, dans votre langue">
+<meta property="og:description" content="Toute l’appli en 6 langues, plus la traduction des noms de cercles et d’articles. Plans des salles et budget pour le Comiket et d’autres événements. Gratuit pour commencer, sans publicité.">
+<meta property="og:url" content="https://rurifukuro.github.io/torehan/fr/">
+<meta property="og:image" content="https://rurifukuro.github.io/icon.png">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary">
+
+<!-- Google広告のコンバージョン計測（値は日本語版 /torehan/ と同じ＝ストアボタンのクリックを数える） -->
+<script>
+  window.GADS_TAG_ID           = "AW-18258676158";
+  window.GADS_CONVERSION_LABEL = "7h44CNnR_9YcEL6TtYJE";
+
+  (function () {
+    var ok = window.GADS_TAG_ID && window.GADS_TAG_ID.indexOf("XXXX") === -1;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { dataLayer.push(arguments); };
+    if (ok) {
+      var s = document.createElement("script");
+      s.async = true;
+      s.src = "https://www.googletagmanager.com/gtag/js?id=" + window.GADS_TAG_ID;
+      document.head.appendChild(s);
+      gtag("js", new Date());
+      gtag("config", window.GADS_TAG_ID);
+    }
+  })();
+
+  function torehanTrackStoreClick() {
+    var ok = window.GADS_TAG_ID && window.GADS_TAG_ID.indexOf("XXXX") === -1
+          && window.GADS_CONVERSION_LABEL && window.GADS_CONVERSION_LABEL.indexOf("XXXX") === -1;
+    if (ok && typeof window.gtag === "function") {
+      window.gtag("event", "conversion", {
+        "send_to": window.GADS_TAG_ID + "/" + window.GADS_CONVERSION_LABEL
+      });
+    }
+    return true;
+  }
+
+  /* 端末に合うストアを主ボタンにする（日本語版と同じ）。
+     🔴 ストアのリンクは全部 HTML に静的に書く＝analytics.js が流入元（ct / referrer）を付けてクリックを数える。 */
+  (function () {
+    var ua = navigator.userAgent || "";
+    var root = document.documentElement;
+    if (/iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1)) {
+      root.classList.add("is-ios");
+    } else if (/Android/i.test(ua)) {
+      root.classList.add("is-android");
+    }
+  })();
+</script>
+
+<style>
+  /* 色は日本語版 /torehan/ と同じトークン（DS24＝比で決めた値。測り方と比は日本語版の注記を参照）。 */
+  :root{
+    --navy:#0c1a38;
+    --navy2:#142c54;
+    --orange:#f5821f;
+    --accent-text:#ffa24d;
+    --red:#e23b33;
+    --text:#e4ebf7;
+    --sub:#b8c7e6;
+    --faint:#9fb0d4;
+    --card:rgba(255,255,255,.06);
+    --line:rgba(255,255,255,.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    background:linear-gradient(160deg,var(--navy) 0%,var(--navy2) 100%);
+    background-color:var(--navy);
+    color:var(--text); min-height:100vh; line-height:1.75; font-size:16px;
+    word-break:normal; overflow-wrap:anywhere;
+    -webkit-font-smoothing:antialiased;
+  }
+  [lang="ja"]{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",YuGothic,"Meiryo",sans-serif}
+  .wrap{max-width:680px;margin:0 auto;padding:16px 20px 48px}
+  img{max-width:100%}
+
+  .top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .icon{
+    width:56px;height:56px;border-radius:13px;flex:none;
+    box-shadow:0 4px 14px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.15);
+    background:#fff;object-fit:cover;
+  }
+  .appname{font-size:22px;font-weight:800;letter-spacing:.02em;line-height:1.3;color:#fff}
+  .tagline{font-size:14px;color:var(--sub);line-height:1.4}
+
+  .soon{
+    display:inline-block;margin:0 0 12px;padding:6px 12px;border-radius:999px;
+    background:rgba(245,130,31,.16);border:1px solid rgba(245,130,31,.55);
+    font-size:14px;font-weight:700;color:#ffd0a8;line-height:1.5;
+  }
+  .soon[hidden]{display:none}
+
+  h1.catch{font-size:min(26px,6.4vw);font-weight:800;line-height:1.4;color:#fff;margin:0 0 14px;letter-spacing:.01em}
+  h1.catch .o{color:var(--accent-text)}
+
+  .three{list-style:none;display:grid;gap:8px;margin:0 0 18px}
+  .three li{
+    display:flex;gap:10px;align-items:flex-start;
+    font-size:16px;line-height:1.6;color:var(--text);
+  }
+  .three .n{
+    flex:none;width:24px;height:24px;border-radius:50%;margin-top:1px;
+    background:var(--orange);color:#fff;font-size:14px;font-weight:800;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .three b{color:#fff}
+  .three small{display:block;font-size:13px;color:var(--sub)}
+
+  /* ストアボタン（CTA は1種類＝「アプリを入れる」。DS28-1） */
+  .dl{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .btn{
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    min-height:60px;padding:10px 16px;border-radius:14px;
+    text-decoration:none;font-weight:800;font-size:17px;line-height:1.3;
+    background:#fff;color:var(--navy);
+    box-shadow:0 6px 18px rgba(0,0,0,.28);
+    transition:transform .12s ease;
+  }
+  .btn:active{transform:scale(.98)}
+  .btn .ic{font-size:22px;line-height:1;flex:none}
+  .btn small{display:block;font-size:12.5px;font-weight:600;color:#4a5468}
+  .is-ios .dl,.is-android .dl{grid-template-columns:1fr}
+  .is-android .btn-play{order:-1}
+  .is-ios .btn-play,.is-android .btn-ios{
+    min-height:48px;background:transparent;color:var(--text);
+    border:1px solid rgba(255,255,255,.35);box-shadow:none;font-size:15px;font-weight:700;
+  }
+  /* 日本語版は控えのボタンの小字を横並びにするが、英仏は文言が長く途中で折れる＝縦積みのまま色だけ控えめに */
+  .is-ios .btn-play small,.is-android .btn-ios small{color:var(--sub)}
+  .is-ios .btn-play .ic,.is-android .btn-ios .ic{font-size:17px}
+  @media (max-width:420px){ .dl{grid-template-columns:1fr} }
+
+  .note{font-size:13.5px;color:var(--sub);margin-top:10px;text-align:center;line-height:1.6}
+  .paid{color:#ffd0c4;font-weight:700}
+
+  .events{font-size:14px;color:var(--sub);margin-top:12px;text-align:center;line-height:1.7}
+  .events b{color:var(--accent-text)}
+
+  section{margin:48px 0}
+  h2.sec{font-size:21px;font-weight:800;color:#fff;line-height:1.5;margin-bottom:6px;text-align:center}
+  .sec-sub{font-size:14.5px;color:var(--sub);text-align:center;margin-bottom:8px}
+
+  .feat{margin:30px 0 0;padding:22px 18px 20px;background:var(--card);border:1px solid var(--line);border-radius:18px}
+  .feat .kicker{font-size:14px;color:var(--accent-text);font-weight:700;margin-bottom:4px}
+  .feat h3{font-size:19px;font-weight:800;color:#fff;line-height:1.5;margin-bottom:8px}
+  .feat h3 .num{color:var(--accent-text);margin-right:6px}
+  .feat p{font-size:16px;color:var(--text);margin-bottom:14px}
+  .feat p small{display:block;font-size:13.5px;color:var(--sub);margin-top:6px}
+  .shots{display:flex;gap:12px;justify-content:center;align-items:flex-start}
+  .shots img{
+    border-radius:14px;border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 10px 26px rgba(0,0,0,.4);height:auto;display:block;
+  }
+  .shots.two img{width:min(48%,260px)}
+  .shots.one img{width:min(66%,280px)}
+  .shot-note{font-size:13px;color:var(--faint);text-align:center;margin-top:10px}
+
+  /* 翻訳の見本（日本語の原文 → 表示言語）。スクリーンショットが日本語表示しか無いので、
+     「何が訳されるか」をここで文字として見せる。中身は見本＝実際の訳はアプリが作る。 */
+  .demo{
+    background:rgba(0,0,0,.20);border:1px solid rgba(255,255,255,.12);
+    border-radius:14px;padding:14px 14px 12px;margin:0 0 12px;
+  }
+  .demo-label{font-size:12.5px;color:var(--faint);margin-bottom:8px;letter-spacing:.02em}
+  .demo-row{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;
+    padding:6px 0;border-top:1px solid rgba(255,255,255,.08)}
+  .demo-row:first-of-type{border-top:0}
+  .demo-row .ja{font-size:15px;color:var(--sub)}
+  .demo-row .arr{color:var(--accent-text);font-weight:800}
+  .demo-row .tr{font-size:15px;color:#fff;font-weight:700}
+  .demo-row .yen{color:var(--faint);font-weight:500;white-space:nowrap}
+
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+  .chips span{
+    font-size:14px;font-weight:700;color:#fff;padding:5px 12px;border-radius:999px;
+    background:rgba(245,130,31,.14);border:1px solid rgba(245,130,31,.45);
+  }
+
+  .mid{margin:32px 0 0}
+  .mid .note{margin-top:8px}
+
+  /* ほかの機能（DS23＝打ち出す良さは上の3つ＋ここの4つで7つまで） */
+  .more{display:grid;gap:12px;margin-top:18px}
+  @media (min-width:600px){ .more{grid-template-columns:1fr 1fr} }
+  .mcard{
+    display:flex;gap:14px;align-items:flex-start;
+    background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;
+  }
+  .mcard img{
+    flex:none;width:92px;height:128px;object-fit:cover;object-position:top;
+    border-radius:10px;border:1px solid rgba(255,255,255,.14);
+  }
+  .mcard h3{font-size:17px;font-weight:800;color:#fff;line-height:1.45;margin-bottom:4px}
+  .mcard p{font-size:15px;color:var(--text);line-height:1.7}
+  .mcard p small{display:block;font-size:13px;color:var(--sub);margin-top:4px}
+  .spec{font-size:14px;color:var(--sub);text-align:center;margin-top:14px}
+
+  /* 料金（文面は日本語版の意味を変えずに訳す＝CP32。価格は円のまま） */
+  .plans{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:20px;padding:24px 18px;
+  }
+  .plans h2{font-size:19px;margin-bottom:8px;font-weight:800;color:#fff;line-height:1.5}
+  .plans-lead{font-size:15px;color:var(--sub);margin-bottom:18px}
+  .plans-lead strong{color:#fff}
+  .plan{
+    background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.10);
+    border-radius:14px;padding:16px 16px 14px;margin-bottom:12px;
+  }
+  .plan-main{border-color:rgba(227,59,51,.35);background:rgba(227,59,51,.07)}
+  .plan-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+  .plan-name{font-size:17px;font-weight:800;color:#fff}
+  .plan-price{font-size:16px;font-weight:800;color:#ffd0c4;white-space:nowrap}
+  .plan-price small{display:block;font-size:12.5px;font-weight:500;color:var(--faint);text-align:right}
+  .plan ul{list-style:none;display:grid;gap:8px}
+  .plan li{font-size:15.5px;color:var(--text);padding-left:17px;position:relative;line-height:1.7}
+  .plan li::before{content:"•";position:absolute;left:2px;color:var(--faint)}
+  .plan strong{color:#fff}
+  .plans-pitch{
+    background:rgba(227,59,51,.10);border:1px solid rgba(227,59,51,.30);
+    border-radius:14px;padding:15px 16px;margin:0 0 12px;
+  }
+  .plans-pitch h3{font-size:16px;font-weight:800;color:#ffd0c4;margin-bottom:7px;line-height:1.6}
+  .plans-pitch p{font-size:15.5px;color:var(--text);line-height:1.8}
+  .plan-note{font-size:14px;color:var(--sub);margin-top:10px;line-height:1.7}
+  .plan-note strong{color:#fff}
+  .plans-foot{font-size:13px;color:var(--faint);margin-top:14px;line-height:1.8}
+
+  .end{text-align:center}
+  .end .catch2{font-size:24px;font-weight:800;color:#fff;margin-bottom:6px;line-height:1.5}
+  .end .catch2 .o{color:var(--accent-text)}
+  .end .sec-sub{margin-bottom:16px}
+
+  footer{
+    text-align:center;font-size:13px;color:var(--faint);margin-top:48px;line-height:1.9;
+    border-top:1px solid rgba(255,255,255,.1);padding-top:20px;
+  }
+  footer p{margin-bottom:6px}
+  footer a{color:var(--sub)}
+  .backlink{display:inline-flex;align-items:center;min-height:48px;padding:0 12px;font-size:14px;color:var(--sub);text-decoration:none}
+  .backlink:hover{color:#fff}
+
+  /* 言語の切り替え（押せる物は 48px 以上＝★UI-REACH） */
+  .langs{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 6px;margin:4px 0 10px}
+  .langs a{
+    display:inline-flex;align-items:center;min-height:48px;padding:0 12px;
+    font-size:14px;color:var(--sub);text-decoration:none;border-radius:10px;
+  }
+  .langs a:hover{color:#fff}
+  .langs a[aria-current="page"]{color:#fff;font-weight:800;background:rgba(255,255,255,.08)}
+
+  .fab{
+    position:fixed;left:0;right:0;bottom:0;z-index:50;
+    padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+    background:rgba(12,26,56,.94);border-top:1px solid rgba(255,255,255,.14);
+    -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+    transform:translateY(110%);visibility:hidden;
+    transition:transform .22s ease,visibility 0s linear .22s;
+  }
+  .fab.show{transform:none;visibility:visible;transition:transform .22s ease}
+  .fab .dl{max-width:640px;margin:0 auto;grid-template-columns:1fr 1fr}
+  .fab .btn{min-height:52px;font-size:16px;box-shadow:none}
+  .fab .btn small{font-size:12px}
+  .is-ios .fab .btn-play,.is-android .fab .btn-ios{display:none}
+  .is-ios .fab .dl,.is-android .fab .dl{grid-template-columns:1fr}
+  @media (min-width:768px){ .fab{display:none} }
+  @media (max-width:767px){ .wrap{padding-bottom:calc(96px + env(safe-area-inset-bottom))} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <img class="icon" src="/icon.png" alt="Icône de l’appli Torehan!" width="56" height="56"
+         onerror="this.style.display='none'">
+    <div>
+      <div class="appname">Torehan!</div>
+      <div class="tagline">L’appli pour préparer vos conventions doujin</div>
+    </div>
+  </header>
+
+  <p class="soon" id="soon" data-until="2026-11-16T00:00:00+09:00" hidden>🗺️ Plans ajoutés  VGGC 12th (sam. 14 nov.) et Gakuen Star Festival 04 (dim. 15 nov.)</p>
+  <script>
+    (function () {
+      var el = document.getElementById("soon");
+      var until = Date.parse(el.getAttribute("data-until"));
+      if (!isNaN(until) && Date.now() < until) el.hidden = false;
+    })();
+  </script>
+
+  <h1 class="catch">Les conventions doujin au Japon,<br><span class='o'>dans votre langue.</span></h1>
+
+  <ul class="three">
+    <li><span class="n">1</span><span><b>Toute l’appli en 6 langues</b> — English, 简体中文, 繁體中文, 한국어, Français, 日本語</span></li>
+    <li><span class="n">2</span><span><b>Traduction des infos de cercles</b> — noms de cercles, d’auteurs et d’articles<small>Fonction IA facultative. Les 10 premiers cercles sont gratuits, et le texte japonais d’origine est toujours conservé.</small></span></li>
+    <li><span class="n">3</span><span><b>Plans et budget</b> — marquez les cercles qui vous intéressent, le total nécessaire (en yens) est calculé pour vous</span></li>
+  </ul>
+
+  <div class="dl" id="cta-hero" data-cta>
+    <a class="btn btn-ios" href="https://apps.apple.com/app/id6776913607" onclick="torehanTrackStoreClick()">
+      <span class="ic" aria-hidden="true">📱</span>
+      <span>Télécharger sur l’App Store<small>iPhone · Gratuit pour commencer</small></span>
+    </a>
+    <a class="btn btn-play" href="https://play.google.com/store/apps/details?id=com.torehan.app">
+      <span class="ic" aria-hidden="true">▶️</span>
+      <span>Disponible sur Google Play<small>Android · Gratuit pour commencer</small></span>
+    </a>
+  </div>
+
+  <div class="note">Gratuit pour commencer · Sans publicité / <span class='paid'>Achats intégrés</span> (Pack Préparation / Pack Stratégie, achetés par jour d’événement  traductions supplémentaires)</div>
+
+  <!-- 対応イベントの集合は日本語版と同じ（専用の会場マップが実装済み かつ 掲載許可のある種別）。
+       🔴 増減は日本語版と同じ Rev で strings.json の events_list を直す＝`npm run check:event-faces`（とれはんっ！側）が
+          public/torehan/** を全部数えるので、食い違えば赤で止まる。 -->
+  <div class="events">Événements pris en charge — 6 types, et d’autres à venir  <b>Comic Market (Comiket) / Gakuen Star Festival / IDOL STAR FESTIVAL / Holokle / SHINY STAR FESTIV@L / VGGC</b></div>
+
+  <section>
+    <h2 class="sec">3 choses que Torehan! fait pour vous</h2>
+
+    <div class="feat">
+      <p class="kicker">Vous ne savez pas lire les noms des cercles  Pas besoin.</p>
+      <h3><span class="num">1</span>Noms de cercles et d’articles, traduits dans votre langue</h3>
+      <p>Les noms de cercles, d’auteurs et les articles de leurs listes sont presque toujours écrits en japonais. Touchez « Traduire » et ils s’affichent dans la langue de l’appli  vous savez ce que vous allez acheter avant de faire la queue. Les prix restent en yens, tels qu’affichés.</p>
+      <div class="demo">
+        <p class="demo-label">Exemple (à titre indicatif)</p>
+        <div class="demo-row"><span class="ja" lang="ja">新刊セット <span class="yen">¥1,500</span></span><span class="arr" aria-hidden="true">→</span><span class="tr">Set nouveautés <span class="yen">¥1,500</span></span></div>
+        <div class="demo-row"><span class="ja" lang="ja">アクリルスタンド <span class="yen">¥1,200</span></span><span class="arr" aria-hidden="true">→</span><span class="tr">Stand en acrylique <span class="yen">¥1,200</span></span></div>
+        <div class="demo-row"><span class="ja" lang="ja">既刊 <span class="yen">¥500</span></span><span class="arr" aria-hidden="true">→</span><span class="tr">Ancien numéro <span class="yen">¥500</span></span></div>
+      </div>
+      <p><small>La traduction est facultative et ne se lance que lorsque vous touchez « Traduire ». Elle utilise une IA fournie par Anthropic  les noms de cercles, d’auteurs et d’articles lui sont envoyés pour être traduits. Les 10 premiers cercles sont gratuits, puis ¥100 pour 50 cercles de plus. Les traductions sont enregistrées sur votre appareil  revoir un cercle ne consomme rien, et le texte japonais d’origine est conservé.</small></p>
+    </div>
+
+    <div class="feat">
+      <p class="kicker">Menus, boutons, guides  tout dans votre langue</p>
+      <h3><span class="num">2</span>Toute l’appli parle votre langue</h3>
+      <div class="chips"><span>English</span><span lang="zh-Hans">简体中文</span><span lang="zh-Hant">繁體中文</span><span lang="ko">한국어</span><span lang="fr">Français</span><span lang="ja">日本語</span></div>
+      <p>Pas seulement la fiche de la boutique  menus, boutons, réglages, guide du Comiket et liste d’affaires à emporter, chaque écran est disponible dans votre langue.<small>Les infos des cercles proviennent de sources japonaises  pour les noms de cercles et d’articles, utilisez la traduction ci-dessus. Les prix sont affichés en yens.</small></p>
+    </div>
+
+    <div class="feat">
+      <p class="kicker">Fini l’errance dans les halls à la recherche d’un cercle</p>
+      <h3><span class="num">3</span>Plans des salles et budget, au même endroit</h3>
+      <p>Repérez chaque cercle sur les plans hall par hall, zoomez en pinçant et marquez-les directement sur la carte. Votre liste additionne le montant nécessaire (en yens), et vous cochez ce que vous avez acheté pour ne rien oublier.</p>
+      <div class="shots two">
+        <img src="/torehan/img/feat-map1.jpg" alt="Écran du plan général du site" width="720" height="1355" loading="lazy">
+        <img src="/torehan/img/feat-map2.jpg" alt="Écran du plan détaillé agrandi" width="720" height="1355" loading="lazy">
+      </div>
+      <p class="shot-note">Captures d’écran de l’affichage en japonais. L’appli elle-même peut s’afficher dans les 6 langues.</p>
+    </div>
+
+    <div class="mid">
+      <div class="dl" data-cta>
+        <a class="btn btn-ios" href="https://apps.apple.com/app/id6776913607" onclick="torehanTrackStoreClick()">
+          <span class="ic" aria-hidden="true">📱</span>
+          <span>Télécharger sur l’App Store<small>iPhone · Gratuit pour commencer</small></span>
+        </a>
+        <a class="btn btn-play" href="https://play.google.com/store/apps/details?id=com.torehan.app">
+          <span class="ic" aria-hidden="true">▶️</span>
+          <span>Disponible sur Google Play<small>Android · Gratuit pour commencer</small></span>
+        </a>
+      </div>
+      <div class="note">Gratuit pour commencer · Sans publicité</div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec">Et le jour J, encore plus simple</h2>
+    <p class="sec-sub">Paiement, répartition entre amis, repérages et affaires à emporter.</p>
+    <div class="more">
+      <div class="mcard">
+        <img src="/torehan/img/feat-add.jpg" alt="Écran d’ajout d’un cercle en photographiant sa liste d’articles pour en lire les noms et les prix" width="720" height="1498" loading="lazy">
+        <div>
+          <h3>📷 Lire une liste d’articles en photo</h3>
+          <p>Photographiez la liste d’articles d’un cercle  les noms et les prix sont lus et ajoutés directement à votre liste et à votre budget.<small>La lecture par IA est facultative  vous pouvez toujours saisir à la main.</small></p>
+        </div>
+      </div>
+      <div class="mcard">
+        <img src="/torehan/img/feat-change.jpg" alt="Écran de calcul de la monnaie" width="720" height="752" loading="lazy">
+        <div>
+          <h3>🧮 Calcul de la monnaie</h3>
+          <p>Saisissez le total et la somme donnée  la monnaie s’affiche aussitôt. Plus de calcul mental paniqué au stand.</p>
+        </div>
+      </div>
+      <div class="mcard">
+        <img src="/torehan/img/feat-group2.jpg" alt="Écran de répartition des cercles entre les membres" width="720" height="1498" loading="lazy">
+        <div>
+          <h3>🤝 Se répartir entre amis</h3>
+          <p>Créez un groupe avec un code d’invitation et répartissez les cercles entre les membres. Les avances faites pour les achats des autres sont réglées automatiquement.</p>
+        </div>
+      </div>
+      <div class="mcard">
+        <img src="/torehan/img/feat-guide.jpg" alt="Écran du guide du Comiket" width="720" height="1253" loading="lazy">
+        <div>
+          <h3>📚 Premier Comiket  Pas de panique</h3>
+          <p>Mode d’emploi de l’appli, guide du Comiket (parapluies, valises à roulettes, meilleures gares où descendre…) et liste d’affaires à emporter  tout est inclus.</p>
+        </div>
+      </div>
+    </div>
+    <p class="spec">6 langues (anglais, chinois simplifié/traditionnel, coréen, français, japonais) / 8 thèmes de couleurs</p>
+    <p class="shot-note">Captures d’écran de l’affichage en japonais. L’appli elle-même peut s’afficher dans les 6 langues.</p>
+  </section>
+
+  <section>
+  <div class="plans">
+    <h2>Tarifs — gratuit pour commencer. 2 packs, seulement pour les jours où vous en avez besoin</h2>
+    <p class="plans-lead">Ni abonnement mensuel, ni renouvellement automatique. <strong>Chaque pack s’achète pour un seul jour d’événement</strong>  ne choisissez que les jours où vous y allez.</p>
+
+    <div class="plan">
+      <div class="plan-head"><span class="plan-name">Gratuit</span><span class="plan-price">¥0</span></div>
+      <ul>
+        <li>Jusqu’à 5 cercles enregistrés par jour d’événement</li>
+        <li>Lecture des listes d’articles, calcul du budget, plans des salles, répartition en groupe et suivi des achats  tout est gratuit</li>
+        <li>Traduction des infos de cercles  les 10 premiers cercles sont gratuits</li>
+      </ul>
+    </div>
+
+    <div class="plans-pitch">
+      <h3>Faire la liste, quelle corvée. Et si vous vous en libériez </h3>
+      <p>Par rapport à la même liste faite à la main ou sur papier, la préparation prend 90 % de temps en moins. Pour le prix d’un livre, gardez le jour J libre pour parcourir tranquillement les listes d’articles.</p>
+    </div>
+
+    <div class="plan plan-main">
+      <div class="plan-head"><span class="plan-name">Pack Préparation</span><span class="plan-price">¥500<small>/ par jour d’événement</small></span></div>
+      <ul>
+        <li>Pour l’événement et le jour achetés, <strong>plus aucune limite au nombre de cercles enregistrés</strong></li>
+        <li>Inclut <strong>50 lectures haute précision</strong> dans le cloud</li>
+      </ul>
+    </div>
+
+    <div class="plan plan-main">
+      <div class="plan-head"><span class="plan-name">Pack Stratégie</span><span class="plan-price">¥1,000<small>/ par jour d’événement</small></span></div>
+      <ul>
+        <li>Tout le contenu du Pack Préparation</li>
+        <li>En plus, <strong>affichage et tri par « nombre d’inscrits »</strong>  repérez les cercles populaires, et donc les mouvements de vos rivaux</li>
+      </ul>
+      <p class="plan-note">Après avoir acheté un Pack Préparation, vous pouvez <strong>passer au Pack Stratégie en payant seulement la différence</strong>. Vous ne payez jamais deux fois.</p>
+    </div>
+
+    <div class="plan">
+      <div class="plan-head"><span class="plan-name">Traductions supplémentaires</span><span class="plan-price">¥100<small>/ 50 cercles</small></span></div>
+      <ul>
+        <li>Les 10 premiers cercles sont gratuits à l’essai</li>
+        <li>Utilisables pour tout événement et tout jour. Les cercles déjà traduits restent sur votre appareil  les revoir ne consomme rien</li>
+      </ul>
+    </div>
+
+    <p class="plans-foot">Lorsqu’un parrainage aboutit, le parrain et le filleul reçoivent chacun gratuitement un Pack Préparation d’une journée.<br>Les prix indiqués sont les prix japonais TTC, à titre indicatif. La boutique peut les afficher dans votre devise locale  vérifiez les prix et conditions à jour dans la boutique.<br>« 90 % de temps en moins » est une mesure du développeur, par rapport à la même liste faite à la main.</p>
+  </div>
+  </section>
+
+  <section class="end">
+    <p class="catch2">Ne ratez <span class='o'>plus un seul livre.</span></p>
+    <p class="sec-sub">Gratuit pour commencer, sans publicité. Essayez gratuitement avec jusqu’à 5 cercles.</p>
+    <div class="dl" data-cta>
+      <a class="btn btn-ios" href="https://apps.apple.com/app/id6776913607" onclick="torehanTrackStoreClick()">
+        <span class="ic" aria-hidden="true">📱</span>
+        <span>Télécharger sur l’App Store<small>iPhone · Gratuit pour commencer</small></span>
+      </a>
+      <a class="btn btn-play" href="https://play.google.com/store/apps/details?id=com.torehan.app">
+        <span class="ic" aria-hidden="true">▶️</span>
+        <span>Disponible sur Google Play<small>Android · Gratuit pour commencer</small></span>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <nav class="langs" aria-label="Langue">
+      <a href="/torehan/" hreflang="ja" lang="ja">日本語</a>
+      <a href="/torehan/en/" hreflang="en" lang="en">English</a>
+      <a href="/torehan/zh-hans/" hreflang="zh-Hans" lang="zh-Hans">简体中文</a>
+      <a href="/torehan/zh-hant/" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a>
+      <a href="/torehan/ko/" hreflang="ko" lang="ko">한국어</a>
+      <a href="/torehan/fr/" hreflang="fr" lang="fr" aria-current="page">Français</a>
+    </nav>
+    <p>Les nouveaux événements pris en charge sont annoncés sur notre compte X <a href='https://x.com/rurifukuro'>@rurifukuro</a> (en japonais).</p>
+    <p>© Torehan! ｜ Contact  <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a></p>
+    <a class="backlink" href="/">← Toutes les applis de Ruri Fukuro (en japonais)</a>
+  </footer>
+
+</div>
+
+<div class="fab" id="fab">
+  <div class="dl">
+    <a class="btn btn-ios" href="https://apps.apple.com/app/id6776913607" onclick="torehanTrackStoreClick()">
+      <span class="ic" aria-hidden="true">📱</span>
+      <span>Télécharger sur l’App Store<small>iPhone · Gratuit pour commencer</small></span>
+    </a>
+    <a class="btn btn-play" href="https://play.google.com/store/apps/details?id=com.torehan.app">
+      <span class="ic" aria-hidden="true">▶️</span>
+      <span>Disponible sur Google Play<small>Android · Gratuit pour commencer</small></span>
+    </a>
+  </div>
+</div>
+<script>
+  /* 出す条件＝「1画面目のボタンが画面の上へ抜けた」かつ「ページ内のどのストアボタンも見えていない」（日本語版と同じ） */
+  (function () {
+    var fab = document.getElementById("fab");
+    var hero = document.getElementById("cta-hero");
+    var blocks = document.querySelectorAll("[data-cta]");
+    if (!fab || !hero) return;
+    function update() {
+      var h = window.innerHeight || document.documentElement.clientHeight;
+      var passed = hero.getBoundingClientRect().bottom < 0;
+      var anyVisible = false;
+      for (var k = 0; k < blocks.length; k++) {
+        var r = blocks[k].getBoundingClientRect();
+        if (r.bottom > 0 && r.top < h) { anyVisible = true; break; }
+      }
+      fab.classList.toggle("show", passed && !anyVisible);
+    }
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    update();
+  })();
+</script>
+<script defer src="/analytics.js"></script>
+</body>
+</html>
