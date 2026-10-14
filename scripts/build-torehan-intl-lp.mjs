@@ -26,7 +26,7 @@ const LANGS = [
 const urlOf = (l) => BASE + (l.dir ? l.dir + "/" : "");
 
 // 生成側で埋めるキー（strings.json に置かない）
-const GENERATED = ["url", "alternates", "store_buttons", "langnav"];
+const GENERATED = ["url", "alternates", "store_buttons", "langnav", "img_dir"];
 // 生成側が使うだけでテンプレートに直接出ないキー
 const HELPER = ["ios_label", "ios_sub", "play_label", "play_sub"];
 // 属性値に入るキー＝ " を含めると属性が壊れる
@@ -77,6 +77,31 @@ function visibleKana(html) {
   return t.match(/[぀-ヿ]+/g) || [];
 }
 
+// JPEG の SOF から寸法を読む（依存を増やさない）
+function jpegSize(buf) {
+  let i = 2;
+  while (i < buf.length) {
+    if (buf[i] !== 0xff) return null;
+    const m = buf[i + 1];
+    if (m >= 0xc0 && m <= 0xcf && m !== 0xc4 && m !== 0xc8 && m !== 0xcc) {
+      return { h: buf.readUInt16BE(i + 5), w: buf.readUInt16BE(i + 7) };
+    }
+    i += 2 + buf.readUInt16BE(i + 2);
+  }
+  return null;
+}
+
+// 画像が実在し、width/height 属性が実寸と一致するか（言語別スクショの作り忘れ・切り抜き変更の取り残しを数える）
+function checkImages(key, html) {
+  for (const m of html.matchAll(/<img src="(\/torehan\/img\/[^"]+)"[^>]*\bwidth="(\d+)" height="(\d+)"/g)) {
+    const file = join(ROOT, "public", m[1]);
+    if (!existsSync(file)) { fail(`${key}: 画像が無い ${m[1]}（python scripts/torehan-intl/build_shots.py）`); continue; }
+    const size = jpegSize(readFileSync(file));
+    if (!size) { fail(`${key}: 寸法を読めない ${m[1]}`); continue; }
+    if (size.w !== +m[2] || size.h !== +m[3]) fail(`${key}: ${m[1]} は ${size.w}x${size.h}・属性は ${m[2]}x${m[3]}`);
+  }
+}
+
 function render(lang) {
   const s = strings[lang.key];
   if (!s) { fail(`${lang.key}: strings.json に節が無い`); return null; }
@@ -94,6 +119,7 @@ function render(lang) {
     if (k === "url") return urlOf(lang);
     if (k === "alternates") return alternates();
     if (k === "langnav") return langnav(lang.key);
+    if (k === "img_dir") return lang.dir;
     if (k === "store_buttons") {
       const lineStart = template.lastIndexOf("\n", offset) + 1;
       const prevIndent = template.slice(lineStart, offset).length === 0
@@ -104,6 +130,7 @@ function render(lang) {
     return s[k] ?? m;
   });
   if (/\{\{|\}\}/.test(out)) fail(`${lang.key}: 置換されていない {{…}} が残っている`);
+  checkImages(lang.key, out);
   const kana = visibleKana(out);
   if (kana.length) fail(`${lang.key}: 画面に出る仮名がある → ${[...new Set(kana)].slice(0, 8).join(" / ")}`);
   return out;
