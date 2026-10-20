@@ -532,6 +532,36 @@
     update();
   })();
 </script>
+<script>
+  /* 広告ごとの「ストア直行」（2026-10-20 テイトさん決定「韓国はストアへ直接誘導してみて」）。
+     広告の URL はポータルの LP のまま（ストア直リンクを広告に貼らないルール）＝LP に着いた後、端末に合うストアへ送る。
+     ・対象は DIRECT_SRC に載せた src だけ。ほかの流入は今までどおり LP を見せる。
+     ・スマホだけ（iPhone/iPad → App Store、Android → Google Play）。PC は LP のまま。
+     ・ページ内のストアボタンを click() で押す＝analytics.js が付けた ct / referrer と「ストアボタンを押した」記録がそのまま効く。
+     ・閲覧の記録（increment_blog_view）が先に出るよう、読み込み後に少し待ってから押す。
+     ・同じタブで1回だけ（ストアから戻った人を LP に留める）。
+     ・🔴 src ごとに期限を持つ＝期限を過ぎたら自動で LP 表示に戻る（広告の終了日に合わせる。延長するなら日付を直す）。 */
+  (function () {
+    var DIRECT_SRC = { "xad_ovs_kr": "2026-10-30T00:00:00+09:00" };
+    var s = "";
+    try { s = new URLSearchParams(window.location.search).get("src") || ""; } catch (e) { return; }
+    var until = DIRECT_SRC.hasOwnProperty(s) ? Date.parse(DIRECT_SRC[s]) : NaN;
+    if (isNaN(until) || Date.now() >= until) return;
+    var root = document.documentElement;
+    var sel = root.classList.contains("is-ios") ? "a.btn-ios" : root.classList.contains("is-android") ? "a.btn-play" : "";
+    if (!sel) return;
+    try {
+      if (window.sessionStorage.getItem("torehan_direct_done") === s) return;
+      window.sessionStorage.setItem("torehan_direct_done", s);
+    } catch (e) { /* 使えなければ毎回送る */ }
+    window.addEventListener("load", function () {
+      setTimeout(function () {
+        var a = document.querySelector("#cta-hero " + sel) || document.querySelector(sel);
+        if (a) a.click();
+      }, 700);
+    });
+  })();
+</script>
 <script defer src="/analytics.js"></script>
 </body>
 </html>
