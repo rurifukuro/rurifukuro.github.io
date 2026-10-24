@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>きゃすりん｜コンカフェ専用の予約・店舗管理｜App Store・Google Play で公開中</title>
-<meta name="description" content="コンカフェ専用の予約・店舗管理サービス「きゃすりん」。App Store・Google Play で公開中で、PCのブラウザから使えるWeb版もあります。いまは全機能を無料でお使いいただけます。">
+<meta name="description" content="コンカフェ専用の予約・店舗管理サービス「きゃすりん」。App Store・Google Play で公開中で、PCのブラウザから使えるWeb版もあります。ご登録から30日間は、全機能を無料でお試しいただけます。">
 <!-- 🔴 このページは「リンクを知っている人だけ」に見せる（2026-08-30 ユーザー指示）。
      ＝検索結果に出さない。robots.txt の Disallow は**使わない**：
      クロールを禁じると下の noindex 自体を読めなくなり、
@@ -12,7 +12,7 @@
      OG タグは残す＝DM・メールで送ったときのカード表示は必要なため。 -->
 <meta name="robots" content="noindex,nofollow">
 <meta property="og:title" content="きゃすりん｜コンカフェ専用の予約・店舗管理">
-<meta property="og:description" content="App Store・Google Play で公開中。いまは全機能を無料でお使いいただけます。">
+<meta property="og:description" content="App Store・Google Play で公開中。ご登録から30日間は、全機能を無料でお試しいただけます。">
 <meta property="og:type" content="website">
 <style>
 /* 配色は kyasuho/docs/lp_draft.html と揃える。
@@ -170,6 +170,15 @@ td.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
 .stores{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
 .stores .cta{margin-top:0;padding:14px 10px;line-height:1.35}
 .stores .cta small{display:block;margin-top:2px;font-size:12px;font-weight:600}
+/* ★2026-10-24 ユーザー決定: 主導線を「無料で30日間利用してみる（Web版で店舗登録）」にし、ストアは登録後の2番手に下げる。
+   DS28＝押してほしい行動は1つ。同じ塗りのボタンが3つ並ぶと押す先が決まらない＝ストアは枠線ボタンにする。
+   枠線ボタンの文字色は --pink-btn on #fff＝5.82:1（DS24・白文字 on --pink-btn と同じ組）＝新しい色は足さない。 */
+.cta-primary{font-size:18px;padding:19px 20px;line-height:1.35}
+.cta-primary small{display:block;margin-top:3px;font-size:12.5px;font-weight:600}
+.stores-lead{margin-top:24px;font-size:13px;color:var(--gray);text-align:center}
+.stores-lead + .stores{margin-top:10px}
+.stores .cta{background:#fff;color:var(--pink-btn);border:2px solid var(--pink-btn)}
+.stores .cta:hover{background:#fff7f9}
 button:disabled{opacity:.55;cursor:default}
 .kp-msg{font-size:14px;margin-top:16px;min-height:1px;line-height:1.7}
 .kp-msg.is-ok{color:#0f7a4a;font-weight:700}
@@ -212,19 +221,27 @@ footer a{color:var(--gray)}
       会計を切れば売上と給与に乗り、締め日の電卓仕事がなくなります。
     </p>
 
+    <!-- 🔴「30日間」は利用規約のお試し期間（D-132＝登録から30日）と同じ数字。規約の日数を変えたらここも同じ日に直す。
+         旧文「いまは全機能を無料で」は有料プラン開始（2026-11-01）で虚偽になるため 2026-10-24 に差し替えた。 -->
     <p>
-      いまは全機能を無料でお使いいただけます。
-      スマホならアプリ、PCならWeb版から始められます。
+      ご登録から30日間は、全機能を無料でお試しいただけます。
+      まずはWeb版でお店を登録して、実際のお店の情報で使い心地を確かめてみてください。
     </p>
 
+    <!-- ★2026-10-24 ユーザー決定: 「ストアで入手」より先に「無料で30日間試す」を置く。
+         まずお店に無料で使ってもらい、登録したお店をアプリ（ストア）へ案内する流れ＝試すお店を増やすのが目的。
+         行き先は管理サイトの新規登録画面（?signup=1 で登録フォームを直接開く＝kyasuho 側の対応と同じ Rev で出す）。 -->
+    <a class="cta cta-primary" href="https://kyasurin-app.github.io/admin?signup=1" target="_blank" rel="noopener">無料で30日間利用してみる<small>Web版でお店を登録します</small></a>
+    <p class="cta-note">お試し期間が終わったあとに、自動で課金されることはありません。</p>
+
     <!-- 🔴 ストアの URL に計測の引数は書かない＝/analytics.js がクリック時に付ける（App Store=ct／Play=referrer）。
-         iPad は非対応（app.json supportsTablet=false）なので「iPhone」とだけ書く。 -->
+         iPad は非対応（app.json supportsTablet=false）なので「iPhone」とだけ書く。
+         「そのままアプリでも使える」は管理サイトの登録画面の案内文（AdminLogin.tsx）と同じ事実＝片方だけ変えない。 -->
+    <p class="stores-lead">登録したアカウントは、そのままアプリでも使えます。</p>
     <div class="stores">
       <a class="cta" href="https://apps.apple.com/jp/app/id6787006154">App Store で入手<small>iPhone</small></a>
       <a class="cta" href="https://play.google.com/store/apps/details?id=com.kyasuho.app">Google Play で入手<small>Android</small></a>
     </div>
-    <p class="cta-note">PCからは <a href="https://kyasurin-app.github.io/admin" target="_blank" rel="noopener">Web版（管理サイト）</a> で始められます。</p>
-    <p class="cta-note">足りない機能などのご意見は、<a href="#survey">ページ下のアンケート</a>からお寄せください（3〜5分・設問はすべて任意）。</p>
   </div>
 </section>
 
@@ -272,9 +289,12 @@ footer a{color:var(--gray)}
 <section id="price">
   <div class="wrap">
     <!-- ★2026-10-02: 両ストア公開。課金はまだ止めてある（kyasuho src/config/features.ts IAP_ENABLED=false・BILLING_GATE_ENFORCED=false）
-         ＝全機能が無料。下の表は「有料プランが始まったときの料金」として残す。開始日が決まったらこの lead を直す。 -->
+         ＝全機能が無料。下の表は「有料プランが始まったときの料金」として残す。開始日が決まったらこの lead を直す。
+         ★2026-10-24: 旧 lead「現在は全機能を無料で公開しています」は有料プラン開始で虚偽になるため、
+            開始の前後どちらでも正しい「登録から30日間は無料（D-132）＋表はお試し期間のあとの料金」に差し替えた。
+            開始日（2026-11-01）をこのページに書くかは未決＝書くならこの lead に足す。 -->
     <h2>料金</h2>
-    <p class="lead">現在は全機能を無料で公開しています。有料プランの開始日は、決まりしだいこのページでお知らせします。下の表は有料プラン開始後の料金で、すべて月額・税別です。</p>
+    <p class="lead">お店の登録から30日間は、全機能を無料でお試しいただけます。下の表はお試し期間のあとの料金で、すべて月額・税別です。</p>
 
     <div class="card scroll">
       <table>
@@ -361,132 +381,44 @@ footer a{color:var(--gray)}
       </p>
     </div>
 
-    <!-- 🔴 このページで「今だけ」と言ってよいのはここだけ＝**終わる時期が実際に決まっているから**書ける
-         （[[web_marketing_rules]] CP23-32＝虚偽の希少性を作らない。在庫のないものに残り数を作らない）。
-         ★2026-10-02 ユーザー決定: クーポンの起点を「正式リリース」から「有料プランの開始日」へ読み替えた
-            （公開時点では全機能が無料＝お試し期間に意味がない）。開始日は未定＝日付は書かず「開始から1か月」とだけ書く。
-         🔴 配り方は実装済みのクーポン機構（ky_coupon_campaigns・trial_days の既定 60・再取得防止つき）で、
-            利用規約の「30日間」は据え置き＝**クーポンを当てた店舗だけが2か月になる**。
-            規約側の日数を変えていない以上、ここに「全店2か月無料」と書いてはいけない（虚偽文言）。
-         🔴 文言を変えるときは DM文面・アンケートの案内欄（#kp-want-notify の下）と同じ日に直す。 -->
+    <!-- ★2026-10-24 ユーザー決定: アンケート（お知らせ登録フォーム）を外したので、旧対象①「このページで登録したお店」と
+         ②「開始から1か月以内に申し込んだお店」をやめ、「今だけ、お試し期間を1か月延長」の1本にした。
+         **終了時期はユーザーが決める**（決まった時点でこの欄を直す）。旧文は index.html.bak_20261024。
+         🔴 CP23-32＝虚偽の希少性を作らない：終了日は未定なので、日付・残り日数・「まもなく終了」は書かない。
+            「今だけ」と書けるのは、実際に終える予定があるから。
+         🔴 配り方は実装済みのクーポン機構（ky_coupon_campaigns・trial_days 60・再取得防止つき）。利用規約の「30日間」は据え置き
+            ＝クーポンを当てたお店だけが2か月になる。「全店2か月無料」とは書かない（虚偽文言）。
+         🔴 終えるときは、この欄とクーポンコードの受付を同じ日に止める（欄だけ消えてコードが生きている／その逆、を作らない）。
+         🔴 文言を変えるときは DM文面と同じ日に直す。 -->
     <div class="card offer">
-      <p class="offer-label">有料プラン開始記念・お試し期間の延長</p>
-      <p class="offer-lead">有料プランが始まるとき、お試し期間を30日から2か月に延ばすクーポンをお渡しします。</p>
+      <p class="offer-label">期間限定・お試し期間の延長</p>
+      <p class="offer-lead">今だけ、お試し期間を30日から2か月に延ばすクーポンをお渡ししています。</p>
       <p class="offer-body">
-        対象は、①有料プランの開始前に、このページでお知らせの受け取りをご登録いただいたお店と、
-        ②有料プランの開始から1か月のあいだにお申し込みいただいたお店です。
-        クーポンコードは、有料プラン開始のお知らせと一緒にお送りします。
+        対象は、この受付が終わるまでにお店を登録いただいたお店です。
+        クーポンコードは、有料プランの開始に合わせて、管理サイトとアプリの「お知らせ」でお届けします。
       </p>
       <p class="tblnote">
-        ②の受付は有料プランの開始から1か月で終了します。①の対象は有料プランの開始までにご登録いただいたお店です。
-        クーポンを使わない場合のお試しは30日間です。どちらの場合も、期間が終わったあとに自動で課金されることはありません。
+        受付の終了時期は、決まりしだいこのページでお知らせします。クーポンを使わない場合のお試しは30日間です。
+        どちらの場合も、期間が終わったあとに自動で課金されることはありません。
       </p>
     </div>
   </div>
 </section>
 
-<section id="survey">
-  <div class="wrap">
-    <h2>ご意見をお聞かせください</h2>
-    <p class="lead">答えられる設問だけで構いません。所要 3〜5分ほどです。</p>
-
-    <form id="kp-form" novalidate>
-      <div class="card">
-        <!-- 設問は prelaunch-survey.generated.js から描く。ここに設問文を書かない -->
-        <div id="kp-survey"></div>
-      </div>
-
-      <div class="card" style="margin-top:20px">
-        <label class="kp-check" for="kp-want-notify">
-          <input type="checkbox" id="kp-want-notify">
-          <span>有料プランの開始やお知らせを受け取る</span>
-        </label>
-        <p class="kp-q-hint">お知らせ以外の目的では使いません。いつでも配信を停止できます。</p>
-        <!-- 🔴 料金セクションの特典カードと同じことを言う欄（ユーザー指示＝アンケート内にも書く）。
-             片方だけ直すと「フォームで約束したことが料金欄で確認できない」状態になる
-             （[[web_dev_rules]] WEB18 と同型の二重資産）。文言を変えるときは必ず両方を同じ日に直す。
-             🔴 設問そのものは prelaunch-survey.generated.js（正典＝kyasuho/src/config/prelaunchSurvey.json）
-                から描くので、**設問文をここに書き足さない**。ここはフォーム側の固定文言だけ。 -->
-        <p class="kp-q-hint">
-          <strong>有料プランの開始前にご登録いただいたお店には、お試し期間を30日から2か月に延ばすクーポンを、有料プラン開始のお知らせと一緒にお送りします。</strong>
-          有料プランの開始から1か月のあいだにお申し込みいただいたお店にも、同じクーポンをお渡しします。クーポンを使わない場合のお試しは30日間です。
-        </p>
-
-        <div id="kp-contact" hidden>
-          <div class="kp-inline">
-            <label for="kp-method-email"><input type="radio" name="kp-method" id="kp-method-email" checked>メールで受け取る</label>
-            <label for="kp-method-x"><input type="radio" name="kp-method" id="kp-method-x">X（旧Twitter）のDMで受け取る</label>
-          </div>
-
-          <div class="kp-field" id="kp-email-row">
-            <label for="kp-email">メールアドレス</label>
-            <input type="email" id="kp-email" autocomplete="email" inputmode="email" placeholder="shop@example.com">
-          </div>
-
-          <div class="kp-field" id="kp-x-row" hidden>
-            <label for="kp-x-handle">X のユーザー名（@ は不要）</label>
-            <input type="text" id="kp-x-handle" autocomplete="off" placeholder="your_shop">
-          </div>
-
-          <!-- 🔴 店舗名の欄はここに置かない（2026-08-30 ユーザー指示）。
-               この箱は「案内を受け取る」にチェックしたときだけ開く＝チェックしないお店の名前が
-               どこにも残らず、**回答のお礼すら伝えられなかった**。
-               店舗名はアンケート側の設問（正典 prelaunchSurvey.json の KP-21）へ移し、
-               案内登録の shop_name もその回答から取っている（prelaunch.js の SHOP_NAME_QID）。
-               ＝ここに入力欄を戻すと、同じことを2回聞く画面になる。 -->
-          <div class="kp-field">
-            <label for="kp-contact-name">ご担当者名（任意）</label>
-            <input type="text" id="kp-contact-name" autocomplete="name" maxlength="60">
-          </div>
-        </div>
-      </div>
-
-      <!-- ボット用の空欄（人には見えない） -->
-      <div class="hp" aria-hidden="true">
-        <label for="kp-website">Website</label>
-        <input type="text" id="kp-website" name="website" tabindex="-1" autocomplete="off">
-      </div>
-
-      <button type="submit" id="kp-submit"><span id="kp-submit-label">送信する</span></button>
-      <p id="kp-msg" class="kp-msg" role="status" aria-live="polite"></p>
-    </form>
-  </div>
-</section>
-
 <section>
   <div class="wrap">
-    <h2>いただいた情報の扱い</h2>
-    <p class="lead">お約束していることだけ、短く書きます。</p>
+    <h2>以前のアンケート・お知らせ登録について</h2>
     <div class="card">
-      <!-- 🔴 「〜のためだけに使います」と書く以上、**実際に他の用途があるならここへ書き足す**（虚偽文言）。
-           2026-08-30 に店舗名（設問 KP-21）を足した＝案内が要らないお店にも回答のお礼をお伝えするため
-           ＝「機能や料金を決めるためだけ」では実態と食い違うので、下の1行を同じ Rev で足した。 -->
-      <p>・アンケートの回答は、機能や料金を決めるためだけに使います。個人や店舗が分かる形で公開することはありません。</p>
-      <p>・店舗名をお書きいただいた場合は、上記に加えて、ご回答のお礼をお伝えするためにも使わせていただきます。空欄のままでも送信できます。</p>
-      <!-- 🔴★Rev516（ラウンド56 C-5）: 旧文は「第三者へ渡すことはありません」とだけ書いていたが、
-           実際には保管を Supabase、このページの配信を GitHub Pages に委託している。
-           アプリ内のプライバシーポリシー第3条は「以下の場合を除き提供しません」という**網羅の形**で
-           委託先を列挙しており、同じ基準で見ると LP 側だけが例外の形を持たない状態だった。 -->
-      <p>・連絡先は、きゃすりんからのお知らせ（有料プランの開始と、料金・機能の変更）をお送りするためだけに使います。名簿を売ったり、他社の広告に使ったりすることはありません。
-        ただし、いただいた情報は保管のため Supabase（Supabase, Inc.）のサーバーに保存され、このページ自体は GitHub Pages（GitHub, Inc.）から配信しています。
-        法令にもとづく開示要求があった場合を除き、これ以外に提供することはありません。</p>
-      <p>・配信の停止はいつでもできます。お知らせメールの末尾のリンクか、下記の連絡先までご一報ください。</p>
-      <p>・アンケートだけのご回答、ご登録だけ、どちらでも構いません。</p>
-      <!-- 🔴★Rev516（ラウンド56 C-3）: この節は「使い道」しか書いていなかった。
-           個人情報保護法 17 条（利用目的の特定）・21 条（取得時の公表）は
-           **何を取るのか**と**どこへ言えば消せるのか**までを求める。
-           Rev514 で本番適用済み＝すでに収集を始めているので、公開中の版で不足していた。
-           アプリ内のプライバシーポリシー（privacyPolicy.ts）が正本で、ここはその要約。
-           🔴 片方だけ直すと二重資産の乖離になる（WEB18）＝必ず両方を同じ Rev で直す。 -->
-      <p>・お預かりするのは、ご入力いただいた<strong>店舗名・ご担当者名・メールアドレスまたは X（Twitter）のアカウント名・アンケートのご回答</strong>だけです。
-        クレジットカード番号・住所・電話番号はどの設問でもお尋ねしません。</p>
-      <!-- 🔴★2026-10-02: 旧文「保管する期間は、公開のご案内をお送りし終えるまで」は実装と違っていた。
-           配信停止（ky_prelaunch_unsubscribe）は unsubscribed_at を立てるだけで行は消さず、自動削除も無い。
-           ＝「〜まで保管」と期間で言い切らず、privacyPolicy.ts 5.(7) と同じ形（対象から外す＋削除は申し出で）にそろえる。 -->
-      <p>・配信停止のご連絡をいただいた時点で、お知らせの対象から外します。ご回答・ご登録の記録そのものの削除をご希望の場合は、下記の連絡先までご連絡ください。ご連絡をいただいた記録は削除します。</p>
-      <p>・ご自身の情報の<strong>開示・訂正・削除・利用の停止</strong>をご希望の場合は、下記の連絡先までお知らせください。
-        ご本人であることを確認したうえで、遅滞なく対応します（手数料はいただきません）。
-        個人情報の取扱いに関するご質問も、同じ連絡先で承ります。</p>
+      <!-- ★2026-10-24 ユーザー決定: アンケートとお知らせ登録の受付を終了（このページから外した）。
+           すでにお預かりした記録は残っている＝削除・開示の窓口と、旧特典①の対象だった方への約束（クーポン送付）はここに残す。
+           旧本文（「いただいた情報の扱い」全文）は index.html.bak_20261024。
+           🔴 privacyPolicy.ts 5.(7)（申し出で削除）と食い違わないこと（WEB18）。
+           アンケートの部品（prelaunch.js・prelaunch-survey.generated.js）は消さずに残す＝kyasuho の checks（gen-prelaunch-survey --check）が生成物を見ている。 -->
+      <p>・このページで受け付けていたアンケートとお知らせの登録は、受付を終了しました。ご協力いただいた皆さま、ありがとうございました。</p>
+      <p>・お知らせの受け取りをご登録いただいた方には、お約束どおり、有料プラン開始のお知らせと一緒にお試し期間延長のクーポンをお送りします。配信の停止はいつでもできます。</p>
+      <p>・お預かりした情報の使い道は、受付のときにお約束したとおりです（機能や料金を決めるための検討と、きゃすりんからのお知らせ）。</p>
+      <p>・お預かりした情報（店舗名・ご担当者名・連絡先・ご回答）の<strong>開示・訂正・削除・利用の停止</strong>をご希望の場合は、下記の連絡先までお知らせください。
+        ご本人であることを確認したうえで、遅滞なく対応します（手数料はいただきません）。</p>
     </div>
   </div>
 </section>
@@ -501,9 +433,6 @@ footer a{color:var(--gray)}
   </div>
 </footer>
 
-<script src="./prelaunch-survey.generated.js"></script>
-<script src="./prelaunch.js"></script>
-<script>window.initKyasuhoPrelaunch();</script>
 <script defer src="/analytics.js"></script>
 </body>
 </html>
