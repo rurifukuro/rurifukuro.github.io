@@ -61,7 +61,7 @@
 <div class="wrap">
   <a href="./" class="backlink">← レジさぽっ！ トップへ</a>
   <h1>プライバシーポリシー<br><span class="appname">レジさぽっ！</span></h1>
-  <p class="updated" id="lastUpdated">最終更新: 2026-09-24</p>
+  <p class="updated" id="lastUpdated">最終更新: 2026-10-23</p>
 
   <div class="lang-bar">
     <span class="lang-btn active" onclick="showLang('ja')">日本語</span>
@@ -156,7 +156,7 @@
 
 ※ AI読み取り機能をまったく使わなければ、いずれの経路でも画像が外部へ送信されることはありません。</p>
     <h2>6. 第三者提供・広告・解析</h2>
-    <p>本アプリは、上記の共有・オンライン機能（第3条）およびAI読み取り（第5条）で説明した処理、および下記の利用状況の計測を除き、利用者のデータを第三者へ提供しません。これらの機能で送信されるデータは、当方のクラウド基盤の提供事業者（Supabase, Inc.／AI読み取りは Anthropic）に対し、機能提供の目的に必要な範囲でのみ取り扱われます。
+    <p>本アプリは、上記の共有・オンライン機能（第3条）およびAI読み取り（第5条）で説明した処理、および下記の利用状況の計測とプッシュ通知を除き、利用者のデータを第三者へ提供しません。これらの機能で送信されるデータは、当方のクラウド基盤の提供事業者（Supabase, Inc.／AI読み取りは Anthropic／プッシュ通知の配信は Expo）に対し、機能提供の目的に必要な範囲でのみ取り扱われます。
 
 ■ アプリの利用状況の計測（Google Firebase Analytics）
 本アプリは、アプリの改善および広告の効果測定（インストール数の把握）のため、Google LLC が提供する計測サービス「Firebase Analytics」を使用しています。
@@ -165,6 +165,13 @@
 ・広告識別子（IDFA）は取得せず、他社のアプリやWebサイトを横断して利用者を追跡する「トラッキング」は行いません。
 ・収集された情報は Google のサーバーへ送信され、Google のプライバシーポリシーに従って取り扱われます。また、広告の効果測定のため、当方の Google 広告アカウントと連携しています。
 ・この計測は Firebase Analytics の自動収集によるもので、現時点ではアプリ内に個別の停止設定はありません。停止をご希望の場合は本アプリをアンインストールしてください（アンインストール以降の収集は行われません）。収集済みのデータの削除をご希望の場合は、第11条の連絡先までご相談ください。
+
+■ プッシュ通知（受け取る設定にした場合のみ）
+本アプリは、新しい機能の追加や大切なお知らせ（設定でオンにした場合はキャンペーンのお知らせも）を通知でお届けするため、通知を受け取る設定にした端末について、次の情報を当方のサーバー（Supabase 上のサーバー機能）へ登録します。
+・送信される情報: プッシュ通知用のトークン（その端末へ通知を届けるための宛先として、Expo を通じて Apple / Google が発行する値）、アプリの識別子（"urehan"）、アプリのバージョン番号、表示言語の設定、通知の種類ごとの受け取り設定（お知らせ／キャンペーン）。
+・送信されるのは、通知の説明画面または設定タブの「通知」で「受け取る」を選び、端末の確認ダイアログで許可した場合だけです。許可している間は、起動のたびに同じ内容を送り直します。キャンペーンのお知らせは既定でオフで、設定タブの「通知」でいつでも切り替えられます。
+・通知は、当方のサーバーから Expo（650 Industries, Inc.）を経由して、Apple / Google の通知配信サービスから端末へ届きます。通知の本文は「開発者からのお知らせ」と同じ内容です。
+・インストールID・広告ID・氏名・メールアドレス・アプリ内で入力した内容が送信されることはありません。
 
 上記の計測を除き、本アプリは広告配信・行動トラッキングのための第三者サービス（SDK）は使用していません。アプリ内に広告バナーの配信もありません。
 
@@ -205,6 +212,9 @@
 
 ⑦ 有料機能の購入記録（第3条⑧）
 ・売上集計（会計・税務上の記録）のためサーバーに保存され、アプリ内に個別の削除機能はありません。法令上の保存義務がある期間中は削除できませんが、その期間を過ぎたものは <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> へのご連絡により削除します。
+
+⑧ プッシュ通知のトークン
+・第6条のプッシュ通知の登録（トークン・受け取り設定など）は、通知が届かなくなったこと（アプリの削除や通知の許可の取り消しなど）を通知の送信時に確認した時点で、サーバーから自動的に削除されます。それ以前の削除をご希望の場合は <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> までご連絡ください。
 
 ①②のデータのうち、アプリ内の操作で削除できないもの（売り子として参加したセッション、非公開にしただけのページなど）の削除をご希望の場合は <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> までご連絡ください（取り置き予約ページはページURL、売り子共有は参加コードをお知らせいただくと対象を特定できます）。</p>
     <h2>9. 子どものプライバシー</h2>
@@ -305,7 +315,7 @@ When your remaining cloud OCR credits are fewer than the number of images to be 
 
 ※ If you do not use the AI recognition feature at all, no image is sent externally through either path.</p>
     <h2>6. Third Parties, Ads, Analytics</h2>
-    <p>Except for the online / sharing features (Section 3), AI recognition (Section 5) described above, and the usage measurement described below, the App does not share your data with third parties. Data sent through those features is handled by our cloud infrastructure providers (Supabase, Inc.; for AI recognition, Anthropic) only to the extent necessary to provide the feature.
+    <p>Except for the online / sharing features (Section 3), AI recognition (Section 5) described above, and the usage measurement and push notifications described below, the App does not share your data with third parties. Data sent through those features is handled by our cloud infrastructure providers (Supabase, Inc.; for AI recognition, Anthropic; for push notification delivery, Expo) only to the extent necessary to provide the feature.
 
 ■ Usage measurement (Google Firebase Analytics)
 The App uses "Firebase Analytics", a measurement service provided by Google LLC, to improve the App and to measure advertising effectiveness (number of installs).
@@ -314,6 +324,13 @@ The App uses "Firebase Analytics", a measurement service provided by Google LLC,
 ・The advertising identifier (IDFA) is not collected, and we do not perform "tracking" that follows you across other companies' apps or websites.
 ・Collected information is sent to Google's servers and handled under Google's privacy policy. It is also linked to our Google Ads account for advertising measurement.
 ・This measurement is Firebase Analytics' automatic collection; there is currently no in-app setting to turn it off. If you wish to stop it, please uninstall the App (nothing is collected after uninstall). To request deletion of data already collected, please contact us at the address in Section 11.
+
+■ Push notifications (only if you choose to receive them)
+To notify you about new features and important announcements (and campaign announcements if you turn them on), the App registers the following information with our server (a server function on Supabase) for devices set to receive notifications.
+・Information sent: a push notification token (an address for delivering notifications to that device, issued by Apple / Google via Expo), the app identifier ("urehan"), the app version number, your display language setting, and your notification preferences by type (announcements / campaigns).
+・This is sent only after you choose "Turn on" on the notification explanation screen or under "Notifications" in the Settings tab and allow it in the device permission dialog. While notifications are allowed, the same information is sent again at each launch. Campaign notifications are off by default and can be changed at any time under "Notifications" in the Settings tab.
+・Notifications are delivered from our server via Expo (650 Industries, Inc.) and then by the Apple / Google notification delivery service to your device. The notification text is the same as the corresponding developer announcement.
+・Your installation ID, advertising ID, name, email address, and anything you entered in the App are never sent.
 
 Apart from the measurement above, the App contains no advertising or behavioral tracking SDKs, and displays no ad banners.
 
@@ -354,6 +371,9 @@ External links the App may open include links to social media or official inform
 
 (7) Paid feature purchase records (Section 3, item ⑧)
 ・These are stored on the server for sales accounting (accounting and tax records), and there is no deletion function in the App. They cannot be deleted while a legal retention obligation applies, but once that period has passed we will delete them upon request to <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>.
+
+(8) Push notification tokens
+・The push notification registration described in Section 6 (token, preferences, etc.) is deleted from the server automatically once a send confirms that notifications can no longer be delivered (for example, after the App is uninstalled or notification permission is revoked). To request earlier deletion, please contact <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>.
 
 If you wish to have data described in (1) or (2) deleted that you cannot delete in the App (a session you joined as a seller, a page you only unpublished, etc.), please contact <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> (please include the page URL for a reservation page, or the join code for a seller share session, so that we can identify it).</p>
     <h2>9. Children's Privacy</h2>
@@ -454,7 +474,7 @@ If you wish to have data described in (1) or (2) deleted that you cannot delete 
 
 ※ 如果完全不使用AI识别功能，则无论哪条路径都不会将图片发送至外部。</p>
     <h2>6. 第三方提供・广告・分析</h2>
-    <p>除上述在线・共享功能（第3条）、AI识别（第5条）所说明的处理，以及下述的使用情况计测外，本应用不会向第三方提供用户的数据。通过这些功能发送的数据，仅在提供功能所必需的范围内由我方的云基础设施提供商（Supabase, Inc.；AI识别为 Anthropic）处理。
+    <p>除上述在线・共享功能（第3条）、AI识别（第5条）所说明的处理，以及下述的使用情况计测与推送通知外，本应用不会向第三方提供用户的数据。通过这些功能发送的数据，仅在提供功能所必需的范围内由我方的云基础设施提供商（Supabase, Inc.；AI识别为 Anthropic；推送通知的投递为 Expo）处理。
 
 ■ 应用使用情况的计测（Google Firebase Analytics）
 为改进应用以及衡量广告效果（掌握安装数量），本应用使用 Google LLC 提供的计测服务「Firebase Analytics」。
@@ -463,6 +483,13 @@ If you wish to have data described in (1) or (2) deleted that you cannot delete 
 ・不获取广告识别码（IDFA），也不进行跨其他公司应用或网站追踪用户的「追踪」行为。
 ・收集到的信息将发送至 Google 的服务器，并依据 Google 的隐私政策处理。此外，为衡量广告效果，已与我方的 Google Ads 账户关联。
 ・该计测由 Firebase Analytics 自动收集，目前应用内没有单独的停止设置。如希望停止，请卸载本应用（卸载之后不再收集）。如希望删除已收集的数据，请联系第11条所载的联系方式。
+
+■ 推送通知（仅限选择接收时）
+为通过通知告知新增功能和重要公告（如在设置中开启，也包括活动通知），对于设置为接收通知的设备，本应用会将以下信息登记到我方服务器（Supabase 上的服务器功能）。
+・发送的信息：推送通知令牌（向该设备投递通知的地址，由 Apple / Google 通过 Expo 签发的值）、应用标识符（"urehan"）、应用版本号、显示语言设置、各类通知的接收设置（公告／活动）。
+・仅当您在通知说明画面或“设置”标签页的“通知”中选择“接收”，并在设备的确认对话框中允许后才会发送。在允许期间，每次启动时会重新发送相同内容。活动通知默认关闭，可随时在“设置”标签页的“通知”中切换。
+・通知从我方服务器经由 Expo（650 Industries, Inc.），再由 Apple / Google 的通知投递服务送达设备。通知内容与“开发者通知”相同。
+・不会发送安装ID、广告ID、姓名、电子邮件地址或在应用内输入的内容。
 
 除上述计测外，本应用不使用用于广告投放、行为追踪的第三方服务（SDK），也不展示广告横幅。
 
@@ -503,6 +530,9 @@ If you wish to have data described in (1) or (2) deleted that you cannot delete 
 
 ⑦ 付费功能的购买记录（第3条⑧）
 ・为进行销售统计（会计・税务记录）保存在服务器上，应用内没有单独的删除功能。在法定保存期间内无法删除，超过该期间后，可通过联系 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> 予以删除。
+
+⑧ 推送通知令牌
+・第6条所述的推送通知登记（令牌、接收设置等），在发送通知时确认已无法送达（例如删除应用或撤销通知权限）后，将自动从服务器删除。如希望提前删除，请联系 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>。
 
 ①②的数据中，无法在应用内删除的部分（以卖手身份参与的会话、仅设为非公开的页面等）如希望删除，请联系 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>（预约页面请告知页面URL，卖手共享请告知参与代码，以便我们确认对象）。</p>
     <h2>9. 儿童隐私</h2>
@@ -599,7 +629,7 @@ If you wish to have data described in (1) or (2) deleted that you cannot delete 
 
 ※ 如果完全不使用AI識別功能，則無論哪條路徑都不會將圖片傳送至外部。</p>
     <h2>6. 第三方提供・廣告・分析</h2>
-    <p>除上述線上・共享功能（第3條）、AI識別（第5條）所說明的處理，以及下述的使用情況計測外，本應用不會向第三方提供使用者的資料。透過這些功能傳送的資料，僅在提供功能所必需的範圍內由我方的雲基礎設施提供商（Supabase, Inc.；AI識別為 Anthropic）處理。
+    <p>除上述線上・共享功能（第3條）、AI識別（第5條）所說明的處理，以及下述的使用情況計測與推播通知外，本應用不會向第三方提供使用者的資料。透過這些功能傳送的資料，僅在提供功能所必需的範圍內由我方的雲基礎設施提供商（Supabase, Inc.；AI識別為 Anthropic；推播通知的投遞為 Expo）處理。
 
 ■ 應用使用情況的計測（Google Firebase Analytics）
 為改進應用以及衡量廣告效果（掌握安裝數量），本應用使用 Google LLC 提供的計測服務「Firebase Analytics」。
@@ -608,6 +638,13 @@ If you wish to have data described in (1) or (2) deleted that you cannot delete 
 ・不獲取廣告識別碼（IDFA），也不進行跨其他公司應用或網站追蹤使用者的「追蹤」行為。
 ・收集到的資訊將傳送至 Google 的伺服器，並依據 Google 的隱私政策處理。此外，為衡量廣告效果，已與我方的 Google Ads 帳戶關聯。
 ・該計測由 Firebase Analytics 自動收集，目前應用內沒有單獨的停止設定。如希望停止，請解除安裝本應用（解除安裝之後不再收集）。如希望刪除已收集的資料，請聯絡第11條所載的聯絡方式。
+
+■ 推播通知（僅限選擇接收時）
+為透過通知告知新增功能和重要公告（如在設定中開啟，也包括活動通知），對於設定為接收通知的裝置，本應用會將以下資訊登記到我方伺服器（Supabase 上的伺服器功能）。
+・傳送的資訊：推播通知權杖（向該裝置投遞通知的位址，由 Apple / Google 透過 Expo 簽發的值）、應用識別碼（"urehan"）、應用版本號、顯示語言設定、各類通知的接收設定（公告／活動）。
+・僅當您在通知說明畫面或「設定」分頁的「通知」中選擇「接收」，並在裝置的確認對話方塊中允許後才會傳送。在允許期間，每次啟動時會重新傳送相同內容。活動通知預設關閉，可隨時在「設定」分頁的「通知」中切換。
+・通知從我方伺服器經由 Expo（650 Industries, Inc.），再由 Apple / Google 的通知投遞服務送達裝置。通知內容與「開發者通知」相同。
+・不會傳送安裝ID、廣告ID、姓名、電子郵件地址或在應用內輸入的內容。
 
 除上述計測外，本應用不使用用於廣告投放、行為追蹤的第三方服務（SDK），也不展示廣告橫幅。
 
@@ -648,6 +685,9 @@ If you wish to have data described in (1) or (2) deleted that you cannot delete 
 
 ⑦ 付費功能的購買記錄（第3條⑧）
 ・為進行銷售統計（會計・稅務記錄）保存在伺服器上，應用內沒有單獨的刪除功能。在法定保存期間內無法刪除，超過該期間後，可透過聯絡 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> 予以刪除。
+
+⑧ 推播通知權杖
+・第6條所述的推播通知登記（權杖、接收設定等），在傳送通知時確認已無法送達（例如刪除應用或撤銷通知權限）後，將自動從伺服器刪除。如希望提前刪除，請聯絡 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>。
 
 ①②的資料中，無法在應用內刪除的部分（以賣手身分參與的會話、僅設為非公開的頁面等）如希望刪除，請聯絡 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>（預約頁面請告知頁面URL，賣手共享請告知參與代碼，以便我們確認對象）。</p>
     <h2>9. 兒童隱私</h2>
@@ -744,7 +784,7 @@ If you wish to have data described in (1) or (2) deleted that you cannot delete 
 
 ※ AI 인식 기능을 전혀 사용하지 않으면, 어느 경로로도 이미지가 외부로 전송되지 않습니다.</p>
     <h2>6. 제3자 제공・광고・분석</h2>
-    <p>본 앱은 위의 온라인・공유 기능（제3조）, AI 인식（제5조）에서 설명한 처리, 그리고 아래의 이용 현황 측정을 제외하고 이용자의 데이터를 제3자에게 제공하지 않습니다. 이러한 기능으로 전송되는 데이터는 당사의 클라우드 인프라 제공 사업자（Supabase, Inc.; AI 인식은 Anthropic）가 기능 제공에 필요한 범위에서만 취급합니다.
+    <p>본 앱은 위의 온라인・공유 기능（제3조）, AI 인식（제5조）에서 설명한 처리, 그리고 아래의 이용 현황 측정과 푸시 알림을 제외하고 이용자의 데이터를 제3자에게 제공하지 않습니다. 이러한 기능으로 전송되는 데이터는 당사의 클라우드 인프라 제공 사업자（Supabase, Inc.; AI 인식은 Anthropic; 푸시 알림 전송은 Expo）가 기능 제공에 필요한 범위에서만 취급합니다.
 
 ■ 앱 이용 현황의 측정（Google Firebase Analytics）
 본 앱은 앱 개선 및 광고 효과 측정（설치 수 파악）을 위해 Google LLC가 제공하는 측정 서비스 「Firebase Analytics」를 사용합니다.
@@ -753,6 +793,13 @@ If you wish to have data described in (1) or (2) deleted that you cannot delete 
 ・광고 식별자（IDFA）는 취득하지 않으며, 타사의 앱이나 웹사이트를 넘나들며 이용자를 추적하는 「트래킹」은 하지 않습니다.
 ・수집된 정보는 Google의 서버로 전송되어 Google의 개인정보 처리방침에 따라 취급됩니다. 또한 광고 효과 측정을 위해 당사의 Google Ads 계정과 연동되어 있습니다.
 ・이 측정은 Firebase Analytics의 자동 수집에 의한 것으로, 현재 앱 내에 개별적인 중지 설정은 없습니다. 중지를 원하시는 경우 본 앱을 삭제（언인스톨）해 주십시오（삭제 이후의 수집은 이루어지지 않습니다）. 이미 수집된 데이터의 삭제를 원하시는 경우 제11조의 연락처로 문의해 주십시오.
+
+■ 푸시 알림（받기로 설정한 경우에만）
+새 기능 추가나 중요한 공지（설정에서 켠 경우 캠페인 공지도）를 알림으로 전하기 위해, 알림을 받도록 설정한 기기에 대해 다음 정보를 당사 서버（Supabase 상의 서버 기능）에 등록합니다.
+・전송되는 정보: 푸시 알림용 토큰（해당 기기로 알림을 전달하기 위한 주소로, Expo를 통해 Apple / Google이 발급하는 값）, 앱 식별자（"urehan"）, 앱 버전 번호, 표시 언어 설정, 알림 종류별 수신 설정（공지／캠페인）.
+・알림 안내 화면 또는 설정 탭의 "알림"에서 "받기"를 선택하고 기기의 확인 대화상자에서 허용한 경우에만 전송됩니다. 허용하는 동안에는 실행할 때마다 같은 내용을 다시 전송합니다. 캠페인 알림은 기본값이 꺼짐이며, 설정 탭의 "알림"에서 언제든지 바꿀 수 있습니다.
+・알림은 당사 서버에서 Expo（650 Industries, Inc.）를 거쳐 Apple / Google의 알림 전송 서비스를 통해 기기로 전달됩니다. 알림 내용은 "개발자 공지"와 같습니다.
+・설치 ID·광고 ID·이름·이메일 주소·앱 안에서 입력한 내용은 전송되지 않습니다.
 
 위의 측정을 제외하고, 본 앱은 광고 전송・행동 추적을 위한 제3자 서비스（SDK）는 사용하지 않으며, 앱 내 광고 배너 노출도 없습니다.
 
@@ -793,6 +840,9 @@ If you wish to have data described in (1) or (2) deleted that you cannot delete 
 
 ⑦ 유료 기능의 구매 기록（제3조 ⑧）
 ・매출 집계（회계・세무상의 기록）를 위해 서버에 보존되며, 앱 내에 개별 삭제 기능은 없습니다. 법령상 보존 의무가 있는 기간에는 삭제할 수 없으나, 그 기간이 지난 것은 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> 으로 연락 주시면 삭제합니다.
+
+⑧ 푸시 알림 토큰
+・제6조의 푸시 알림 등록（토큰·수신 설정 등）은 알림을 보낼 때 더 이상 전달되지 않음（앱 삭제나 알림 권한 취소 등）이 확인된 시점에 서버에서 자동으로 삭제됩니다. 그 이전의 삭제를 원하시면 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> 으로 연락해 주십시오.
 
 ①②의 데이터 가운데 앱 내 조작으로 삭제할 수 없는 것（매장 직원으로 참가한 세션, 비공개로만 전환한 페이지 등）의 삭제를 원하시는 경우 <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> 으로 연락해 주십시오（예약 페이지는 페이지 URL, 매장 직원 공유는 참가 코드를 알려주시면 대상을 특정할 수 있습니다）.</p>
     <h2>9. 어린이 개인정보</h2>
@@ -889,7 +939,7 @@ Lorsque vos crédits OCR cloud restants sont insuffisants pour le nombre d'image
 
 ※ Si vous n'utilisez pas du tout la fonction de reconnaissance par IA, aucune image n'est envoyée à l'extérieur par l'une ou l'autre voie.</p>
     <h2>6. Tiers, publicité, analyse</h2>
-    <p>À l'exception des fonctionnalités en ligne / de partage (Section 3), de la reconnaissance par IA (Section 5) décrites ci-dessus et de la mesure d'usage décrite ci-dessous, l'Application ne partage pas vos données avec des tiers. Les données envoyées via ces fonctionnalités sont traitées par nos fournisseurs d'infrastructure cloud (Supabase, Inc. ; pour la reconnaissance par IA, Anthropic) uniquement dans la mesure nécessaire pour fournir la fonctionnalité.
+    <p>À l'exception des fonctionnalités en ligne / de partage (Section 3), de la reconnaissance par IA (Section 5) décrites ci-dessus et de la mesure d'usage et des notifications push décrites ci-dessous, l'Application ne partage pas vos données avec des tiers. Les données envoyées via ces fonctionnalités sont traitées par nos fournisseurs d'infrastructure cloud (Supabase, Inc. ; pour la reconnaissance par IA, Anthropic ; pour l'acheminement des notifications push, Expo) uniquement dans la mesure nécessaire pour fournir la fonctionnalité.
 
 ■ Mesure d'usage de l'application (Google Firebase Analytics)
 L'Application utilise « Firebase Analytics », un service de mesure fourni par Google LLC, afin d'améliorer l'Application et de mesurer l'efficacité publicitaire (nombre d'installations).
@@ -898,6 +948,13 @@ L'Application utilise « Firebase Analytics », un service de mesure fourni par 
 ・L'identifiant publicitaire (IDFA) n'est pas collecté et nous n'effectuons aucun « suivi » vous pistant à travers les applications ou sites web d'autres sociétés.
 ・Les informations collectées sont envoyées aux serveurs de Google et traitées conformément à la politique de confidentialité de Google. Elles sont également liées à notre compte Google Ads à des fins de mesure publicitaire.
 ・Cette mesure relève de la collecte automatique de Firebase Analytics ; il n'existe actuellement aucun réglage dans l'Application permettant de la désactiver. Si vous souhaitez l'arrêter, veuillez désinstaller l'Application (plus rien n'est collecté après la désinstallation). Pour demander la suppression des données déjà collectées, veuillez nous contacter à l'adresse indiquée à la Section 11.
+
+■ Notifications push (uniquement si vous choisissez de les recevoir)
+Afin de vous prévenir de l'ajout de nouvelles fonctionnalités et des annonces importantes (ainsi que des annonces de campagne si vous les activez), l'Application enregistre les informations suivantes sur notre serveur (une fonction serveur sur Supabase) pour les appareils configurés pour recevoir des notifications.
+・Informations envoyées : un jeton de notification push (une adresse permettant d'acheminer les notifications vers cet appareil, émise par Apple / Google via Expo), l'identifiant de l'application (« urehan »), le numéro de version de l'application, la langue d'affichage et vos préférences de notification par type (annonces / campagnes).
+・Ces informations ne sont envoyées qu'après avoir choisi « Activer » sur l'écran d'explication des notifications ou dans « Notifications » de l'onglet Réglages, puis autorisé la demande de l'appareil. Tant que les notifications sont autorisées, les mêmes informations sont renvoyées à chaque lancement. Les notifications de campagne sont désactivées par défaut et peuvent être modifiées à tout moment dans « Notifications » de l'onglet Réglages.
+・Les notifications sont acheminées depuis notre serveur via Expo (650 Industries, Inc.), puis par le service de notification d'Apple / Google jusqu'à votre appareil. Le texte de la notification est identique à l'annonce du développeur correspondante.
+・Votre identifiant d'installation, votre identifiant publicitaire, votre nom, votre adresse e-mail et tout contenu saisi dans l'Application ne sont jamais envoyés.
 
 Hormis la mesure ci-dessus, l'Application ne contient aucun SDK de publicité ou de suivi comportemental, et n'affiche aucune bannière publicitaire.
 
@@ -939,6 +996,9 @@ Les liens externes que l'Application peut ouvrir incluent des liens vers les ré
 (7) Enregistrement des achats de fonctionnalités payantes (Section 3, point ⑧)
 ・Ils sont conservés sur le serveur pour la comptabilisation des ventes (registres comptables et fiscaux), et l'Application ne propose pas de fonction de suppression. Ils ne peuvent pas être supprimés pendant la durée de conservation légale, mais passé ce délai, nous les supprimerons sur demande adressée à <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>.
 
+(8) Jetons de notification push
+・L'enregistrement des notifications push décrit à l'article 6 (jeton, préférences, etc.) est automatiquement supprimé du serveur dès qu'un envoi confirme que les notifications ne peuvent plus être délivrées (par exemple après la désinstallation de l'Application ou le retrait de l'autorisation de notification). Pour demander une suppression anticipée, veuillez contacter <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a>.
+
 Si vous souhaitez faire supprimer des données visées aux points (1) et (2) que l'Application ne permet pas de supprimer (session rejointe en tant que vendeur, page seulement dépubliée, etc.), veuillez contacter <a href="mailto:rurifukuro@gmail.com">rurifukuro@gmail.com</a> (merci d'indiquer l'URL de la page pour une page de réservation, ou le code de participation pour une session de partage vendeur, afin que nous puissions l'identifier).</p>
     <h2>9. Confidentialité des enfants</h2>
     <p>L'Application s'adresse à tous les âges et n'a pas l'intention de collecter des informations personnelles auprès d'enfants.</p>
@@ -957,7 +1017,7 @@ Si vous souhaitez faire supprimer des données visées aux points (1) et (2) que
 </div>
 
 <script>
-  var labels = {'ja':'最終更新: 2026-09-24', 'en':'Last updated: 2026-09-24', 'zh':'最后更新: 2026-09-24', 'zh-Hant':'最後更新: 2026-09-24', 'ko':'최종 업데이트: 2026-09-24', 'fr':'Dernière mise à jour : 2026-09-24'};
+  var labels = {'ja':'最終更新: 2026-10-23', 'en':'Last updated: 2026-10-23', 'zh':'最后更新: 2026-10-23', 'zh-Hant':'最後更新: 2026-10-23', 'ko':'최종 업데이트: 2026-10-23', 'fr':'Dernière mise à jour : 2026-10-23'};
   function showLang(lang) {
     document.querySelectorAll('.policy').forEach(function(el){ el.classList.remove('visible'); });
     document.getElementById('policy-' + lang).classList.add('visible');
