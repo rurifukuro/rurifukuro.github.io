@@ -7,6 +7,7 @@
  *   ・public/torehan/index.html        … とれはんっ！LP
  *   ・public/torehan/join/index.html   … とれはんっ！グループ招待の中継ページ
  *   ・public/torehan/invite/index.html … とれはんっ！友達紹介の中継ページ
+ *   ・public/torehan/circle-db/index.html … とれはんっ！ウェブ版サークルDB（一覧・追加・取り込みの中継）
  *   ・public/urehan/index.html         … レジさぽっ！LP
  *   ・public/kyasuho/index.html        … きゃすりん LP（事前登録・事前アンケート）
  *   ・public/kyasuho/lp/index.html     … きゃすりん サービス紹介LP（申込ボタンは /kyasuho/ へ）
