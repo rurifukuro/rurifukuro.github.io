@@ -132,6 +132,12 @@
    *   🔴 既に referrer が入っているリンクは触らない（App Store の ct と同じ扱い）。
    * --------------------------------------------------------------------- */
   function defaultCt() {
+    /* ウェブ版ツールから来た DL を見分ける（2026-11-08 ユーザー「この2種のウェブからのアプリDLを判別とダッシュボードでみれるようにしておいて」）
+     *   /torehan/circle-db/ → circledb … ウェブ版サークルDB（ページ側も App Store の ct=circledb を自分で付ける）
+     *   /torehan/route/     → routemap … ウェブ版 地図ルート（2026-11-08 時点で未公開＝作る時はこのパスに置く）
+     * 開発者ダッシュボードはこの値（App Store の ct／Play の utm_source）とクリックしたページで 2 つを分けて数える。 */
+    if (/^\/torehan\/circle-db(\/|$)/.test(path)) return 'circledb';
+    if (/^\/torehan\/route(\/|$)/.test(path)) return 'routemap';
     var m = path.match(/^\/blog\/([^/]+)\/?$/);
     if (m && m[1] !== 'tag') return 'blog_' + m[1];
     return 'portal';

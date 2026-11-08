@@ -43,6 +43,13 @@
        ・PC     … 同じ ID を載せた https の中継 URL（このページの `?import=`）を QR で出す。
        ・中継   … `?import=` で来たら一覧の代わりに「とれはんっ！で開く」とストアの案内を出す（読み込み時に自動で飛ばさない）。
 
+     ■ 自分のリスト（Rev843・2026-11-08 ユーザー「アプリ版のサークルDBローカルと同じもののイメージ」「Googleアカウントなどでログインできるようにして自分のリストを保存」「ログインはGoogleだけでOK」）
+       ・タブは「自分のリスト」と「みんなのDB」。自分のリスト＝追加・編集・削除・メモ・★・並び替え・検索・𝕏 まとめて検索（無料）。
+       ・ログインしていない間は localStorage（torehan.circledb.mylist.v1）。Google でログインすると web_circle_list（0159・本人だけ）に保存し、
+         初回ログイン時にブラウザのリストをアカウントへ移す。ログアウトと「アカウントとリストを削除」（delete_my_web_account）を置く。
+       ・共有するのはサークル名・サークル主・𝕏 ID だけ（master_circles へ従来どおり anon で登録）。メモと ★ は共有しない。
+       ・アプリへは「とれはんっ！に取り込む」で ids に加えて fav（0/1 の並び）と notes（JSON 配列・URL エンコード 6000 文字まで）を渡す。
+         PC の QR（中継 URL）は ids と fav だけ＝メモは載せない（QR が読めなくなるため）。アプリ側の受け取りは次のビルドから。
      ⚠ サーバーの値は**一切 innerHTML に入れない**（textContent と URL エンコードのみ）。
      ⚠ 𝕏 へのリンクは ID が /^[A-Za-z0-9_]{1,15}$/ を満たすときだけ ID から作る。twitter_profile_url はリンクにしない（2026-08-18 決定）。
      ⚠ キーは公開用（publishable / anon）。analytics.js・waitlist.js と同じ値。service_role は絶対に置かない。
@@ -141,6 +148,10 @@
   .fld label .req{color:#c2410c;font-weight:700;margin-left:6px;font-size:12px}
   .fld input{width:100%;font-size:16px;padding:11px 12px;border-radius:10px;border:1px solid #c9d2e3;color:#1b2438;background:#fff}
   .fld input:focus{outline:2px solid var(--orange);border-color:var(--orange)}
+  .fld textarea{width:100%;font-size:16px;padding:11px 12px;border-radius:10px;border:1px solid #c9d2e3;color:#1b2438;background:#fff;font-family:inherit;line-height:1.5;resize:vertical}
+  .fld textarea:focus{outline:2px solid var(--orange);border-color:var(--orange)}
+  .fld .ck{display:flex;align-items:center;gap:10px;font-size:15px;cursor:pointer;margin:0;min-height:44px}
+  .fld .ck input{width:22px;height:22px;padding:0;flex:none;accent-color:var(--orange)}
   .fld .err{font-size:12px;color:#b91c1c;margin-top:4px}
   .fld .fh{font-size:12px;color:#5c667a;margin-top:4px}
   .fld .fh.ok{color:#15803d;font-weight:700}
@@ -163,6 +174,28 @@
   .relay .back{display:inline-block;margin-top:22px;font-size:14px;color:var(--sub)}
   footer{max-width:1180px;margin:30px auto 0;padding:0 16px;font-size:12px;color:var(--faint);text-align:center}
   footer a{color:var(--sub);margin:0 8px}
+  /* 自分のリスト（Rev843） */
+  .tabs{display:flex;gap:6px;margin:0 0 14px;border-bottom:1px solid var(--line)}
+  .tab{flex:1;max-width:260px;font-size:16px;font-weight:700;padding:12px 10px;background:none;border:none;border-bottom:3px solid transparent;
+    color:var(--sub);cursor:pointer;margin-bottom:-1px;min-height:48px}
+  .tab.on{color:#fff;border-bottom-color:var(--orange)}
+  .acct{background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:0 0 14px;font-size:13px;color:var(--sub)}
+  .acct .acts{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin-top:8px}
+  .gbtn{font-size:15px;font-weight:700;min-height:44px;padding:0 20px;border-radius:999px;border:none;background:#fff;color:#1b2438;cursor:pointer}
+  .lnk{font-size:13px;color:var(--sub);background:none;border:none;text-decoration:underline;cursor:pointer;padding:6px 0;min-height:40px}
+  .lnk.dng{color:#fca5a5}
+  a.lnk{display:inline-flex;align-items:center}
+  .card.mine .name{padding-right:88px}
+  .star{position:absolute;top:12px;right:54px;width:34px;height:34px;border-radius:9px;border:none;background:none;font-size:24px;line-height:1;
+    color:var(--faint);cursor:pointer;padding:0}
+  .star.on{color:#facc15}
+  .memo{font-size:13px;color:var(--text);background:rgba(255,255,255,.06);border-radius:10px;padding:8px 10px;white-space:pre-wrap;word-break:break-word}
+  .mineb{align-self:flex-start;font-size:14px;font-weight:700;padding:8px 14px;min-height:40px;border-radius:999px;border:1px solid rgba(255,255,255,.4);
+    background:transparent;color:var(--text);cursor:pointer}
+  .mineb.in{border-color:transparent;color:var(--sub);font-weight:400;cursor:default;padding-left:0}
+  #addDel{width:100%;margin-top:10px;color:#b91c1c;border-color:#f1b8b8}
+  #addDel.armed{background:#b91c1c;border-color:#b91c1c;color:#fff}
+  .btn2.dng{background:#b91c1c;border-color:#b91c1c;color:#fff}
 </style>
 </head>
 <body>
@@ -174,11 +207,25 @@
 
 <!-- ── 一覧 ── -->
 <main id="list">
+  <div class="tabs" role="tablist">
+    <button class="tab" id="tabMine" type="button" role="tab">自分のリスト</button>
+    <button class="tab" id="tabAll" type="button" role="tab">みんなのDB</button>
+  </div>
+  <div class="acct" id="acct" hidden>
+    <p id="acctText"></p>
+    <div class="acts">
+      <button class="gbtn" id="loginBtn" type="button" hidden>Google でログイン</button>
+      <button class="lnk" id="logoutBtn" type="button" hidden></button>
+      <button class="lnk dng" id="delAccBtn" type="button" hidden></button>
+      <a class="lnk" id="privLnk" href="/torehan/privacy/" target="_blank" rel="noopener">プライバシーポリシー</a>
+    </div>
+  </div>
   <div class="search"><input type="search" id="q" autocomplete="off" enterkeyhint="search" maxlength="100" placeholder="サークル名・サークル主・𝕏 の ID で探す"></div>
   <div class="tools">
     <span class="lbl" id="t_sort">並び替え</span>
     <button class="chip on" id="sortKana" type="button">五十音順</button>
     <button class="chip" id="sortNew" type="button">更新が新しい順</button>
+    <button class="chip" id="favOnly" type="button" hidden></button>
     <button class="chip x" id="bulkx" type="button" disabled>𝕏 まとめて検索</button>
     <span class="count" id="count"></span>
   </div>
@@ -220,6 +267,7 @@
   <div id="barSel" style="display:contents" hidden>
     <div class="n" id="selN"></div>
     <button class="clr" id="clr" type="button">選択を外す</button>
+    <button class="add" id="toMine" type="button" hidden></button>
     <button class="imp" id="impSel" type="button"><span class="ic">📲</span><span class="long" id="impLong"></span><span class="short" id="impShort"></span></button>
   </div>
 </div></div>
@@ -258,10 +306,14 @@
       <input id="fOwner" maxlength="60" autocomplete="off"></div>
     <div class="fld"><label for="fX" id="l_x"></label>
       <input id="fX" maxlength="500" autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="url" placeholder="@ID / https://x.com/…"><div class="fh" id="hX"></div><div class="err" id="eX" hidden></div></div>
+    <div class="fld" id="fldNotes" hidden><label for="fNotes" id="l_notes"></label>
+      <textarea id="fNotes" maxlength="1000" rows="4"></textarea></div>
+    <div class="fld" id="fldFav" hidden><label class="ck"><input type="checkbox" id="fFav"><span id="l_fav"></span></label></div>
     <div class="hp" aria-hidden="true"><label for="fWeb">web</label><input id="fWeb" tabindex="-1" autocomplete="off"></div>
     <p class="sm" id="addNote"></p>
     <div class="err" id="eAdd" hidden></div>
     <div class="row"><button class="btn2" type="button" data-close id="addCancel"></button><button class="btn2 pri" type="submit" id="addSubmit"></button></div>
+    <button class="btn2" type="button" id="addDel" hidden></button>
   </form>
 </div></div>
 
@@ -281,6 +333,14 @@
   <h2 id="repTitle"></h2>
   <p id="repBody"></p>
   <div class="row"><button class="btn2" type="button" data-close id="repCancel"></button><a class="btn2 pri" id="repGo" href="https://forms.gle/RMWGLzRdyzdnPSas5" target="_blank" rel="noopener"></a></div>
+</div></div>
+
+<!-- ── アカウントとリストの削除 ── -->
+<div class="ov" id="accOv" hidden><div class="dlg" role="dialog" aria-modal="true" aria-labelledby="accTitle">
+  <button class="x" type="button" data-close aria-label="閉じる">×</button>
+  <h2 id="accTitle"></h2>
+  <p id="accBody"></p>
+  <div class="row"><button class="btn2" type="button" data-close id="accCancel"></button><button class="btn2 dng" type="button" id="accGo"></button></div>
 </div></div>
 
 <div class="toast" id="toast" hidden></div>
@@ -336,7 +396,53 @@
       repTitle: 'このサークルを通報', repBody: '「{name}」を運営に通報します。お問い合わせフォームが開くので、対象のサークル名と理由をご記入ください。', repGo: 'フォームを開く',
       rTitle: 'サークルDBの取り込み', rLead: '次の {n} 件を、とれはんっ！のサークルDBに取り込みます。', rLeadLoading: 'サークルを確認しています…', rOpen: 'とれはんっ！で開く',
       rNoApp: 'アプリをお持ちでない方・開かない方', rBack: 'サークルDBを見る', rMissing: '{n} 件はサーバーに見つかりませんでした。', rNone: 'リンクのサークルが見つかりませんでした。サークルDBで選び直してください。', rBad: 'リンクが正しくありません。サークルDBで選び直してください。',
-      about: 'とれはんっ！について', contact: 'お問い合わせ', ownerBy: 'サークル主 {o}'
+      about: 'とれはんっ！について', contact: 'お問い合わせ', ownerBy: 'サークル主 {o}',
+      tabMine: '自分のリスト（{n}）',
+      tabAll: 'みんなのDB',
+      favOnly: '★ だけ',
+      sortAdded: '追加が新しい順',
+      noteMine: '💡 自分のリストは、アプリのサークルDB（ローカル）と同じ使い方です。メモと ★ はあなただけが見られます。ログインしていない間はこのブラウザに保存され、Google でログインするとどの端末でも同じリストを使えます。',
+      acctLocal: 'このブラウザに保存しています（ブラウザのデータを消すとリストも消えます）。Google でログインすると、どの端末でも同じリストを使えます。',
+      acctIn: '{email} でログイン中（どの端末でも同じリストです）',
+      login: 'Google でログイン',
+      priv: 'プライバシーポリシー',
+      logout: 'ログアウト',
+      delAcc: 'アカウントとリストを削除',
+      delAccTitle: 'アカウントとリストを削除',
+      delAccBody: '自分のリスト（メモと ★ を含む）とログイン情報をサーバーから削除します。元に戻せません。みんなのDB に登録したサークルと、アプリに取り込んだ分は残ります。',
+      delAccGo: '削除する',
+      delSure: 'もう一度押すと削除します',
+      delAccDone: 'アカウントとリストを削除しました',
+      delAccListOnly: 'リストを削除しました（ログイン情報は他のサービスで使われているため残しています）',
+      loginErr: 'ログインできませんでした。時間をおいて、もう一度お試しください。',
+      loggedOut: 'ログアウトしました（リストはアカウントに残っています）',
+      merged: 'このブラウザのリスト {n} 件をアカウントに移しました',
+      loadingMine: '自分のリストを読み込み中…',
+      mineEmpty: '見つかりませんでした。',
+      mineEmpty0: 'まだサークルがありません。「みんなのDB」で「＋ 自分のリスト」を押すか、下の「サークルを追加」から入れられます。',
+      mineFull: '自分のリストは {max} 件までです',
+      saveErr: '保存できませんでした。時間をおいて、もう一度お試しください。',
+      toMine: '＋ 自分のリスト',
+      inMine: '✓ 自分のリストにあります',
+      toMineSel: '＋ {n} 件を自分のリストへ',
+      addedMine: '「{name}」を自分のリストに入れました',
+      addedMineN: '{n} 件を自分のリストに入れました',
+      alreadyMine: 'すでに自分のリストにあります',
+      addedAt: '追加 {d}',
+      edit: '編集',
+      editTitle: 'サークルを編集',
+      save: '保存する',
+      saved: '保存しました',
+      del: '削除',
+      deleted: '削除しました',
+      favF: 'お気に入り',
+      favLabel: '★ お気に入り',
+      notesF: 'メモ（あなただけが見られます）',
+      addNoteMine: 'サークル名・サークル主・𝕏 の ID は みんなのDB にも登録され、誰でも見られます（本名や個人の連絡先は書かないでください）。メモと ★ はあなただけが見られます。',
+      sharedFail: '自分のリストに入れました（みんなのDB への登録はできませんでした。アプリへ取り込む前に、編集から保存し直してください）',
+      noMaster: 'みんなのDB に登録されていないサークルは取り込めません。編集から保存し直すと登録されます。',
+      notesCut: 'メモが長いため、一部のメモは取り込まれません',
+      qrNoNotes: '※ QR とリンクではメモは渡せません（★ は渡せます）。メモも取り込むときは、スマホでこのページを開いて取り込んでください。'
     },
     en: {
       docTitle: 'Circle DB | Find doujin circles and import them into Torehan!',
@@ -365,7 +471,53 @@
       repTitle: 'Report this circle', repBody: 'You are about to report "{name}" to the operator. A contact form will open — please enter the circle name and the reason.', repGo: 'Open the form',
       rTitle: 'Import into Circle DB', rLead: 'Import these {n} circle(s) into the Circle DB in Torehan!.', rLeadLoading: 'Checking the circles…', rOpen: 'Open in Torehan!',
       rNoApp: 'Don\'t have the app, or it won\'t open?', rBack: 'Browse the Circle DB', rMissing: '{n} circle(s) were not found on the server.', rNone: 'The circles in this link were not found. Please pick them again in the Circle DB.', rBad: 'This link is not valid. Please pick the circles again in the Circle DB.',
-      about: 'About Torehan!', contact: 'Contact', ownerBy: 'Owner {o}'
+      about: 'About Torehan!', contact: 'Contact', ownerBy: 'Owner {o}',
+      tabMine: 'My list ({n})',
+      tabAll: 'Everyone\'s DB',
+      favOnly: '★ only',
+      sortAdded: 'Recently added',
+      noteMine: '💡 My list works like the app\'s local Circle DB. Only you can see your notes and ★. While signed out it is saved in this browser; sign in with Google to use the same list on any device.',
+      acctLocal: 'Saved in this browser (clearing browser data also clears the list). Sign in with Google to use the same list on any device.',
+      acctIn: 'Signed in as {email} (same list on every device)',
+      login: 'Sign in with Google',
+      priv: 'Privacy Policy',
+      logout: 'Sign out',
+      delAcc: 'Delete account and list',
+      delAccTitle: 'Delete account and list',
+      delAccBody: 'Your list (including notes and ★) and your sign-in are deleted from the server. This cannot be undone. Circles you added to Everyone\'s DB and anything imported into the app stay.',
+      delAccGo: 'Delete',
+      delSure: 'Tap again to delete',
+      delAccDone: 'Your account and list were deleted',
+      delAccListOnly: 'Your list was deleted (your sign-in is kept because another service uses it)',
+      loginErr: 'Could not sign in. Please try again later.',
+      loggedOut: 'Signed out (your list stays in your account)',
+      merged: 'Moved {n} circles from this browser to your account',
+      loadingMine: 'Loading your list…',
+      mineEmpty: 'No matches.',
+      mineEmpty0: 'No circles yet. Tap “+ My list” in Everyone\'s DB, or use “Add a circle” below.',
+      mineFull: 'My list holds up to {max} circles',
+      saveErr: 'Could not save. Please try again later.',
+      toMine: '+ My list',
+      inMine: '✓ In my list',
+      toMineSel: '+ Add {n} to my list',
+      addedMine: 'Added “{name}” to my list',
+      addedMineN: 'Added {n} circles to my list',
+      alreadyMine: 'Already in my list',
+      addedAt: 'Added {d}',
+      edit: 'Edit',
+      editTitle: 'Edit circle',
+      save: 'Save',
+      saved: 'Saved',
+      del: 'Delete',
+      deleted: 'Deleted',
+      favF: 'Favorite',
+      favLabel: '★ Favorite',
+      notesF: 'Notes (only you can see them)',
+      addNoteMine: 'Circle name, owner and 𝕏 ID are also added to Everyone\'s DB, where anyone can see them (do not enter real names or personal contacts). Only you can see your notes and ★.',
+      sharedFail: 'Added to my list (could not add it to Everyone\'s DB — save it again from Edit before importing into the app)',
+      noMaster: 'Circles not in Everyone\'s DB cannot be imported. Save them again from Edit to add them.',
+      notesCut: 'Some notes are too long to import and were left out',
+      qrNoNotes: 'Note: the QR code and link cannot carry notes (★ is carried). To import notes too, open this page on your phone and import from there.'
     },
     zh: {
       docTitle: '社团数据库｜查找同人社团并导入 Torehan!',
@@ -394,7 +546,53 @@
       repTitle: '举报此社团', repBody: '您即将向运营方举报“{name}”。将打开联系表单，请填写对象社团名称与理由。', repGo: '打开表单',
       rTitle: '导入社团数据库', rLead: '将以下 {n} 个导入 Torehan! 的社团数据库。', rLeadLoading: '正在确认社团…', rOpen: '在 Torehan! 中打开',
       rNoApp: '没有应用或无法打开的用户', rBack: '查看社团数据库', rMissing: '有 {n} 个在服务器上未找到。', rNone: '找不到链接中的社团。请在社团数据库中重新选择。', rBad: '链接无效。请在社团数据库中重新选择。',
-      about: '关于 Torehan!', contact: '联系我们', ownerBy: '社团主 {o}'
+      about: '关于 Torehan!', contact: '联系我们', ownerBy: '社团主 {o}',
+      tabMine: '我的列表（{n}）',
+      tabAll: '大家的DB',
+      favOnly: '仅 ★',
+      sortAdded: '最新添加',
+      noteMine: '💡 我的列表的用法与应用内的社团DB（本地）相同。备注和 ★ 只有你能看到。未登录时保存在此浏览器中；使用 Google 登录后，可在任何设备上使用同一列表。',
+      acctLocal: '保存在此浏览器中（清除浏览器数据会一并清除列表）。使用 Google 登录后，可在任何设备上使用同一列表。',
+      acctIn: '已用 {email} 登录（所有设备共用同一列表）',
+      login: '使用 Google 登录',
+      priv: '隐私政策',
+      logout: '退出登录',
+      delAcc: '删除账号和列表',
+      delAccTitle: '删除账号和列表',
+      delAccBody: '将从服务器删除你的列表（包括备注和 ★）以及登录信息。此操作无法撤销。你添加到大家的DB的社团以及已导入应用的内容会保留。',
+      delAccGo: '删除',
+      delSure: '再按一次即删除',
+      delAccDone: '已删除账号和列表',
+      delAccListOnly: '已删除列表（登录信息被其他服务使用，因此保留）',
+      loginErr: '无法登录。请稍后再试。',
+      loggedOut: '已退出登录（列表保留在账号中）',
+      merged: '已将此浏览器中的 {n} 个社团移到账号',
+      loadingMine: '正在读取我的列表…',
+      mineEmpty: '未找到。',
+      mineEmpty0: '还没有社团。可在“大家的DB”中点“＋ 我的列表”，或从下方“添加社团”加入。',
+      mineFull: '我的列表最多 {max} 个',
+      saveErr: '无法保存。请稍后再试。',
+      toMine: '＋ 我的列表',
+      inMine: '✓ 已在我的列表中',
+      toMineSel: '＋ 将 {n} 个加入我的列表',
+      addedMine: '已将“{name}”加入我的列表',
+      addedMineN: '已将 {n} 个加入我的列表',
+      alreadyMine: '已在我的列表中',
+      addedAt: '添加于 {d}',
+      edit: '编辑',
+      editTitle: '编辑社团',
+      save: '保存',
+      saved: '已保存',
+      del: '删除',
+      deleted: '已删除',
+      favF: '收藏',
+      favLabel: '★ 收藏',
+      notesF: '备注（只有你能看到）',
+      addNoteMine: '社团名、社团主和 𝕏 ID 也会登记到大家的DB，任何人都能看到（请勿填写真实姓名或个人联系方式）。备注和 ★ 只有你能看到。',
+      sharedFail: '已加入我的列表（未能登记到大家的DB，导入应用前请在编辑中重新保存）',
+      noMaster: '未登记在大家的DB中的社团无法导入。在编辑中重新保存即可登记。',
+      notesCut: '部分备注过长，未能导入',
+      qrNoNotes: '※ 二维码和链接无法传递备注（可传递 ★）。如需导入备注，请在手机上打开此页面进行导入。'
     },
     'zh-Hant': {
       docTitle: '社團資料庫｜尋找同人社團並匯入 Torehan!',
@@ -423,7 +621,53 @@
       repTitle: '檢舉此社團', repBody: '您即將向營運方檢舉「{name}」。將開啟聯絡表單，請填寫對象社團名稱與理由。', repGo: '開啟表單',
       rTitle: '匯入社團資料庫', rLead: '將以下 {n} 個匯入 Torehan! 的社團資料庫。', rLeadLoading: '正在確認社團…', rOpen: '在 Torehan! 中開啟',
       rNoApp: '沒有 App 或無法開啟的使用者', rBack: '查看社團資料庫', rMissing: '有 {n} 個在伺服器上找不到。', rNone: '找不到連結中的社團。請在社團資料庫中重新選擇。', rBad: '連結無效。請在社團資料庫中重新選擇。',
-      about: '關於 Torehan!', contact: '聯絡我們', ownerBy: '社團主 {o}'
+      about: '關於 Torehan!', contact: '聯絡我們', ownerBy: '社團主 {o}',
+      tabMine: '我的清單（{n}）',
+      tabAll: '大家的DB',
+      favOnly: '僅 ★',
+      sortAdded: '最新加入',
+      noteMine: '💡 我的清單的用法與 App 內的社團DB（本機）相同。備註和 ★ 只有你看得到。未登入時儲存在此瀏覽器；使用 Google 登入後，可在任何裝置使用同一份清單。',
+      acctLocal: '儲存在此瀏覽器（清除瀏覽器資料會一併清除清單）。使用 Google 登入後，可在任何裝置使用同一份清單。',
+      acctIn: '已用 {email} 登入（所有裝置共用同一份清單）',
+      login: '使用 Google 登入',
+      priv: '隱私權政策',
+      logout: '登出',
+      delAcc: '刪除帳號和清單',
+      delAccTitle: '刪除帳號和清單',
+      delAccBody: '將從伺服器刪除你的清單（包含備註和 ★）及登入資訊。此操作無法復原。你新增到大家的DB的社團以及已匯入 App 的內容會保留。',
+      delAccGo: '刪除',
+      delSure: '再按一次即刪除',
+      delAccDone: '已刪除帳號和清單',
+      delAccListOnly: '已刪除清單（登入資訊由其他服務使用，因此保留）',
+      loginErr: '無法登入。請稍後再試。',
+      loggedOut: '已登出（清單保留在帳號中）',
+      merged: '已將此瀏覽器中的 {n} 個社團移到帳號',
+      loadingMine: '正在讀取我的清單…',
+      mineEmpty: '找不到。',
+      mineEmpty0: '還沒有社團。可在「大家的DB」按「＋ 我的清單」，或從下方「新增社團」加入。',
+      mineFull: '我的清單最多 {max} 個',
+      saveErr: '無法儲存。請稍後再試。',
+      toMine: '＋ 我的清單',
+      inMine: '✓ 已在我的清單',
+      toMineSel: '＋ 將 {n} 個加入我的清單',
+      addedMine: '已將「{name}」加入我的清單',
+      addedMineN: '已將 {n} 個加入我的清單',
+      alreadyMine: '已在我的清單中',
+      addedAt: '加入於 {d}',
+      edit: '編輯',
+      editTitle: '編輯社團',
+      save: '儲存',
+      saved: '已儲存',
+      del: '刪除',
+      deleted: '已刪除',
+      favF: '收藏',
+      favLabel: '★ 收藏',
+      notesF: '備註（只有你看得到）',
+      addNoteMine: '社團名、社團主和 𝕏 ID 也會登記到大家的DB，任何人都看得到（請勿填寫真實姓名或個人聯絡方式）。備註和 ★ 只有你看得到。',
+      sharedFail: '已加入我的清單（未能登記到大家的DB，匯入 App 前請在編輯中重新儲存）',
+      noMaster: '未登記在大家的DB的社團無法匯入。在編輯中重新儲存即可登記。',
+      notesCut: '部分備註過長，未能匯入',
+      qrNoNotes: '※ QR 碼和連結無法傳遞備註（可傳遞 ★）。如需匯入備註，請在手機上開啟此頁面匯入。'
     },
     ko: {
       docTitle: '서클 DB｜동인 서클을 찾아 토레한!으로 가져오기',
@@ -452,7 +696,53 @@
       repTitle: '이 서클 신고', repBody: '"{name}"을(를) 운영자에게 신고합니다. 문의 양식이 열리므로 대상 서클명과 사유를 입력해 주세요.', repGo: '양식 열기',
       rTitle: '서클 DB 가져오기', rLead: '다음 {n}건을 토레한!의 서클 DB로 가져옵니다.', rLeadLoading: '서클을 확인하는 중…', rOpen: '토레한!에서 열기',
       rNoApp: '앱이 없거나 열리지 않는 분', rBack: '서클 DB 보기', rMissing: '{n}건은 서버에서 찾지 못했습니다.', rNone: '링크의 서클을 찾지 못했습니다. 서클 DB에서 다시 골라 주세요.', rBad: '링크가 올바르지 않습니다. 서클 DB에서 다시 골라 주세요.',
-      about: '토레한! 소개', contact: '문의', ownerBy: '서클 주인 {o}'
+      about: '토레한! 소개', contact: '문의', ownerBy: '서클 주인 {o}',
+      tabMine: '내 리스트 ({n})',
+      tabAll: '모두의 DB',
+      favOnly: '★ 만',
+      sortAdded: '최근 추가순',
+      noteMine: '💡 내 리스트는 앱의 서클DB(로컬)와 같은 방식으로 사용합니다. 메모와 ★는 본인만 볼 수 있습니다. 로그인하지 않은 동안은 이 브라우저에 저장되며, Google로 로그인하면 어느 기기에서나 같은 리스트를 쓸 수 있습니다.',
+      acctLocal: '이 브라우저에 저장 중입니다(브라우저 데이터를 지우면 리스트도 지워집니다). Google로 로그인하면 어느 기기에서나 같은 리스트를 쓸 수 있습니다.',
+      acctIn: '{email}(으)로 로그인 중 (모든 기기에서 같은 리스트)',
+      login: 'Google로 로그인',
+      priv: '개인정보처리방침',
+      logout: '로그아웃',
+      delAcc: '계정과 리스트 삭제',
+      delAccTitle: '계정과 리스트 삭제',
+      delAccBody: '내 리스트(메모와 ★ 포함)와 로그인 정보를 서버에서 삭제합니다. 되돌릴 수 없습니다. 모두의 DB에 등록한 서클과 앱으로 가져온 내용은 남습니다.',
+      delAccGo: '삭제',
+      delSure: '한 번 더 누르면 삭제됩니다',
+      delAccDone: '계정과 리스트를 삭제했습니다',
+      delAccListOnly: '리스트를 삭제했습니다(로그인 정보는 다른 서비스에서 사용 중이라 남겨 두었습니다)',
+      loginErr: '로그인하지 못했습니다. 잠시 후 다시 시도해 주세요.',
+      loggedOut: '로그아웃했습니다(리스트는 계정에 남아 있습니다)',
+      merged: '이 브라우저의 리스트 {n}건을 계정으로 옮겼습니다',
+      loadingMine: '내 리스트를 불러오는 중…',
+      mineEmpty: '찾지 못했습니다.',
+      mineEmpty0: '아직 서클이 없습니다. "모두의 DB"에서 "＋ 내 리스트"를 누르거나, 아래 "서클 추가"로 넣을 수 있습니다.',
+      mineFull: '내 리스트는 {max}건까지입니다',
+      saveErr: '저장하지 못했습니다. 잠시 후 다시 시도해 주세요.',
+      toMine: '＋ 내 리스트',
+      inMine: '✓ 내 리스트에 있음',
+      toMineSel: '＋ {n}건을 내 리스트로',
+      addedMine: '"{name}"을(를) 내 리스트에 넣었습니다',
+      addedMineN: '{n}건을 내 리스트에 넣었습니다',
+      alreadyMine: '이미 내 리스트에 있습니다',
+      addedAt: '추가 {d}',
+      edit: '편집',
+      editTitle: '서클 편집',
+      save: '저장',
+      saved: '저장했습니다',
+      del: '삭제',
+      deleted: '삭제했습니다',
+      favF: '즐겨찾기',
+      favLabel: '★ 즐겨찾기',
+      notesF: '메모 (본인만 볼 수 있음)',
+      addNoteMine: '서클명·서클 주인·𝕏 ID는 모두의 DB에도 등록되어 누구나 볼 수 있습니다(실명이나 개인 연락처는 적지 마세요). 메모와 ★는 본인만 볼 수 있습니다.',
+      sharedFail: '내 리스트에 넣었습니다(모두의 DB에는 등록하지 못했습니다. 앱으로 가져오기 전에 편집에서 다시 저장해 주세요)',
+      noMaster: '모두의 DB에 등록되지 않은 서클은 가져올 수 없습니다. 편집에서 다시 저장하면 등록됩니다.',
+      notesCut: '메모가 길어 일부 메모는 가져오지 않습니다',
+      qrNoNotes: '※ QR과 링크로는 메모를 전달할 수 없습니다(★는 전달됨). 메모도 가져오려면 휴대폰에서 이 페이지를 열어 가져오세요.'
     },
     fr: {
       docTitle: 'Base de cercles | Trouvez des cercles dōjin et importez-les dans Torehan!',
@@ -481,7 +771,53 @@
       repTitle: 'Signaler ce cercle', repBody: 'Vous allez signaler « {name} » à l\'exploitant. Un formulaire de contact va s\'ouvrir — veuillez indiquer le nom du cercle et le motif.', repGo: 'Ouvrir le formulaire',
       rTitle: 'Importer dans la base de cercles', rLead: 'Importer ces {n} cercle(s) dans la base de cercles de Torehan!.', rLeadLoading: 'Vérification des cercles…', rOpen: 'Ouvrir dans Torehan!',
       rNoApp: 'Vous n\'avez pas l\'app, ou elle ne s\'ouvre pas ?', rBack: 'Parcourir la base de cercles', rMissing: '{n} cercle(s) introuvable(s) sur le serveur.', rNone: 'Les cercles de ce lien sont introuvables. Choisissez-les à nouveau dans la base de cercles.', rBad: 'Ce lien n\'est pas valide. Choisissez à nouveau les cercles dans la base de cercles.',
-      about: 'À propos de Torehan!', contact: 'Contact', ownerBy: 'Responsable {o}'
+      about: 'À propos de Torehan!', contact: 'Contact', ownerBy: 'Responsable {o}',
+      tabMine: 'Ma liste ({n})',
+      tabAll: 'Base commune',
+      favOnly: '★ seulement',
+      sortAdded: 'Ajouts récents',
+      noteMine: '💡 Ma liste s\'utilise comme la base de cercles locale de l\'appli. Vous seul voyez vos notes et ★. Sans connexion, elle est enregistrée dans ce navigateur ; connectez-vous avec Google pour retrouver la même liste sur tous vos appareils.',
+      acctLocal: 'Enregistrée dans ce navigateur (effacer les données du navigateur efface aussi la liste). Connectez-vous avec Google pour la retrouver sur tous vos appareils.',
+      acctIn: 'Connecté avec {email} (même liste sur tous les appareils)',
+      login: 'Se connecter avec Google',
+      priv: 'Politique de confidentialité',
+      logout: 'Se déconnecter',
+      delAcc: 'Supprimer le compte et la liste',
+      delAccTitle: 'Supprimer le compte et la liste',
+      delAccBody: 'Votre liste (notes et ★ compris) et votre connexion sont supprimées du serveur. Action irréversible. Les cercles ajoutés à la base commune et ce qui a été importé dans l\'appli sont conservés.',
+      delAccGo: 'Supprimer',
+      delSure: 'Touchez encore pour supprimer',
+      delAccDone: 'Compte et liste supprimés',
+      delAccListOnly: 'Liste supprimée (la connexion est conservée car un autre service l\'utilise)',
+      loginErr: 'Connexion impossible. Veuillez réessayer plus tard.',
+      loggedOut: 'Déconnecté (votre liste reste dans votre compte)',
+      merged: '{n} cercles de ce navigateur ont été déplacés vers votre compte',
+      loadingMine: 'Chargement de votre liste…',
+      mineEmpty: 'Aucun résultat.',
+      mineEmpty0: 'Aucun cercle pour l\'instant. Touchez « + Ma liste » dans la base commune, ou « Ajouter un cercle » en bas.',
+      mineFull: 'Ma liste contient au maximum {max} cercles',
+      saveErr: 'Enregistrement impossible. Veuillez réessayer plus tard.',
+      toMine: '+ Ma liste',
+      inMine: '✓ Dans ma liste',
+      toMineSel: '+ Ajouter {n} à ma liste',
+      addedMine: '« {name} » ajouté à ma liste',
+      addedMineN: '{n} cercles ajoutés à ma liste',
+      alreadyMine: 'Déjà dans ma liste',
+      addedAt: 'Ajouté le {d}',
+      edit: 'Modifier',
+      editTitle: 'Modifier le cercle',
+      save: 'Enregistrer',
+      saved: 'Enregistré',
+      del: 'Supprimer',
+      deleted: 'Supprimé',
+      favF: 'Favori',
+      favLabel: '★ Favori',
+      notesF: 'Notes (visibles par vous seul)',
+      addNoteMine: 'Le nom du cercle, le responsable et l\'ID 𝕏 sont aussi ajoutés à la base commune, visible par tous (n\'indiquez ni vrai nom ni coordonnées personnelles). Vous seul voyez vos notes et ★.',
+      sharedFail: 'Ajouté à ma liste (impossible de l\'ajouter à la base commune — enregistrez-le à nouveau depuis Modifier avant de l\'importer dans l\'appli)',
+      noMaster: 'Les cercles absents de la base commune ne peuvent pas être importés. Enregistrez-les à nouveau depuis Modifier pour les ajouter.',
+      notesCut: 'Certaines notes sont trop longues et ne seront pas importées',
+      qrNoNotes: '※ Le QR code et le lien ne transmettent pas les notes (★ est transmis). Pour importer aussi les notes, ouvrez cette page sur votre téléphone.'
     }
   };
 
@@ -551,8 +887,38 @@
     return false;
   }
   function shortId(id) { var m = HEX_RE.exec(String(id || '').toLowerCase()); return m ? m[1] : ''; }
-  function appLink(ids) { return 'torehan://circledb?ids=' + ids.map(shortId).filter(Boolean).join(','); }
-  function relayLink(ids) { return PAGE_URL + '?import=' + ids.map(shortId).filter(Boolean).join(','); }
+  /* ids と同じ並びの fav（'0'/'1' の列）と notes（文字列の配列）を、ID が読めた分だけ揃えて載せる */
+  function linkParts(ids, fav, notes) {
+    var favOk = !!fav && /^[01]+$/.test(fav) && fav.length === ids.length;
+    var hs = [], fb = '', nt = [];
+    ids.forEach(function (id, i) {
+      var h = shortId(id); if (!h) return;
+      hs.push(h);
+      if (favOk) fb += fav.charAt(i);
+      if (notes) nt.push(String(notes[i] || ''));
+    });
+    return { hs: hs, fav: favOk ? fb : '', notes: nt };
+  }
+  /* 戻り値 { url, cut }（cut＝メモが長すぎて後ろから落とした） */
+  function appLink(ids, fav, notes) {
+    var p = linkParts(ids, fav, notes);
+    var url = 'torehan://circledb?ids=' + p.hs.join(',');
+    if (p.fav) url += '&fav=' + p.fav;
+    var arr = p.notes, cut = false;
+    var trim = function () { while (arr.length && !arr[arr.length - 1]) arr.pop(); };
+    trim();
+    if (arr.length) {
+      var enc = encodeURIComponent(JSON.stringify(arr));
+      while (enc.length > 6000 && arr.length) { arr.pop(); cut = true; trim(); enc = encodeURIComponent(JSON.stringify(arr)); }
+      if (arr.length) url += '&notes=' + enc;
+    }
+    return { url: url, cut: cut };
+  }
+  /* PC の QR 用の中継 URL＝メモは載せない（QR が読めなくなる） */
+  function relayLink(ids, fav) {
+    var p = linkParts(ids, fav, null);
+    return PAGE_URL + '?import=' + p.hs.join(',') + (p.fav ? '&fav=' + p.fav : '');
+  }
   function isMobile() {
     var ua = navigator.userAgent || '';
     if (/iPhone|iPad|iPod|Android/i.test(ua)) return true;
@@ -601,6 +967,10 @@
   setText('openTitle', tr('openTitle')); setText('openBody', tr('openBody')); setText('openClose', tr('close'));
   setText('addTitle', tr('addTitle')); setText('l_name', tr('name')); setText('l_req', tr('req')); setText('l_owner', tr('ownerF')); setText('l_x', tr('xF')); setText('hX', tr('xHint'));
   setText('addNote', tr('addNote')); setText('addCancel', tr('cancel')); setText('addSubmit', tr('submit'));
+  setText('tabAll', tr('tabAll')); setText('favOnly', tr('favOnly'));
+  setText('loginBtn', tr('login')); setText('logoutBtn', tr('logout')); setText('delAccBtn', tr('delAcc')); setText('privLnk', tr('priv'));
+  setText('l_notes', tr('notesF')); setText('l_fav', tr('favLabel'));
+  setText('accTitle', tr('delAccTitle')); setText('accBody', tr('delAccBody')); setText('accCancel', tr('cancel')); setText('accGo', tr('delAccGo'));
   setText('bxTitle', tr('bxTitle')); setText('bxWordLbl', tr('bxWord'));
   setText('repTitle', tr('repTitle')); setText('repCancel', tr('cancel')); setText('repGo', tr('repGo'));
   setText('r_title', tr('rTitle')); setText('r_open_t', tr('rOpen')); setText('r_noapp', tr('rNoApp')); setText('r_back', tr('rBack'));
@@ -614,17 +984,20 @@
   function runRelay(raw) {
     $('list').hidden = true; $('bar').hidden = true; document.body.style.paddingBottom = '0';
     $('relay').hidden = false;
-    var ids = [];
-    String(raw).split(',').forEach(function (p) {
+    var favIn = String(params.get('fav') || '');
+    var favOk = /^[01]+$/.test(favIn);
+    var ids = [], favOf = {};
+    String(raw).split(',').forEach(function (p, i) {
       var h = shortId(p.trim());
-      if (h && ids.indexOf(h) === -1 && ids.length < IMPORT_MAX) ids.push(h);
+      if (h && ids.indexOf(h) === -1 && ids.length < IMPORT_MAX) { ids.push(h); favOf[h] = favIn.charAt(i) === '1' ? '1' : '0'; }
     });
+    var favFor = function (list) { return favOk ? list.map(function (h) { return favOf[h]; }).join('') : ''; };
     var open = $('r_open');
     if (!ids.length) {
       setText('r_lead', tr('rBad')); open.hidden = true; return;
     }
     /* 読み込み時に自動で torehan:// へ飛ばさない（未インストール端末では OS のエラーだけが出る）＝本人のタップを起点にする */
-    open.href = appLink(ids);
+    open.href = appLink(ids, favFor(ids)).url;
     setText('r_lead', tr('rLeadLoading'));
     var url = SB + '/rest/v1/master_circles?select=id,circle_name,illustrator_name&id=in.(' +
       ids.map(function (h) { return 'mc_' + h; }).join(',') + ')';
@@ -637,7 +1010,7 @@
       var found = ids.filter(function (h) { return byId[h]; });
       if (!found.length) { setText('r_lead', tr('rNone')); open.hidden = true; return; }
       setText('r_lead', tr('rLead', { n: found.length }));
-      open.href = appLink(found);
+      open.href = appLink(found, favFor(found)).url;
       var ul = $('r_names'); ul.textContent = '';
       found.forEach(function (h) {
         var li = document.createElement('li');
@@ -654,50 +1027,290 @@
     });
   }
 
-  /* ================= 一覧 ================= */
-  var all = [];          /* {id, name, owner, x, upd} */
-  var shown = [];        /* 絞り込み・並び替え後 */
-  var limit = PAGE_SIZE;
-  var sortMode = 'kana';
-  var selected = [];     /* 選んだ順の id */
-  var collator = (typeof Intl !== 'undefined' && Intl.Collator) ? new Intl.Collator('ja') : null;
+  /* ================= 一覧（Rev843: 2 タブ＝自分のリスト／みんなのDB） =================
+     ・自分のリスト … アプリのサークルDB（ローカル）と同じ使い方。メモと ★ は本人だけ（共有しない）。
+                      ログインしていない間はこのブラウザ（localStorage）、Google でログインするとアカウント（web_circle_list・0159）。
+                      ログインした時、ブラウザのリストをアカウントへ移す（重複は master の ID か「名前×サークル主」で外す）。
+     ・みんなのDB   … 従来の一覧（master_circles）。「＋ 自分のリスト」で自分のリストへ入れられる。
+     ・自分のリストに新しく足したサークルも、共有 3 項目（サークル名・サークル主・𝕏 ID）は従来どおり master_circles に登録する（register）。
+     ⚠ 既存の REST・RPC は従来どおり anon のヘッダー（sbHeaders）で呼ぶ。supabase-js のセッションを使うのは
+       web_circle_list と delete_my_web_account だけ。 */
+  var MINE_MAX = 3000;           /* 0159 web_circle_list_guard と同じ */
+  var NOTES_MAX = 1000;          /* 0159 の notes 上限と同じ */
+  var NOTES_URL_BUDGET = 6000;   /* torehan:// に載せるメモの上限（エンコード後の文字数） */
+  var T_MINE = 'web_circle_list';
+  var LS_LIST = 'torehan.circledb.mylist.v1';
+  var LS_TAB = 'torehan.circledb.tab';
+  var AUTH_KEY = 'torehan.circledb.auth';
+  var SBJS_URL = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.108.2/dist/umd/supabase.js';
+  var SBJS_SRI = 'sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p';
+  var ENTRY_ID_RE = /^[A-Za-z0-9_-]{1,40}$/;
 
-  function load(focusName) {
-    var st = $('state');
-    st.textContent = tr('loading'); st.hidden = false;
+  function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } }
+  function lsDel(k) { try { localStorage.removeItem(k); } catch (e) { /* 使えない環境 */ } }
+
+  var collator = (typeof Intl !== 'undefined' && Intl.Collator) ? new Intl.Collator('ja') : null;
+  function newState(sort) { return { items: [], shown: [], limit: PAGE_SIZE, sort: sort, sel: [], loaded: false, loading: false, err: false }; }
+  var S = { all: newState('kana'), mine: newState('kana') };
+  S.mine.favOnly = false;
+  var tab = 'all';
+  function cur() { return S[tab]; }
+
+  /* ---- 自分のリストの入れ物 ---- */
+  var sb = null, user = null, authPending = false, authReady = false, authChain = Promise.resolve(), quietSignOut = false;
+  function newEntryId() { return 'w' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10); }
+  function normEntry(o) {
+    if (!o || typeof o !== 'object') return null;
+    var id = String(o.id || '');
+    var name = String(o.name || '').trim().slice(0, MAX_NAME);
+    if (!ENTRY_ID_RE.test(id) || !name) return null;
+    var mid = shortId(o.mid);
+    return { id: id, mid: mid || null, name: name, owner: String(o.owner || '').trim().slice(0, MAX_OWNER), x: cleanXId(o.x),
+      notes: String(o.notes || '').slice(0, NOTES_MAX), fav: !!o.fav, created: Number(o.created) || 0, upd: Number(o.upd) || 0 };
+  }
+  function fromRow(r) {
+    return normEntry({ id: r.entry_id, mid: r.master_id, name: r.circle_name, owner: r.illustrator_name, x: r.twitter_id,
+      notes: r.notes, fav: r.is_favorite, created: Date.parse(r.created_at), upd: Date.parse(r.updated_at) });
+  }
+  function toRow(e) {
+    return { entry_id: e.id, master_id: e.mid || null, circle_name: e.name, illustrator_name: e.owner, twitter_id: e.x,
+      notes: e.notes, is_favorite: !!e.fav };
+  }
+  function localLoad() {
+    var raw = lsGet(LS_LIST);
+    if (!raw) return [];
+    try {
+      var arr = JSON.parse(raw);
+      return Array.isArray(arr) ? arr.map(normEntry).filter(Boolean) : [];
+    } catch (e) { return []; }
+  }
+  function localSave(items) { return lsSet(LS_LIST, JSON.stringify(items)); }
+  function idxMine(id) { for (var i = 0; i < S.mine.items.length; i++) if (S.mine.items[i].id === id) return i; return -1; }
+  function findMine(id) { var i = idxMine(id); return i === -1 ? null : S.mine.items[i]; }
+  function nameKey(name, owner) { return 'n:' + String(name).toLowerCase() + '\n' + String(owner).toLowerCase(); }
+  function errKey(err) { return /web_circle_list_full/.test(String((err && (err.message || err.code)) || err)) ? 'mineFull' : 'saveErr'; }
+  function toastErr(err) { toast(tr(errKey(err), { max: MINE_MAX })); }
+  function mineReady() { if (authPending) { toast(tr('loadingMine')); return false; } return true; }
+  function copyEntry(e, patch) { var o = {}, k; for (k in e) o[k] = e[k]; for (k in patch) o[k] = patch[k]; return o; }
+
+  var Mine = {
+    load: function () {
+      if (!user) { S.mine.items = localLoad(); return Promise.resolve(); }
+      return sb.from(T_MINE).select('*').order('created_at', { ascending: false }).limit(MINE_MAX).then(function (res) {
+        if (res.error) throw res.error;
+        S.mine.items = (res.data || []).map(fromRow).filter(Boolean);
+      });
+    },
+    insert: function (list) {
+      if (S.mine.items.length + list.length > MINE_MAX) return Promise.reject(new Error('web_circle_list_full'));
+      if (!user) {
+        var next = list.concat(S.mine.items);
+        if (!localSave(next)) return Promise.reject(new Error('storage'));
+        S.mine.items = next;
+        return Promise.resolve();
+      }
+      return sb.from(T_MINE).insert(list.map(toRow)).select().then(function (res) {
+        if (res.error) throw res.error;
+        S.mine.items = (res.data || []).map(fromRow).filter(Boolean).concat(S.mine.items);
+      });
+    },
+    update: function (e) {
+      if (!user) {
+        e = copyEntry(e, { upd: Date.now() });
+        var next = S.mine.items.map(function (x) { return x.id === e.id ? e : x; });
+        if (!localSave(next)) return Promise.reject(new Error('storage'));
+        S.mine.items = next;
+        return Promise.resolve();
+      }
+      var row = toRow(e); delete row.entry_id;
+      return sb.from(T_MINE).update(row).eq('entry_id', e.id).select().then(function (res) {
+        if (res.error) throw res.error;
+        var got = res.data && res.data[0] ? fromRow(res.data[0]) : e;
+        S.mine.items = S.mine.items.map(function (x) { return x.id === e.id ? (got || e) : x; });
+      });
+    },
+    remove: function (id) {
+      var done = function () {
+        S.mine.items = S.mine.items.filter(function (x) { return x.id !== id; });
+        S.mine.sel = S.mine.sel.filter(function (x) { return x !== id; });
+      };
+      if (!user) {
+        var next = S.mine.items.filter(function (x) { return x.id !== id; });
+        if (!localSave(next)) return Promise.reject(new Error('storage'));
+        done();
+        return Promise.resolve();
+      }
+      return sb.from(T_MINE).delete().eq('entry_id', id).then(function (res) { if (res.error) throw res.error; done(); });
+    }
+  };
+
+  /* ログインした時: このブラウザのリストのうち、アカウントに無いものだけ移す（移し終えたらブラウザ側は消す） */
+  function mergeLocalIntoAccount() {
+    var local = localLoad();
+    if (!local.length) return Promise.resolve(0);
+    var seen = {}, ids = {};
+    S.mine.items.forEach(function (e) { if (e.mid) seen['m:' + e.mid] = 1; seen[nameKey(e.name, e.owner)] = 1; ids[e.id] = 1; });
+    var add = [], rest = [];
+    local.forEach(function (e) {
+      var nk = nameKey(e.name, e.owner);
+      if ((e.mid && seen['m:' + e.mid]) || seen[nk]) return;
+      if (e.mid) seen['m:' + e.mid] = 1;
+      seen[nk] = 1;
+      if (ids[e.id]) e = copyEntry(e, { id: newEntryId() });
+      ids[e.id] = 1;
+      if (S.mine.items.length + add.length < MINE_MAX) add.push(e); else rest.push(e);
+    });
+    if (!add.length) { if (rest.length) localSave(rest); else lsDel(LS_LIST); return Promise.resolve(0); }
+    return sb.from(T_MINE).insert(add.map(toRow)).then(function (res) {
+      if (res.error) throw res.error;
+      if (rest.length) { localSave(rest); toast(tr('mineFull', { max: MINE_MAX })); } else lsDel(LS_LIST);
+      return add.length;
+    });
+  }
+
+  /* ---- Google ログイン（supabase-js は使う時だけ読み込む） ---- */
+  var sbLoading = null;
+  function loadSbJs() {
+    if (window.supabase && window.supabase.createClient) return Promise.resolve();
+    if (sbLoading) return sbLoading;
+    sbLoading = new Promise(function (res, rej) {
+      var s = document.createElement('script');
+      s.src = SBJS_URL; s.integrity = SBJS_SRI; s.crossOrigin = 'anonymous';
+      s.onload = function () { res(); };
+      s.onerror = function () { sbLoading = null; rej(new Error('sbjs')); };
+      document.head.appendChild(s);
+    });
+    return sbLoading;
+  }
+  function onAuth(session) {
+    var u = session && session.user && !session.user.is_anonymous ? session.user : null;
+    var oldId = user ? user.id : null;
+    if ((u ? u.id : null) === oldId && authReady) return Promise.resolve();
+    user = u ? { id: u.id, email: u.email || '' } : null;
+    authPending = true; S.mine.sel = []; S.mine.err = false;
+    render();
+    var p;
+    if (user) {
+      p = Mine.load().then(mergeLocalIntoAccount).then(function (n) {
+        if (n > 0) { toast(tr('merged', { n: n })); return Mine.load(); }
+      });
+    } else {
+      p = Mine.load();
+      if (oldId && !quietSignOut) toast(tr('loggedOut'));
+      quietSignOut = false;
+    }
+    return p.catch(function () { S.mine.items = []; S.mine.err = true; }).then(function () {
+      authPending = false; authReady = true; S.mine.loaded = true; render();
+    });
+  }
+  function initAuth() {
+    if (sb) return Promise.resolve();
+    return loadSbJs().then(function () {
+      if (sb) return;
+      sb = window.supabase.createClient(SB, SUPABASE_KEY, { auth: {
+        flowType: 'pkce', detectSessionInUrl: true, persistSession: true, autoRefreshToken: true, storageKey: AUTH_KEY } });
+      return new Promise(function (resolve) {
+        var first = true;
+        sb.auth.onAuthStateChange(function (ev, session) {
+          /* コールバックの中で supabase を呼ぶと詰まるので、外に出して順番に処理する */
+          setTimeout(function () {
+            authChain = authChain.then(function () { return onAuth(session); }).then(function () {
+              if (first) { first = false; resolve(); }
+            });
+          }, 0);
+        });
+      });
+    }).then(function () {
+      if (params.has('error')) toast(tr('loginErr'));
+      if (params.has('code') || params.has('error')) {
+        try { history.replaceState(null, '', location.pathname); } catch (e) { /* 何もしない */ }
+      }
+    });
+  }
+  function reloadMine() {
+    authPending = true; S.mine.err = false; render();
+    Mine.load().catch(function () { S.mine.items = []; S.mine.err = true; }).then(function () {
+      authPending = false; S.mine.loaded = true; render();
+    });
+  }
+  $('loginBtn').addEventListener('click', function () {
+    var b = $('loginBtn');
+    b.disabled = true;
+    lsSet(LS_TAB, 'mine');
+    initAuth().then(function () {
+      /* 戻り先は常に本番のこのページ（Supabase の許可リストに入れてあるのはこの URL だけ） */
+      return sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: PAGE_URL } });
+    }).then(function (res) {
+      if (res && res.error) throw res.error;
+    }).catch(function () { b.disabled = false; toast(tr('loginErr')); });
+  });
+  $('logoutBtn').addEventListener('click', function () {
+    if (!sb) return;
+    sb.auth.signOut({ scope: 'local' }).catch(function () { /* 失敗してもこの端末のセッションは消える */ });
+  });
+  var accArmed = false;
+  $('delAccBtn').addEventListener('click', function () {
+    accArmed = false; setText('accGo', tr('delAccGo')); $('accGo').disabled = false; showOv('accOv');
+  });
+  $('accGo').addEventListener('click', function () {
+    var b = $('accGo');
+    if (!accArmed) { accArmed = true; setText('accGo', tr('delSure')); return; }
+    if (!sb || !user) { hideOv(); return; }
+    b.disabled = true;
+    sb.rpc('delete_my_web_account').then(function (res) {
+      if (res.error) throw res.error;
+      var kind = res.data;
+      hideOv();
+      lsDel(LS_LIST);
+      quietSignOut = true;
+      return sb.auth.signOut({ scope: 'local' }).catch(function () { /* アカウントごと消えた後は失敗してよい */ }).then(function () {
+        lsDel(AUTH_KEY);
+        toast(tr(kind === 'list_only' ? 'delAccListOnly' : 'delAccDone'));
+      });
+    }).catch(function () { toast(tr('saveErr')); }).then(function () {
+      b.disabled = false; accArmed = false; setText('accGo', tr('delAccGo'));
+    });
+  });
+
+  /* ---- みんなのDB の読み込み ---- */
+  function loadAll() {
+    var s = S.all;
+    s.loading = true; s.err = false;
+    render();
     var url = SB + '/rest/v1/master_circles?select=id,circle_name,illustrator_name,twitter_id,updated_at&order=updated_at.desc&limit=' + FETCH_LIMIT;
     return fetch(url, { headers: sbHeaders() }).then(function (r) {
       if (!r.ok) throw new Error('http ' + r.status);
       return r.json();
     }).then(function (rows) {
-      all = (rows || []).filter(function (r) { return r && r.id && String(r.circle_name || '').trim(); }).map(function (r) {
+      s.items = (rows || []).filter(function (r) { return r && r.id && String(r.circle_name || '').trim(); }).map(function (r) {
         return { id: String(r.id), name: String(r.circle_name).trim(), owner: String(r.illustrator_name || '').trim(),
           x: cleanXId(r.twitter_id), upd: Number(r.updated_at) || 0 };
       });
       var ids = {};
-      all.forEach(function (c) { ids[c.id] = 1; });
-      selected = selected.filter(function (id) { return ids[id]; });
-      if (focusName) $('q').value = focusName;
-      render();
+      s.items.forEach(function (c) { ids[c.id] = 1; });
+      s.sel = s.sel.filter(function (id) { return ids[id]; });
+      s.loaded = true;
     }).catch(function () {
-      st.textContent = '';
-      var p = document.createElement('div'); p.textContent = tr('loadErr');
-      var b = document.createElement('button'); b.className = 'more'; b.type = 'button'; b.textContent = tr('retry');
-      b.addEventListener('click', function () { load(); });
-      st.appendChild(p); st.appendChild(b); st.hidden = false;
-      $('grid').textContent = ''; $('more').hidden = true; $('count').textContent = '';
-    });
+      s.err = true;
+    }).then(function () { s.loading = false; render(); });
   }
 
   function applyFilter() {
+    var s = cur();
     var q = $('q').value.trim().toLowerCase();
-    shown = !q ? all.slice() : all.filter(function (c) {
-      return c.name.toLowerCase().indexOf(q) !== -1 || c.owner.toLowerCase().indexOf(q) !== -1 || c.x.toLowerCase().indexOf(q) !== -1;
+    var src = s.items;
+    if (tab === 'mine' && s.favOnly) src = src.filter(function (e) { return e.fav; });
+    s.shown = !q ? src.slice() : src.filter(function (c) {
+      return c.name.toLowerCase().indexOf(q) !== -1 || c.owner.toLowerCase().indexOf(q) !== -1 || c.x.toLowerCase().indexOf(q) !== -1 ||
+        (tab === 'mine' && c.notes.toLowerCase().indexOf(q) !== -1);
     });
-    if (sortMode === 'kana') {
-      shown.sort(function (a, b) { return collator ? collator.compare(a.name, b.name) : (a.name < b.name ? -1 : a.name > b.name ? 1 : 0); });
+    if (s.sort === 'kana') {
+      s.shown.sort(function (a, b) { return collator ? collator.compare(a.name, b.name) : (a.name < b.name ? -1 : a.name > b.name ? 1 : 0); });
+    } else if (tab === 'mine') {
+      s.shown.sort(function (a, b) { return b.created - a.created; });
     } else {
-      shown.sort(function (a, b) { return b.upd - a.upd; });
+      s.shown.sort(function (a, b) { return b.upd - a.upd; });
     }
   }
 
@@ -714,36 +1327,58 @@
     return e;
   }
 
-  function cardFor(c) {
-    var d = el('div', 'card' + (selected.indexOf(c.id) !== -1 ? ' sel' : ''));
-    d.dataset.id = c.id;
-    var chk = el('button', 'check', selected.indexOf(c.id) !== -1 ? '✓' : '');
+  function checkBtn(id, name, on) {
+    var chk = el('button', 'check', on ? '✓' : '');
     chk.type = 'button';
-    chk.setAttribute('aria-pressed', selected.indexOf(c.id) !== -1 ? 'true' : 'false');
-    chk.setAttribute('aria-label', tr('check') + ': ' + c.name);
-    chk.addEventListener('click', function (e) { e.stopPropagation(); toggle(c.id); });
-    d.appendChild(chk);
-    d.appendChild(el('div', 'name', c.name));
-    if (c.owner) d.appendChild(el('div', 'owner', tr('ownerBy', { o: c.owner })));
-    if (c.x) {
-      var links = el('div', 'links');
-      var a = el('a', 'lk', '𝕏 @' + c.x);
-      a.href = 'https://x.com/' + encodeURIComponent(c.x); a.target = '_blank'; a.rel = 'noopener nofollow';
-      links.appendChild(a);
-      WORDS.forEach(function (w) {
-        if (!w[1]) return;
-        var s = el('a', 'lk', '🔍 ' + w[1]);
-        s.href = xSearchUrl([c.x], w[1], false); s.target = '_blank'; s.rel = 'noopener nofollow';
-        links.appendChild(s);
-      });
-      d.appendChild(links);
-    }
+    chk.setAttribute('aria-pressed', on ? 'true' : 'false');
+    chk.setAttribute('aria-label', tr('check') + ': ' + name);
+    chk.addEventListener('click', function (e) { e.stopPropagation(); toggle(id); });
+    return chk;
+  }
+  function linksFor(x) {
+    var links = el('div', 'links');
+    var a = el('a', 'lk', '𝕏 @' + x);
+    a.href = 'https://x.com/' + encodeURIComponent(x); a.target = '_blank'; a.rel = 'noopener nofollow';
+    links.appendChild(a);
+    WORDS.forEach(function (w) {
+      if (!w[1]) return;
+      var s = el('a', 'lk', '🔍 ' + w[1]);
+      s.href = xSearchUrl([x], w[1], false); s.target = '_blank'; s.rel = 'noopener nofollow';
+      links.appendChild(s);
+    });
+    return links;
+  }
+  function impBtn(onClick) {
     var imp = el('button', 'imp');
     imp.type = 'button';
     imp.appendChild(el('span', 'ic', '📲'));
     imp.appendChild(document.createTextNode(tr('imp')));
-    imp.addEventListener('click', function (e) { e.stopPropagation(); startImport([c.id]); });
-    d.appendChild(imp);
+    imp.addEventListener('click', function (e) { e.stopPropagation(); onClick(); });
+    return imp;
+  }
+  function tapToToggle(d, id) {
+    /* カードのどこを押しても選択を切り替える（リンクとボタンは除く） */
+    d.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('a,button')) return;
+      toggle(id);
+    });
+  }
+
+  function cardFor(c, mineMids) {
+    var on = S.all.sel.indexOf(c.id) !== -1;
+    var d = el('div', 'card' + (on ? ' sel' : ''));
+    d.dataset.id = c.id;
+    d.appendChild(checkBtn(c.id, c.name, on));
+    d.appendChild(el('div', 'name', c.name));
+    if (c.owner) d.appendChild(el('div', 'owner', tr('ownerBy', { o: c.owner })));
+    if (c.x) d.appendChild(linksFor(c.x));
+    var inMine = !!mineMids[shortId(c.id)];
+    var mb = el('button', 'mineb' + (inMine ? ' in' : ''), inMine ? tr('inMine') : tr('toMine'));
+    mb.type = 'button';
+    mb.disabled = inMine;
+    mb.addEventListener('click', function (e) { e.stopPropagation(); addFromMaster([c]); });
+    d.appendChild(mb);
+    d.appendChild(impBtn(function () { startImport([c.id]); }));
     var foot = el('div', 'foot');
     foot.appendChild(el('span', '', c.upd ? tr('updated', { d: fmtDate(c.upd) }) : ''));
     var rep = el('button', '', tr('report'));
@@ -751,41 +1386,118 @@
     rep.addEventListener('click', function (e) { e.stopPropagation(); setText('repBody', tr('repBody', { name: c.name })); $('repGo').href = CONTACT_FORM_URL; showOv('repOv'); });
     foot.appendChild(rep);
     d.appendChild(foot);
-    /* カードのどこを押しても選択を切り替える（リンクとボタンは除く） */
-    d.addEventListener('click', function (e) {
-      if (e.target.closest && e.target.closest('a,button')) return;
-      toggle(c.id);
-    });
+    tapToToggle(d, c.id);
     return d;
   }
 
+  function cardMine(e) {
+    var on = S.mine.sel.indexOf(e.id) !== -1;
+    var d = el('div', 'card mine' + (on ? ' sel' : ''));
+    d.dataset.id = e.id;
+    d.appendChild(checkBtn(e.id, e.name, on));
+    var st = el('button', 'star' + (e.fav ? ' on' : ''), e.fav ? '★' : '☆');
+    st.type = 'button';
+    st.setAttribute('aria-pressed', e.fav ? 'true' : 'false');
+    st.setAttribute('aria-label', tr('favF') + ': ' + e.name);
+    st.addEventListener('click', function (ev) {
+      ev.stopPropagation();
+      if (!mineReady()) return;
+      st.disabled = true;
+      Mine.update(copyEntry(e, { fav: !e.fav })).then(render, function (err) { st.disabled = false; toastErr(err); });
+    });
+    d.appendChild(st);
+    d.appendChild(el('div', 'name', e.name));
+    if (e.owner) d.appendChild(el('div', 'owner', tr('ownerBy', { o: e.owner })));
+    if (e.notes) d.appendChild(el('div', 'memo', e.notes));
+    if (e.x) d.appendChild(linksFor(e.x));
+    d.appendChild(impBtn(function () { importMine([e.id]); }));
+    var foot = el('div', 'foot');
+    foot.appendChild(el('span', '', e.created ? tr('addedAt', { d: fmtDate(e.created) }) : ''));
+    var ed = el('button', '', tr('edit'));
+    ed.type = 'button';
+    ed.addEventListener('click', function (ev) { ev.stopPropagation(); if (mineReady()) openForm('edit', e); });
+    foot.appendChild(ed);
+    d.appendChild(foot);
+    tapToToggle(d, e.id);
+    return d;
+  }
+
+  function stateMsg(text, retry) {
+    var st = $('state');
+    st.textContent = '';
+    st.appendChild(el('div', '', text));
+    if (retry) {
+      var b = el('button', 'more', tr('retry')); b.type = 'button';
+      b.addEventListener('click', retry);
+      st.appendChild(b);
+    }
+    st.hidden = false;
+  }
+
+  function renderAcct() {
+    $('acct').hidden = tab !== 'mine';
+    if (user) setText('acctText', tr('acctIn', { email: user.email }));
+    else setText('acctText', tr('acctLocal'));
+    $('loginBtn').hidden = !!user || (authPending && !!sb);
+    $('logoutBtn').hidden = !user;
+    $('delAccBtn').hidden = !user;
+  }
+
   function render() {
+    var s = cur();
+    $('tabMine').classList.toggle('on', tab === 'mine'); $('tabMine').setAttribute('aria-selected', tab === 'mine' ? 'true' : 'false');
+    $('tabAll').classList.toggle('on', tab === 'all'); $('tabAll').setAttribute('aria-selected', tab === 'all' ? 'true' : 'false');
+    setText('tabMine', tr('tabMine', { n: S.mine.items.length }));
+    setText('sortNew', tab === 'mine' ? tr('sortAdded') : tr('newer'));
+    $('sortKana').classList.toggle('on', s.sort === 'kana');
+    $('sortNew').classList.toggle('on', s.sort === 'new');
+    $('favOnly').hidden = tab !== 'mine';
+    $('favOnly').classList.toggle('on', !!S.mine.favOnly);
+    setText('t_note', tab === 'mine' ? tr('noteMine') : tr('note'));
+    renderAcct();
     applyFilter();
     var g = $('grid');
     g.textContent = '';
     var frag = document.createDocumentFragment();
-    shown.slice(0, limit).forEach(function (c) { frag.appendChild(cardFor(c)); });
+    var busy = tab === 'mine' ? authPending : s.loading;
+    if (!busy && !s.err) {
+      var mids = {};
+      if (tab === 'all') S.mine.items.forEach(function (e) { if (e.mid) mids[e.mid] = 1; });
+      s.shown.slice(0, s.limit).forEach(function (c) { frag.appendChild(tab === 'mine' ? cardMine(c) : cardFor(c, mids)); });
+    }
     g.appendChild(frag);
     var st = $('state');
-    st.textContent = '';
-    if (!shown.length) { st.textContent = all.length ? tr('empty') : tr('none0'); st.hidden = false; } else st.hidden = true;
-    var rest = shown.length - limit;
+    st.textContent = ''; st.hidden = true;
+    if (busy) stateMsg(tab === 'mine' ? tr('loadingMine') : tr('loading'));
+    else if (s.err) stateMsg(tr('loadErr'), tab === 'mine' ? reloadMine : function () { loadAll(); });
+    else if (!s.shown.length) {
+      if (tab === 'mine') stateMsg(s.items.length ? tr('mineEmpty') : tr('mineEmpty0'));
+      else stateMsg(s.items.length ? tr('empty') : tr('none0'));
+    }
+    var rest = busy || s.err ? 0 : s.shown.length - s.limit;
     var more = $('more');
     if (rest > 0) { more.textContent = tr('more', { n: rest }); more.hidden = false; } else more.hidden = true;
-    setText('count', tr('count', { total: all.length, n: shown.length }));
+    setText('count', busy || s.err ? '' : tr('count', { total: s.items.length, n: s.shown.length }));
     renderBar();
   }
 
+  function itemById(s, id) { for (var i = 0; i < s.items.length; i++) if (s.items[i].id === id) return s.items[i]; return null; }
+  function cardEl(id) {
+    var cs = $('grid').children;
+    for (var i = 0; i < cs.length; i++) if (cs[i].dataset.id === id) return cs[i];
+    return null;
+  }
   function toggle(id) {
-    var i = selected.indexOf(id);
-    if (i !== -1) selected.splice(i, 1);
+    var s = cur();
+    var i = s.sel.indexOf(id);
+    if (i !== -1) s.sel.splice(i, 1);
     else {
-      if (selected.length >= IMPORT_MAX) { toast(tr('max', { max: IMPORT_MAX })); return; }
-      selected.push(id);
+      if (s.sel.length >= IMPORT_MAX) { toast(tr('max', { max: IMPORT_MAX })); return; }
+      s.sel.push(id);
     }
-    var card = document.querySelector('.card[data-id="' + id.replace(/[^A-Za-z0-9_]/g, '') + '"]');
+    var card = cardEl(id);
     if (card) {
-      var on = selected.indexOf(id) !== -1;
+      var on = s.sel.indexOf(id) !== -1;
       card.classList.toggle('sel', on);
       var chk = card.querySelector('.check');
       chk.textContent = on ? '✓' : '';
@@ -795,9 +1507,8 @@
   }
 
   function bulkIds() {
-    var src = selected.length
-      ? selected.map(function (id) { return all.filter(function (c) { return c.id === id; })[0]; }).filter(Boolean)
-      : shown;
+    var s = cur();
+    var src = s.sel.length ? s.sel.map(function (id) { return itemById(s, id); }).filter(Boolean) : s.shown;
     var seen = {}, out = [];
     src.forEach(function (c) {
       if (!c.x) return;
@@ -809,13 +1520,15 @@
   }
 
   function renderBar() {
-    var n = selected.length;
+    var n = cur().sel.length;
     $('barAdd').hidden = n > 0;
     $('barSel').hidden = n === 0;
+    $('toMine').hidden = !(n > 0 && tab === 'all');
     if (n > 0) {
       setCountHtml($('selN'), 'selN', n);
       setText('impLong', tr('impLong', { n: n }));
       setText('impShort', tr('impShort', { n: n }));
+      setText('toMine', tr('toMineSel', { n: n }));
     }
     var bx = $('bulkx');
     var cnt = bulkIds().length;
@@ -823,9 +1536,43 @@
     bx.disabled = cnt === 0;
   }
 
+  function setTab(t) {
+    if (tab === t) return;
+    tab = t;
+    lsSet(LS_TAB, t);
+    try { window.scrollTo(0, 0); } catch (e) { /* 何もしない */ }
+    if (t === 'all' && !S.all.loaded && !S.all.loading) { loadAll(); return; }
+    render();
+  }
+  $('tabMine').addEventListener('click', function () { setTab('mine'); });
+  $('tabAll').addEventListener('click', function () { setTab('all'); });
+  $('favOnly').addEventListener('click', function () { S.mine.favOnly = !S.mine.favOnly; S.mine.limit = PAGE_SIZE; render(); });
+
+  /* ---- みんなのDB → 自分のリスト ---- */
+  function addFromMaster(cs) {
+    if (!mineReady()) return;
+    var have = {}, now = Date.now(), add = [];
+    S.mine.items.forEach(function (e) { if (e.mid) have[e.mid] = 1; });
+    cs.forEach(function (c) {
+      var m = shortId(c.id);
+      if (!m || have[m]) return;
+      have[m] = 1;
+      add.push({ id: newEntryId(), mid: m, name: c.name, owner: c.owner, x: c.x, notes: '', fav: false, created: now, upd: now });
+    });
+    if (!add.length) { toast(tr('alreadyMine')); return; }
+    Mine.insert(add).then(function () {
+      S.all.sel = [];
+      toast(add.length === 1 ? tr('addedMine', { name: add[0].name }) : tr('addedMineN', { n: add.length }));
+      render();
+    }, toastErr);
+  }
+  $('toMine').addEventListener('click', function () {
+    addFromMaster(S.all.sel.map(function (id) { return itemById(S.all, id); }).filter(Boolean));
+  });
+
   /* ---- 取り込み ---- */
   function namesOf(ids) {
-    return ids.map(function (id) { return all.filter(function (c) { return c.id === id; })[0]; }).filter(Boolean);
+    return ids.map(function (id) { return itemById(S.all, id); }).filter(Boolean);
   }
   var qrLoaded = null;
   function loadQr() {
@@ -850,10 +1597,15 @@
     svg.innerHTML = '<rect width="' + full + '" height="' + full + '" fill="#fff"/><path fill="#0c1a38" d="' + path + '"/>';
   }
   var currentRelay = '';
-  function startImport(ids) {
+  /* extra（自分のリストから）= { fav: '0101…', notes: ['…', …], names: [{name, owner}] }（ids と同じ並び） */
+  function startImport(ids, extra) {
     ids = ids.slice(0, IMPORT_MAX);
     if (!ids.length) return;
+    var fav = extra ? extra.fav.slice(0, ids.length) : '';
+    var notes = extra ? extra.notes.slice(0, ids.length) : null;
     if (isMobile()) {
+      var link = appLink(ids, fav, notes);
+      if (link.cut) toast(tr('notesCut'));
       /* 本人のタップでアプリを開く。1.6 秒たってもページが前面のままなら、開かなかったとみなしてストアを案内する */
       var t0 = Date.now();
       var timer = setTimeout(function () {
@@ -862,19 +1614,33 @@
       var cancel = function () { if (document.hidden) clearTimeout(timer); };
       document.addEventListener('visibilitychange', cancel, { once: true });
       window.addEventListener('pagehide', function () { clearTimeout(timer); }, { once: true });
-      location.href = appLink(ids);
+      location.href = link.url;
       return;
     }
-    currentRelay = relayLink(ids);
-    var list = namesOf(ids);
-    setText('qrBody', tr('qrBody', { n: list.length }));
+    currentRelay = relayLink(ids, fav);
+    var list = extra ? extra.names.slice(0, ids.length) : namesOf(ids);
+    setText('qrBody', tr('qrBody', { n: ids.length }));
     var ul = $('qrNames'); ul.textContent = '';
     list.slice(0, 8).forEach(function (c) { ul.appendChild(el('li', '', '・' + c.name + (c.owner ? '（' + c.owner + '）' : ''))); });
     if (list.length > 8) ul.appendChild(el('li', '', '…'));
+    var hasNotes = !!(notes && notes.some(function (n) { return !!n; }));
+    setText('qrSm', tr('qrSm') + (hasNotes ? ' ' + tr('qrNoNotes') : ''));
     setText('qrCopy', tr('copy'));
     $('qrSvg').innerHTML = '';
     showOv('qrOv');
     loadQr().then(function () { drawQr(currentRelay); }).catch(function () { /* QR が出せなくてもリンクのコピーは使える */ });
+  }
+  /* 自分のリストから: みんなのDB の ID（mid）があるものだけ渡せる＝アプリはサーバーから共有項目を引き直す */
+  function importMine(ids) {
+    var es = ids.map(function (id) { return findMine(id); }).filter(Boolean);
+    var ok = es.filter(function (e) { return !!e.mid; });
+    if (ok.length < es.length) toast(tr('noMaster'));
+    if (!ok.length) return;
+    startImport(ok.map(function (e) { return e.mid; }), {
+      fav: ok.map(function (e) { return e.fav ? '1' : '0'; }).join(''),
+      notes: ok.map(function (e) { return e.notes; }),
+      names: ok
+    });
   }
   $('qrCopy').addEventListener('click', function () {
     var done = function () { setText('qrCopy', tr('copied')); setTimeout(function () { setText('qrCopy', tr('copy')); }, 1600); };
@@ -886,14 +1652,16 @@
       document.body.removeChild(ta);
     }
   });
-  $('impSel').addEventListener('click', function () { startImport(selected.slice()); });
-  $('clr').addEventListener('click', function () { selected = []; render(); });
+  $('impSel').addEventListener('click', function () {
+    if (tab === 'mine') importMine(S.mine.sel.slice()); else startImport(S.all.sel.slice());
+  });
+  $('clr').addEventListener('click', function () { cur().sel = []; render(); });
 
   /* ---- 𝕏 まとめて検索（全員無料・アプリと同じ作り） ---- */
   var bxWord = 'none';
   function renderBx() {
     var ids = bulkIds();
-    setText('bxNote', tr(selected.length ? 'bxNoteSel' : 'bxNoteAll', { n: ids.length, size: BULK_X_CHUNK }));
+    setText('bxNote', tr(cur().sel.length ? 'bxNoteSel' : 'bxNoteAll', { n: ids.length, size: BULK_X_CHUNK }));
     var wv = $('bxWords'); wv.textContent = '';
     WORDS.forEach(function (w) {
       var b = el('button', w[0] === bxWord ? 'on' : '', w[1] || tr('bxNone'));
@@ -914,15 +1682,37 @@
   }
   $('bulkx').addEventListener('click', function () { renderBx(); showOv('bxOv'); });
 
-  /* ---- サークルを追加（アプリ registerMasterCircle と同じ手順・既存行は空いている 𝕏 ID を補うだけ） ---- */
-  var lastAdd = 0;
-  $('addBtn').addEventListener('click', function () {
+  /* ---- サークルの追加・編集
+     all  … みんなのDB に登録するだけ（従来どおり・アプリ registerMasterCircle と同じ手順・既存行は空いている 𝕏 ID を補うだけ）
+     mine … 共有 3 項目は従来どおり登録し、メモと ★ を付けて自分のリストへ（登録に失敗しても自分のリストには入れる）
+     edit … 自分のリストの 1 件を直す・消す（共有項目を変えた時は登録し直して mid を付け替える） ---- */
+  var lastAdd = 0, formMode = 'all', editId = null, delArmed = false;
+  function openForm(mode, entry) {
+    formMode = mode; editId = entry ? entry.id : null; delArmed = false;
     $('addForm').reset();
     ['eName', 'eX', 'eAdd'].forEach(function (id) { $(id).hidden = true; });
     resetXHint();
-    $('fName').value = $('q').value.trim().slice(0, MAX_NAME);
+    var mineMode = mode !== 'all';
+    $('fldNotes').hidden = !mineMode;
+    $('fldFav').hidden = !mineMode;
+    $('addDel').hidden = mode !== 'edit';
+    $('addDel').classList.remove('armed');
+    setText('addDel', tr('del'));
+    setText('addTitle', mode === 'edit' ? tr('editTitle') : tr('addTitle'));
+    setText('addSubmit', mode === 'edit' ? tr('save') : tr('submit'));
+    setText('addNote', mineMode ? tr('addNoteMine') : tr('addNote'));
+    if (entry) {
+      $('fName').value = entry.name; $('fOwner').value = entry.owner; $('fX').value = entry.x;
+      $('fNotes').value = entry.notes; $('fFav').checked = !!entry.fav;
+    } else {
+      $('fName').value = $('q').value.trim().slice(0, MAX_NAME);
+    }
     showOv('addOv');
     setTimeout(function () { $('fName').focus(); }, 30);
+  }
+  $('addBtn').addEventListener('click', function () {
+    if (tab === 'mine' && !mineReady()) return;
+    openForm(tab === 'mine' ? 'mine' : 'all');
   });
   function showErr(id, msg) { var e = $(id); e.textContent = msg; e.hidden = !msg; }
   function resetXHint() { var h = $('hX'); h.textContent = tr('xHint'); h.className = 'fh'; }
@@ -934,6 +1724,12 @@
     var h = $('hX'); h.textContent = tr('xGot', { id: got }); h.className = 'fh ok';
     showErr('eX', '');
   });
+  $('addDel').addEventListener('click', function () {
+    var b = $('addDel');
+    if (!delArmed) { delArmed = true; b.classList.add('armed'); setText('addDel', tr('delSure')); return; }
+    b.disabled = true;
+    Mine.remove(editId).then(function () { hideOv(); toast(tr('deleted')); render(); }, toastErr).then(function () { b.disabled = false; });
+  });
   $('addForm').addEventListener('submit', function (e) {
     e.preventDefault();
     showErr('eName', ''); showErr('eX', ''); showErr('eAdd', '');
@@ -942,19 +1738,60 @@
     var owner = $('fOwner').value.trim().slice(0, MAX_OWNER);
     var xRaw = $('fX').value.trim();
     var x = cleanXId(xRaw);
+    var notes = $('fNotes').value.replace(/\s+$/, '').slice(0, NOTES_MAX);
+    var fav = $('fFav').checked;
     if (!name) { showErr('eName', tr('errName')); $('fName').focus(); return; }
     if (xRaw && !x) { showErr('eX', tr('errX')); $('fX').focus(); return; }
     if (hasNgWord(name) || hasNgWord(owner) || hasNgWord(x)) { showErr('eAdd', tr('ngBody')); return; }
-    if (Date.now() - lastAdd < 8000) { showErr('eAdd', tr('wait')); return; }
+    var old = formMode === 'edit' ? findMine(editId) : null;
+    if (formMode === 'edit' && !old) { hideOv(); return; }
+    var needReg = formMode !== 'edit' || !old.mid || old.name !== name || old.owner !== owner || old.x !== x;
+    if (formMode === 'mine') {
+      var nk = nameKey(name, owner);
+      var dup = S.mine.items.filter(function (it) { return nameKey(it.name, it.owner) === nk; })[0];
+      if (dup) { hideOv(); toast(tr('alreadyMine')); flash(dup.id); return; }
+    }
+    if (needReg && Date.now() - lastAdd < 8000) { showErr('eAdd', tr('wait')); return; }
     var btn = $('addSubmit');
     btn.disabled = true;
-    register(name, owner, x).then(function (res) {
-      lastAdd = Date.now();
-      hideOv();
-      toast(tr(res.kind, { name: name }));
-      return load(name).then(function () { flash(res.id); });
-    }).catch(function () {
-      showErr('eAdd', tr('addErr'));
+    if (formMode === 'all') {
+      register(name, owner, x).then(function (res) {
+        lastAdd = Date.now();
+        hideOv();
+        toast(tr(res.kind, { name: name }));
+        return loadAll().then(function () { $('q').value = name; S.all.limit = PAGE_SIZE; render(); flash(res.id); });
+      }).catch(function () {
+        showErr('eAdd', tr('addErr'));
+      }).then(function () { btn.disabled = false; });
+      return;
+    }
+    var sharedFail = false;
+    var midP = needReg
+      ? register(name, owner, x).then(function (res) { lastAdd = Date.now(); S.all.loaded = false; return shortId(res.id) || null; },
+          function () { sharedFail = true; return null; })
+      : Promise.resolve(old.mid);
+    midP.then(function (mid) {
+      if (formMode === 'mine') {
+        if (mid && S.mine.items.some(function (it) { return it.mid === mid; })) {
+          var ex = S.mine.items.filter(function (it) { return it.mid === mid; })[0];
+          hideOv(); toast(tr('alreadyMine')); flash(ex.id); return;
+        }
+        var now = Date.now();
+        var entry = { id: newEntryId(), mid: mid, name: name, owner: owner, x: x, notes: notes, fav: fav, created: now, upd: now };
+        return Mine.insert([entry]).then(function () {
+          hideOv();
+          toast(sharedFail ? tr('sharedFail') : tr('addedMine', { name: name }));
+          S.mine.limit = PAGE_SIZE; render(); flash(entry.id);
+        });
+      }
+      var next = copyEntry(old, { mid: mid, name: name, owner: owner, x: x, notes: notes, fav: fav });
+      return Mine.update(next).then(function () {
+        hideOv();
+        toast(sharedFail ? tr('sharedFail') : tr('saved'));
+        render(); flash(old.id);
+      });
+    }).catch(function (err) {
+      showErr('eAdd', tr(errKey(err), { max: MINE_MAX }));
     }).then(function () { btn.disabled = false; });
   });
   function findExisting(name, owner) {
@@ -1000,7 +1837,7 @@
   }
   function flash(id) {
     if (!id) return;
-    var card = document.querySelector('.card[data-id="' + String(id).replace(/[^A-Za-z0-9_]/g, '') + '"]');
+    var card = cardEl(String(id));
     if (!card) return;
     card.scrollIntoView({ block: 'center', behavior: 'smooth' });
     card.classList.remove('flash'); void card.offsetWidth; card.classList.add('flash');
@@ -1008,19 +1845,26 @@
 
   /* ---- 検索・並び替え・もっと見る ---- */
   var qTimer = 0;
-  $('q').addEventListener('input', function () { clearTimeout(qTimer); qTimer = setTimeout(function () { limit = PAGE_SIZE; render(); }, 150); });
-  function setSort(mode) {
-    sortMode = mode;
-    $('sortKana').classList.toggle('on', mode === 'kana');
-    $('sortNew').classList.toggle('on', mode === 'new');
-    limit = PAGE_SIZE; render();
-  }
+  $('q').addEventListener('input', function () { clearTimeout(qTimer); qTimer = setTimeout(function () { cur().limit = PAGE_SIZE; render(); }, 150); });
+  function setSort(mode) { var s = cur(); s.sort = mode; s.limit = PAGE_SIZE; render(); }
   $('sortKana').addEventListener('click', function () { setSort('kana'); });
   $('sortNew').addEventListener('click', function () { setSort('new'); });
-  $('more').addEventListener('click', function () { limit += PAGE_SIZE; render(); });
+  $('more').addEventListener('click', function () { cur().limit += PAGE_SIZE; render(); });
 
-  renderBar();
-  load();
+  /* ---- はじめ ---- */
+  S.mine.items = localLoad(); S.mine.loaded = true;
+  var wantAuth = !!lsGet(AUTH_KEY) || params.has('code') || params.has('error');
+  if (wantAuth) {
+    authPending = true;
+    initAuth().catch(function () {
+      authPending = false; authReady = true;
+      toast(tr('loginErr'));
+      render();
+    });
+  }
+  var savedTab = lsGet(LS_TAB);
+  tab = (savedTab === 'mine' || savedTab === 'all') ? savedTab : ((S.mine.items.length || wantAuth) ? 'mine' : 'all');
+  if (tab === 'all') loadAll(); else render();
 })();
 </script>
 <script defer src="/analytics.js"></script>
