@@ -142,6 +142,8 @@
   .fld input{width:100%;font-size:16px;padding:11px 12px;border-radius:10px;border:1px solid #c9d2e3;color:#1b2438;background:#fff}
   .fld input:focus{outline:2px solid var(--orange);border-color:var(--orange)}
   .fld .err{font-size:12px;color:#b91c1c;margin-top:4px}
+  .fld .fh{font-size:12px;color:#5c667a;margin-top:4px}
+  .fld .fh.ok{color:#15803d;font-weight:700}
   .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
   .words{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px}
   .words button{font-size:13px;padding:7px 14px;border-radius:999px;border:1px solid #c9d2e3;background:#fff;color:#1b2438;cursor:pointer}
@@ -255,7 +257,7 @@
     <div class="fld"><label for="fOwner" id="l_owner"></label>
       <input id="fOwner" maxlength="60" autocomplete="off"></div>
     <div class="fld"><label for="fX" id="l_x"></label>
-      <input id="fX" maxlength="16" autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="url" placeholder="@"><div class="err" id="eX" hidden></div></div>
+      <input id="fX" maxlength="500" autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="url" placeholder="@ID / https://x.com/…"><div class="fh" id="hX"></div><div class="err" id="eX" hidden></div></div>
     <div class="hp" aria-hidden="true"><label for="fWeb">web</label><input id="fWeb" tabindex="-1" autocomplete="off"></div>
     <p class="sm" id="addNote"></p>
     <div class="err" id="eAdd" hidden></div>
@@ -325,7 +327,7 @@
       qrTitle: 'スマホで読み取って取り込み', qrBody: 'とれはんっ！の入ったスマホのカメラで読み取ってください。開いたページの「とれはんっ！で開く」を押すと、次の {n} 件を取り込みます。',
       copy: 'リンクをコピー', copied: 'コピーしました', close: '閉じる', qrSm: 'アプリでは、取り込む前に名前を確認できます。すでにあるサークルは、空いている欄だけ埋めます。',
       openTitle: 'とれはんっ！が開きませんでしたか？', openBody: 'アプリが入っていないか、古い版の可能性があります。ストアから入手・更新してから、もう一度「取り込み」を押してください。',
-      addTitle: 'サークルを追加', name: 'サークル名', req: '必須', ownerF: 'サークル主（作者名）', xF: '𝕏（旧Twitter）の ID',
+      addTitle: 'サークルを追加', name: 'サークル名', req: '必須', ownerF: 'サークル主（作者名）', xF: '𝕏（旧Twitter）の ID', xHint: '𝕏 のプロフィール URL をコピーして貼り付けると、ID が自動で入ります', xGot: 'URL から ID「@{id}」を取り出しました',
       addNote: '登録した内容は、ウェブとアプリのサークルDBで誰でも見られます。本名や個人の連絡先は書かないでください。配置番号はイベントごとに変わるので入れません。',
       cancel: 'キャンセル', submit: '登録する', errName: 'サークル名を入力してください', errX: '𝕏 の ID は半角英数字と _ の 15 文字までです（@ は付けても付けなくても大丈夫です）',
       ngBody: 'サークル名・サークル主・𝕏 の ID に、登録できない不適切な語句が含まれています。内容を修正してから、もう一度お試しください。',
@@ -354,7 +356,7 @@
       qrTitle: 'Scan with your phone to import', qrBody: 'Scan with the camera of a phone that has Torehan! installed, then tap "Open in Torehan!" on the page to import these {n} circle(s).',
       copy: 'Copy link', copied: 'Copied', close: 'Close', qrSm: 'The app shows the names before importing. For circles you already have, only empty fields are filled.',
       openTitle: 'Torehan! didn\'t open?', openBody: 'The app may not be installed or may be out of date. Get or update it from the store, then tap "Import" again.',
-      addTitle: 'Add a circle', name: 'Circle name', req: 'Required', ownerF: 'Owner (artist name)', xF: '𝕏 (Twitter) ID',
+      addTitle: 'Add a circle', name: 'Circle name', req: 'Required', ownerF: 'Owner (artist name)', xF: '𝕏 (Twitter) ID', xHint: 'Paste the 𝕏 profile URL and the ID is filled in automatically', xGot: 'Took the ID “@{id}” from the URL',
       addNote: 'Anyone can see what you add, on the web and in the app. Do not enter real names or personal contact details. Booth numbers are not stored because they change every event.',
       cancel: 'Cancel', submit: 'Add', errName: 'Please enter a circle name', errX: 'An 𝕏 ID is up to 15 letters, digits, or _ (with or without @)',
       ngBody: 'The circle name, owner, or 𝕏 ID contains inappropriate wording that can\'t be registered. Please revise it and try again.',
@@ -383,7 +385,7 @@
       qrTitle: '用手机扫码导入', qrBody: '请用已安装 Torehan! 的手机相机扫描，然后在打开的页面中点“在 Torehan! 中打开”，即可导入以下 {n} 个。',
       copy: '复制链接', copied: '已复制', close: '关闭', qrSm: '应用会在导入前显示名称供确认。已有的社团只补全空白栏。',
       openTitle: 'Torehan! 没有打开？', openBody: '可能尚未安装应用或版本过旧。请从商店获取或更新后，再点一次“导入”。',
-      addTitle: '添加社团', name: '社团名', req: '必填', ownerF: '社团主（作者名）', xF: '𝕏（原 Twitter）ID',
+      addTitle: '添加社团', name: '社团名', req: '必填', ownerF: '社团主（作者名）', xF: '𝕏（原 Twitter）ID', xHint: '复制并粘贴 𝕏 的个人主页 URL，即可自动填入 ID', xGot: '已从 URL 取出 ID「@{id}」',
       addNote: '登记的内容在网页和应用的社团数据库中任何人都能看到。请勿填写真实姓名或个人联系方式。摊位号每次活动都会变，因此不登记。',
       cancel: '取消', submit: '登记', errName: '请输入社团名', errX: '𝕏 ID 为最多 15 个半角英数字或 _（带不带 @ 均可）',
       ngBody: '社团名、社团主或 𝕏 ID 中包含无法登记的不当词语。请修改后再试。',
@@ -412,7 +414,7 @@
       qrTitle: '用手機掃描匯入', qrBody: '請用已安裝 Torehan! 的手機相機掃描，然後在開啟的頁面中點「在 Torehan! 中開啟」，即可匯入以下 {n} 個。',
       copy: '複製連結', copied: '已複製', close: '關閉', qrSm: 'App 會在匯入前顯示名稱供確認。已有的社團只補上空白欄位。',
       openTitle: 'Torehan! 沒有開啟？', openBody: '可能尚未安裝 App 或版本過舊。請從商店取得或更新後，再點一次「匯入」。',
-      addTitle: '新增社團', name: '社團名', req: '必填', ownerF: '社團主（作者名）', xF: '𝕏（原 Twitter）ID',
+      addTitle: '新增社團', name: '社團名', req: '必填', ownerF: '社團主（作者名）', xF: '𝕏（原 Twitter）ID', xHint: '複製並貼上 𝕏 的個人檔案 URL，即可自動填入 ID', xGot: '已從 URL 取出 ID「@{id}」',
       addNote: '登錄的內容在網頁和 App 的社團資料庫中任何人都看得到。請勿填寫本名或個人聯絡方式。攤位號每次活動都會變，因此不登錄。',
       cancel: '取消', submit: '登錄', errName: '請輸入社團名', errX: '𝕏 ID 為最多 15 個半形英數字或 _（加不加 @ 皆可）',
       ngBody: '社團名、社團主或 𝕏 ID 中包含無法登錄的不當詞語。請修改後再試。',
@@ -441,7 +443,7 @@
       qrTitle: '휴대폰으로 스캔해 가져오기', qrBody: '토레한!이 설치된 휴대폰 카메라로 스캔한 뒤, 열린 페이지에서 "토레한!에서 열기"를 누르면 다음 {n}건을 가져옵니다.',
       copy: '링크 복사', copied: '복사했습니다', close: '닫기', qrSm: '앱에서는 가져오기 전에 이름을 확인할 수 있습니다. 이미 있는 서클은 빈칸만 채웁니다.',
       openTitle: '토레한!이 열리지 않았나요?', openBody: '앱이 설치되지 않았거나 오래된 버전일 수 있습니다. 스토어에서 받거나 업데이트한 뒤 다시 "가져오기"를 눌러 주세요.',
-      addTitle: '서클 추가', name: '서클명', req: '필수', ownerF: '서클 주인(작가명)', xF: '𝕏(구 Twitter) ID',
+      addTitle: '서클 추가', name: '서클명', req: '필수', ownerF: '서클 주인(작가명)', xF: '𝕏(구 Twitter) ID', xHint: '𝕏 프로필 URL을 복사해 붙여 넣으면 ID가 자동으로 입력됩니다', xGot: 'URL에서 ID “@{id}”를 가져왔습니다',
       addNote: '등록한 내용은 웹과 앱의 서클 DB에서 누구나 볼 수 있습니다. 실명이나 개인 연락처는 쓰지 마세요. 배치 번호는 이벤트마다 바뀌므로 넣지 않습니다.',
       cancel: '취소', submit: '등록', errName: '서클명을 입력해 주세요', errX: '𝕏 ID는 반각 영숫자와 _ 15자까지입니다(@는 붙여도 안 붙여도 됩니다)',
       ngBody: '서클명·서클 주인·𝕏 ID에 등록할 수 없는 부적절한 표현이 포함되어 있습니다. 내용을 수정한 후 다시 시도해 주세요.',
@@ -470,7 +472,7 @@
       qrTitle: 'Scannez avec votre téléphone pour importer', qrBody: 'Scannez avec l\'appareil photo d\'un téléphone où Torehan! est installé, puis touchez « Ouvrir dans Torehan! » sur la page pour importer ces {n} cercle(s).',
       copy: 'Copier le lien', copied: 'Copié', close: 'Fermer', qrSm: 'L\'app affiche les noms avant d\'importer. Pour les cercles déjà présents, seuls les champs vides sont remplis.',
       openTitle: 'Torehan! ne s\'est pas ouvert ?', openBody: 'L\'app n\'est peut-être pas installée ou pas à jour. Installez-la ou mettez-la à jour depuis la boutique, puis touchez à nouveau « Importer ».',
-      addTitle: 'Ajouter un cercle', name: 'Nom du cercle', req: 'Obligatoire', ownerF: 'Responsable (nom d\'artiste)', xF: 'Identifiant 𝕏 (Twitter)',
+      addTitle: 'Ajouter un cercle', name: 'Nom du cercle', req: 'Obligatoire', ownerF: 'Responsable (nom d\'artiste)', xF: 'Identifiant 𝕏 (Twitter)', xHint: 'Collez l\'URL du profil 𝕏 : l\'identifiant est rempli automatiquement', xGot: 'Identifiant « @{id} » extrait de l\'URL',
       addNote: 'Tout le monde peut voir ce que vous ajoutez, sur le web et dans l\'app. N\'indiquez ni vrai nom ni coordonnées personnelles. Les numéros de stand ne sont pas enregistrés car ils changent à chaque événement.',
       cancel: 'Annuler', submit: 'Ajouter', errName: 'Veuillez saisir le nom du cercle', errX: 'Un identifiant 𝕏 comporte jusqu\'à 15 lettres, chiffres ou _ (avec ou sans @)',
       ngBody: 'Le nom du cercle, le responsable ou l\'identifiant 𝕏 contient des termes inappropriés qui ne peuvent pas être enregistrés. Veuillez les corriger et réessayer.',
@@ -514,8 +516,21 @@
     if (extra) for (var k in extra) h[k] = extra[k];
     return h;
   }
+  /* 🔴 Rev842: 𝕏 のプロフィール URL から ID を取り出す。**アプリ src/utils/twitterId.ts の extractTwitterId と
+     同じ正規表現・同じ予約パス**（片方だけ直すと「アプリでは入るのにウェブでは入らない」になる＝直す時は両方）。
+     取り出せない／予約パスなら null（＝入力欄はそのまま残し、登録時に cleanXId がエラーを出す）。 */
+  var X_RESERVED = ['home', 'explore', 'notifications', 'messages', 'i', 'search'];
+  function extractXId(url) {
+    var m = String(url == null ? '' : url).match(/(?:https?:\/\/)?(?:x\.com|twitter\.com)\/([a-zA-Z0-9_]+)/i);
+    if (!m) return null;
+    if (X_RESERVED.indexOf(m[1].toLowerCase()) >= 0) return null;
+    return m[1];
+  }
   function cleanXId(v) {
-    var s = String(v == null ? '' : v).trim().replace(/^@/, '');
+    var s = String(v == null ? '' : v).trim();
+    var got = extractXId(s);
+    if (got) s = got;
+    s = s.replace(/^@+/, '');
     return X_ID_RE.test(s) ? s : '';
   }
   function xSearchUrl(ids, word, live) {
@@ -584,7 +599,7 @@
   setText('f_about', tr('about')); setText('f_contact', tr('contact'));
   setText('qrTitle', tr('qrTitle')); setText('qrCopy', tr('copy')); setText('qrClose', tr('close')); setText('qrSm', tr('qrSm'));
   setText('openTitle', tr('openTitle')); setText('openBody', tr('openBody')); setText('openClose', tr('close'));
-  setText('addTitle', tr('addTitle')); setText('l_name', tr('name')); setText('l_req', tr('req')); setText('l_owner', tr('ownerF')); setText('l_x', tr('xF'));
+  setText('addTitle', tr('addTitle')); setText('l_name', tr('name')); setText('l_req', tr('req')); setText('l_owner', tr('ownerF')); setText('l_x', tr('xF')); setText('hX', tr('xHint'));
   setText('addNote', tr('addNote')); setText('addCancel', tr('cancel')); setText('addSubmit', tr('submit'));
   setText('bxTitle', tr('bxTitle')); setText('bxWordLbl', tr('bxWord'));
   setText('repTitle', tr('repTitle')); setText('repCancel', tr('cancel')); setText('repGo', tr('repGo'));
@@ -904,11 +919,21 @@
   $('addBtn').addEventListener('click', function () {
     $('addForm').reset();
     ['eName', 'eX', 'eAdd'].forEach(function (id) { $(id).hidden = true; });
+    resetXHint();
     $('fName').value = $('q').value.trim().slice(0, MAX_NAME);
     showOv('addOv');
     setTimeout(function () { $('fName').focus(); }, 30);
   });
   function showErr(id, msg) { var e = $(id); e.textContent = msg; e.hidden = !msg; }
+  function resetXHint() { var h = $('hX'); h.textContent = tr('xHint'); h.className = 'fh'; }
+  $('fX').addEventListener('input', function () {
+    var el = $('fX');
+    var got = extractXId(el.value);
+    if (!got) { resetXHint(); return; } /* URL でなくなったら「取り出しました」を残さない */
+    el.value = got;
+    var h = $('hX'); h.textContent = tr('xGot', { id: got }); h.className = 'fh ok';
+    showErr('eX', '');
+  });
   $('addForm').addEventListener('submit', function (e) {
     e.preventDefault();
     showErr('eName', ''); showErr('eX', ''); showErr('eAdd', '');
