@@ -1,0 +1,1937 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>サークルDB｜同人サークルを探して とれはんっ！に取り込み</title>
+<meta name="description" content="とれはんっ！のサークルDBをウェブで。みんなで育てる同人サークルの台帳から、サークル名・サークル主・𝕏 の ID で探して、アプリにまとめて取り込めます。自分のリストの 𝕏 まとめて検索とサークルの追加も無料。">
+<link rel="canonical" href="https://rurifukuro.github.io/torehan/circle-db/">
+<link rel="icon" href="/icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="サークルDB｜とれはんっ！">
+<meta property="og:description" content="みんなで育てる同人サークルの台帳。探して、とれはんっ！にまとめて取り込めます。">
+<meta property="og:url" content="https://rurifukuro.github.io/torehan/circle-db/">
+<meta property="og:image" content="https://rurifukuro.github.io/icon.png">
+<meta name="twitter:card" content="summary">
+
+<!-- =========================================================
+     ウェブ版サークルDB（2026-11-08 新設・とれはんっ！ Rev841）
+
+     アプリの「サークルDB」（サーバーの master_circles）をウェブで探し・足し・アプリへ取り込むページ。
+     ユーザー指示（2026-11-08・逐語）:
+       「とれはんっ！にあるサークルDBの機能をウェブ版で公開したい」
+       「このウェブ版は先ほどの地図ルートウェブ版と同じサイト上で公開する／またとれはんっ！に取り込みボタンは大きめにしておいて」
+       「ウェブ版も無料で同機能を使えるようにする」（＝𝕏 まとめて検索）
+       「サークルの追加ボタンを必ず画面上に配置しておいてね、イメージで言うとサークルにチェック入れてない時は、サークルを追加ボタンを表示してるイメージ」
+       「アプリ版のサーバーと共通で追加されたサークルは登録と、検索できるようにしてね」
+
+     ■ アプリと揃えているもの（CONFIG-PAIR＝片方だけ直すと食い違う）
+       ・読み込み   … `searchMasterCircles`（RemoteSyncBackend）と同じ＝updated_at の新しい順に 1000 件を引き、
+                       名前・サークル主・𝕏 ID の小文字の部分一致で絞る。
+       ・登録       … `registerMasterCircle` と同じ「trim→同名×同サークル主を select→無ければ insert／23505 は引き直し」。
+                       ⚠ 既にある行は **空いている 𝕏 ID を補うだけ**（Claude 案・アプリは上書き）。ウェブは誰でも匿名で叩けるので、
+                       アプリ利用者が入れた値をウェブから書き換えられないようにした。修正はアプリの編集から。
+       ・文字数上限 … 0049/0050 の `mc_update` と同じ（サークル名 100／サークル主 60／𝕏 ID 60→ウェブは 15 文字の ID だけ）。
+       ・NG ワード  … アプリ `src/config/contentFilter.ts` の BANNED_WORDS を **生成で写す**（下の GENERATED 区画・手で直さない）。
+                       同期: とれはんっ！リポジトリで `npm run sync:web-ngwords`／検査: `npm run check:web-ngwords`。
+       ・𝕏 まとめて検索 … `src/utils/bulkXSearch.ts` と同じ（20 件ずつ・from:a OR from:b・語は日本語のまま）。
+                       **自分のリストのタブだけ**（アプリも端末内のサークルDB＝CircleMasterScreen にしか無い）。
+                       Rev884＝2026-11-08 ユーザー「みんなのDBの方はXまとめて検索できないようにして／これはあなたの間違った改修の名残なので、
+                       アプリと同じでXまとめて検索は自分のリストだけ」。みんなのDBのタブではボタンを出さない・押す処理も動かない。
+       ・取り込み上限 … アプリ `CircleDbImportLinkListener.tsx` の `CIRCLE_DB_IMPORT_MAX` と同じ 30 件。
+       ・通報       … アプリと同じお問い合わせフォーム（src/config/contact.ts の CONTACT_FORM_URL）。
+
+     ■ 取り込みの経路（リンクに載せるのは ID だけ＝アプリはサーバーから引き直して、名前を見せて確認してから入れる）
+       ・スマホ … `torehan://circledb?ids=<32桁>,…` を本人のタップで開く。開かなかったらストアへの案内を出す。
+       ・PC     … 同じ ID を載せた https の中継 URL（このページの `?import=`）を QR で出す。
+       ・中継   … `?import=` で来たら一覧の代わりに「とれはんっ！で開く」とストアの案内を出す（読み込み時に自動で飛ばさない）。
+
+     ■ 自分のリスト（Rev843・2026-11-08 ユーザー「アプリ版のサークルDBローカルと同じもののイメージ」「Googleアカウントなどでログインできるようにして自分のリストを保存」「ログインはGoogleだけでOK」）
+       ・タブは「自分のリスト」と「みんなのDB」。自分のリスト＝追加・編集・削除・メモ・★・並び替え・検索・𝕏 まとめて検索（無料）。
+       ・ログインしていない間は localStorage（torehan.circledb.mylist.v1）。Google でログインすると web_circle_list（0159・本人だけ）に保存し、
+         初回ログイン時にブラウザのリストをアカウントへ移す。ログアウトと「アカウントとリストを削除」（delete_my_web_account）を置く。
+       ・共有するのはサークル名・サークル主・𝕏 ID だけ（master_circles へ従来どおり anon で登録）。メモと ★ は共有しない。
+       ・アプリへは「とれはんっ！に取り込む」で ids に加えて fav（0/1 の並び）と notes（JSON 配列・URL エンコード 6000 文字まで）を渡す。
+         PC の QR（中継 URL）は ids と fav だけ＝メモは載せない（QR が読めなくなるため）。アプリ側の受け取りは次のビルドから。
+     ⚠ サーバーの値は**一切 innerHTML に入れない**（textContent と URL エンコードのみ）。
+     ⚠ 𝕏 へのリンクは ID が /^[A-Za-z0-9_]{1,15}$/ を満たすときだけ ID から作る。twitter_profile_url はリンクにしない（2026-08-18 決定）。
+     ⚠ キーは公開用（publishable / anon）。analytics.js・waitlist.js と同じ値。service_role は絶対に置かない。
+     ========================================================= -->
+
+<style>
+  :root{
+    --navy:#0c1a38; --navy2:#142c54; --card:#18315c; --line:rgba(255,255,255,.14);
+    --orange:#f5821f; --orange2:#ff9a3d; --text:#e4ebf7; --sub:#b8c7e6; --faint:#9fb0d4;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",YuGothic,"Meiryo",sans-serif;
+    background:linear-gradient(160deg,var(--navy) 0%,var(--navy2) 100%) fixed;background-color:var(--navy);color:var(--text);
+    min-height:100vh;line-height:1.6;-webkit-font-smoothing:antialiased;padding-bottom:calc(120px + env(safe-area-inset-bottom))}
+  a{color:inherit}
+  button{font-family:inherit}
+  [hidden]{display:none !important}
+  header{border-bottom:1px solid var(--line);background:rgba(12,26,56,.9);position:sticky;top:0;z-index:5;
+    -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  .hd{max-width:1180px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:12px}
+  .hd img{width:40px;height:40px;border-radius:10px;background:#fff;flex:none}
+  .hd .ttl{font-weight:800;font-size:18px;line-height:1.35;min-width:0}
+  .hd .ttl small{display:block;font-size:12px;font-weight:400;color:var(--sub)}
+  .hd .app{margin-left:auto;flex:none;font-size:13px;color:var(--sub);text-decoration:none;border:1px solid var(--line);padding:6px 12px;border-radius:999px}
+  main{max-width:1180px;margin:0 auto;padding:18px 16px}
+  .search input{width:100%;font-size:17px;padding:14px 16px;border-radius:12px;border:1px solid var(--line);
+    background:rgba(255,255,255,.08);color:#fff;outline:none;-webkit-appearance:none;appearance:none}
+  .search input:focus{border-color:var(--orange2)}
+  .search input::placeholder{color:var(--faint)}
+  .tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0 6px}
+  .tools .lbl{font-size:13px;color:var(--sub);margin-right:2px}
+  .chip{font-size:13px;padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--text);cursor:pointer}
+  .chip.on{background:#fff;color:var(--navy);font-weight:700;border-color:#fff}
+  .chip.x{border-color:rgba(255,255,255,.35);font-weight:700}
+  .chip:disabled{opacity:.45;cursor:default}
+  .count{margin-left:auto;font-size:13px;color:var(--sub)}
+  .note{font-size:12px;color:var(--faint);margin:4px 0 14px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media (max-width:960px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:620px){.grid{grid-template-columns:1fr}.hd .app{display:none}.count{margin-left:0;flex-basis:100%}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px;position:relative;cursor:pointer}
+  .card.sel{outline:3px solid var(--orange);outline-offset:-1px}
+  .card.flash{animation:flash 1.6s ease-out}
+  @keyframes flash{0%{box-shadow:0 0 0 4px var(--orange2)}100%{box-shadow:0 0 0 0 transparent}}
+  .name{font-size:18px;font-weight:800;padding-right:44px;line-height:1.4;word-break:break-word}
+  .owner{font-size:14px;color:var(--sub);word-break:break-word}
+  .owner b{color:var(--text);font-weight:600}
+  .links{display:flex;gap:8px;flex-wrap:wrap}
+  .lk{font-size:13px;text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:6px 10px;background:rgba(255,255,255,.05)}
+  .lk:hover{border-color:rgba(255,255,255,.4)}
+  .check{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:9px;border:2px solid var(--faint);
+    display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:var(--navy);background:transparent;cursor:pointer}
+  .card.sel .check{background:var(--orange);border-color:var(--orange)}
+  .imp{margin-top:auto;display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:58px;
+    border:none;border-radius:14px;font-size:17px;font-weight:800;color:#fff;cursor:pointer;text-decoration:none;
+    background:linear-gradient(180deg,var(--orange2),var(--orange));box-shadow:0 6px 18px rgba(245,130,31,.35)}
+  .imp .ic{font-size:22px}
+  .foot{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--faint)}
+  .foot button{font-size:12px;color:var(--faint);background:none;border:none;text-decoration:underline;cursor:pointer;padding:4px 0 4px 8px}
+  .state{text-align:center;color:var(--sub);padding:36px 12px;font-size:15px}
+  .state button{margin-top:12px}
+  .more{display:block;margin:18px auto 0;font-size:15px;padding:12px 26px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);cursor:pointer}
+  .bar{position:fixed;left:0;right:0;bottom:0;background:rgba(10,20,44,.97);border-top:1px solid var(--line);z-index:6;padding-bottom:env(safe-area-inset-bottom)}
+  .bar .in{max-width:1180px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:14px}
+  .bar .n{font-size:15px;white-space:nowrap}
+  .bar .n b{font-size:22px;color:var(--orange2)}
+  .bar .clr{font-size:13px;color:var(--sub);background:none;border:none;text-decoration:underline;cursor:pointer;white-space:nowrap}
+  .bar .imp{width:auto;flex:1;max-width:520px;margin-left:auto;min-height:64px;font-size:19px}
+  .bar .add{flex:1;max-width:520px;margin-left:auto;min-height:64px;font-size:19px;font-weight:800;border-radius:14px;cursor:pointer;
+    color:var(--navy);background:#fff;border:none;box-shadow:0 6px 18px rgba(0,0,0,.3)}
+  .bar .hint{font-size:13px;color:var(--sub)}
+  @media (max-width:620px){.bar .in{flex-wrap:wrap;gap:8px 14px}.bar .imp,.bar .add{max-width:none;flex-basis:100%;font-size:17px}
+    .bar .long,.bar .hint{display:none}.links .lk{padding:5px 8px;font-size:12px}}
+  @media (min-width:621px){.bar .short{display:none}}
+  .toast{position:fixed;left:50%;bottom:calc(110px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#fff;color:#1b2438;
+    font-size:14px;font-weight:700;padding:10px 18px;border-radius:999px;box-shadow:0 8px 24px rgba(0,0,0,.35);z-index:20;max-width:calc(100% - 32px);text-align:center}
+  /* ダイアログ（白地） */
+  .ov{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;z-index:9;padding:16px}
+  .dlg{background:#fff;color:#1b2438;border-radius:18px;max-width:460px;width:100%;padding:24px 22px;position:relative;max-height:calc(100vh - 32px);overflow:auto}
+  .dlg h2{font-size:19px;margin-bottom:6px;padding-right:28px}
+  .dlg p{font-size:14px;color:#4a5670}
+  .dlg .x{position:absolute;top:8px;right:10px;width:36px;height:36px;font-size:22px;background:none;border:none;color:#5c667a;cursor:pointer}
+  .dlg .qr{display:block;width:260px;height:260px;margin:14px auto;border:1px solid #dde3ef;border-radius:8px}
+  .dlg ul{list-style:none;font-size:13px;background:#f3f6fb;border-radius:10px;padding:10px 14px;margin-top:8px}
+  .dlg li{padding:2px 0;word-break:break-word}
+  .dlg .sm{font-size:12px;color:#5c667a;margin-top:10px}
+  .dlg .row{display:flex;gap:10px;margin-top:16px}
+  .dlg .row > *{flex:1}
+  .btn2{min-height:48px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;border:1px solid #c9d2e3;background:#fff;color:#1b2438;text-decoration:none;
+    display:flex;align-items:center;justify-content:center;padding:0 12px;text-align:center}
+  .btn2.pri{background:var(--orange);border-color:var(--orange);color:#fff}
+  .btn2:disabled{opacity:.5;cursor:default}
+  .fld{margin-top:14px}
+  .fld label{display:block;font-size:13px;font-weight:700;margin-bottom:4px}
+  .fld label .req{color:#c2410c;font-weight:700;margin-left:6px;font-size:12px}
+  .fld input{width:100%;font-size:16px;padding:11px 12px;border-radius:10px;border:1px solid #c9d2e3;color:#1b2438;background:#fff}
+  .fld input:focus{outline:2px solid var(--orange);border-color:var(--orange)}
+  .fld textarea{width:100%;font-size:16px;padding:11px 12px;border-radius:10px;border:1px solid #c9d2e3;color:#1b2438;background:#fff;font-family:inherit;line-height:1.5;resize:vertical}
+  .fld textarea:focus{outline:2px solid var(--orange);border-color:var(--orange)}
+  .fld .ck{display:flex;align-items:center;gap:10px;font-size:15px;cursor:pointer;margin:0;min-height:44px}
+  .fld .ck input{width:22px;height:22px;padding:0;flex:none;accent-color:var(--orange)}
+  .fld .err{font-size:12px;color:#b91c1c;margin-top:4px}
+  .fld .fh{font-size:12px;color:#5c667a;margin-top:4px}
+  .fld .fh.ok{color:#15803d;font-weight:700}
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+  .words{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px}
+  .words button{font-size:13px;padding:7px 14px;border-radius:999px;border:1px solid #c9d2e3;background:#fff;color:#1b2438;cursor:pointer}
+  .words button.on{background:#1b2438;color:#fff;border-color:#1b2438}
+  .chunks{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+  /* 中継（?import=） */
+  .relay{max-width:520px;margin:0 auto;padding:28px 6px 40px;text-align:center}
+  .relay .icon{width:88px;height:88px;border-radius:20px;background:#fff;box-shadow:0 8px 28px rgba(0,0,0,.35);margin-bottom:14px}
+  .relay h1{font-size:22px;line-height:1.5}
+  .relay .lead{font-size:15px;color:var(--sub);margin-top:8px}
+  .relay ul{list-style:none;text-align:left;background:rgba(255,255,255,.07);border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin:18px 0;font-size:14px}
+  .relay li{padding:3px 0;word-break:break-word}
+  .relay .imp{min-height:64px;font-size:19px;margin-top:6px}
+  .relay .stores{display:flex;gap:10px;margin-top:14px}
+  .relay .stores a{flex:1;min-height:50px;border-radius:12px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;text-decoration:none;font-weight:700;font-size:14px;background:rgba(255,255,255,.06)}
+  .relay .sm{font-size:12px;color:var(--faint);margin-top:14px}
+  .relay .back{display:inline-block;margin-top:22px;font-size:14px;color:var(--sub)}
+  footer{max-width:1180px;margin:30px auto 0;padding:0 16px;font-size:12px;color:var(--faint);text-align:center}
+  footer a{color:var(--sub);margin:0 8px}
+  /* 自分のリスト（Rev843） */
+  .tabs{display:flex;gap:6px;margin:0 0 14px;border-bottom:1px solid var(--line)}
+  .tab{flex:1;max-width:260px;font-size:16px;font-weight:700;padding:12px 10px;background:none;border:none;border-bottom:3px solid transparent;
+    color:var(--sub);cursor:pointer;margin-bottom:-1px;min-height:48px}
+  .tab.on{color:#fff;border-bottom-color:var(--orange)}
+  .acct{background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:0 0 14px;font-size:13px;color:var(--sub)}
+  .acct .acts{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin-top:8px}
+  .gbtn{font-size:15px;font-weight:700;min-height:44px;padding:0 20px;border-radius:999px;border:none;background:#fff;color:#1b2438;cursor:pointer}
+  .lnk{font-size:13px;color:var(--sub);background:none;border:none;text-decoration:underline;cursor:pointer;padding:6px 0;min-height:40px}
+  .lnk.dng{color:#fca5a5}
+  a.lnk{display:inline-flex;align-items:center}
+  .card.mine .name{padding-right:88px}
+  .star{position:absolute;top:12px;right:54px;width:34px;height:34px;border-radius:9px;border:none;background:none;font-size:24px;line-height:1;
+    color:var(--faint);cursor:pointer;padding:0}
+  .star.on{color:#facc15}
+  .memo{font-size:13px;color:var(--text);background:rgba(255,255,255,.06);border-radius:10px;padding:8px 10px;white-space:pre-wrap;word-break:break-word}
+  .mineb{align-self:flex-start;font-size:14px;font-weight:700;padding:8px 14px;min-height:40px;border-radius:999px;border:1px solid rgba(255,255,255,.4);
+    background:transparent;color:var(--text);cursor:pointer}
+  .mineb.in{border-color:transparent;color:var(--sub);font-weight:400;cursor:default;padding-left:0}
+  #addDel{width:100%;margin-top:10px;color:#b91c1c;border-color:#f1b8b8}
+  #addDel.armed{background:#b91c1c;border-color:#b91c1c;color:#fff}
+  .btn2.dng{background:#b91c1c;border-color:#b91c1c;color:#fff}
+</style>
+</head>
+<body>
+<header><div class="hd">
+  <img src="/icon.png" alt="">
+  <div class="ttl"><span id="t_title">とれはんっ！ サークルDB</span><small id="t_tag">みんなで育てるサークル台帳を、ウェブで探して取り込めます</small></div>
+  <a class="app" id="t_getapp" href="/torehan/">アプリを入手</a>
+</div></header>
+
+<!-- ── 一覧 ── -->
+<main id="list">
+  <div class="tabs" role="tablist">
+    <button class="tab" id="tabMine" type="button" role="tab">自分のリスト</button>
+    <button class="tab" id="tabAll" type="button" role="tab">みんなのDB</button>
+  </div>
+  <div class="acct" id="acct" hidden>
+    <p id="acctText"></p>
+    <div class="acts">
+      <button class="gbtn" id="loginBtn" type="button" hidden>Google でログイン</button>
+      <button class="lnk" id="logoutBtn" type="button" hidden></button>
+      <button class="lnk dng" id="delAccBtn" type="button" hidden></button>
+      <a class="lnk" id="privLnk" href="/torehan/privacy/" target="_blank" rel="noopener">プライバシーポリシー</a>
+    </div>
+  </div>
+  <div class="search"><input type="search" id="q" autocomplete="off" enterkeyhint="search" maxlength="100" placeholder="サークル名・サークル主・𝕏 の ID で探す"></div>
+  <div class="tools">
+    <span class="lbl" id="t_sort">並び替え</span>
+    <button class="chip on" id="sortKana" type="button">五十音順</button>
+    <button class="chip" id="sortNew" type="button">更新が新しい順</button>
+    <button class="chip" id="favOnly" type="button" hidden></button>
+    <button class="chip x" id="bulkx" type="button" disabled hidden>𝕏 まとめて検索</button>
+    <span class="count" id="count"></span>
+  </div>
+  <p class="note" id="t_note">💡 サークルDBはイベントをまたいで使い回すサークルの台帳です（配置番号は入っていません）。</p>
+  <div class="grid" id="grid"></div>
+  <div class="state" id="state"></div>
+  <button class="more" id="more" type="button" hidden></button>
+</main>
+
+<!-- ── 中継（?import=） ── -->
+<main id="relay" hidden>
+  <div class="relay">
+    <img class="icon" src="/icon.png" alt="">
+    <h1 id="r_title">サークルDBの取り込み</h1>
+    <p class="lead" id="r_lead"></p>
+    <ul id="r_names" hidden></ul>
+    <p class="sm" id="r_missing" hidden></p>
+    <a class="imp" id="r_open" href="#"><span class="ic">📲</span><span id="r_open_t">とれはんっ！で開く</span></a>
+    <p class="sm" id="r_noapp">アプリをお持ちでない方・開かない方</p>
+    <p class="sm" id="r_upd">何も起きない場合は、アプリを最新版に更新してからもう一度押してください</p>
+    <div class="stores">
+      <a class="store-ios" href="https://apps.apple.com/jp/app/id6776913607" target="_blank" rel="noopener">App Store</a>
+      <a class="store-android" href="https://play.google.com/store/apps/details?id=com.torehan.app" target="_blank" rel="noopener">Google Play</a>
+    </div>
+    <a class="back" id="r_back" href="/torehan/circle-db/">サークルDBを見る</a>
+  </div>
+</main>
+
+<footer>
+  <a id="f_about" href="/torehan/">とれはんっ！について</a>
+  <a id="f_contact" href="https://forms.gle/RMWGLzRdyzdnPSas5" target="_blank" rel="noopener">お問い合わせ</a>
+</footer>
+
+<!-- ── 下のバー（何も選んでいない＝サークルを追加／選んでいる＝取り込み） ── -->
+<div class="bar" id="bar"><div class="in">
+  <div id="barAdd" style="display:contents">
+    <span class="hint" id="t_hint">チェックを入れると、まとめて取り込めます</span>
+    <button class="add" id="addBtn" type="button">＋ サークルを追加</button>
+  </div>
+  <div id="barSel" style="display:contents" hidden>
+    <div class="n" id="selN"></div>
+    <button class="clr" id="clr" type="button">選択を外す</button>
+    <button class="add" id="toMine" type="button" hidden></button>
+    <button class="imp" id="impSel" type="button"><span class="ic">📲</span><span class="long" id="impLong"></span><span class="short" id="impShort"></span></button>
+  </div>
+</div></div>
+
+<!-- ── QR（PC で取り込みを押したとき） ── -->
+<div class="ov" id="qrOv" hidden><div class="dlg" role="dialog" aria-modal="true" aria-labelledby="qrTitle">
+  <button class="x" type="button" data-close aria-label="閉じる">×</button>
+  <h2 id="qrTitle"></h2>
+  <p id="qrBody"></p>
+  <svg class="qr" id="qrSvg" viewBox="0 0 10 10" shape-rendering="crispEdges" role="img" aria-label="QR"></svg>
+  <ul id="qrNames"></ul>
+  <div class="row"><button class="btn2" type="button" id="qrCopy"></button><button class="btn2 pri" type="button" data-close id="qrClose"></button></div>
+  <p class="sm" id="qrSm"></p>
+</div></div>
+
+<!-- ── スマホでアプリが開かなかったとき ── -->
+<div class="ov" id="openOv" hidden><div class="dlg" role="dialog" aria-modal="true" aria-labelledby="openTitle">
+  <button class="x" type="button" data-close aria-label="閉じる">×</button>
+  <h2 id="openTitle"></h2>
+  <p id="openBody"></p>
+  <div class="row">
+    <a class="btn2" href="https://apps.apple.com/jp/app/id6776913607" target="_blank" rel="noopener">App Store</a>
+    <a class="btn2" href="https://play.google.com/store/apps/details?id=com.torehan.app" target="_blank" rel="noopener">Google Play</a>
+  </div>
+  <div class="row"><button class="btn2 pri" type="button" data-close id="openClose"></button></div>
+</div></div>
+
+<!-- ── サークルを追加 ── -->
+<div class="ov" id="addOv" hidden><div class="dlg" role="dialog" aria-modal="true" aria-labelledby="addTitle">
+  <button class="x" type="button" data-close aria-label="閉じる">×</button>
+  <h2 id="addTitle"></h2>
+  <form id="addForm" novalidate>
+    <div class="fld"><label for="fName"><span id="l_name"></span><span class="req" id="l_req"></span></label>
+      <input id="fName" maxlength="100" autocomplete="off"><div class="err" id="eName" hidden></div></div>
+    <div class="fld"><label for="fOwner" id="l_owner"></label>
+      <input id="fOwner" maxlength="60" autocomplete="off"></div>
+    <div class="fld"><label for="fX" id="l_x"></label>
+      <input id="fX" maxlength="500" autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="url" placeholder="@ID / https://x.com/…"><div class="fh" id="hX"></div><div class="err" id="eX" hidden></div></div>
+    <div class="fld" id="fldNotes" hidden><label for="fNotes" id="l_notes"></label>
+      <textarea id="fNotes" maxlength="1000" rows="4"></textarea></div>
+    <div class="fld" id="fldFav" hidden><label class="ck"><input type="checkbox" id="fFav"><span id="l_fav"></span></label></div>
+    <div class="hp" aria-hidden="true"><label for="fWeb">web</label><input id="fWeb" tabindex="-1" autocomplete="off"></div>
+    <p class="sm" id="addNote"></p>
+    <div class="err" id="eAdd" hidden></div>
+    <div class="row"><button class="btn2" type="button" data-close id="addCancel"></button><button class="btn2 pri" type="submit" id="addSubmit"></button></div>
+    <button class="btn2" type="button" id="addDel" hidden></button>
+  </form>
+</div></div>
+
+<!-- ── 𝕏 まとめて検索 ── -->
+<div class="ov" id="bxOv" hidden><div class="dlg" role="dialog" aria-modal="true" aria-labelledby="bxTitle">
+  <button class="x" type="button" data-close aria-label="閉じる">×</button>
+  <h2 id="bxTitle"></h2>
+  <p id="bxNote"></p>
+  <p class="sm" id="bxWordLbl"></p>
+  <div class="words" id="bxWords"></div>
+  <div class="chunks" id="bxChunks"></div>
+</div></div>
+
+<!-- ── 通報の確認 ── -->
+<div class="ov" id="repOv" hidden><div class="dlg" role="dialog" aria-modal="true" aria-labelledby="repTitle">
+  <button class="x" type="button" data-close aria-label="閉じる">×</button>
+  <h2 id="repTitle"></h2>
+  <p id="repBody"></p>
+  <div class="row"><button class="btn2" type="button" data-close id="repCancel"></button><a class="btn2 pri" id="repGo" href="https://forms.gle/RMWGLzRdyzdnPSas5" target="_blank" rel="noopener"></a></div>
+</div></div>
+
+<!-- ── アカウントとリストの削除 ── -->
+<div class="ov" id="accOv" hidden><div class="dlg" role="dialog" aria-modal="true" aria-labelledby="accTitle">
+  <button class="x" type="button" data-close aria-label="閉じる">×</button>
+  <h2 id="accTitle"></h2>
+  <p id="accBody"></p>
+  <div class="row"><button class="btn2" type="button" data-close id="accCancel"></button><button class="btn2 dng" type="button" id="accGo"></button></div>
+</div></div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function () {
+  'use strict';
+
+  var SB = 'https://vuazrgebojcnyjcnhpuq.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_pin4V9zyMx6el2Z_fswzUA_dXlom2jf'; /* 公開値（publishable / anon）＝ analytics.js・waitlist.js と同じ */
+  var PAGE_URL = 'https://rurifukuro.github.io/torehan/circle-db/'; /* QR は常に本番の中継 URL（ローカル確認でも同じ DB を指す） */
+  var CONTACT_FORM_URL = 'https://forms.gle/RMWGLzRdyzdnPSas5'; /* アプリ src/config/contact.ts と同じ */
+  var FETCH_LIMIT = 1000;   /* アプリ searchMasterCircles と同じ */
+  var IMPORT_MAX = 30;      /* アプリ CIRCLE_DB_IMPORT_MAX と同じ */
+  var BULK_X_CHUNK = 20;    /* アプリ BULK_X_CHUNK と同じ */
+  var PAGE_SIZE = 60;       /* 1 回に並べる枚数（多すぎると重い） */
+  var MAX_NAME = 100, MAX_OWNER = 60; /* 0049/0050 mc_update の left() と同じ */
+  var X_ID_RE = /^[A-Za-z0-9_]{1,15}$/;
+  var HEX_RE = /^(?:mc_)?([0-9a-f]{32})$/;
+  /* 絞り込む語＝アプリと同じく日本語のまま（検索相手は日本語でポストする同人サークル）。none だけ訳す。 */
+  var WORDS = [['none', ''], ['oshinagaki', 'お品書き'], ['placement', '配置'], ['soldout', '完売']];
+
+  /* BEGIN GENERATED NG_WORDS — とれはんっ！ src/config/contentFilter.ts の BANNED_WORDS から生成（手で直さない） */
+  var NG_WORDS = ["\u304d\u3061\u304c\u3044","\u30ad\u30c1\u30ac\u30a4","\u6c17\u9055\u3044","\u6c17\u72c2\u3044","\u3064\u3093\u307c","\u30c4\u30f3\u30dc","\u571f\u4eba","\u6bba\u3059\u305e","\u3053\u308d\u3059\u305e","\u3076\u3063\u6bba\u3059","\u3076\u3063\u3053\u308d\u3059","\u6bba\u3057\u3066\u3084\u308b","\u3076\u3063\u6bba\u3057\u3066\u3084\u308b","nigger","faggot","killyou"];
+  /* END GENERATED NG_WORDS */
+
+  /* ================= 文言（6 言語） ================= */
+  var L = {
+    ja: {
+      docTitle: 'サークルDB｜同人サークルを探して とれはんっ！に取り込み',
+      title: 'とれはんっ！ サークルDB', tag: 'みんなで育てるサークル台帳を、ウェブで探して取り込めます', getApp: 'アプリを入手',
+      q: 'サークル名・サークル主・𝕏 の ID で探す', sort: '並び替え', kana: '五十音順', newer: '更新が新しい順',
+      count: '{total} 件中 {n} 件', note: '💡 サークルDBはイベントをまたいで使い回すサークルの台帳です（配置番号は入っていません）。アプリのサークルDBと同じサーバーのデータで、ここで追加したサークルはアプリからも探せます。',
+      owner: 'サークル主', imp: 'とれはんっ！に取り込み', updated: '更新 {d}', report: '通報',
+      check: '選ぶ', more: 'もっと見る（残り {n} 件）', loading: '読み込み中…', loadErr: 'サーバーに接続できませんでした。', retry: 'もう一度読み込む',
+      empty: '見つかりませんでした。無いときは、下の「サークルを追加」から登録できます。', none0: 'まだサークルがありません。下の「サークルを追加」から登録できます。',
+      hint: 'チェックを入れると、まとめて取り込めます', add: '＋ サークルを追加',
+      selN: '<b>{n}</b> 件を選択中', clr: '選択を外す', impLong: '選んだ {n} 件をとれはんっ！に取り込み', impShort: '{n} 件をとれはんっ！に取り込み',
+      max: '一度に取り込めるのは {max} 件までです',
+      bxBtn: '𝕏 まとめて検索（{n}件）', bxTitle: '𝕏 まとめて検索',
+      bxNoteAll: '表示中のサークルのうち 𝕏 の ID がある {n} 件を、{size} 件ずつに分けて 𝕏 の検索結果を開きます（𝕏 は1回の検索で調べられる人数に限りがあるため）。𝕏 へのログインを求められることがあります。検索結果に表示されない人がいる場合があります（最近ポストしていない人・鍵アカウントの人・𝕏 の検索の仕様など）。',
+      bxNoteSel: '選んだサークルのうち 𝕏 の ID がある {n} 件を、{size} 件ずつに分けて 𝕏 の検索結果を開きます（𝕏 は1回の検索で調べられる人数に限りがあるため）。𝕏 へのログインを求められることがあります。検索結果に表示されない人がいる場合があります（最近ポストしていない人・鍵アカウントの人・𝕏 の検索の仕様など）。',
+      bxWord: '絞り込む語', bxNone: 'なし', bxChunk: '{from}〜{to}件目を開く', bxOne: '𝕏 で検索結果を開く', bxEmpty: '𝕏 の ID が登録されたサークルがありません',
+      qrTitle: 'スマホで読み取って取り込み', qrBody: 'とれはんっ！の入ったスマホのカメラで読み取ってください。開いたページの「とれはんっ！で開く」を押すと、次の {n} 件を取り込みます。',
+      copy: 'リンクをコピー', copied: 'コピーしました', close: '閉じる', qrSm: 'アプリでは、取り込む前に名前を確認できます。すでにあるサークルは、空いている欄だけ埋めます。',
+      openTitle: 'とれはんっ！が開きませんでしたか？', openBody: 'アプリが入っていないか、古い版の可能性があります。ストアから入手・更新してから、もう一度「取り込み」を押してください。',
+      addTitle: 'サークルを追加', name: 'サークル名', req: '必須', ownerF: 'サークル主（作者名）', xF: '𝕏（旧Twitter）の ID', xHint: '𝕏 のプロフィール URL をコピーして貼り付けると、ID が自動で入ります', xGot: 'URL から ID「@{id}」を取り出しました',
+      addNote: '登録した内容は、ウェブとアプリのサークルDBで誰でも見られます。本名や個人の連絡先は書かないでください。配置番号はイベントごとに変わるので入れません。',
+      cancel: 'キャンセル', submit: '登録する', errName: 'サークル名を入力してください', errX: '𝕏 の ID は半角英数字と _ の 15 文字までです（@ は付けても付けなくても大丈夫です）',
+      ngBody: 'サークル名・サークル主・𝕏 の ID に、登録できない不適切な語句が含まれています。内容を修正してから、もう一度お試しください。',
+      added: '「{name}」を登録しました', exists: '「{name}」はすでに登録されています（内容の修正はアプリのサークルDBからできます）', filledX: '「{name}」はすでにあったので、空いていた 𝕏 の ID を補いました',
+      addErr: '登録できませんでした。時間をおいて、もう一度お試しください。', wait: '続けて登録するときは、少し待ってから押してください',
+      repTitle: 'このサークルを通報', repBody: '「{name}」を運営に通報します。お問い合わせフォームが開くので、対象のサークル名と理由をご記入ください。', repGo: 'フォームを開く',
+      rTitle: 'サークルDBの取り込み', rLead: '次の {n} 件を、とれはんっ！のサークルDBに取り込みます。', rLeadLoading: 'サークルを確認しています…', rOpen: 'とれはんっ！で開く',
+      backHint: '何も起きなかった場合は、アプリを最新版に更新してからもう一度押してください', rUpd: '何も起きない場合は、アプリを最新版に更新してからもう一度押してください',
+      rNoApp: 'アプリをお持ちでない方・開かない方', rBack: 'サークルDBを見る', rMissing: '{n} 件はサーバーに見つかりませんでした。', rNone: 'リンクのサークルが見つかりませんでした。サークルDBで選び直してください。', rBad: 'リンクが正しくありません。サークルDBで選び直してください。',
+      about: 'とれはんっ！について', contact: 'お問い合わせ', ownerBy: 'サークル主 {o}',
+      tabMine: '自分のリスト（{n}）',
+      tabAll: 'みんなのDB',
+      favOnly: '★ だけ',
+      sortAdded: '追加が新しい順',
+      noteMine: '💡 自分のリストは、アプリのサークルDB（ローカル）と同じ使い方です。メモと ★ はあなただけが見られます。ログインしていない間はこのブラウザに保存され、Google でログインするとどの端末でも同じリストを使えます。',
+      acctLocal: 'このブラウザに保存しています（ブラウザのデータを消すとリストも消えます）。Google でログインすると、どの端末でも同じリストを使えます。',
+      acctIn: '{email} でログイン中（どの端末でも同じリストです）',
+      login: 'Google でログイン',
+      priv: 'プライバシーポリシー',
+      logout: 'ログアウト',
+      delAcc: 'アカウントとリストを削除',
+      delAccTitle: 'アカウントとリストを削除',
+      delAccBody: '自分のリスト（メモと ★ を含む）、ウェブ版「地図ルート」に保存したルート、ログイン情報をサーバーから削除します。元に戻せません。みんなのDB に登録したサークルと、アプリに取り込んだ分は残ります。',
+      delAccGo: '削除する',
+      delSure: 'もう一度押すと削除します',
+      delAccDone: 'アカウントとリストを削除しました',
+      delAccListOnly: 'リストを削除しました（ログイン情報は他のサービスで使われているため残しています）',
+      loginErr: 'ログインできませんでした。時間をおいて、もう一度お試しください。',
+      loggedOut: 'ログアウトしました（リストはアカウントに残っています）',
+      merged: 'このブラウザのリスト {n} 件をアカウントに移しました',
+      loadingMine: '自分のリストを読み込み中…',
+      mineEmpty: '見つかりませんでした。',
+      mineEmpty0: 'まだサークルがありません。「みんなのDB」で「＋ 自分のリスト」を押すか、下の「サークルを追加」から入れられます。',
+      mineFull: '自分のリストは {max} 件までです',
+      saveErr: '保存できませんでした。時間をおいて、もう一度お試しください。',
+      toMine: '＋ 自分のリスト',
+      inMine: '✓ 自分のリストにあります',
+      toMineSel: '＋ {n} 件を自分のリストへ',
+      addedMine: '「{name}」を自分のリストに入れました',
+      addedMineN: '{n} 件を自分のリストに入れました',
+      alreadyMine: 'すでに自分のリストにあります',
+      addedAt: '追加 {d}',
+      edit: '編集',
+      editTitle: 'サークルを編集',
+      save: '保存する',
+      saved: '保存しました',
+      del: '削除',
+      deleted: '削除しました',
+      favF: 'お気に入り',
+      favLabel: '★ お気に入り',
+      notesF: 'メモ（あなただけが見られます）',
+      addNoteMine: 'サークル名・サークル主・𝕏 の ID は みんなのDB にも登録され、誰でも見られます（本名や個人の連絡先は書かないでください）。メモと ★ はあなただけが見られます。',
+      sharedFail: '自分のリストに入れました（みんなのDB への登録はできませんでした。アプリへ取り込む前に、編集から保存し直してください）',
+      noMaster: 'みんなのDB に登録されていないサークルは取り込めません。編集から保存し直すと登録されます。',
+      notesCut: 'メモが長いため、一部のメモは取り込まれません',
+      qrNoNotes: '※ QR とリンクではメモは渡せません（★ は渡せます）。メモも取り込むときは、スマホでこのページを開いて取り込んでください。'
+    },
+    en: {
+      docTitle: 'Circle DB | Find doujin circles and import them into Torehan!',
+      title: 'Torehan! Circle DB', tag: 'A shared circle list everyone builds — search it on the web and import', getApp: 'Get the app',
+      q: 'Search by circle, owner, or 𝕏 ID', sort: 'Sort', kana: 'Name (Japanese order)', newer: 'Recently updated',
+      count: '{n} of {total}', note: '💡 The Circle DB is a list of circles you can reuse across events (no booth numbers). It is the same server data as the app\'s Circle DB — circles added here can be found from the app too.',
+      owner: 'Owner', imp: 'Import into Torehan!', updated: 'Updated {d}', report: 'Report',
+      check: 'Select', more: 'Show more ({n} left)', loading: 'Loading…', loadErr: 'Couldn\'t reach the server.', retry: 'Try again',
+      empty: 'Nothing found. You can add it with "Add a circle" below.', none0: 'No circles yet. You can add one with "Add a circle" below.',
+      hint: 'Check circles to import several at once', add: '+ Add a circle',
+      selN: '<b>{n}</b> selected', clr: 'Clear', impLong: 'Import {n} selected into Torehan!', impShort: 'Import {n} into Torehan!',
+      max: 'You can import up to {max} at a time',
+      bxBtn: '𝕏 Search all at once ({n})', bxTitle: '𝕏 Search all at once',
+      bxNoteAll: 'Opens 𝕏 search results for the {n} shown circles that have an 𝕏 ID, {size} at a time (𝕏 limits how many accounts one search can cover). 𝕏 may ask you to log in. Some people may not appear in the results (e.g. no recent posts, protected accounts, or how 𝕏 search works).',
+      bxNoteSel: 'Opens 𝕏 search results for the {n} selected circles that have an 𝕏 ID, {size} at a time (𝕏 limits how many accounts one search can cover). 𝕏 may ask you to log in. Some people may not appear in the results (e.g. no recent posts, protected accounts, or how 𝕏 search works).',
+      bxWord: 'Keyword', bxNone: 'None', bxChunk: 'Open {from}–{to}', bxOne: 'Open results on 𝕏', bxEmpty: 'No circles with an 𝕏 ID',
+      qrTitle: 'Scan with your phone to import', qrBody: 'Scan with the camera of a phone that has Torehan! installed, then tap "Open in Torehan!" on the page to import these {n} circle(s).',
+      copy: 'Copy link', copied: 'Copied', close: 'Close', qrSm: 'The app shows the names before importing. For circles you already have, only empty fields are filled.',
+      openTitle: 'Torehan! didn\'t open?', openBody: 'The app may not be installed or may be out of date. Get or update it from the store, then tap "Import" again.',
+      addTitle: 'Add a circle', name: 'Circle name', req: 'Required', ownerF: 'Owner (artist name)', xF: '𝕏 (Twitter) ID', xHint: 'Paste the 𝕏 profile URL and the ID is filled in automatically', xGot: 'Took the ID “@{id}” from the URL',
+      addNote: 'Anyone can see what you add, on the web and in the app. Do not enter real names or personal contact details. Booth numbers are not stored because they change every event.',
+      cancel: 'Cancel', submit: 'Add', errName: 'Please enter a circle name', errX: 'An 𝕏 ID is up to 15 letters, digits, or _ (with or without @)',
+      ngBody: 'The circle name, owner, or 𝕏 ID contains inappropriate wording that can\'t be registered. Please revise it and try again.',
+      added: 'Added "{name}"', exists: '"{name}" is already registered (you can edit it from the app\'s Circle DB)', filledX: '"{name}" already existed, so its empty 𝕏 ID was filled in',
+      addErr: 'Couldn\'t add it. Please try again later.', wait: 'Please wait a moment before adding another',
+      repTitle: 'Report this circle', repBody: 'You are about to report "{name}" to the operator. A contact form will open — please enter the circle name and the reason.', repGo: 'Open the form',
+      rTitle: 'Import into Circle DB', rLead: 'Import these {n} circle(s) into the Circle DB in Torehan!.', rLeadLoading: 'Checking the circles…', rOpen: 'Open in Torehan!',
+      backHint: 'If nothing happened, update the app to the latest version and tap again.', rUpd: 'If nothing happens, update the app to the latest version and tap again.',
+      rNoApp: 'Don\'t have the app, or it won\'t open?', rBack: 'Browse the Circle DB', rMissing: '{n} circle(s) were not found on the server.', rNone: 'The circles in this link were not found. Please pick them again in the Circle DB.', rBad: 'This link is not valid. Please pick the circles again in the Circle DB.',
+      about: 'About Torehan!', contact: 'Contact', ownerBy: 'Owner {o}',
+      tabMine: 'My list ({n})',
+      tabAll: 'Everyone\'s DB',
+      favOnly: '★ only',
+      sortAdded: 'Recently added',
+      noteMine: '💡 My list works like the app\'s local Circle DB. Only you can see your notes and ★. While signed out it is saved in this browser; sign in with Google to use the same list on any device.',
+      acctLocal: 'Saved in this browser (clearing browser data also clears the list). Sign in with Google to use the same list on any device.',
+      acctIn: 'Signed in as {email} (same list on every device)',
+      login: 'Sign in with Google',
+      priv: 'Privacy Policy',
+      logout: 'Sign out',
+      delAcc: 'Delete account and list',
+      delAccTitle: 'Delete account and list',
+      delAccBody: 'Your list (including notes and ★), the routes saved in the web Route Map, and your sign-in are deleted from the server. This cannot be undone. Circles you added to Everyone\'s DB and anything imported into the app stay.',
+      delAccGo: 'Delete',
+      delSure: 'Tap again to delete',
+      delAccDone: 'Your account and list were deleted',
+      delAccListOnly: 'Your list was deleted (your sign-in is kept because another service uses it)',
+      loginErr: 'Could not sign in. Please try again later.',
+      loggedOut: 'Signed out (your list stays in your account)',
+      merged: 'Moved {n} circles from this browser to your account',
+      loadingMine: 'Loading your list…',
+      mineEmpty: 'No matches.',
+      mineEmpty0: 'No circles yet. Tap “+ My list” in Everyone\'s DB, or use “Add a circle” below.',
+      mineFull: 'My list holds up to {max} circles',
+      saveErr: 'Could not save. Please try again later.',
+      toMine: '+ My list',
+      inMine: '✓ In my list',
+      toMineSel: '+ Add {n} to my list',
+      addedMine: 'Added “{name}” to my list',
+      addedMineN: 'Added {n} circles to my list',
+      alreadyMine: 'Already in my list',
+      addedAt: 'Added {d}',
+      edit: 'Edit',
+      editTitle: 'Edit circle',
+      save: 'Save',
+      saved: 'Saved',
+      del: 'Delete',
+      deleted: 'Deleted',
+      favF: 'Favorite',
+      favLabel: '★ Favorite',
+      notesF: 'Notes (only you can see them)',
+      addNoteMine: 'Circle name, owner and 𝕏 ID are also added to Everyone\'s DB, where anyone can see them (do not enter real names or personal contacts). Only you can see your notes and ★.',
+      sharedFail: 'Added to my list (could not add it to Everyone\'s DB — save it again from Edit before importing into the app)',
+      noMaster: 'Circles not in Everyone\'s DB cannot be imported. Save them again from Edit to add them.',
+      notesCut: 'Some notes are too long to import and were left out',
+      qrNoNotes: 'Note: the QR code and link cannot carry notes (★ is carried). To import notes too, open this page on your phone and import from there.'
+    },
+    zh: {
+      docTitle: '社团数据库｜查找同人社团并导入 Torehan!',
+      title: 'Torehan! 社团数据库', tag: '大家一起完善的社团名录，可在网页上查找并导入', getApp: '获取应用',
+      q: '按社团名、社团主、𝕏 ID 搜索', sort: '排序', kana: '按日文五十音', newer: '最近更新',
+      count: '共 {total} 个，显示 {n} 个', note: '💡 社团数据库是可跨活动重复使用的社团名录（不含摊位号）。与应用中的社团数据库使用同一服务器的数据，在此添加的社团也能在应用中搜到。',
+      owner: '社团主', imp: '导入 Torehan!', updated: '更新 {d}', report: '举报',
+      check: '选择', more: '显示更多（剩余 {n} 个）', loading: '加载中…', loadErr: '无法连接服务器。', retry: '重新加载',
+      empty: '没有找到。可以通过下方的“添加社团”登记。', none0: '还没有社团。可以通过下方的“添加社团”登记。',
+      hint: '勾选后可批量导入', add: '＋ 添加社团',
+      selN: '已选择 <b>{n}</b> 个', clr: '取消选择', impLong: '将所选 {n} 个导入 Torehan!', impShort: '导入 {n} 个到 Torehan!',
+      max: '一次最多可导入 {max} 个',
+      bxBtn: '𝕏 批量搜索（{n}个）', bxTitle: '𝕏 批量搜索',
+      bxNoteAll: '将当前显示的社团中已登记 𝕏 ID 的 {n} 个，每 {size} 个一组打开 𝕏 的搜索结果（𝕏 单次搜索可涵盖的人数有限）。可能会要求登录 𝕏。部分用户可能不会出现在搜索结果中（例如近期没有发帖、账号受保护，或 𝕏 搜索的机制等）。',
+      bxNoteSel: '将所选社团中已登记 𝕏 ID 的 {n} 个，每 {size} 个一组打开 𝕏 的搜索结果（𝕏 单次搜索可涵盖的人数有限）。可能会要求登录 𝕏。部分用户可能不会出现在搜索结果中（例如近期没有发帖、账号受保护，或 𝕏 搜索的机制等）。',
+      bxWord: '筛选关键词', bxNone: '无', bxChunk: '打开第 {from}–{to} 个', bxOne: '在 𝕏 打开搜索结果', bxEmpty: '没有登记 𝕏 ID 的社团',
+      qrTitle: '用手机扫码导入', qrBody: '请用已安装 Torehan! 的手机相机扫描，然后在打开的页面中点“在 Torehan! 中打开”，即可导入以下 {n} 个。',
+      copy: '复制链接', copied: '已复制', close: '关闭', qrSm: '应用会在导入前显示名称供确认。已有的社团只补全空白栏。',
+      openTitle: 'Torehan! 没有打开？', openBody: '可能尚未安装应用或版本过旧。请从商店获取或更新后，再点一次“导入”。',
+      addTitle: '添加社团', name: '社团名', req: '必填', ownerF: '社团主（作者名）', xF: '𝕏（原 Twitter）ID', xHint: '复制并粘贴 𝕏 的个人主页 URL，即可自动填入 ID', xGot: '已从 URL 取出 ID「@{id}」',
+      addNote: '登记的内容在网页和应用的社团数据库中任何人都能看到。请勿填写真实姓名或个人联系方式。摊位号每次活动都会变，因此不登记。',
+      cancel: '取消', submit: '登记', errName: '请输入社团名', errX: '𝕏 ID 为最多 15 个半角英数字或 _（带不带 @ 均可）',
+      ngBody: '社团名、社团主或 𝕏 ID 中包含无法登记的不当词语。请修改后再试。',
+      added: '已登记“{name}”', exists: '“{name}”已登记（可在应用的社团数据库中修改内容）', filledX: '“{name}”已存在，已补全空白的 𝕏 ID',
+      addErr: '无法登记。请稍后再试。', wait: '连续登记时请稍等片刻再点',
+      repTitle: '举报此社团', repBody: '您即将向运营方举报“{name}”。将打开联系表单，请填写对象社团名称与理由。', repGo: '打开表单',
+      rTitle: '导入社团数据库', rLead: '将以下 {n} 个导入 Torehan! 的社团数据库。', rLeadLoading: '正在确认社团…', rOpen: '在 Torehan! 中打开',
+      backHint: '如果没有任何反应，请将应用更新到最新版本后再点一次。', rUpd: '如果没有任何反应，请将应用更新到最新版本后再点一次。',
+      rNoApp: '没有应用或无法打开的用户', rBack: '查看社团数据库', rMissing: '有 {n} 个在服务器上未找到。', rNone: '找不到链接中的社团。请在社团数据库中重新选择。', rBad: '链接无效。请在社团数据库中重新选择。',
+      about: '关于 Torehan!', contact: '联系我们', ownerBy: '社团主 {o}',
+      tabMine: '我的列表（{n}）',
+      tabAll: '大家的DB',
+      favOnly: '仅 ★',
+      sortAdded: '最新添加',
+      noteMine: '💡 我的列表的用法与应用内的社团DB（本地）相同。备注和 ★ 只有你能看到。未登录时保存在此浏览器中；使用 Google 登录后，可在任何设备上使用同一列表。',
+      acctLocal: '保存在此浏览器中（清除浏览器数据会一并清除列表）。使用 Google 登录后，可在任何设备上使用同一列表。',
+      acctIn: '已用 {email} 登录（所有设备共用同一列表）',
+      login: '使用 Google 登录',
+      priv: '隐私政策',
+      logout: '退出登录',
+      delAcc: '删除账号和列表',
+      delAccTitle: '删除账号和列表',
+      delAccBody: '将从服务器删除你的列表（包括备注和 ★）、网页版「地图路线」中保存的路线以及登录信息。此操作无法撤销。你添加到大家的DB的社团以及已导入应用的内容会保留。',
+      delAccGo: '删除',
+      delSure: '再按一次即删除',
+      delAccDone: '已删除账号和列表',
+      delAccListOnly: '已删除列表（登录信息被其他服务使用，因此保留）',
+      loginErr: '无法登录。请稍后再试。',
+      loggedOut: '已退出登录（列表保留在账号中）',
+      merged: '已将此浏览器中的 {n} 个社团移到账号',
+      loadingMine: '正在读取我的列表…',
+      mineEmpty: '未找到。',
+      mineEmpty0: '还没有社团。可在“大家的DB”中点“＋ 我的列表”，或从下方“添加社团”加入。',
+      mineFull: '我的列表最多 {max} 个',
+      saveErr: '无法保存。请稍后再试。',
+      toMine: '＋ 我的列表',
+      inMine: '✓ 已在我的列表中',
+      toMineSel: '＋ 将 {n} 个加入我的列表',
+      addedMine: '已将“{name}”加入我的列表',
+      addedMineN: '已将 {n} 个加入我的列表',
+      alreadyMine: '已在我的列表中',
+      addedAt: '添加于 {d}',
+      edit: '编辑',
+      editTitle: '编辑社团',
+      save: '保存',
+      saved: '已保存',
+      del: '删除',
+      deleted: '已删除',
+      favF: '收藏',
+      favLabel: '★ 收藏',
+      notesF: '备注（只有你能看到）',
+      addNoteMine: '社团名、社团主和 𝕏 ID 也会登记到大家的DB，任何人都能看到（请勿填写真实姓名或个人联系方式）。备注和 ★ 只有你能看到。',
+      sharedFail: '已加入我的列表（未能登记到大家的DB，导入应用前请在编辑中重新保存）',
+      noMaster: '未登记在大家的DB中的社团无法导入。在编辑中重新保存即可登记。',
+      notesCut: '部分备注过长，未能导入',
+      qrNoNotes: '※ 二维码和链接无法传递备注（可传递 ★）。如需导入备注，请在手机上打开此页面进行导入。'
+    },
+    'zh-Hant': {
+      docTitle: '社團資料庫｜尋找同人社團並匯入 Torehan!',
+      title: 'Torehan! 社團資料庫', tag: '大家一起完善的社團名錄，可在網頁上尋找並匯入', getApp: '取得 App',
+      q: '依社團名、社團主、𝕏 ID 搜尋', sort: '排序', kana: '依日文五十音', newer: '最近更新',
+      count: '共 {total} 個，顯示 {n} 個', note: '💡 社團資料庫是可跨活動重複使用的社團名錄（不含攤位號）。與 App 中的社團資料庫使用同一伺服器的資料，在此新增的社團也能在 App 中搜尋到。',
+      owner: '社團主', imp: '匯入 Torehan!', updated: '更新 {d}', report: '檢舉',
+      check: '選擇', more: '顯示更多（剩餘 {n} 個）', loading: '載入中…', loadErr: '無法連線到伺服器。', retry: '重新載入',
+      empty: '沒有找到。可以從下方的「新增社團」登錄。', none0: '還沒有社團。可以從下方的「新增社團」登錄。',
+      hint: '勾選後可批次匯入', add: '＋ 新增社團',
+      selN: '已選擇 <b>{n}</b> 個', clr: '取消選擇', impLong: '將所選 {n} 個匯入 Torehan!', impShort: '匯入 {n} 個到 Torehan!',
+      max: '一次最多可匯入 {max} 個',
+      bxBtn: '𝕏 批次搜尋（{n}個）', bxTitle: '𝕏 批次搜尋',
+      bxNoteAll: '將目前顯示的社團中已登錄 𝕏 ID 的 {n} 個，每 {size} 個一組開啟 𝕏 的搜尋結果（𝕏 單次搜尋可涵蓋的人數有限）。可能會要求登入 𝕏。部分使用者可能不會出現在搜尋結果中（例如近期沒有發文、帳號受保護，或 𝕏 搜尋的機制等）。',
+      bxNoteSel: '將所選社團中已登錄 𝕏 ID 的 {n} 個，每 {size} 個一組開啟 𝕏 的搜尋結果（𝕏 單次搜尋可涵蓋的人數有限）。可能會要求登入 𝕏。部分使用者可能不會出現在搜尋結果中（例如近期沒有發文、帳號受保護，或 𝕏 搜尋的機制等）。',
+      bxWord: '篩選關鍵字', bxNone: '無', bxChunk: '開啟第 {from}–{to} 個', bxOne: '在 𝕏 開啟搜尋結果', bxEmpty: '沒有登錄 𝕏 ID 的社團',
+      qrTitle: '用手機掃描匯入', qrBody: '請用已安裝 Torehan! 的手機相機掃描，然後在開啟的頁面中點「在 Torehan! 中開啟」，即可匯入以下 {n} 個。',
+      copy: '複製連結', copied: '已複製', close: '關閉', qrSm: 'App 會在匯入前顯示名稱供確認。已有的社團只補上空白欄位。',
+      openTitle: 'Torehan! 沒有開啟？', openBody: '可能尚未安裝 App 或版本過舊。請從商店取得或更新後，再點一次「匯入」。',
+      addTitle: '新增社團', name: '社團名', req: '必填', ownerF: '社團主（作者名）', xF: '𝕏（原 Twitter）ID', xHint: '複製並貼上 𝕏 的個人檔案 URL，即可自動填入 ID', xGot: '已從 URL 取出 ID「@{id}」',
+      addNote: '登錄的內容在網頁和 App 的社團資料庫中任何人都看得到。請勿填寫本名或個人聯絡方式。攤位號每次活動都會變，因此不登錄。',
+      cancel: '取消', submit: '登錄', errName: '請輸入社團名', errX: '𝕏 ID 為最多 15 個半形英數字或 _（加不加 @ 皆可）',
+      ngBody: '社團名、社團主或 𝕏 ID 中包含無法登錄的不當詞語。請修改後再試。',
+      added: '已登錄「{name}」', exists: '「{name}」已登錄（可在 App 的社團資料庫中修改內容）', filledX: '「{name}」已存在，已補上空白的 𝕏 ID',
+      addErr: '無法登錄。請稍後再試。', wait: '連續登錄時請稍等片刻再點',
+      repTitle: '檢舉此社團', repBody: '您即將向營運方檢舉「{name}」。將開啟聯絡表單，請填寫對象社團名稱與理由。', repGo: '開啟表單',
+      rTitle: '匯入社團資料庫', rLead: '將以下 {n} 個匯入 Torehan! 的社團資料庫。', rLeadLoading: '正在確認社團…', rOpen: '在 Torehan! 中開啟',
+      backHint: '如果沒有任何反應，請將 App 更新到最新版本後再點一次。', rUpd: '如果沒有任何反應，請將 App 更新到最新版本後再點一次。',
+      rNoApp: '沒有 App 或無法開啟的使用者', rBack: '查看社團資料庫', rMissing: '有 {n} 個在伺服器上找不到。', rNone: '找不到連結中的社團。請在社團資料庫中重新選擇。', rBad: '連結無效。請在社團資料庫中重新選擇。',
+      about: '關於 Torehan!', contact: '聯絡我們', ownerBy: '社團主 {o}',
+      tabMine: '我的清單（{n}）',
+      tabAll: '大家的DB',
+      favOnly: '僅 ★',
+      sortAdded: '最新加入',
+      noteMine: '💡 我的清單的用法與 App 內的社團DB（本機）相同。備註和 ★ 只有你看得到。未登入時儲存在此瀏覽器；使用 Google 登入後，可在任何裝置使用同一份清單。',
+      acctLocal: '儲存在此瀏覽器（清除瀏覽器資料會一併清除清單）。使用 Google 登入後，可在任何裝置使用同一份清單。',
+      acctIn: '已用 {email} 登入（所有裝置共用同一份清單）',
+      login: '使用 Google 登入',
+      priv: '隱私權政策',
+      logout: '登出',
+      delAcc: '刪除帳號和清單',
+      delAccTitle: '刪除帳號和清單',
+      delAccBody: '將從伺服器刪除你的清單（包含備註和 ★）、網頁版「地圖路線」中儲存的路線及登入資訊。此操作無法復原。你新增到大家的DB的社團以及已匯入 App 的內容會保留。',
+      delAccGo: '刪除',
+      delSure: '再按一次即刪除',
+      delAccDone: '已刪除帳號和清單',
+      delAccListOnly: '已刪除清單（登入資訊由其他服務使用，因此保留）',
+      loginErr: '無法登入。請稍後再試。',
+      loggedOut: '已登出（清單保留在帳號中）',
+      merged: '已將此瀏覽器中的 {n} 個社團移到帳號',
+      loadingMine: '正在讀取我的清單…',
+      mineEmpty: '找不到。',
+      mineEmpty0: '還沒有社團。可在「大家的DB」按「＋ 我的清單」，或從下方「新增社團」加入。',
+      mineFull: '我的清單最多 {max} 個',
+      saveErr: '無法儲存。請稍後再試。',
+      toMine: '＋ 我的清單',
+      inMine: '✓ 已在我的清單',
+      toMineSel: '＋ 將 {n} 個加入我的清單',
+      addedMine: '已將「{name}」加入我的清單',
+      addedMineN: '已將 {n} 個加入我的清單',
+      alreadyMine: '已在我的清單中',
+      addedAt: '加入於 {d}',
+      edit: '編輯',
+      editTitle: '編輯社團',
+      save: '儲存',
+      saved: '已儲存',
+      del: '刪除',
+      deleted: '已刪除',
+      favF: '收藏',
+      favLabel: '★ 收藏',
+      notesF: '備註（只有你看得到）',
+      addNoteMine: '社團名、社團主和 𝕏 ID 也會登記到大家的DB，任何人都看得到（請勿填寫真實姓名或個人聯絡方式）。備註和 ★ 只有你看得到。',
+      sharedFail: '已加入我的清單（未能登記到大家的DB，匯入 App 前請在編輯中重新儲存）',
+      noMaster: '未登記在大家的DB的社團無法匯入。在編輯中重新儲存即可登記。',
+      notesCut: '部分備註過長，未能匯入',
+      qrNoNotes: '※ QR 碼和連結無法傳遞備註（可傳遞 ★）。如需匯入備註，請在手機上開啟此頁面匯入。'
+    },
+    ko: {
+      docTitle: '서클 DB｜동인 서클을 찾아 토레한!으로 가져오기',
+      title: '토레한! 서클 DB', tag: '모두가 함께 키우는 서클 목록을 웹에서 찾아 가져올 수 있습니다', getApp: '앱 받기',
+      q: '서클명·서클 주인·𝕏 ID로 검색', sort: '정렬', kana: '일본어 오십음순', newer: '최근 업데이트순',
+      count: '{total}건 중 {n}건', note: '💡 서클 DB는 이벤트를 넘나들며 다시 쓰는 서클 목록입니다(배치 번호는 없습니다). 앱의 서클 DB와 같은 서버의 데이터로, 여기서 추가한 서클은 앱에서도 찾을 수 있습니다.',
+      owner: '서클 주인', imp: '토레한!으로 가져오기', updated: '업데이트 {d}', report: '신고',
+      check: '선택', more: '더 보기(남은 {n}건)', loading: '불러오는 중…', loadErr: '서버에 연결하지 못했습니다.', retry: '다시 불러오기',
+      empty: '찾지 못했습니다. 없으면 아래 "서클 추가"에서 등록할 수 있습니다.', none0: '아직 서클이 없습니다. 아래 "서클 추가"에서 등록할 수 있습니다.',
+      hint: '체크하면 한꺼번에 가져올 수 있습니다', add: '＋ 서클 추가',
+      selN: '<b>{n}</b>건 선택 중', clr: '선택 해제', impLong: '선택한 {n}건을 토레한!으로 가져오기', impShort: '{n}건을 토레한!으로 가져오기',
+      max: '한 번에 가져올 수 있는 것은 {max}건까지입니다',
+      bxBtn: '𝕏 한꺼번에 검색 ({n}건)', bxTitle: '𝕏 한꺼번에 검색',
+      bxNoteAll: '표시 중인 서클 중 𝕏 ID가 있는 {n}건을 {size}건씩 나누어 𝕏 검색 결과를 엽니다(𝕏는 한 번의 검색으로 조회할 수 있는 인원에 제한이 있습니다). 𝕏 로그인을 요구할 수 있습니다. 검색 결과에 표시되지 않는 사람이 있을 수 있습니다(최근 게시물이 없는 사람, 비공개 계정, 𝕏 검색의 사양 등).',
+      bxNoteSel: '선택한 서클 중 𝕏 ID가 있는 {n}건을 {size}건씩 나누어 𝕏 검색 결과를 엽니다(𝕏는 한 번의 검색으로 조회할 수 있는 인원에 제한이 있습니다). 𝕏 로그인을 요구할 수 있습니다. 검색 결과에 표시되지 않는 사람이 있을 수 있습니다(최근 게시물이 없는 사람, 비공개 계정, 𝕏 검색의 사양 등).',
+      bxWord: '검색어', bxNone: '없음', bxChunk: '{from}~{to}번째 열기', bxOne: '𝕏에서 검색 결과 열기', bxEmpty: '𝕏 ID가 등록된 서클이 없습니다',
+      qrTitle: '휴대폰으로 스캔해 가져오기', qrBody: '토레한!이 설치된 휴대폰 카메라로 스캔한 뒤, 열린 페이지에서 "토레한!에서 열기"를 누르면 다음 {n}건을 가져옵니다.',
+      copy: '링크 복사', copied: '복사했습니다', close: '닫기', qrSm: '앱에서는 가져오기 전에 이름을 확인할 수 있습니다. 이미 있는 서클은 빈칸만 채웁니다.',
+      openTitle: '토레한!이 열리지 않았나요?', openBody: '앱이 설치되지 않았거나 오래된 버전일 수 있습니다. 스토어에서 받거나 업데이트한 뒤 다시 "가져오기"를 눌러 주세요.',
+      addTitle: '서클 추가', name: '서클명', req: '필수', ownerF: '서클 주인(작가명)', xF: '𝕏(구 Twitter) ID', xHint: '𝕏 프로필 URL을 복사해 붙여 넣으면 ID가 자동으로 입력됩니다', xGot: 'URL에서 ID “@{id}”를 가져왔습니다',
+      addNote: '등록한 내용은 웹과 앱의 서클 DB에서 누구나 볼 수 있습니다. 실명이나 개인 연락처는 쓰지 마세요. 배치 번호는 이벤트마다 바뀌므로 넣지 않습니다.',
+      cancel: '취소', submit: '등록', errName: '서클명을 입력해 주세요', errX: '𝕏 ID는 반각 영숫자와 _ 15자까지입니다(@는 붙여도 안 붙여도 됩니다)',
+      ngBody: '서클명·서클 주인·𝕏 ID에 등록할 수 없는 부적절한 표현이 포함되어 있습니다. 내용을 수정한 후 다시 시도해 주세요.',
+      added: '"{name}"을(를) 등록했습니다', exists: '"{name}"은(는) 이미 등록되어 있습니다(내용 수정은 앱의 서클 DB에서 할 수 있습니다)', filledX: '"{name}"이(가) 이미 있어서 비어 있던 𝕏 ID를 채웠습니다',
+      addErr: '등록하지 못했습니다. 잠시 후 다시 시도해 주세요.', wait: '연속으로 등록할 때는 잠시 기다린 뒤 눌러 주세요',
+      repTitle: '이 서클 신고', repBody: '"{name}"을(를) 운영자에게 신고합니다. 문의 양식이 열리므로 대상 서클명과 사유를 입력해 주세요.', repGo: '양식 열기',
+      rTitle: '서클 DB 가져오기', rLead: '다음 {n}건을 토레한!의 서클 DB로 가져옵니다.', rLeadLoading: '서클을 확인하는 중…', rOpen: '토레한!에서 열기',
+      backHint: '아무 일도 일어나지 않았다면 앱을 최신 버전으로 업데이트한 뒤 다시 눌러 주세요.', rUpd: '아무 일도 일어나지 않으면 앱을 최신 버전으로 업데이트한 뒤 다시 눌러 주세요.',
+      rNoApp: '앱이 없거나 열리지 않는 분', rBack: '서클 DB 보기', rMissing: '{n}건은 서버에서 찾지 못했습니다.', rNone: '링크의 서클을 찾지 못했습니다. 서클 DB에서 다시 골라 주세요.', rBad: '링크가 올바르지 않습니다. 서클 DB에서 다시 골라 주세요.',
+      about: '토레한! 소개', contact: '문의', ownerBy: '서클 주인 {o}',
+      tabMine: '내 리스트 ({n})',
+      tabAll: '모두의 DB',
+      favOnly: '★ 만',
+      sortAdded: '최근 추가순',
+      noteMine: '💡 내 리스트는 앱의 서클DB(로컬)와 같은 방식으로 사용합니다. 메모와 ★는 본인만 볼 수 있습니다. 로그인하지 않은 동안은 이 브라우저에 저장되며, Google로 로그인하면 어느 기기에서나 같은 리스트를 쓸 수 있습니다.',
+      acctLocal: '이 브라우저에 저장 중입니다(브라우저 데이터를 지우면 리스트도 지워집니다). Google로 로그인하면 어느 기기에서나 같은 리스트를 쓸 수 있습니다.',
+      acctIn: '{email}(으)로 로그인 중 (모든 기기에서 같은 리스트)',
+      login: 'Google로 로그인',
+      priv: '개인정보처리방침',
+      logout: '로그아웃',
+      delAcc: '계정과 리스트 삭제',
+      delAccTitle: '계정과 리스트 삭제',
+      delAccBody: '내 리스트(메모와 ★ 포함), 웹판 "지도 루트"에 저장한 루트, 로그인 정보를 서버에서 삭제합니다. 되돌릴 수 없습니다. 모두의 DB에 등록한 서클과 앱으로 가져온 내용은 남습니다.',
+      delAccGo: '삭제',
+      delSure: '한 번 더 누르면 삭제됩니다',
+      delAccDone: '계정과 리스트를 삭제했습니다',
+      delAccListOnly: '리스트를 삭제했습니다(로그인 정보는 다른 서비스에서 사용 중이라 남겨 두었습니다)',
+      loginErr: '로그인하지 못했습니다. 잠시 후 다시 시도해 주세요.',
+      loggedOut: '로그아웃했습니다(리스트는 계정에 남아 있습니다)',
+      merged: '이 브라우저의 리스트 {n}건을 계정으로 옮겼습니다',
+      loadingMine: '내 리스트를 불러오는 중…',
+      mineEmpty: '찾지 못했습니다.',
+      mineEmpty0: '아직 서클이 없습니다. "모두의 DB"에서 "＋ 내 리스트"를 누르거나, 아래 "서클 추가"로 넣을 수 있습니다.',
+      mineFull: '내 리스트는 {max}건까지입니다',
+      saveErr: '저장하지 못했습니다. 잠시 후 다시 시도해 주세요.',
+      toMine: '＋ 내 리스트',
+      inMine: '✓ 내 리스트에 있음',
+      toMineSel: '＋ {n}건을 내 리스트로',
+      addedMine: '"{name}"을(를) 내 리스트에 넣었습니다',
+      addedMineN: '{n}건을 내 리스트에 넣었습니다',
+      alreadyMine: '이미 내 리스트에 있습니다',
+      addedAt: '추가 {d}',
+      edit: '편집',
+      editTitle: '서클 편집',
+      save: '저장',
+      saved: '저장했습니다',
+      del: '삭제',
+      deleted: '삭제했습니다',
+      favF: '즐겨찾기',
+      favLabel: '★ 즐겨찾기',
+      notesF: '메모 (본인만 볼 수 있음)',
+      addNoteMine: '서클명·서클 주인·𝕏 ID는 모두의 DB에도 등록되어 누구나 볼 수 있습니다(실명이나 개인 연락처는 적지 마세요). 메모와 ★는 본인만 볼 수 있습니다.',
+      sharedFail: '내 리스트에 넣었습니다(모두의 DB에는 등록하지 못했습니다. 앱으로 가져오기 전에 편집에서 다시 저장해 주세요)',
+      noMaster: '모두의 DB에 등록되지 않은 서클은 가져올 수 없습니다. 편집에서 다시 저장하면 등록됩니다.',
+      notesCut: '메모가 길어 일부 메모는 가져오지 않습니다',
+      qrNoNotes: '※ QR과 링크로는 메모를 전달할 수 없습니다(★는 전달됨). 메모도 가져오려면 휴대폰에서 이 페이지를 열어 가져오세요.'
+    },
+    fr: {
+      docTitle: 'Base de cercles | Trouvez des cercles dōjin et importez-les dans Torehan!',
+      title: 'Torehan! Base de cercles', tag: 'Une liste de cercles enrichie par tous — cherchez sur le web et importez', getApp: 'Obtenir l\'app',
+      q: 'Rechercher par cercle, responsable ou identifiant 𝕏', sort: 'Trier', kana: 'Ordre japonais', newer: 'Mis à jour récemment',
+      count: '{n} sur {total}', note: '💡 La base de cercles est une liste réutilisable d\'un événement à l\'autre (sans numéro de stand). Ce sont les mêmes données serveur que la base de cercles de l\'app : les cercles ajoutés ici se retrouvent aussi dans l\'app.',
+      owner: 'Responsable', imp: 'Importer dans Torehan!', updated: 'Mis à jour le {d}', report: 'Signaler',
+      check: 'Choisir', more: 'Afficher plus ({n} restants)', loading: 'Chargement…', loadErr: 'Impossible de joindre le serveur.', retry: 'Réessayer',
+      empty: 'Aucun résultat. Vous pouvez l\'ajouter avec « Ajouter un cercle » ci-dessous.', none0: 'Aucun cercle pour l\'instant. Ajoutez-en un avec « Ajouter un cercle » ci-dessous.',
+      hint: 'Cochez des cercles pour les importer ensemble', add: '+ Ajouter un cercle',
+      selN: '<b>{n}</b> sélectionné(s)', clr: 'Tout décocher', impLong: 'Importer les {n} sélectionnés dans Torehan!', impShort: 'Importer {n} dans Torehan!',
+      max: 'Vous pouvez en importer {max} au maximum à la fois',
+      bxBtn: '𝕏 Recherche groupée ({n})', bxTitle: '𝕏 Recherche groupée',
+      bxNoteAll: 'Ouvre les résultats de recherche 𝕏 pour les {n} cercles affichés ayant un identifiant 𝕏, par groupes de {size} (𝕏 limite le nombre de comptes par recherche). 𝕏 peut vous demander de vous connecter. Certaines personnes peuvent ne pas apparaître dans les résultats (pas de publication récente, compte protégé, fonctionnement de la recherche 𝕏, etc.).',
+      bxNoteSel: 'Ouvre les résultats de recherche 𝕏 pour les {n} cercles sélectionnés ayant un identifiant 𝕏, par groupes de {size} (𝕏 limite le nombre de comptes par recherche). 𝕏 peut vous demander de vous connecter. Certaines personnes peuvent ne pas apparaître dans les résultats (pas de publication récente, compte protégé, fonctionnement de la recherche 𝕏, etc.).',
+      bxWord: 'Mot-clé', bxNone: 'Aucun', bxChunk: 'Ouvrir {from}–{to}', bxOne: 'Ouvrir les résultats sur 𝕏', bxEmpty: 'Aucun cercle avec un identifiant 𝕏',
+      qrTitle: 'Scannez avec votre téléphone pour importer', qrBody: 'Scannez avec l\'appareil photo d\'un téléphone où Torehan! est installé, puis touchez « Ouvrir dans Torehan! » sur la page pour importer ces {n} cercle(s).',
+      copy: 'Copier le lien', copied: 'Copié', close: 'Fermer', qrSm: 'L\'app affiche les noms avant d\'importer. Pour les cercles déjà présents, seuls les champs vides sont remplis.',
+      openTitle: 'Torehan! ne s\'est pas ouvert ?', openBody: 'L\'app n\'est peut-être pas installée ou pas à jour. Installez-la ou mettez-la à jour depuis la boutique, puis touchez à nouveau « Importer ».',
+      addTitle: 'Ajouter un cercle', name: 'Nom du cercle', req: 'Obligatoire', ownerF: 'Responsable (nom d\'artiste)', xF: 'Identifiant 𝕏 (Twitter)', xHint: 'Collez l\'URL du profil 𝕏 : l\'identifiant est rempli automatiquement', xGot: 'Identifiant « @{id} » extrait de l\'URL',
+      addNote: 'Tout le monde peut voir ce que vous ajoutez, sur le web et dans l\'app. N\'indiquez ni vrai nom ni coordonnées personnelles. Les numéros de stand ne sont pas enregistrés car ils changent à chaque événement.',
+      cancel: 'Annuler', submit: 'Ajouter', errName: 'Veuillez saisir le nom du cercle', errX: 'Un identifiant 𝕏 comporte jusqu\'à 15 lettres, chiffres ou _ (avec ou sans @)',
+      ngBody: 'Le nom du cercle, le responsable ou l\'identifiant 𝕏 contient des termes inappropriés qui ne peuvent pas être enregistrés. Veuillez les corriger et réessayer.',
+      added: '« {name} » ajouté', exists: '« {name} » est déjà enregistré (vous pouvez le modifier depuis la base de cercles de l\'app)', filledX: '« {name} » existait déjà : son identifiant 𝕏 vide a été complété',
+      addErr: 'Ajout impossible. Veuillez réessayer plus tard.', wait: 'Patientez un instant avant d\'en ajouter un autre',
+      repTitle: 'Signaler ce cercle', repBody: 'Vous allez signaler « {name} » à l\'exploitant. Un formulaire de contact va s\'ouvrir — veuillez indiquer le nom du cercle et le motif.', repGo: 'Ouvrir le formulaire',
+      rTitle: 'Importer dans la base de cercles', rLead: 'Importer ces {n} cercle(s) dans la base de cercles de Torehan!.', rLeadLoading: 'Vérification des cercles…', rOpen: 'Ouvrir dans Torehan!',
+      backHint: 'Si rien ne s\'est passé, mettez l\'app à jour vers la dernière version, puis touchez à nouveau.', rUpd: 'Si rien ne se passe, mettez l\'app à jour vers la dernière version, puis touchez à nouveau.',
+      rNoApp: 'Vous n\'avez pas l\'app, ou elle ne s\'ouvre pas ?', rBack: 'Parcourir la base de cercles', rMissing: '{n} cercle(s) introuvable(s) sur le serveur.', rNone: 'Les cercles de ce lien sont introuvables. Choisissez-les à nouveau dans la base de cercles.', rBad: 'Ce lien n\'est pas valide. Choisissez à nouveau les cercles dans la base de cercles.',
+      about: 'À propos de Torehan!', contact: 'Contact', ownerBy: 'Responsable {o}',
+      tabMine: 'Ma liste ({n})',
+      tabAll: 'Base commune',
+      favOnly: '★ seulement',
+      sortAdded: 'Ajouts récents',
+      noteMine: '💡 Ma liste s\'utilise comme la base de cercles locale de l\'appli. Vous seul voyez vos notes et ★. Sans connexion, elle est enregistrée dans ce navigateur ; connectez-vous avec Google pour retrouver la même liste sur tous vos appareils.',
+      acctLocal: 'Enregistrée dans ce navigateur (effacer les données du navigateur efface aussi la liste). Connectez-vous avec Google pour la retrouver sur tous vos appareils.',
+      acctIn: 'Connecté avec {email} (même liste sur tous les appareils)',
+      login: 'Se connecter avec Google',
+      priv: 'Politique de confidentialité',
+      logout: 'Se déconnecter',
+      delAcc: 'Supprimer le compte et la liste',
+      delAccTitle: 'Supprimer le compte et la liste',
+      delAccBody: 'Votre liste (notes et ★ compris), les itinéraires enregistrés dans la carte d\'itinéraire web et votre connexion sont supprimés du serveur. Action irréversible. Les cercles ajoutés à la base commune et ce qui a été importé dans l\'appli sont conservés.',
+      delAccGo: 'Supprimer',
+      delSure: 'Touchez encore pour supprimer',
+      delAccDone: 'Compte et liste supprimés',
+      delAccListOnly: 'Liste supprimée (la connexion est conservée car un autre service l\'utilise)',
+      loginErr: 'Connexion impossible. Veuillez réessayer plus tard.',
+      loggedOut: 'Déconnecté (votre liste reste dans votre compte)',
+      merged: '{n} cercles de ce navigateur ont été déplacés vers votre compte',
+      loadingMine: 'Chargement de votre liste…',
+      mineEmpty: 'Aucun résultat.',
+      mineEmpty0: 'Aucun cercle pour l\'instant. Touchez « + Ma liste » dans la base commune, ou « Ajouter un cercle » en bas.',
+      mineFull: 'Ma liste contient au maximum {max} cercles',
+      saveErr: 'Enregistrement impossible. Veuillez réessayer plus tard.',
+      toMine: '+ Ma liste',
+      inMine: '✓ Dans ma liste',
+      toMineSel: '+ Ajouter {n} à ma liste',
+      addedMine: '« {name} » ajouté à ma liste',
+      addedMineN: '{n} cercles ajoutés à ma liste',
+      alreadyMine: 'Déjà dans ma liste',
+      addedAt: 'Ajouté le {d}',
+      edit: 'Modifier',
+      editTitle: 'Modifier le cercle',
+      save: 'Enregistrer',
+      saved: 'Enregistré',
+      del: 'Supprimer',
+      deleted: 'Supprimé',
+      favF: 'Favori',
+      favLabel: '★ Favori',
+      notesF: 'Notes (visibles par vous seul)',
+      addNoteMine: 'Le nom du cercle, le responsable et l\'ID 𝕏 sont aussi ajoutés à la base commune, visible par tous (n\'indiquez ni vrai nom ni coordonnées personnelles). Vous seul voyez vos notes et ★.',
+      sharedFail: 'Ajouté à ma liste (impossible de l\'ajouter à la base commune — enregistrez-le à nouveau depuis Modifier avant de l\'importer dans l\'appli)',
+      noMaster: 'Les cercles absents de la base commune ne peuvent pas être importés. Enregistrez-les à nouveau depuis Modifier pour les ajouter.',
+      notesCut: 'Certaines notes sont trop longues et ne seront pas importées',
+      qrNoNotes: '※ Le QR code et le lien ne transmettent pas les notes (★ est transmis). Pour importer aussi les notes, ouvrez cette page sur votre téléphone.'
+    }
+  };
+
+  function pickLang() {
+    var tags = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || 'ja'];
+    for (var i = 0; i < tags.length; i++) {
+      var low = String(tags[i] || '').toLowerCase();
+      if (low.indexOf('ja') === 0) return 'ja';
+      if (low.indexOf('ko') === 0) return 'ko';
+      if (low.indexOf('fr') === 0) return 'fr';
+      if (low.indexOf('zh') === 0) return /hant|tw|hk|mo/.test(low) ? 'zh-Hant' : 'zh';
+      if (low.indexOf('en') === 0) return 'en';
+    }
+    return 'ja';
+  }
+  var lang = pickLang();
+  var T = L[lang] || L.ja;
+  document.documentElement.lang = lang;
+  function tr(key, vars) {
+    var s = (T[key] != null ? T[key] : L.ja[key]) || '';
+    if (vars) for (var k in vars) s = s.split('{' + k + '}').join(String(vars[k]));
+    return s;
+  }
+  function $(id) { return document.getElementById(id); }
+  function setText(id, s) { var el = $(id); if (el) el.textContent = s; }
+  /* `<b>{n}</b>` だけは構造として使う＝埋めるのは数値だけ（サーバーの値は入らない） */
+  function setCountHtml(el, key, n) { el.innerHTML = tr(key, { n: Number(n) | 0 }); }
+
+  /* ================= 共通 ================= */
+  function sbHeaders(extra) {
+    var h = { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY };
+    if (extra) for (var k in extra) h[k] = extra[k];
+    return h;
+  }
+  /* 🔴 Rev842: 𝕏 のプロフィール URL から ID を取り出す。**アプリ src/utils/twitterId.ts の extractTwitterId と
+     同じ正規表現・同じ予約パス**（片方だけ直すと「アプリでは入るのにウェブでは入らない」になる＝直す時は両方）。
+     取り出せない／予約パスなら null（＝入力欄はそのまま残し、登録時に cleanXId がエラーを出す）。 */
+  var X_RESERVED = ['home', 'explore', 'notifications', 'messages', 'i', 'search'];
+  function extractXId(url) {
+    var m = String(url == null ? '' : url).match(/(?:https?:\/\/)?(?:x\.com|twitter\.com)\/([a-zA-Z0-9_]+)/i);
+    if (!m) return null;
+    if (X_RESERVED.indexOf(m[1].toLowerCase()) >= 0) return null;
+    return m[1];
+  }
+  function cleanXId(v) {
+    var s = String(v == null ? '' : v).trim();
+    var got = extractXId(s);
+    if (got) s = got;
+    s = s.replace(/^@+/, '');
+    return X_ID_RE.test(s) ? s : '';
+  }
+  function xSearchUrl(ids, word, live) {
+    var q = ids.map(function (i) { return 'from:' + i; }).join(' OR ');
+    if (ids.length > 1) q = '(' + q + ')';
+    if (word) q += ' ' + word;
+    return 'https://x.com/search?q=' + encodeURIComponent(q) + '&src=typed_query&f=' + (live ? 'live' : 'top');
+  }
+  function normalizeForMatch(text) {
+    var s = String(text || '');
+    try { s = s.normalize('NFKC'); } catch (e) { /* 未対応なら素通し */ }
+    return s.toLowerCase().replace(/\s+/g, '');
+  }
+  function hasNgWord(text) {
+    var n = normalizeForMatch(text);
+    if (!n) return false;
+    for (var i = 0; i < NG_WORDS.length; i++) if (n.indexOf(NG_WORDS[i]) !== -1) return true;
+    return false;
+  }
+  function shortId(id) { var m = HEX_RE.exec(String(id || '').toLowerCase()); return m ? m[1] : ''; }
+  /* ids と同じ並びの fav（'0'/'1' の列）と notes（文字列の配列）を、ID が読めた分だけ揃えて載せる */
+  function linkParts(ids, fav, notes) {
+    var favOk = !!fav && /^[01]+$/.test(fav) && fav.length === ids.length;
+    var hs = [], fb = '', nt = [];
+    ids.forEach(function (id, i) {
+      var h = shortId(id); if (!h) return;
+      hs.push(h);
+      if (favOk) fb += fav.charAt(i);
+      if (notes) nt.push(String(notes[i] || ''));
+    });
+    return { hs: hs, fav: favOk ? fb : '', notes: nt };
+  }
+  /* 戻り値 { url, cut }（cut＝メモが長すぎて後ろから落とした） */
+  function appLink(ids, fav, notes) {
+    var p = linkParts(ids, fav, notes);
+    var url = 'torehan://circledb?ids=' + p.hs.join(',');
+    if (p.fav) url += '&fav=' + p.fav;
+    var arr = p.notes, cut = false;
+    var trim = function () { while (arr.length && !arr[arr.length - 1]) arr.pop(); };
+    trim();
+    if (arr.length) {
+      var enc = encodeURIComponent(JSON.stringify(arr));
+      while (enc.length > 6000 && arr.length) { arr.pop(); cut = true; trim(); enc = encodeURIComponent(JSON.stringify(arr)); }
+      if (arr.length) url += '&notes=' + enc;
+    }
+    return { url: url, cut: cut };
+  }
+  /* PC の QR 用の中継 URL＝メモは載せない（QR が読めなくなる） */
+  function relayLink(ids, fav) {
+    var p = linkParts(ids, fav, null);
+    return PAGE_URL + '?import=' + p.hs.join(',') + (p.fav ? '&fav=' + p.fav : '');
+  }
+  function isMobile() {
+    var ua = navigator.userAgent || '';
+    if (/iPhone|iPad|iPod|Android/i.test(ua)) return true;
+    return /Macintosh/.test(ua) && navigator.maxTouchPoints > 1; /* iPadOS はデスクトップを名乗る */
+  }
+  var toastTimer = 0;
+  function toast(msg, ms) {
+    var el = $('toast');
+    el.textContent = msg; el.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { el.hidden = true; }, ms || 2600);
+  }
+  /* ダイアログ: × と外側タップで閉じる（UI-DISMISS）・Esc でも閉じる */
+  var openOv = null;
+  function showOv(id) { hideOv(); openOv = $(id); openOv.hidden = false; }
+  function hideOv() { if (openOv) { openOv.hidden = true; openOv = null; } }
+  Array.prototype.forEach.call(document.querySelectorAll('.ov'), function (ov) {
+    ov.addEventListener('click', function (e) {
+      if (e.target === ov || (e.target.closest && e.target.closest('[data-close]'))) hideOv();
+    });
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hideOv(); });
+
+  /* App Store のキャンペーン計測（R61）＝ct=circledb。analytics.js は ct 済みのリンクを触らない。
+   * Rev848: ページ URL に ?src= があればそれを優先する（X 広告・LP など送客元ごとに分けて数える＝analytics.js の defaultCt と同じ考え）。
+   *   値は英数字・_・- の 40 字までに削る（ct はそのまま App Store Connect に載る）。 */
+  function tagStoreLinks() {
+    var ct = 'circledb';
+    try {
+      var s = (new URLSearchParams(location.search).get('src') || '').replace(/[^A-Za-z0-9_-]/g, '').slice(0, 40);
+      if (s) ct = s;
+    } catch (e) { /* 読めなければ既定のまま */ }
+    var links = document.querySelectorAll('a[href*="apps.apple.com"]');
+    for (var i = 0; i < links.length; i++) {
+      var u;
+      try { u = new URL(links[i].href); } catch (e) { continue; }
+      if (u.searchParams.has('ct')) continue;
+      u.searchParams.set('pt', '128997588');
+      u.searchParams.set('ct', ct);
+      u.searchParams.set('mt', '8');
+      links[i].href = u.toString();
+    }
+  }
+
+  /* ================= 文言を流し込む ================= */
+  document.title = tr('docTitle');
+  setText('t_title', tr('title')); setText('t_tag', tr('tag')); setText('t_getapp', tr('getApp'));
+  $('q').placeholder = tr('q');
+  setText('t_sort', tr('sort')); setText('sortKana', tr('kana')); setText('sortNew', tr('newer'));
+  setText('t_note', tr('note')); setText('t_hint', tr('hint')); setText('addBtn', tr('add')); setText('clr', tr('clr'));
+  setText('f_about', tr('about')); setText('f_contact', tr('contact'));
+  setText('qrTitle', tr('qrTitle')); setText('qrCopy', tr('copy')); setText('qrClose', tr('close')); setText('qrSm', tr('qrSm'));
+  setText('openTitle', tr('openTitle')); setText('openBody', tr('openBody')); setText('openClose', tr('close'));
+  setText('addTitle', tr('addTitle')); setText('l_name', tr('name')); setText('l_req', tr('req')); setText('l_owner', tr('ownerF')); setText('l_x', tr('xF')); setText('hX', tr('xHint'));
+  setText('addNote', tr('addNote')); setText('addCancel', tr('cancel')); setText('addSubmit', tr('submit'));
+  setText('tabAll', tr('tabAll')); setText('favOnly', tr('favOnly'));
+  setText('loginBtn', tr('login')); setText('logoutBtn', tr('logout')); setText('delAccBtn', tr('delAcc')); setText('privLnk', tr('priv'));
+  setText('l_notes', tr('notesF')); setText('l_fav', tr('favLabel'));
+  setText('accTitle', tr('delAccTitle')); setText('accBody', tr('delAccBody')); setText('accCancel', tr('cancel')); setText('accGo', tr('delAccGo'));
+  setText('bxTitle', tr('bxTitle')); setText('bxWordLbl', tr('bxWord'));
+  setText('repTitle', tr('repTitle')); setText('repCancel', tr('cancel')); setText('repGo', tr('repGo'));
+  setText('r_title', tr('rTitle')); setText('r_open_t', tr('rOpen')); setText('r_noapp', tr('rNoApp')); setText('r_upd', tr('rUpd')); setText('r_back', tr('rBack'));
+  Array.prototype.forEach.call(document.querySelectorAll('.dlg .x'), function (b) { b.setAttribute('aria-label', tr('close')); });
+  tagStoreLinks();
+
+  /* ================= 中継（?import=） ================= */
+  var params = new URLSearchParams(location.search);
+  if (params.has('import')) { runRelay(params.get('import') || ''); return; }
+
+  function runRelay(raw) {
+    $('list').hidden = true; $('bar').hidden = true; document.body.style.paddingBottom = '0';
+    $('relay').hidden = false;
+    var favIn = String(params.get('fav') || '');
+    var favOk = /^[01]+$/.test(favIn);
+    var ids = [], favOf = {};
+    String(raw).split(',').forEach(function (p, i) {
+      var h = shortId(p.trim());
+      if (h && ids.indexOf(h) === -1 && ids.length < IMPORT_MAX) { ids.push(h); favOf[h] = favIn.charAt(i) === '1' ? '1' : '0'; }
+    });
+    var favFor = function (list) { return favOk ? list.map(function (h) { return favOf[h]; }).join('') : ''; };
+    var open = $('r_open');
+    if (!ids.length) {
+      setText('r_lead', tr('rBad')); open.hidden = true; $('r_upd').hidden = true; return;
+    }
+    /* 読み込み時に自動で torehan:// へ飛ばさない（未インストール端末では OS のエラーだけが出る）＝本人のタップを起点にする */
+    open.href = appLink(ids, favFor(ids)).url;
+    setText('r_lead', tr('rLeadLoading'));
+    var url = SB + '/rest/v1/master_circles?select=id,circle_name,illustrator_name&id=in.(' +
+      ids.map(function (h) { return 'mc_' + h; }).join(',') + ')';
+    fetch(url, { headers: sbHeaders() }).then(function (r) {
+      if (!r.ok) throw new Error('http ' + r.status);
+      return r.json();
+    }).then(function (rows) {
+      var byId = {};
+      (rows || []).forEach(function (r) { byId[shortId(r.id)] = r; });
+      var found = ids.filter(function (h) { return byId[h]; });
+      if (!found.length) { setText('r_lead', tr('rNone')); open.hidden = true; $('r_upd').hidden = true; return; }
+      setText('r_lead', tr('rLead', { n: found.length }));
+      open.href = appLink(found, favFor(found)).url;
+      var ul = $('r_names'); ul.textContent = '';
+      found.forEach(function (h) {
+        var li = document.createElement('li');
+        var r = byId[h];
+        li.textContent = '・' + r.circle_name + (r.illustrator_name ? '（' + r.illustrator_name + '）' : '');
+        ul.appendChild(li);
+      });
+      ul.hidden = false;
+      var miss = ids.length - found.length;
+      if (miss > 0) { setText('r_missing', tr('rMissing', { n: miss })); $('r_missing').hidden = false; }
+    }).catch(function () {
+      /* 名前が引けなくてもアプリ側で引き直すので、開く導線は残す */
+      setText('r_lead', tr('rLead', { n: ids.length }));
+    });
+  }
+
+  /* ================= 一覧（Rev843: 2 タブ＝自分のリスト／みんなのDB） =================
+     ・自分のリスト … アプリのサークルDB（ローカル）と同じ使い方。メモと ★ は本人だけ（共有しない）。
+                      ログインしていない間はこのブラウザ（localStorage）、Google でログインするとアカウント（web_circle_list・0159）。
+                      ログインした時、ブラウザのリストをアカウントへ移す（重複は master の ID か「名前×サークル主」で外す）。
+     ・みんなのDB   … 従来の一覧（master_circles）。「＋ 自分のリスト」で自分のリストへ入れられる。
+     ・自分のリストに新しく足したサークルも、共有 3 項目（サークル名・サークル主・𝕏 ID）は従来どおり master_circles に登録する（register）。
+     ⚠ 既存の REST・RPC は従来どおり anon のヘッダー（sbHeaders）で呼ぶ。supabase-js のセッションを使うのは
+       web_circle_list と delete_my_web_account だけ。 */
+  var MINE_MAX = 3000;           /* 0159 web_circle_list_guard と同じ */
+  var NOTES_MAX = 1000;          /* 0159 の notes 上限と同じ */
+  var NOTES_URL_BUDGET = 6000;   /* torehan:// に載せるメモの上限（エンコード後の文字数） */
+  var T_MINE = 'web_circle_list';
+  var LS_LIST = 'torehan.circledb.mylist.v1';
+  var LS_TAB = 'torehan.circledb.tab';
+  var AUTH_KEY = 'torehan.circledb.auth';
+  var SBJS_URL = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.108.2/dist/umd/supabase.js';
+  var SBJS_SRI = 'sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p';
+  var ENTRY_ID_RE = /^[A-Za-z0-9_-]{1,40}$/;
+
+  function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } }
+  function lsDel(k) { try { localStorage.removeItem(k); } catch (e) { /* 使えない環境 */ } }
+
+  var collator = (typeof Intl !== 'undefined' && Intl.Collator) ? new Intl.Collator('ja') : null;
+  function newState(sort) { return { items: [], shown: [], limit: PAGE_SIZE, sort: sort, sel: [], loaded: false, loading: false, err: false }; }
+  var S = { all: newState('kana'), mine: newState('kana') };
+  S.mine.favOnly = false;
+  var tab = 'all';
+  function cur() { return S[tab]; }
+
+  /* ---- 自分のリストの入れ物 ---- */
+  var sb = null, user = null, authPending = false, authReady = false, authChain = Promise.resolve(), quietSignOut = false;
+  function newEntryId() { return 'w' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10); }
+  function normEntry(o) {
+    if (!o || typeof o !== 'object') return null;
+    var id = String(o.id || '');
+    var name = String(o.name || '').trim().slice(0, MAX_NAME);
+    if (!ENTRY_ID_RE.test(id) || !name) return null;
+    var mid = shortId(o.mid);
+    return { id: id, mid: mid || null, name: name, owner: String(o.owner || '').trim().slice(0, MAX_OWNER), x: cleanXId(o.x),
+      notes: String(o.notes || '').slice(0, NOTES_MAX), fav: !!o.fav, created: Number(o.created) || 0, upd: Number(o.upd) || 0 };
+  }
+  function fromRow(r) {
+    return normEntry({ id: r.entry_id, mid: r.master_id, name: r.circle_name, owner: r.illustrator_name, x: r.twitter_id,
+      notes: r.notes, fav: r.is_favorite, created: Date.parse(r.created_at), upd: Date.parse(r.updated_at) });
+  }
+  function toRow(e) {
+    return { entry_id: e.id, master_id: e.mid || null, circle_name: e.name, illustrator_name: e.owner, twitter_id: e.x,
+      notes: e.notes, is_favorite: !!e.fav };
+  }
+  function localLoad() {
+    var raw = lsGet(LS_LIST);
+    if (!raw) return [];
+    try {
+      var arr = JSON.parse(raw);
+      return Array.isArray(arr) ? arr.map(normEntry).filter(Boolean) : [];
+    } catch (e) { return []; }
+  }
+  function localSave(items) { return lsSet(LS_LIST, JSON.stringify(items)); }
+  function idxMine(id) { for (var i = 0; i < S.mine.items.length; i++) if (S.mine.items[i].id === id) return i; return -1; }
+  function findMine(id) { var i = idxMine(id); return i === -1 ? null : S.mine.items[i]; }
+  function nameKey(name, owner) { return 'n:' + String(name).toLowerCase() + '\n' + String(owner).toLowerCase(); }
+  function errKey(err) { return /web_circle_list_full/.test(String((err && (err.message || err.code)) || err)) ? 'mineFull' : 'saveErr'; }
+  function toastErr(err) { toast(tr(errKey(err), { max: MINE_MAX })); }
+  function mineReady() { if (authPending) { toast(tr('loadingMine')); return false; } return true; }
+  function copyEntry(e, patch) { var o = {}, k; for (k in e) o[k] = e[k]; for (k in patch) o[k] = patch[k]; return o; }
+
+  var Mine = {
+    load: function () {
+      if (!user) { S.mine.items = localLoad(); return Promise.resolve(); }
+      return sb.from(T_MINE).select('*').order('created_at', { ascending: false }).limit(MINE_MAX).then(function (res) {
+        if (res.error) throw res.error;
+        S.mine.items = (res.data || []).map(fromRow).filter(Boolean);
+      });
+    },
+    insert: function (list) {
+      if (S.mine.items.length + list.length > MINE_MAX) return Promise.reject(new Error('web_circle_list_full'));
+      if (!user) {
+        var next = list.concat(S.mine.items);
+        if (!localSave(next)) return Promise.reject(new Error('storage'));
+        S.mine.items = next;
+        return Promise.resolve();
+      }
+      return sb.from(T_MINE).insert(list.map(toRow)).select().then(function (res) {
+        if (res.error) throw res.error;
+        S.mine.items = (res.data || []).map(fromRow).filter(Boolean).concat(S.mine.items);
+      });
+    },
+    update: function (e) {
+      if (!user) {
+        e = copyEntry(e, { upd: Date.now() });
+        var next = S.mine.items.map(function (x) { return x.id === e.id ? e : x; });
+        if (!localSave(next)) return Promise.reject(new Error('storage'));
+        S.mine.items = next;
+        return Promise.resolve();
+      }
+      var row = toRow(e); delete row.entry_id;
+      return sb.from(T_MINE).update(row).eq('entry_id', e.id).select().then(function (res) {
+        if (res.error) throw res.error;
+        var got = res.data && res.data[0] ? fromRow(res.data[0]) : e;
+        S.mine.items = S.mine.items.map(function (x) { return x.id === e.id ? (got || e) : x; });
+      });
+    },
+    remove: function (id) {
+      var done = function () {
+        S.mine.items = S.mine.items.filter(function (x) { return x.id !== id; });
+        S.mine.sel = S.mine.sel.filter(function (x) { return x !== id; });
+      };
+      if (!user) {
+        var next = S.mine.items.filter(function (x) { return x.id !== id; });
+        if (!localSave(next)) return Promise.reject(new Error('storage'));
+        done();
+        return Promise.resolve();
+      }
+      return sb.from(T_MINE).delete().eq('entry_id', id).then(function (res) { if (res.error) throw res.error; done(); });
+    }
+  };
+
+  /* ログインした時: このブラウザのリストのうち、アカウントに無いものだけ移す（移し終えたらブラウザ側は消す） */
+  function mergeLocalIntoAccount() {
+    var local = localLoad();
+    if (!local.length) return Promise.resolve(0);
+    var seen = {}, ids = {};
+    S.mine.items.forEach(function (e) { if (e.mid) seen['m:' + e.mid] = 1; seen[nameKey(e.name, e.owner)] = 1; ids[e.id] = 1; });
+    var add = [], rest = [];
+    local.forEach(function (e) {
+      var nk = nameKey(e.name, e.owner);
+      if ((e.mid && seen['m:' + e.mid]) || seen[nk]) return;
+      if (e.mid) seen['m:' + e.mid] = 1;
+      seen[nk] = 1;
+      if (ids[e.id]) e = copyEntry(e, { id: newEntryId() });
+      ids[e.id] = 1;
+      if (S.mine.items.length + add.length < MINE_MAX) add.push(e); else rest.push(e);
+    });
+    if (!add.length) { if (rest.length) localSave(rest); else lsDel(LS_LIST); return Promise.resolve(0); }
+    return sb.from(T_MINE).insert(add.map(toRow)).then(function (res) {
+      if (res.error) throw res.error;
+      if (rest.length) { localSave(rest); toast(tr('mineFull', { max: MINE_MAX })); } else lsDel(LS_LIST);
+      return add.length;
+    });
+  }
+
+  /* ---- Google ログイン（supabase-js は使う時だけ読み込む） ---- */
+  var sbLoading = null;
+  function loadSbJs() {
+    if (window.supabase && window.supabase.createClient) return Promise.resolve();
+    if (sbLoading) return sbLoading;
+    sbLoading = new Promise(function (res, rej) {
+      var s = document.createElement('script');
+      s.src = SBJS_URL; s.integrity = SBJS_SRI; s.crossOrigin = 'anonymous';
+      s.onload = function () { res(); };
+      s.onerror = function () { sbLoading = null; rej(new Error('sbjs')); };
+      document.head.appendChild(s);
+    });
+    return sbLoading;
+  }
+  function onAuth(session) {
+    var u = session && session.user && !session.user.is_anonymous ? session.user : null;
+    var oldId = user ? user.id : null;
+    if ((u ? u.id : null) === oldId && authReady) return Promise.resolve();
+    user = u ? { id: u.id, email: u.email || '' } : null;
+    authPending = true; S.mine.sel = []; S.mine.err = false;
+    render();
+    var p;
+    if (user) {
+      p = Mine.load().then(mergeLocalIntoAccount).then(function (n) {
+        if (n > 0) { toast(tr('merged', { n: n })); return Mine.load(); }
+      });
+    } else {
+      p = Mine.load();
+      if (oldId && !quietSignOut) toast(tr('loggedOut'));
+      quietSignOut = false;
+    }
+    return p.catch(function () { S.mine.items = []; S.mine.err = true; }).then(function () {
+      authPending = false; authReady = true; S.mine.loaded = true; render();
+    });
+  }
+  function initAuth() {
+    if (sb) return Promise.resolve();
+    return loadSbJs().then(function () {
+      if (sb) return;
+      sb = window.supabase.createClient(SB, SUPABASE_KEY, { auth: {
+        flowType: 'pkce', detectSessionInUrl: true, persistSession: true, autoRefreshToken: true, storageKey: AUTH_KEY } });
+      return new Promise(function (resolve) {
+        var first = true;
+        sb.auth.onAuthStateChange(function (ev, session) {
+          /* コールバックの中で supabase を呼ぶと詰まるので、外に出して順番に処理する */
+          setTimeout(function () {
+            authChain = authChain.then(function () { return onAuth(session); }).then(function () {
+              if (first) { first = false; resolve(); }
+            });
+          }, 0);
+        });
+      });
+    }).then(function () {
+      if (params.has('error')) toast(tr('loginErr'));
+      if (params.has('code') || params.has('error')) {
+        try { history.replaceState(null, '', location.pathname); } catch (e) { /* 何もしない */ }
+      }
+    });
+  }
+  function reloadMine() {
+    authPending = true; S.mine.err = false; render();
+    Mine.load().catch(function () { S.mine.items = []; S.mine.err = true; }).then(function () {
+      authPending = false; S.mine.loaded = true; render();
+    });
+  }
+  $('loginBtn').addEventListener('click', function () {
+    var b = $('loginBtn');
+    b.disabled = true;
+    lsSet(LS_TAB, 'mine');
+    initAuth().then(function () {
+      /* 戻り先は常に本番のこのページ（Supabase の許可リストに入れてあるのはこの URL だけ） */
+      return sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: PAGE_URL } });
+    }).then(function (res) {
+      if (res && res.error) throw res.error;
+    }).catch(function () { b.disabled = false; toast(tr('loginErr')); });
+  });
+  $('logoutBtn').addEventListener('click', function () {
+    if (!sb) return;
+    sb.auth.signOut({ scope: 'local' }).catch(function () { /* 失敗してもこの端末のセッションは消える */ });
+  });
+  var accArmed = false;
+  $('delAccBtn').addEventListener('click', function () {
+    accArmed = false; setText('accGo', tr('delAccGo')); $('accGo').disabled = false; showOv('accOv');
+  });
+  $('accGo').addEventListener('click', function () {
+    var b = $('accGo');
+    if (!accArmed) { accArmed = true; setText('accGo', tr('delSure')); return; }
+    if (!sb || !user) { hideOv(); return; }
+    b.disabled = true;
+    sb.rpc('delete_my_web_account').then(function (res) {
+      if (res.error) throw res.error;
+      var kind = res.data;
+      var delUid = user && user.id ? String(user.id) : ''; // signOut 後に user が空になる前に控える
+      hideOv();
+      lsDel(LS_LIST);
+      quietSignOut = true;
+      return sb.auth.signOut({ scope: 'local' }).catch(function () { /* アカウントごと消えた後は失敗してよい */ }).then(function () {
+        lsDel(AUTH_KEY);
+        // Rev848: 同じ端末のウェブ版「地図ルート」の手元の写し（ログイン・この利用者のルート下書き）も消す。
+        //   サーバー側は delete_my_web_account が web_route_plans ごと消している＝手元だけ残ると「消したのに出る」。
+        // 保存されたログイン情報（supabase-js の session JSON）の利用者IDを読む。読めなければ ''。
+        function storedAuthUid(key) {
+          try { var o = JSON.parse(localStorage.getItem(key) || 'null'); var u = o && (o.user || (o.currentSession && o.currentSession.user)); return u && u.id ? String(u.id) : ''; } catch (e) { return ''; }
+        }
+        try {
+          // キーの形は route.js の AUTH_KEY / planKey（'torehan.route.plan.v1:u_<uid>:<イベント>'）と同じ。
+          var pre = delUid ? 'torehan.route.plan.v1:u_' + delUid + ':' : '';
+          for (var i = localStorage.length - 1; i >= 0; i--) {
+            var k = localStorage.key(i);
+            if (!k) continue;
+            // Rev849（R2 V-8）: 地図ルート側のログインは「消したアカウントのもの」の時だけ消す（別の人のログインは残す）。
+            if ((k === 'torehan.route.auth' && delUid && storedAuthUid(k) === delUid) || (pre && k.indexOf(pre) === 0)) localStorage.removeItem(k);
+          }
+        } catch (e) { /* 保存領域が使えない端末では何もしない */ }
+        toast(tr(kind === 'list_only' ? 'delAccListOnly' : 'delAccDone'));
+      });
+    }).catch(function () { toast(tr('saveErr')); }).then(function () {
+      b.disabled = false; accArmed = false; setText('accGo', tr('delAccGo'));
+    });
+  });
+
+  /* ---- みんなのDB の読み込み ---- */
+  function loadAll() {
+    var s = S.all;
+    s.loading = true; s.err = false;
+    render();
+    var url = SB + '/rest/v1/master_circles?select=id,circle_name,illustrator_name,twitter_id,updated_at&order=updated_at.desc&limit=' + FETCH_LIMIT;
+    return fetch(url, { headers: sbHeaders() }).then(function (r) {
+      if (!r.ok) throw new Error('http ' + r.status);
+      return r.json();
+    }).then(function (rows) {
+      s.items = (rows || []).filter(function (r) { return r && r.id && String(r.circle_name || '').trim(); }).map(function (r) {
+        return { id: String(r.id), name: String(r.circle_name).trim(), owner: String(r.illustrator_name || '').trim(),
+          x: cleanXId(r.twitter_id), upd: Number(r.updated_at) || 0 };
+      });
+      var ids = {};
+      s.items.forEach(function (c) { ids[c.id] = 1; });
+      s.sel = s.sel.filter(function (id) { return ids[id]; });
+      s.loaded = true;
+    }).catch(function () {
+      s.err = true;
+    }).then(function () { s.loading = false; render(); });
+  }
+
+  function applyFilter() {
+    var s = cur();
+    var q = $('q').value.trim().toLowerCase();
+    var src = s.items;
+    if (tab === 'mine' && s.favOnly) src = src.filter(function (e) { return e.fav; });
+    s.shown = !q ? src.slice() : src.filter(function (c) {
+      return c.name.toLowerCase().indexOf(q) !== -1 || c.owner.toLowerCase().indexOf(q) !== -1 || c.x.toLowerCase().indexOf(q) !== -1 ||
+        (tab === 'mine' && c.notes.toLowerCase().indexOf(q) !== -1);
+    });
+    if (s.sort === 'kana') {
+      s.shown.sort(function (a, b) { return collator ? collator.compare(a.name, b.name) : (a.name < b.name ? -1 : a.name > b.name ? 1 : 0); });
+    } else if (tab === 'mine') {
+      s.shown.sort(function (a, b) { return b.created - a.created; });
+    } else {
+      s.shown.sort(function (a, b) { return b.upd - a.upd; });
+    }
+  }
+
+  function fmtDate(ms) {
+    if (!ms) return '';
+    try { return new Date(ms).toLocaleDateString(lang, { year: 'numeric', month: '2-digit', day: '2-digit' }); }
+    catch (e) { return new Date(ms).toISOString().slice(0, 10); }
+  }
+
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  function checkBtn(id, name, on) {
+    var chk = el('button', 'check', on ? '✓' : '');
+    chk.type = 'button';
+    chk.setAttribute('aria-pressed', on ? 'true' : 'false');
+    chk.setAttribute('aria-label', tr('check') + ': ' + name);
+    chk.addEventListener('click', function (e) { e.stopPropagation(); toggle(id); });
+    return chk;
+  }
+  function linksFor(x) {
+    var links = el('div', 'links');
+    var a = el('a', 'lk', '𝕏 @' + x);
+    a.href = 'https://x.com/' + encodeURIComponent(x); a.target = '_blank'; a.rel = 'noopener nofollow';
+    links.appendChild(a);
+    WORDS.forEach(function (w) {
+      if (!w[1]) return;
+      var s = el('a', 'lk', '🔍 ' + w[1]);
+      s.href = xSearchUrl([x], w[1], false); s.target = '_blank'; s.rel = 'noopener nofollow';
+      links.appendChild(s);
+    });
+    return links;
+  }
+  function impBtn(onClick) {
+    var imp = el('button', 'imp');
+    imp.type = 'button';
+    imp.appendChild(el('span', 'ic', '📲'));
+    imp.appendChild(document.createTextNode(tr('imp')));
+    imp.addEventListener('click', function (e) { e.stopPropagation(); onClick(); });
+    return imp;
+  }
+  function tapToToggle(d, id) {
+    /* カードのどこを押しても選択を切り替える（リンクとボタンは除く） */
+    d.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('a,button')) return;
+      toggle(id);
+    });
+  }
+
+  function cardFor(c, mineMids) {
+    var on = S.all.sel.indexOf(c.id) !== -1;
+    var d = el('div', 'card' + (on ? ' sel' : ''));
+    d.dataset.id = c.id;
+    d.appendChild(checkBtn(c.id, c.name, on));
+    d.appendChild(el('div', 'name', c.name));
+    if (c.owner) d.appendChild(el('div', 'owner', tr('ownerBy', { o: c.owner })));
+    if (c.x) d.appendChild(linksFor(c.x));
+    var inMine = !!mineMids[shortId(c.id)];
+    var mb = el('button', 'mineb' + (inMine ? ' in' : ''), inMine ? tr('inMine') : tr('toMine'));
+    mb.type = 'button';
+    mb.disabled = inMine;
+    mb.addEventListener('click', function (e) { e.stopPropagation(); addFromMaster([c]); });
+    d.appendChild(mb);
+    d.appendChild(impBtn(function () { startImport([c.id]); }));
+    var foot = el('div', 'foot');
+    foot.appendChild(el('span', '', c.upd ? tr('updated', { d: fmtDate(c.upd) }) : ''));
+    var rep = el('button', '', tr('report'));
+    rep.type = 'button';
+    rep.addEventListener('click', function (e) { e.stopPropagation(); setText('repBody', tr('repBody', { name: c.name })); $('repGo').href = CONTACT_FORM_URL; showOv('repOv'); });
+    foot.appendChild(rep);
+    d.appendChild(foot);
+    tapToToggle(d, c.id);
+    return d;
+  }
+
+  function cardMine(e) {
+    var on = S.mine.sel.indexOf(e.id) !== -1;
+    var d = el('div', 'card mine' + (on ? ' sel' : ''));
+    d.dataset.id = e.id;
+    d.appendChild(checkBtn(e.id, e.name, on));
+    var st = el('button', 'star' + (e.fav ? ' on' : ''), e.fav ? '★' : '☆');
+    st.type = 'button';
+    st.setAttribute('aria-pressed', e.fav ? 'true' : 'false');
+    st.setAttribute('aria-label', tr('favF') + ': ' + e.name);
+    st.addEventListener('click', function (ev) {
+      ev.stopPropagation();
+      if (!mineReady()) return;
+      st.disabled = true;
+      Mine.update(copyEntry(e, { fav: !e.fav })).then(render, function (err) { st.disabled = false; toastErr(err); });
+    });
+    d.appendChild(st);
+    d.appendChild(el('div', 'name', e.name));
+    if (e.owner) d.appendChild(el('div', 'owner', tr('ownerBy', { o: e.owner })));
+    if (e.notes) d.appendChild(el('div', 'memo', e.notes));
+    if (e.x) d.appendChild(linksFor(e.x));
+    d.appendChild(impBtn(function () { importMine([e.id]); }));
+    var foot = el('div', 'foot');
+    foot.appendChild(el('span', '', e.created ? tr('addedAt', { d: fmtDate(e.created) }) : ''));
+    var ed = el('button', '', tr('edit'));
+    ed.type = 'button';
+    ed.addEventListener('click', function (ev) { ev.stopPropagation(); if (mineReady()) openForm('edit', e); });
+    foot.appendChild(ed);
+    d.appendChild(foot);
+    tapToToggle(d, e.id);
+    return d;
+  }
+
+  function stateMsg(text, retry) {
+    var st = $('state');
+    st.textContent = '';
+    st.appendChild(el('div', '', text));
+    if (retry) {
+      var b = el('button', 'more', tr('retry')); b.type = 'button';
+      b.addEventListener('click', retry);
+      st.appendChild(b);
+    }
+    st.hidden = false;
+  }
+
+  function renderAcct() {
+    $('acct').hidden = tab !== 'mine';
+    if (user) setText('acctText', tr('acctIn', { email: user.email }));
+    else setText('acctText', tr('acctLocal'));
+    $('loginBtn').hidden = !!user || (authPending && !!sb);
+    $('logoutBtn').hidden = !user;
+    $('delAccBtn').hidden = !user;
+  }
+
+  function render() {
+    var s = cur();
+    $('tabMine').classList.toggle('on', tab === 'mine'); $('tabMine').setAttribute('aria-selected', tab === 'mine' ? 'true' : 'false');
+    $('tabAll').classList.toggle('on', tab === 'all'); $('tabAll').setAttribute('aria-selected', tab === 'all' ? 'true' : 'false');
+    setText('tabMine', tr('tabMine', { n: S.mine.items.length }));
+    setText('sortNew', tab === 'mine' ? tr('sortAdded') : tr('newer'));
+    $('sortKana').classList.toggle('on', s.sort === 'kana');
+    $('sortNew').classList.toggle('on', s.sort === 'new');
+    $('favOnly').hidden = tab !== 'mine';
+    $('favOnly').classList.toggle('on', !!S.mine.favOnly);
+    setText('t_note', tab === 'mine' ? tr('noteMine') : tr('note'));
+    renderAcct();
+    applyFilter();
+    var g = $('grid');
+    g.textContent = '';
+    var frag = document.createDocumentFragment();
+    var busy = tab === 'mine' ? authPending : s.loading;
+    if (!busy && !s.err) {
+      var mids = {};
+      if (tab === 'all') S.mine.items.forEach(function (e) { if (e.mid) mids[e.mid] = 1; });
+      s.shown.slice(0, s.limit).forEach(function (c) { frag.appendChild(tab === 'mine' ? cardMine(c) : cardFor(c, mids)); });
+    }
+    g.appendChild(frag);
+    var st = $('state');
+    st.textContent = ''; st.hidden = true;
+    if (busy) stateMsg(tab === 'mine' ? tr('loadingMine') : tr('loading'));
+    else if (s.err) stateMsg(tr('loadErr'), tab === 'mine' ? reloadMine : function () { loadAll(); });
+    else if (!s.shown.length) {
+      if (tab === 'mine') stateMsg(s.items.length ? tr('mineEmpty') : tr('mineEmpty0'));
+      else stateMsg(s.items.length ? tr('empty') : tr('none0'));
+    }
+    var rest = busy || s.err ? 0 : s.shown.length - s.limit;
+    var more = $('more');
+    if (rest > 0) { more.textContent = tr('more', { n: rest }); more.hidden = false; } else more.hidden = true;
+    setText('count', busy || s.err ? '' : tr('count', { total: s.items.length, n: s.shown.length }));
+    renderBar();
+  }
+
+  function itemById(s, id) { for (var i = 0; i < s.items.length; i++) if (s.items[i].id === id) return s.items[i]; return null; }
+  function cardEl(id) {
+    var cs = $('grid').children;
+    for (var i = 0; i < cs.length; i++) if (cs[i].dataset.id === id) return cs[i];
+    return null;
+  }
+  function toggle(id) {
+    var s = cur();
+    var i = s.sel.indexOf(id);
+    if (i !== -1) s.sel.splice(i, 1);
+    else {
+      if (s.sel.length >= IMPORT_MAX) { toast(tr('max', { max: IMPORT_MAX })); return; }
+      s.sel.push(id);
+    }
+    var card = cardEl(id);
+    if (card) {
+      var on = s.sel.indexOf(id) !== -1;
+      card.classList.toggle('sel', on);
+      var chk = card.querySelector('.check');
+      chk.textContent = on ? '✓' : '';
+      chk.setAttribute('aria-pressed', on ? 'true' : 'false');
+    }
+    renderBar();
+  }
+
+  function bulkIds() {
+    if (tab !== 'mine') return [];  // Rev884: まとめて検索は自分のリストだけ
+    var s = cur();
+    var src = s.sel.length ? s.sel.map(function (id) { return itemById(s, id); }).filter(Boolean) : s.shown;
+    var seen = {}, out = [];
+    src.forEach(function (c) {
+      if (!c.x) return;
+      var k = c.x.toLowerCase();
+      if (seen[k]) return;
+      seen[k] = 1; out.push(c.x);
+    });
+    return out;
+  }
+
+  function renderBar() {
+    var n = cur().sel.length;
+    $('barAdd').hidden = n > 0;
+    $('barSel').hidden = n === 0;
+    $('toMine').hidden = !(n > 0 && tab === 'all');
+    if (n > 0) {
+      setCountHtml($('selN'), 'selN', n);
+      setText('impLong', tr('impLong', { n: n }));
+      setText('impShort', tr('impShort', { n: n }));
+      setText('toMine', tr('toMineSel', { n: n }));
+    }
+    var bx = $('bulkx');
+    bx.hidden = tab !== 'mine';  // Rev884: みんなのDBでは出さない（disabled で残さない）
+    var cnt = bulkIds().length;
+    bx.textContent = tr('bxBtn', { n: cnt });
+    bx.disabled = cnt === 0;
+  }
+
+  function setTab(t) {
+    if (tab === t) return;
+    tab = t;
+    if (t !== 'mine' && openOv === $('bxOv')) hideOv();  // Rev884: まとめて検索を開いたまま みんなのDB へ移ったら閉じる
+    lsSet(LS_TAB, t);
+    try { window.scrollTo(0, 0); } catch (e) { /* 何もしない */ }
+    if (t === 'all' && !S.all.loaded && !S.all.loading) { loadAll(); return; }
+    render();
+  }
+  $('tabMine').addEventListener('click', function () { setTab('mine'); });
+  $('tabAll').addEventListener('click', function () { setTab('all'); });
+  $('favOnly').addEventListener('click', function () { S.mine.favOnly = !S.mine.favOnly; S.mine.limit = PAGE_SIZE; render(); });
+
+  /* ---- みんなのDB → 自分のリスト ---- */
+  function addFromMaster(cs) {
+    if (!mineReady()) return;
+    var have = {}, now = Date.now(), add = [];
+    S.mine.items.forEach(function (e) { if (e.mid) have[e.mid] = 1; });
+    cs.forEach(function (c) {
+      var m = shortId(c.id);
+      if (!m || have[m]) return;
+      have[m] = 1;
+      add.push({ id: newEntryId(), mid: m, name: c.name, owner: c.owner, x: c.x, notes: '', fav: false, created: now, upd: now });
+    });
+    if (!add.length) { toast(tr('alreadyMine')); return; }
+    Mine.insert(add).then(function () {
+      S.all.sel = [];
+      toast(add.length === 1 ? tr('addedMine', { name: add[0].name }) : tr('addedMineN', { n: add.length }));
+      render();
+    }, toastErr);
+  }
+  $('toMine').addEventListener('click', function () {
+    addFromMaster(S.all.sel.map(function (id) { return itemById(S.all, id); }).filter(Boolean));
+  });
+
+  /* ---- 取り込み ---- */
+  function namesOf(ids) {
+    return ids.map(function (id) { return itemById(S.all, id); }).filter(Boolean);
+  }
+  var qrLoaded = null;
+  function loadQr() {
+    if (window.QRCore) return Promise.resolve();
+    if (qrLoaded) return qrLoaded;
+    qrLoaded = new Promise(function (res, rej) {
+      var s = document.createElement('script');
+      s.src = '/torehan/circle-db/qrcore.js'; s.onload = function () { res(); }; s.onerror = function () { qrLoaded = null; rej(new Error('qr')); };
+      document.head.appendChild(s);
+    });
+    return qrLoaded;
+  }
+  function drawQr(text) {
+    var svg = $('qrSvg');
+    var q = window.QRCore.create(text, { errorCorrectionLevel: 'L' });
+    var size = q.modules.size, m = 4, path = '';
+    for (var r = 0; r < size; r++) for (var c = 0; c < size; c++) {
+      if (q.modules.get(r, c)) path += 'M' + (c + m) + ' ' + (r + m) + 'h1v1h-1z';
+    }
+    var full = size + m * 2;
+    svg.setAttribute('viewBox', '0 0 ' + full + ' ' + full);
+    svg.innerHTML = '<rect width="' + full + '" height="' + full + '" fill="#fff"/><path fill="#0c1a38" d="' + path + '"/>';
+  }
+  var currentRelay = '';
+  /* Rev855 U-4: アプリへ切り替わったあと、このページに戻ってきたら一言出す。
+     古い版のアプリは torehan://circledb を知らない＝アプリは開くが何も起きない（ページ側からは成功と区別できない）。
+     取り込めた人にも出るが、文言は「何も起きなかった場合は」なので害はない。戻るまでに 10 分を超えたら出さない。 */
+  var backHintArmed = false;
+  function armBackHint() {
+    if (backHintArmed) return;
+    backHintArmed = true;
+    var t1 = Date.now();
+    var onBack = function () {
+      if (document.hidden) return;
+      document.removeEventListener('visibilitychange', onBack);
+      backHintArmed = false;
+      if (Date.now() - t1 < 600000) toast(tr('backHint'), 6000);
+    };
+    document.addEventListener('visibilitychange', onBack);
+  }
+  /* extra（自分のリストから）= { fav: '0101…', notes: ['…', …], names: [{name, owner}] }（ids と同じ並び） */
+  function startImport(ids, extra) {
+    ids = ids.slice(0, IMPORT_MAX);
+    if (!ids.length) return;
+    var fav = extra ? extra.fav.slice(0, ids.length) : '';
+    var notes = extra ? extra.notes.slice(0, ids.length) : null;
+    if (isMobile()) {
+      var link = appLink(ids, fav, notes);
+      /* Rev849（R2 U-5）: 「送れない行がある」と「メモが長い」を1回のトーストにまとめる（続けて出すと前の方が上書きされて見えない） */
+      var msgs = [];
+      if (extra && extra.pre) msgs.push(extra.pre);
+      if (link.cut) msgs.push(tr('notesCut'));
+      if (msgs.length) toast(msgs.join(' ／ '));
+      /* 本人のタップでアプリを開く。1.6 秒たってもページが前面のままなら、開かなかったとみなしてストアを案内する */
+      var t0 = Date.now();
+      var ovShown = false;
+      var timer = setTimeout(function () {
+        if (!document.hidden && Date.now() - t0 < 4000) { ovShown = true; showOv('openOv'); }
+      }, 1600);
+      /* Rev863（R1）: アプリが開かずページが前面のままだと、この登録が残り、あとでストアへ行って戻っただけでも
+         backHint が出ていた＝押してから 4 秒以内に隠れたときだけ「アプリへ切り替わった」とみなす（上の timer と同じ窓） */
+      /* Rev866（R2 ③[8]）: ストア案内（openOv）を出した＝アプリは開かなかった。その後 4 秒以内にストアへ行って戻っても
+         「最新版に更新して」は的外れなので、案内を出した回は登録しない */
+      var cancel = function () { if (document.hidden) { clearTimeout(timer); if (!ovShown && Date.now() - t0 < 4000) armBackHint(); } };
+      document.addEventListener('visibilitychange', cancel, { once: true });
+      window.addEventListener('pagehide', function () { clearTimeout(timer); }, { once: true });
+      location.href = link.url;
+      return;
+    }
+    if (extra && extra.pre) toast(extra.pre);
+    currentRelay = relayLink(ids, fav);
+    var list = extra ? extra.names.slice(0, ids.length) : namesOf(ids);
+    setText('qrBody', tr('qrBody', { n: ids.length }));
+    var ul = $('qrNames'); ul.textContent = '';
+    list.slice(0, 8).forEach(function (c) { ul.appendChild(el('li', '', '・' + c.name + (c.owner ? '（' + c.owner + '）' : ''))); });
+    if (list.length > 8) ul.appendChild(el('li', '', '…'));
+    var hasNotes = !!(notes && notes.some(function (n) { return !!n; }));
+    setText('qrSm', tr('qrSm') + (hasNotes ? ' ' + tr('qrNoNotes') : ''));
+    setText('qrCopy', tr('copy'));
+    $('qrSvg').innerHTML = '';
+    showOv('qrOv');
+    loadQr().then(function () { drawQr(currentRelay); }).catch(function () { /* QR が出せなくてもリンクのコピーは使える */ });
+  }
+  /* 自分のリストから: みんなのDB の ID（mid）があるものだけ渡せる＝アプリはサーバーから共有項目を引き直す */
+  function importMine(ids) {
+    var es = ids.map(function (id) { return findMine(id); }).filter(Boolean);
+    var ok = es.filter(function (e) { return !!e.mid; });
+    var pre = ok.length < es.length ? tr('noMaster') : '';
+    if (!ok.length) { if (pre) toast(pre); return; }
+    startImport(ok.map(function (e) { return e.mid; }), {
+      pre: pre,
+      fav: ok.map(function (e) { return e.fav ? '1' : '0'; }).join(''),
+      notes: ok.map(function (e) { return e.notes; }),
+      names: ok
+    });
+  }
+  $('qrCopy').addEventListener('click', function () {
+    var done = function () { setText('qrCopy', tr('copied')); setTimeout(function () { setText('qrCopy', tr('copy')); }, 1600); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(currentRelay).then(done, function () {});
+    } else {
+      var ta = document.createElement('textarea'); ta.value = currentRelay; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); done(); } catch (e) { /* 何もしない */ }
+      document.body.removeChild(ta);
+    }
+  });
+  $('impSel').addEventListener('click', function () {
+    if (tab === 'mine') importMine(S.mine.sel.slice()); else startImport(S.all.sel.slice());
+  });
+  $('clr').addEventListener('click', function () { cur().sel = []; render(); });
+
+  /* ---- 𝕏 まとめて検索（全員無料・アプリと同じ作り・自分のリストのタブだけ＝Rev884） ---- */
+  var bxWord = 'none';
+  function renderBx() {
+    if (tab !== 'mine') return;
+    var ids = bulkIds();
+    setText('bxNote', tr(cur().sel.length ? 'bxNoteSel' : 'bxNoteAll', { n: ids.length, size: BULK_X_CHUNK }));
+    var wv = $('bxWords'); wv.textContent = '';
+    WORDS.forEach(function (w) {
+      var b = el('button', w[0] === bxWord ? 'on' : '', w[1] || tr('bxNone'));
+      b.type = 'button';
+      b.addEventListener('click', function () { bxWord = w[0]; renderBx(); });
+      wv.appendChild(b);
+    });
+    var word = '';
+    WORDS.forEach(function (w) { if (w[0] === bxWord) word = w[1]; });
+    var ch = $('bxChunks'); ch.textContent = '';
+    if (!ids.length) { ch.appendChild(el('p', 'sm', tr('bxEmpty'))); return; }
+    for (var i = 0; i < ids.length; i += BULK_X_CHUNK) {
+      var part = ids.slice(i, i + BULK_X_CHUNK);
+      var a = el('a', 'btn2 pri', ids.length <= BULK_X_CHUNK ? tr('bxOne') : tr('bxChunk', { from: i + 1, to: i + part.length }));
+      a.href = xSearchUrl(part, word, true); a.target = '_blank'; a.rel = 'noopener nofollow';
+      ch.appendChild(a);
+    }
+  }
+  $('bulkx').addEventListener('click', function () { if (tab !== 'mine') return; renderBx(); showOv('bxOv'); });
+
+  /* ---- サークルの追加・編集
+     all  … みんなのDB に登録するだけ（従来どおり・アプリ registerMasterCircle と同じ手順・既存行は空いている 𝕏 ID を補うだけ）
+     mine … 共有 3 項目は従来どおり登録し、メモと ★ を付けて自分のリストへ（登録に失敗しても自分のリストには入れる）
+     edit … 自分のリストの 1 件を直す・消す（共有項目を変えた時は登録し直して mid を付け替える） ---- */
+  var lastAdd = 0, formMode = 'all', editId = null, delArmed = false;
+  function openForm(mode, entry) {
+    formMode = mode; editId = entry ? entry.id : null; delArmed = false;
+    $('addForm').reset();
+    ['eName', 'eX', 'eAdd'].forEach(function (id) { $(id).hidden = true; });
+    resetXHint();
+    var mineMode = mode !== 'all';
+    $('fldNotes').hidden = !mineMode;
+    $('fldFav').hidden = !mineMode;
+    $('addDel').hidden = mode !== 'edit';
+    $('addDel').classList.remove('armed');
+    setText('addDel', tr('del'));
+    setText('addTitle', mode === 'edit' ? tr('editTitle') : tr('addTitle'));
+    setText('addSubmit', mode === 'edit' ? tr('save') : tr('submit'));
+    setText('addNote', mineMode ? tr('addNoteMine') : tr('addNote'));
+    if (entry) {
+      $('fName').value = entry.name; $('fOwner').value = entry.owner; $('fX').value = entry.x;
+      $('fNotes').value = entry.notes; $('fFav').checked = !!entry.fav;
+    } else {
+      $('fName').value = $('q').value.trim().slice(0, MAX_NAME);
+    }
+    showOv('addOv');
+    setTimeout(function () { $('fName').focus(); }, 30);
+  }
+  $('addBtn').addEventListener('click', function () {
+    if (tab === 'mine' && !mineReady()) return;
+    openForm(tab === 'mine' ? 'mine' : 'all');
+  });
+  function showErr(id, msg) { var e = $(id); e.textContent = msg; e.hidden = !msg; }
+  function resetXHint() { var h = $('hX'); h.textContent = tr('xHint'); h.className = 'fh'; }
+  $('fX').addEventListener('input', function () {
+    var el = $('fX');
+    var got = extractXId(el.value);
+    if (!got) { resetXHint(); return; } /* URL でなくなったら「取り出しました」を残さない */
+    el.value = got;
+    var h = $('hX'); h.textContent = tr('xGot', { id: got }); h.className = 'fh ok';
+    showErr('eX', '');
+  });
+  $('addDel').addEventListener('click', function () {
+    var b = $('addDel');
+    if (!delArmed) { delArmed = true; b.classList.add('armed'); setText('addDel', tr('delSure')); return; }
+    b.disabled = true;
+    Mine.remove(editId).then(function () { hideOv(); toast(tr('deleted')); render(); }, toastErr).then(function () { b.disabled = false; });
+  });
+  $('addForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    showErr('eName', ''); showErr('eX', ''); showErr('eAdd', '');
+    if ($('fWeb').value) { hideOv(); return; } /* 自動投稿の罠（人には見えない欄） */
+    var name = $('fName').value.trim().slice(0, MAX_NAME);
+    var owner = $('fOwner').value.trim().slice(0, MAX_OWNER);
+    var xRaw = $('fX').value.trim();
+    var x = cleanXId(xRaw);
+    var notes = $('fNotes').value.replace(/\s+$/, '').slice(0, NOTES_MAX);
+    var fav = $('fFav').checked;
+    if (!name) { showErr('eName', tr('errName')); $('fName').focus(); return; }
+    if (xRaw && !x) { showErr('eX', tr('errX')); $('fX').focus(); return; }
+    if (hasNgWord(name) || hasNgWord(owner) || hasNgWord(x)) { showErr('eAdd', tr('ngBody')); return; }
+    var old = formMode === 'edit' ? findMine(editId) : null;
+    if (formMode === 'edit' && !old) { hideOv(); return; }
+    var needReg = formMode !== 'edit' || !old.mid || old.name !== name || old.owner !== owner || old.x !== x;
+    if (formMode === 'mine') {
+      var nk = nameKey(name, owner);
+      var dup = S.mine.items.filter(function (it) { return nameKey(it.name, it.owner) === nk; })[0];
+      if (dup) { hideOv(); toast(tr('alreadyMine')); flash(dup.id); return; }
+    }
+    if (needReg && Date.now() - lastAdd < 8000) { showErr('eAdd', tr('wait')); return; }
+    var btn = $('addSubmit');
+    btn.disabled = true;
+    if (formMode === 'all') {
+      register(name, owner, x).then(function (res) {
+        lastAdd = Date.now();
+        hideOv();
+        toast(tr(res.kind, { name: name }));
+        return loadAll().then(function () { $('q').value = name; S.all.limit = PAGE_SIZE; render(); flash(res.id); });
+      }).catch(function () {
+        showErr('eAdd', tr('addErr'));
+      }).then(function () { btn.disabled = false; });
+      return;
+    }
+    var sharedFail = false;
+    var midP = needReg
+      ? register(name, owner, x).then(function (res) { lastAdd = Date.now(); S.all.loaded = false; return shortId(res.id) || null; },
+          function () { sharedFail = true; return null; })
+      : Promise.resolve(old.mid);
+    midP.then(function (mid) {
+      if (formMode === 'mine') {
+        if (mid && S.mine.items.some(function (it) { return it.mid === mid; })) {
+          var ex = S.mine.items.filter(function (it) { return it.mid === mid; })[0];
+          hideOv(); toast(tr('alreadyMine')); flash(ex.id); return;
+        }
+        var now = Date.now();
+        var entry = { id: newEntryId(), mid: mid, name: name, owner: owner, x: x, notes: notes, fav: fav, created: now, upd: now };
+        return Mine.insert([entry]).then(function () {
+          hideOv();
+          toast(sharedFail ? tr('sharedFail') : tr('addedMine', { name: name }));
+          S.mine.limit = PAGE_SIZE; render(); flash(entry.id);
+        });
+      }
+      var next = copyEntry(old, { mid: mid, name: name, owner: owner, x: x, notes: notes, fav: fav });
+      return Mine.update(next).then(function () {
+        hideOv();
+        toast(sharedFail ? tr('sharedFail') : tr('saved'));
+        render(); flash(old.id);
+      });
+    }).catch(function (err) {
+      showErr('eAdd', tr(errKey(err), { max: MINE_MAX }));
+    }).then(function () { btn.disabled = false; });
+  });
+  function findExisting(name, owner) {
+    var url = SB + '/rest/v1/master_circles?select=id,twitter_id&circle_name=eq.' + encodeURIComponent(name) +
+      '&illustrator_name=eq.' + encodeURIComponent(owner) + '&limit=2';
+    return fetch(url, { headers: sbHeaders() }).then(function (r) {
+      if (!r.ok) throw new Error('select ' + r.status);
+      return r.json();
+    }).then(function (rows) { return rows && rows[0] ? rows[0] : null; });
+  }
+  function fillOrKeep(row, x) {
+    if (!x || cleanXId(row.twitter_id)) return Promise.resolve({ kind: 'exists', id: row.id });
+    return fetch(SB + '/rest/v1/rpc/mc_update', {
+      method: 'POST', headers: sbHeaders({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify({ p_id: row.id, p_patch: { twitter_id: x, twitter_profile_url: 'https://x.com/' + x } })
+    }).then(function (r) {
+      if (!r.ok) throw new Error('mc_update ' + r.status);
+      return { kind: 'filledX', id: row.id };
+    });
+  }
+  function register(name, owner, x) {
+    return findExisting(name, owner).then(function (row) {
+      if (row) return fillOrKeep(row, x);
+      return fetch(SB + '/rest/v1/master_circles?select=id', {
+        method: 'POST',
+        headers: sbHeaders({ 'Content-Type': 'application/json', Prefer: 'return=representation' }),
+        body: JSON.stringify({ circle_name: name, illustrator_name: owner, twitter_id: x,
+          twitter_profile_url: x ? 'https://x.com/' + x : '', updated_at: Date.now() })
+      }).then(function (r) {
+        if (r.ok) return r.json().then(function (rows) { return { kind: 'added', id: rows && rows[0] ? rows[0].id : '' }; });
+        /* 23505＝同時に他の人が同じサークルを作った → 引き直して既存として扱う（アプリと同じ） */
+        return r.json().catch(function () { return {}; }).then(function (body) {
+          if (r.status === 409 || (body && body.code === '23505')) {
+            return findExisting(name, owner).then(function (row2) {
+              if (!row2) throw new Error('dup but missing');
+              return fillOrKeep(row2, x);
+            });
+          }
+          throw new Error('insert ' + r.status);
+        });
+      });
+    });
+  }
+  function flash(id) {
+    if (!id) return;
+    var card = cardEl(String(id));
+    if (!card) return;
+    card.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    card.classList.remove('flash'); void card.offsetWidth; card.classList.add('flash');
+  }
+
+  /* ---- 検索・並び替え・もっと見る ---- */
+  var qTimer = 0;
+  $('q').addEventListener('input', function () { clearTimeout(qTimer); qTimer = setTimeout(function () { cur().limit = PAGE_SIZE; render(); }, 150); });
+  function setSort(mode) { var s = cur(); s.sort = mode; s.limit = PAGE_SIZE; render(); }
+  $('sortKana').addEventListener('click', function () { setSort('kana'); });
+  $('sortNew').addEventListener('click', function () { setSort('new'); });
+  $('more').addEventListener('click', function () { cur().limit += PAGE_SIZE; render(); });
+
+  /* ---- はじめ ---- */
+  S.mine.items = localLoad(); S.mine.loaded = true;
+  var wantAuth = !!lsGet(AUTH_KEY) || params.has('code') || params.has('error');
+  if (wantAuth) {
+    authPending = true;
+    initAuth().catch(function () {
+      authPending = false; authReady = true;
+      toast(tr('loginErr'));
+      render();
+    });
+  }
+  var savedTab = lsGet(LS_TAB);
+  tab = (savedTab === 'mine' || savedTab === 'all') ? savedTab : ((S.mine.items.length || wantAuth) ? 'mine' : 'all');
+  if (tab === 'all') loadAll(); else render();
+})();
+</script>
+<script defer src="/analytics.js"></script>
+</body>
+</html>
