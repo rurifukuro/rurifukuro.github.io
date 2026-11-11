@@ -61,7 +61,7 @@
 <div class="wrap">
   <a href="./" class="backlink">← レジさぽっ！ トップへ</a>
   <h1>プライバシーポリシー<br><span class="appname">レジさぽっ！</span></h1>
-  <p class="updated" id="lastUpdated">最終更新: 2026-10-23</p>
+  <p class="updated" id="lastUpdated">最終更新: 2026-11-10</p>
 
   <div class="lang-bar">
     <span class="lang-btn active" onclick="showLang('ja')">日本語</span>
@@ -100,6 +100,9 @@
 ・送信内容: サークル名、開催イベント・開催日、公開する頒布物情報（頒布物名・価格・画像・セット構成など）、パスワード（設定した場合のハッシュ値）、予約上限数。
 ・公開範囲: 公開ページのURLを知る一般参加者（買い手）が閲覧・予約できます。
 ・予約者から送信された情報（予約時の表示名、備考、予約した頒布物と個数、匿名の端末識別子）もサーバーに保存されます。予約ページでは、お名前や連絡先は取得しません。
+・取り置き限定の抽選を設定した場合は、抽選にする頒布物ごとの設定（種類〔購入権／おまけ〕、当選数、当選者1人あたりの個数、締切〔ページの受付終了の日時、または指定した日時〕）も送信・保存されます。
+・予約者が抽選に応募した場合は、応募した頒布物と個数、匿名の端末識別子（同じ端末からの重複した応募を防ぐため）が予約データとあわせて保存されます。抽選は締切の日時が来るとサーバーで自動的に行われ（締切の日時が決まっていない場合などは、出品者がアプリから行います）、当選・落選の結果と抽選日時も保存されます。当選分は予約に加わり、購入権の抽選に落選して予約に何も残らない場合、その予約は取り消し扱いになります。
+・抽選結果のお知らせ: 結果は予約ページと出品者のアプリの取り置き管理に表示されます。また、予約者が姉妹アプリ「とれはんっ！」で取り置きのリンクを開いている場合は、当方のサーバーから Expo（650 Industries, Inc.）を経由して、とれはんっ！のプッシュ通知・お知らせ欄に結果（サークル名・商品名・当選・落選）をお届けします（とれはんっ！側で扱う情報は、とれはんっ！のプライバシーポリシーをご覧ください）。用途は、その取り置きの抽選結果のお知らせだけです。出品者がアプリから通知を送り直す場合は、ページの識別子と管理用トークンを当方のサーバーへ送信します。予約者の氏名・連絡先は、もともと取得しておらず、送信もしません。
 
 ③ サークル登録（とれはんっ！連携）
 ・送信内容: サークル名・作家名・配置・ジャンルタグ・頒布物情報・お品書き画像など。
@@ -192,7 +195,7 @@
 
 ② 取り置き予約ページ
 ・アプリ内でページを「非公開」にすると、買い手からの閲覧・予約受付は停止しますが、ページ情報と予約データ（買い手が入力したニックネーム・備考を含む）はサーバー上に残ります。
-・取り置き管理の「ページを削除」を使うと、ページ情報・予約データ（買い手の予約を含む）・お品書き画像がサーバーから削除されます。
+・取り置き管理の「ページを削除」を使うと、ページ情報・予約データ（買い手の予約と、抽選の設定・応募・結果を含む）・お品書き画像がサーバーから削除されます。
 ・現時点では、対象イベントの終了による自動削除は行っていません。
 
 ③ サークル登録（とれはんっ！連携）
@@ -259,6 +262,9 @@ How they are triggered differs by feature. Items ①, ② and ⑤ run only when 
 ・Sent: circle name, event and day, published product info (product name, price, images, set composition, etc.), password (hashed value, if set), reservation limit.
 ・Visible to: general attendees (buyers) who know the page URL can view and reserve.
 ・Information submitted by reservation makers (the display name they enter, any note they add, the products and quantities they reserve, and an anonymous device identifier) is also stored on the server. The reservation page does not ask for real names or contact details.
+・If you set up a reservation-only lottery, the settings for each lottery item (type [purchase right / bonus], number of winners, quantity per winner, and deadline [the page's closing date and time, or a date and time you specify]) are also sent and stored.
+・When a buyer enters a lottery, the entered item and quantity and an anonymous device identifier (to prevent duplicate entries from the same device) are stored together with the reservation. The draw runs automatically on our server when the deadline arrives (if no deadline date and time is set, the seller runs it from the app), and the result (won / not won) and the draw time are also stored. Won items are added to the reservation; if a buyer loses a purchase-right lottery and nothing remains in the reservation, that reservation is treated as cancelled.
+・Lottery result notices: Results are shown on the reservation page and in the seller's reservation management screen in the app. In addition, if the buyer has opened the reservation link in our sister app "Torehan!", our server delivers the result (circle name, item name, won / not won) through Expo (650 Industries, Inc.) as a Torehan! push notification and in its notices list (for the information handled by Torehan!, see the Torehan! Privacy Policy). This is used only to notify the lottery result for that reservation. When the seller resends a notice from the app, the page identifier and management token are sent to our server. We do not collect, and do not send, buyers' names or contact details.
 
 ③ Circle registration (Torehan integration)
 ・Sent: circle name, author name, placement, genre tags, product info, menu images, etc.
@@ -351,7 +357,7 @@ External links the App may open include links to social media or official inform
 
 (2) Reservation page
 ・Unpublishing the page in the App stops buyers from viewing it or making reservations, but the page information and reservation data (including nicknames and notes entered by buyers) remain on the server.
-・Using "Delete page" in reservation management deletes the page information, the reservation data (including buyers' reservations) and the price-list images from the server.
+・Using "Delete page" in reservation management deletes the page information, the reservation data (including buyers' reservations and lottery settings, entries and results) and the price-list images from the server.
 ・At present, this data is not deleted automatically when the relevant event ends.
 
 (3) Circle registration (Torehan integration)
@@ -418,6 +424,9 @@ If you wish to have data described in (1) or (2) deleted that you cannot delete 
 ・发送内容：社团名称、活动和举办日、公开的商品信息（商品名・价格・图片・套装构成等）、密码（如设置则为哈希值）、预约上限数。
 ・可见范围：知道页面 URL 的一般参加者（买家）可以浏览和预约。
 ・预约者提交的信息（预约时填写的显示名称、备注、预约的商品与数量、匿名的设备识别码）也会保存在服务器上。预约页面不会收集真实姓名或联系方式。
+・如果设置了仅限预约的抽选，每件抽选商品的设置（类型〔购买权／赠品〕、中选人数、每位中选者的数量、截止时间〔页面停止接受预约的日期时间，或指定的日期时间〕）也会被发送并保存。
+・预约者参加抽选时，所报名的商品与数量、匿名的设备识别码（用于防止同一设备重复报名）会与预约数据一并保存。抽选在截止日期时间到达时由服务器自动进行（未设定截止日期时间等情况下，由发布者在应用中进行），中选・未中选的结果与抽选日期时间也会被保存。中选的部分会加入预约；若购买权抽选未中选而预约中没有剩余任何商品，则该预约视为已取消。
+・抽选结果的通知：结果会显示在预约页面以及发布者应用的预约管理中。此外，若预约者在姐妹应用「とれはんっ！」中打开过该预约的链接，我方服务器会经由 Expo（650 Industries, Inc.），以とれはんっ！的推送通知及通知栏的形式送达结果（社团名称・商品名称・中选・未中选）（关于とれはんっ！所处理的信息，请参阅とれはんっ！的隐私政策）。其用途仅限于通知该预约的抽选结果。发布者从应用重新发送通知时，会将页面的识别符与管理用令牌发送至我方服务器。我们本来就不收集预约者的姓名与联系方式，也不会发送。
 
 ③ 社团登记（与 Torehan 联动）
 ・发送内容：社团名・作者名・摊位位置・类型标签・商品信息・菜单图片等。
@@ -510,7 +519,7 @@ If you wish to have data described in (1) or (2) deleted that you cannot delete 
 
 ② 预约页面
 ・在应用内将页面设为「非公开」后，买家将无法浏览和预约，但页面信息与预约数据（包括买家填写的昵称与备注）仍保留在服务器上。
-・在预约管理中使用「删除页面」后，页面信息、预约数据（包括买家的预约）以及品书图片将从服务器删除。
+・在预约管理中使用「删除页面」后，页面信息、预约数据（包括买家的预约，以及抽选的设置・报名・结果）以及品书图片将从服务器删除。
 ・目前不会在相关活动结束后自动删除。
 
 ③ 社团登记（与 Torehan 联动）
@@ -573,6 +582,9 @@ If you wish to have data described in (1) or (2) deleted that you cannot delete 
 ・傳送內容：社團名稱、活動和舉辦日、公開的商品資訊（商品名・價格・圖片・套裝構成等）、密碼（如設定則為雜湊值）、預約上限數。
 ・可見範圍：知道頁面 URL 的一般參加者（買家）可以瀏覽和預約。
 ・預約者提交的資訊（預約時填寫的顯示名稱、備註、預約的商品與數量、匿名的裝置識別碼）也會儲存在伺服器上。預約頁面不會收集真實姓名或聯絡方式。
+・若設定了僅限預約的抽選，每件抽選商品的設定（類型〔購買權／贈品〕、中選人數、每位中選者的數量、截止時間〔頁面停止接受預約的日期時間，或指定的日期時間〕）也會被傳送並儲存。
+・預約者參加抽選時，所報名的商品與數量、匿名的裝置識別碼（用於防止同一裝置重複報名）會與預約資料一併儲存。抽選在截止日期時間到達時由伺服器自動進行（未設定截止日期時間等情況下，由發布者在應用中進行），中選・未中選的結果與抽選日期時間也會被儲存。中選的部分會加入預約；若購買權抽選未中選而預約中沒有剩餘任何商品，則該預約視為已取消。
+・抽選結果的通知：結果會顯示在預約頁面以及發布者應用的預約管理中。此外，若預約者在姊妹應用「とれはんっ！」中開啟過該預約的連結，我方伺服器會經由 Expo（650 Industries, Inc.），以とれはんっ！的推播通知及通知欄的形式送達結果（社團名稱・商品名稱・中選・未中選）（關於とれはんっ！所處理的資訊，請參閱とれはんっ！的隱私權政策）。其用途僅限於通知該預約的抽選結果。發布者從應用重新傳送通知時，會將頁面的識別碼與管理用權杖傳送至我方伺服器。我們本來就不收集預約者的姓名與聯絡方式，也不會傳送。
 
 ③ 社團登記（與 Torehan 聯動）
 ・傳送內容：社團名・作者名・攤位位置・類型標籤・商品資訊・選單圖片等。
@@ -665,7 +677,7 @@ If you wish to have data described in (1) or (2) deleted that you cannot delete 
 
 ② 預約頁面
 ・在應用內將頁面設為「非公開」後，買家將無法瀏覽和預約，但頁面資訊與預約資料（包括買家填寫的暱稱與備註）仍保留在伺服器上。
-・在預約管理中使用「刪除頁面」後，頁面資訊、預約資料（包括買家的預約）以及品書圖片將從伺服器刪除。
+・在預約管理中使用「刪除頁面」後，頁面資訊、預約資料（包括買家的預約，以及抽選的設定・報名・結果）以及品書圖片將從伺服器刪除。
 ・目前不會在相關活動結束後自動刪除。
 
 ③ 社團登記（與 Torehan 聯動）
@@ -728,6 +740,9 @@ If you wish to have data described in (1) or (2) deleted that you cannot delete 
 ・전송 내용: 서클 이름, 이벤트와 개최일, 공개하는 상품 정보（상품명・가격・이미지・세트 구성 등）, 비밀번호（설정한 경우 해시값）, 예약 상한 수.
 ・공개 범위: 페이지 URL을 아는 일반 참가자（구매자）가 열람 및 예약할 수 있습니다.
 ・예약자가 전송한 정보（예약 시 입력한 표시 이름, 비고, 예약한 반포물과 수량, 익명 단말 식별자）도 서버에 저장됩니다. 예약 페이지에서는 실명이나 연락처를 수집하지 않습니다.
+・예약 한정 추첨을 설정한 경우에는 추첨 대상 반포물별 설정（종류〔구매권／덤〕, 당첨 수, 당첨자 1인당 개수, 마감〔페이지의 접수 종료 일시 또는 지정한 일시〕）도 전송・저장됩니다.
+・예약자가 추첨에 응모한 경우에는 응모한 반포물과 개수, 익명 단말 식별자（같은 단말에서의 중복 응모를 막기 위해）가 예약 데이터와 함께 저장됩니다. 추첨은 마감 일시가 되면 서버에서 자동으로 실시되며（마감 일시가 정해져 있지 않은 경우 등에는 판매자가 앱에서 실시합니다）, 당첨・낙첨 결과와 추첨 일시도 저장됩니다. 당첨분은 예약에 추가되며, 구매권 추첨에 낙첨되어 예약에 아무것도 남지 않는 경우 그 예약은 취소된 것으로 처리됩니다.
+・추첨 결과 알림: 결과는 예약 페이지와 판매자 앱의 예약 관리에 표시됩니다. 또한 예약자가 자매 앱 「とれはんっ！」에서 예약 링크를 연 경우에는 당사 서버에서 Expo（650 Industries, Inc.）를 거쳐 とれはんっ！의 푸시 알림・알림란으로 결과（서클명・상품명・당첨・낙첨）를 전해 드립니다（とれはんっ！ 측에서 취급하는 정보는 とれはんっ！의 개인정보처리방침을 참조해 주십시오）. 용도는 해당 예약의 추첨 결과 알림뿐입니다. 판매자가 앱에서 알림을 다시 보내는 경우에는 페이지 식별자와 관리용 토큰을 당사 서버로 전송합니다. 예약자의 이름・연락처는 애초에 수집하지 않으며 전송하지도 않습니다.
 
 ③ 서클 등록（Torehan 연동）
 ・전송 내용: 서클명・작가명・배치・장르 태그・상품 정보・메뉴 이미지 등.
@@ -820,7 +835,7 @@ If you wish to have data described in (1) or (2) deleted that you cannot delete 
 
 ② 예약 페이지
 ・앱 내에서 페이지를 「비공개」로 전환하면 구매자의 열람 및 예약 접수는 중지되지만, 페이지 정보와 예약 데이터（구매자가 입력한 닉네임・비고 포함）는 서버상에 남습니다.
-・예약 관리의 「페이지 삭제」를 사용하면 페이지 정보・예약 데이터（구매자의 예약 포함）・판매목록 이미지가 서버에서 삭제됩니다.
+・예약 관리의 「페이지 삭제」를 사용하면 페이지 정보・예약 데이터（구매자의 예약과 추첨의 설정・응모・결과 포함）・판매목록 이미지가 서버에서 삭제됩니다.
 ・현재로서는 해당 이벤트 종료에 따른 자동 삭제는 이루어지지 않습니다.
 
 ③ 서클 등록（Torehan 연동）
@@ -883,6 +898,9 @@ Le déclenchement varie selon la fonctionnalité. Les points 1, 2 et 5 ne s'exé
 ・Envoyé : nom du cercle, événement et jour, informations produit publiées (nom du produit, prix, images, composition du lot, etc.), mot de passe (valeur hachée, si défini), nombre maximum de réservations.
 ・Visible par : les participants généraux (acheteurs) connaissant l'URL de la page peuvent consulter et réserver.
 ・Les informations envoyées par les personnes qui réservent (le nom affiché saisi lors de la réservation, une remarque éventuelle, les articles et quantités réservés, un identifiant d'appareil anonyme) sont également stockées sur le serveur. La page de réservation ne demande ni nom réel ni coordonnées.
+・Si vous mettez en place un tirage au sort réservé aux réservations, les paramètres de chaque article concerné (type [droit d'achat / bonus], nombre de gagnants, quantité par gagnant et date limite [date et heure de clôture de la page, ou date et heure que vous indiquez]) sont également envoyés et stockés.
+・Lorsqu'une personne qui réserve participe à un tirage, l'article et la quantité demandés ainsi qu'un identifiant d'appareil anonyme (pour empêcher les participations en double depuis un même appareil) sont stockés avec la réservation. Le tirage est effectué automatiquement sur notre serveur à la date limite (si aucune date et heure limite n'est fixée, par exemple, l'exposant l'effectue depuis l'application), et le résultat (gagné / non gagné) ainsi que la date et l'heure du tirage sont également stockés. Les articles gagnés sont ajoutés à la réservation ; si la personne perd un tirage de droit d'achat et qu'il ne reste plus rien dans sa réservation, celle-ci est considérée comme annulée.
+・Avis de résultat du tirage : les résultats s'affichent sur la page de réservation et dans la gestion des réservations de l'application de l'exposant. En outre, si la personne a ouvert le lien de réservation dans notre application sœur « とれはんっ！», notre serveur lui transmet le résultat (nom du cercle, nom de l'article, gagné / non gagné) via Expo (650 Industries, Inc.), sous forme de notification push et dans la liste des avis de とれはんっ！ (pour les informations traitées par とれはんっ！, consultez la politique de confidentialité de とれはんっ！). Cet usage se limite à annoncer le résultat du tirage de cette réservation. Lorsque l'exposant renvoie un avis depuis l'application, l'identifiant de la page et le jeton de gestion sont envoyés à notre serveur. Nous ne collectons pas, et n'envoyons pas, le nom ni les coordonnées des personnes qui réservent.
 
 ③ Inscription de cercle (intégration Torehan)
 ・Envoyé : nom du cercle, nom de l'auteur, emplacement, tags de genre, informations produit, images de menu, etc.
@@ -975,7 +993,7 @@ Les liens externes que l'Application peut ouvrir incluent des liens vers les ré
 
 (2) Page de réservation
 ・Dépublier la page dans l'Application empêche les acheteurs de la consulter et de réserver, mais les informations de page et les données de réservation (y compris les pseudonymes et les remarques saisis par les acheteurs) restent sur le serveur.
-・« Supprimer la page » dans la gestion des réservations supprime du serveur les informations de page, les données de réservation (y compris les réservations des acheteurs) et les images de la liste de prix.
+・« Supprimer la page » dans la gestion des réservations supprime du serveur les informations de page, les données de réservation (y compris les réservations des acheteurs ainsi que les paramètres, participations et résultats des tirages) et les images de la liste de prix.
 ・À ce jour, ces données ne sont pas supprimées automatiquement à la fin de l'événement concerné.
 
 (3) Inscription de cercle (intégration Torehan)
@@ -1017,7 +1035,7 @@ Si vous souhaitez faire supprimer des données visées aux points (1) et (2) que
 </div>
 
 <script>
-  var labels = {'ja':'最終更新: 2026-10-23', 'en':'Last updated: 2026-10-23', 'zh':'最后更新: 2026-10-23', 'zh-Hant':'最後更新: 2026-10-23', 'ko':'최종 업데이트: 2026-10-23', 'fr':'Dernière mise à jour : 2026-10-23'};
+  var labels = {'ja':'最終更新: 2026-11-10', 'en':'Last updated: 2026-11-10', 'zh':'最后更新: 2026-11-10', 'zh-Hant':'最後更新: 2026-11-10', 'ko':'최종 업데이트: 2026-11-10', 'fr':'Dernière mise à jour : 2026-11-10'};
   function showLang(lang) {
     document.querySelectorAll('.policy').forEach(function(el){ el.classList.remove('visible'); });
     document.getElementById('policy-' + lang).classList.add('visible');
