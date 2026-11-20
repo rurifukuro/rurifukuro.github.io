@@ -103,6 +103,7 @@
 ・取り置き限定の抽選を設定した場合は、抽選にする頒布物ごとの設定（種類〔購入権／おまけ〕、当選数、当選者1人あたりの個数、締切〔ページの受付終了の日時、または指定した日時〕）も送信・保存されます。
 ・予約者が抽選に応募した場合は、応募した頒布物と個数、匿名の端末識別子（同じ端末からの重複した応募を防ぐため）が予約データとあわせて保存されます。抽選は締切の日時が来るとサーバーで自動的に行われ（締切の日時が決まっていない場合などは、出品者がアプリから行います）、当選・落選の結果と抽選日時も保存されます。当選分は予約に加わり、購入権の抽選に落選して予約に何も残らない場合、その予約は取り消し扱いになります。
 ・抽選結果のお知らせ: 結果は予約ページと出品者のアプリの取り置き管理に表示されます。また、予約者が姉妹アプリ「とれはんっ！」で取り置きのリンクを開いている場合は、当方のサーバーから Expo（650 Industries, Inc.）を経由して、とれはんっ！のプッシュ通知・お知らせ欄に結果（サークル名・商品名・当選・落選）をお届けします（とれはんっ！側で扱う情報は、とれはんっ！のプライバシーポリシーをご覧ください）。用途は、その取り置きの抽選結果のお知らせだけです。出品者のアプリは、アプリで抽選した直後、取り置き管理を開いたとき（まだ届けられていない結果の自動の送り直し）、出品者が手で送り直したときに、ページの識別子・管理用トークン・抽選した頒布物の識別子を当方のサーバーへ送信し、お知らせを依頼します。予約者の氏名・連絡先は、もともと取得しておらず、送信もしません。
+・予約の控え（端末内）: 予約ページは、同じ端末で開き直したときに予約の内容を表示し直せるよう、予約の控え（受取番号・予約した頒布物と個数・備考・応募した抽選）と、取り消しの照合に使う匿名の端末識別子を、お使いのブラウザ内に保存します。控えは予約を取り消すと消えます。保存から30日を過ぎた控えは、内容が古い可能性がある旨を添えて表示します。どちらも、ブラウザのサイトデータを削除すると消えます。
 
 ③ サークル登録（とれはんっ！連携）
 ・送信内容: サークル名・作家名・配置・ジャンルタグ・頒布物情報・お品書き画像など。
@@ -273,6 +274,7 @@ How they are triggered differs by feature. Items ①, ② and ⑤ run only when 
 ・If you set up a reservation-only lottery, the settings for each lottery item (type [purchase right / bonus], number of winners, quantity per winner, and deadline [the page's closing date and time, or a date and time you specify]) are also sent and stored.
 ・When a buyer enters a lottery, the entered item and quantity and an anonymous device identifier (to prevent duplicate entries from the same device) are stored together with the reservation. The draw runs automatically on our server when the deadline arrives (if no deadline date and time is set, the seller runs it from the app), and the result (won / not won) and the draw time are also stored. Won items are added to the reservation; if a buyer loses a purchase-right lottery and nothing remains in the reservation, that reservation is treated as cancelled.
 ・Lottery result notices: Results are shown on the reservation page and in the seller's reservation management screen in the app. In addition, if the buyer has opened the reservation link in our sister app "Torehan!", our server delivers the result (circle name, item name, won / not won) through Expo (650 Industries, Inc.) as a Torehan! push notification and in its notices list (for the information handled by Torehan!, see the Torehan! Privacy Policy). This is used only to notify the lottery result for that reservation. The seller's app sends the page identifier, the management token and the identifier of the drawn item to our server to request these notices right after the seller runs a draw in the app, when reservation management is opened (an automatic resend of results not yet delivered), and when the seller resends a notice manually. We do not collect, and do not send, buyers' names or contact details.
+・Reservation receipt (on the device): So that the reservation can be shown again when the page is reopened on the same device, the reservation page saves a receipt of the reservation (pickup number, reserved products and quantities, note, and lotteries entered) and the anonymous device identifier used to verify cancellations in your browser. The receipt is removed when the reservation is cancelled. A receipt saved more than 30 days ago is shown with a note that it may be out of date. Both are removed if you delete the browser's site data.
 
 ③ Circle registration (Torehan integration)
 ・Sent: circle name, author name, placement, genre tags, product info, menu images, etc.
@@ -443,6 +445,7 @@ If you wish to have data described in (1) or (2) deleted that you cannot delete 
 ・如果设置了仅限预约的抽选，每件抽选商品的设置（类型〔购买权／赠品〕、中选人数、每位中选者的数量、截止时间〔页面停止接受预约的日期时间，或指定的日期时间〕）也会被发送并保存。
 ・预约者参加抽选时，所报名的商品与数量、匿名的设备识别码（用于防止同一设备重复报名）会与预约数据一并保存。抽选在截止日期时间到达时由服务器自动进行（未设定截止日期时间等情况下，由发布者在应用中进行），中选・未中选的结果与抽选日期时间也会被保存。中选的部分会加入预约；若购买权抽选未中选而预约中没有剩余任何商品，则该预约视为已取消。
 ・抽选结果的通知：结果会显示在预约页面以及发布者应用的预约管理中。此外，若预约者在姐妹应用「とれはんっ！」中打开过该预约的链接，我方服务器会经由 Expo（650 Industries, Inc.），以とれはんっ！的推送通知及通知栏的形式送达结果（社团名称・商品名称・中选・未中选）（关于とれはんっ！所处理的信息，请参阅とれはんっ！的隐私政策）。其用途仅限于通知该预约的抽选结果。发布者的应用会在以下时机将页面的识别符、管理用令牌以及抽选商品的识别符发送至我方服务器，以请求发送通知：在应用中进行抽选后立即发送、打开预约管理时（自动重新发送尚未送达的结果）、发布者手动重新发送时。我们本来就不收集预约者的姓名与联系方式，也不会发送。
+・预约凭据（设备内）：为了在同一设备上重新打开页面时能再次显示预约内容，预约页面会在您的浏览器内保存预约凭据（取货编号・预约的商品与数量・备注・所报名的抽选）以及用于核对取消操作的匿名的设备识别码。取消预约后，凭据即被删除。保存超过30天的凭据，会附上“内容可能已过时”的说明后显示。删除浏览器的网站数据后，两者都会被删除。
 
 ③ 社团登记（与 Torehan 联动）
 ・发送内容：社团名・作者名・摊位位置・类型标签・商品信息・菜单图片等。
@@ -609,6 +612,7 @@ If you wish to have data described in (1) or (2) deleted that you cannot delete 
 ・若設定了僅限預約的抽選，每件抽選商品的設定（類型〔購買權／贈品〕、中選人數、每位中選者的數量、截止時間〔頁面停止接受預約的日期時間，或指定的日期時間〕）也會被傳送並儲存。
 ・預約者參加抽選時，所報名的商品與數量、匿名的裝置識別碼（用於防止同一裝置重複報名）會與預約資料一併儲存。抽選在截止日期時間到達時由伺服器自動進行（未設定截止日期時間等情況下，由發布者在應用中進行），中選・未中選的結果與抽選日期時間也會被儲存。中選的部分會加入預約；若購買權抽選未中選而預約中沒有剩餘任何商品，則該預約視為已取消。
 ・抽選結果的通知：結果會顯示在預約頁面以及發布者應用的預約管理中。此外，若預約者在姊妹應用「とれはんっ！」中開啟過該預約的連結，我方伺服器會經由 Expo（650 Industries, Inc.），以とれはんっ！的推播通知及通知欄的形式送達結果（社團名稱・商品名稱・中選・未中選）（關於とれはんっ！所處理的資訊，請參閱とれはんっ！的隱私權政策）。其用途僅限於通知該預約的抽選結果。發布者的應用會在以下時機將頁面的識別碼、管理用權杖以及抽選商品的識別碼傳送至我方伺服器，以請求傳送通知：在應用中進行抽選後立即傳送、開啟預約管理時（自動重新傳送尚未送達的結果）、發布者手動重新傳送時。我們本來就不收集預約者的姓名與聯絡方式，也不會傳送。
+・預約憑據（裝置內）：為了在同一裝置上重新開啟頁面時能再次顯示預約內容，預約頁面會在您的瀏覽器內儲存預約憑據（取貨編號・預約的商品與數量・備註・所報名的抽選）以及用於核對取消操作的匿名的裝置識別碼。取消預約後，憑據即被刪除。儲存超過30天的憑據，會附上「內容可能已過時」的說明後顯示。刪除瀏覽器的網站資料後，兩者都會被刪除。
 
 ③ 社團登記（與 Torehan 聯動）
 ・傳送內容：社團名・作者名・攤位位置・類型標籤・商品資訊・選單圖片等。
@@ -775,6 +779,7 @@ If you wish to have data described in (1) or (2) deleted that you cannot delete 
 ・예약 한정 추첨을 설정한 경우에는 추첨 대상 반포물별 설정（종류〔구매권／덤〕, 당첨 수, 당첨자 1인당 개수, 마감〔페이지의 접수 종료 일시 또는 지정한 일시〕）도 전송・저장됩니다.
 ・예약자가 추첨에 응모한 경우에는 응모한 반포물과 개수, 익명 단말 식별자（같은 단말에서의 중복 응모를 막기 위해）가 예약 데이터와 함께 저장됩니다. 추첨은 마감 일시가 되면 서버에서 자동으로 실시되며（마감 일시가 정해져 있지 않은 경우 등에는 판매자가 앱에서 실시합니다）, 당첨・낙첨 결과와 추첨 일시도 저장됩니다. 당첨분은 예약에 추가되며, 구매권 추첨에 낙첨되어 예약에 아무것도 남지 않는 경우 그 예약은 취소된 것으로 처리됩니다.
 ・추첨 결과 알림: 결과는 예약 페이지와 판매자 앱의 예약 관리에 표시됩니다. 또한 예약자가 자매 앱 「とれはんっ！」에서 예약 링크를 연 경우에는 당사 서버에서 Expo（650 Industries, Inc.）를 거쳐 とれはんっ！의 푸시 알림・알림란으로 결과（서클명・상품명・당첨・낙첨）를 전해 드립니다（とれはんっ！ 측에서 취급하는 정보는 とれはんっ！의 개인정보처리방침을 참조해 주십시오）. 용도는 해당 예약의 추첨 결과 알림뿐입니다. 판매자 앱은 앱에서 추첨한 직후, 예약 관리를 열었을 때（아직 전달되지 않은 결과의 자동 재전송）, 판매자가 직접 다시 보낼 때에 페이지 식별자・관리용 토큰・추첨한 상품의 식별자를 당사 서버로 전송하여 알림을 요청합니다. 예약자의 이름・연락처는 애초에 수집하지 않으며 전송하지도 않습니다.
+・예약 사본（단말 내）: 예약 페이지는 같은 단말에서 다시 열었을 때 예약 내용을 다시 표시할 수 있도록, 예약 사본（수령 번호・예약한 반포물과 수량・비고・응모한 추첨）과 취소 확인에 사용하는 익명 단말 식별자를 사용 중인 브라우저 안에 저장합니다. 사본은 예약을 취소하면 삭제됩니다. 저장한 지 30일이 지난 사본은 내용이 오래되었을 수 있다는 안내를 덧붙여 표시합니다. 브라우저의 사이트 데이터를 삭제하면 둘 다 삭제됩니다.
 
 ③ 서클 등록（Torehan 연동）
 ・전송 내용: 서클명・작가명・배치・장르 태그・상품 정보・메뉴 이미지 등.
@@ -941,6 +946,7 @@ Le déclenchement varie selon la fonctionnalité. Les points 1, 2 et 5 ne s'exé
 ・Si vous mettez en place un tirage au sort réservé aux réservations, les paramètres de chaque article concerné (type [droit d'achat / bonus], nombre de gagnants, quantité par gagnant et date limite [date et heure de clôture de la page, ou date et heure que vous indiquez]) sont également envoyés et stockés.
 ・Lorsqu'une personne qui réserve participe à un tirage, l'article et la quantité demandés ainsi qu'un identifiant d'appareil anonyme (pour empêcher les participations en double depuis un même appareil) sont stockés avec la réservation. Le tirage est effectué automatiquement sur notre serveur à la date limite (si aucune date et heure limite n'est fixée, par exemple, l'exposant l'effectue depuis l'application), et le résultat (gagné / non gagné) ainsi que la date et l'heure du tirage sont également stockés. Les articles gagnés sont ajoutés à la réservation ; si la personne perd un tirage de droit d'achat et qu'il ne reste plus rien dans sa réservation, celle-ci est considérée comme annulée.
 ・Avis de résultat du tirage : les résultats s'affichent sur la page de réservation et dans la gestion des réservations de l'application de l'exposant. En outre, si la personne a ouvert le lien de réservation dans notre application sœur « とれはんっ！», notre serveur lui transmet le résultat (nom du cercle, nom de l'article, gagné / non gagné) via Expo (650 Industries, Inc.), sous forme de notification push et dans la liste des avis de とれはんっ！ (pour les informations traitées par とれはんっ！, consultez la politique de confidentialité de とれはんっ！). Cet usage se limite à annoncer le résultat du tirage de cette réservation. L'application de l'exposant envoie à notre serveur l'identifiant de la page, le jeton de gestion et l'identifiant de l'article tiré au sort, pour demander l'envoi de ces avis : juste après un tirage effectué dans l'application, à l'ouverture de la gestion des réservations (renvoi automatique des résultats pas encore transmis) et lorsque l'exposant renvoie un avis manuellement. Nous ne collectons pas, et n'envoyons pas, le nom ni les coordonnées des personnes qui réservent.
+・Récapitulatif de réservation (sur l'appareil) : afin de pouvoir réafficher la réservation lorsque la page est rouverte sur le même appareil, la page de réservation enregistre dans votre navigateur un récapitulatif de la réservation (numéro de retrait, articles et quantités réservés, remarque, tirages auxquels vous participez) ainsi que l'identifiant d'appareil anonyme utilisé pour vérifier les annulations. Le récapitulatif est supprimé lorsque la réservation est annulée. Un récapitulatif enregistré il y a plus de 30 jours est affiché avec une mention indiquant qu'il peut ne plus être à jour. Les deux sont supprimés si vous effacez les données de site du navigateur.
 
 ③ Inscription de cercle (intégration Torehan)
 ・Envoyé : nom du cercle, nom de l'auteur, emplacement, tags de genre, informations produit, images de menu, etc.
